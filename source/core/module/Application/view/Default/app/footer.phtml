@@ -9,202 +9,120 @@ $categories = $datas->categories;
 $menus = $datas->menus;
 $menu_one = $this->Menus()->getMenuWithAlias('MENU_FOOTER_01');
 $menu_two = $this->Menus()->getMenuWithAlias('MENU_FOOTER_02');
-$menu = $this->Menus()->getMenuWithAlias('MENU_MIDDLE_A');
 ?>
-<div class="wrap-highlights" >
+<div class="footer" >
     <div class="container" >
         <div class="row" >
-            <div class="col-lg-4 col-md-4 col-sm-12" >
-                <div class="item-highlights" >
-                    <img src="/styles/dataimages/flower.png" >
-                    <?php echo $this->translate('txt_dam_bao_hoa_tuoi'); ?>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12" >
-                <div class="item-highlights" >
-                    <img src="/styles/dataimages/num.png" >
-                    <?php echo $this->translate('txt_dam_bao_hai_long'); ?>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12" >
-                <div class="item-highlights" >
-                    <img src="/styles/dataimages/shipping.png" >
-                    <?php echo $this->translate('txt_giao_hang_tan_noi'); ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="col-sm-10 col-sm-offset-1" >
+                <div class="top-footer" >
+                    <div class="row" >
 
-<footer id="footer" itemscope itemtype="http://schema.org/WPFooter" >
-    <div class="container" >
-        <div class="inner-footer" >
-            <div class="mm-footer clearfix" >
-                <div class="row" >
-                    
-                    <div class="col-lg-6 col-md-12 col-sm-12" >
-                        <div class="footer-wiget-item" >
-                            <div class="footer-body-wiget" >
-                                <div class="name-website" >
-                                    <?php echo $this->translate('txt_name_company') ?>
-                                </div>
-                                <div class="info-company" >
-                                    <?php echo $this->translate('txt_info_company') ?>
-                                </div>
-                                <div class="copyright" >
-                                    <?php echo $this->translate('txt_copyright_company') ?>
+                        <div class="col-sm-3" >
+                            <div class="col-footer" >
+                                <h2 class="title-footer" >
+                                    Need Help?
+                                </h2>
+                                <div class="info-footer" >
+                                    <div class="sub-col-footer" >
+                                        <div class="title-ms-footer" >Call: +61 2 8061 6886</div>
+                                        <div>E.: sales@ipsupply.com.au</div>
+                                    </div>
+                                    <div class="sub-col-footer" >
+                                        <div class="title-ms-footer" >IP Supply Pty Ltd</div>
+                                        <div>Unit 16 / 4A Bachell Ave
+                                        Lidcombe, NSW 2141
+                                        Australia</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <?php 
-                    $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_one));
-                    if( !empty($menuRoot)   ){ ?>
-                    <div class="col-lg-3 col-md-6 col-sm-12" >
-                        <div class="footer-wiget-item" >
-                            <h2 class="footer-title-wiget" >
-                                <?php echo $this->Menus()->getName($menu_one); ?>
-                            </h2>
-                            <div class="footer-body-wiget" >
-                                <ul class="menu-footer" >
-                                    <?php foreach ($menuRoot as $key => $value) { ?>
-                                    <li>
-                                        <?php if( !$this->Menus()->isDescription($value) ){ ?>
-                                        <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" >    
-                                            <span>
-                                                <?php echo $this->Menus()->getName($value); ?> 
-                                            </span>
+                        <div class="col-sm-3" >
+                            <div class="col-footer" >
+                                <h2 class="title-footer" >
+                                    Shopping
+                                </h2>
+                                <div class="info-footer" >
+                                    <a href="" title="" class="footer-link" >Router</a>
+                                    <a href="" title="" class="footer-link" >Switches</a>
+                                    <a href="" title="" class="footer-link" >Firewalls Security</a>
+                                    <a href="" title="" class="footer-link" >IP Phones VOIP</a>
+                                    <a href="" title="" class="footer-link" >Wireless AP</a>
+                                    <a href="" title="" class="footer-link" >Modules & Cards</a>
+                                    <a href="" title="" class="footer-link" >Accessories</a>
+                                    <a href="" title="" class="footer-link" >Memory</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3" >
+                            <div class="col-footer" >
+                                <h2 class="title-footer" >
+                                    Help & Support
+                                </h2>
+                                <div class="info-footer" >
+                                    <a href="" title="" class="footer-link" >About IP Supply</a>
+                                    <a href="" title="" class="footer-link" >Contact Us</a>
+                                    <a href="" title="" class="footer-link" >Request a Quote</a>
+                                    <a href="" title="" class="footer-link" >Sell your Cisco</a>
+                                    <a href="" title="" class="footer-link" >About your order</a>
+                                    <a href="" title="" class="footer-link" >Wishlist</a>
+                                    <a href="" title="" class="footer-link" >Compare list</a>
+                                    <a href="" title="" class="footer-link" >Sitemap</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3" >
+                            <div class="col-footer" >
+                                <h2 class="title-footer" >
+                                    Newsletter
+                                </h2>
+                                <div class="info-footer" >
+                                    <div class="sub-col-footer" >
+                                        Sign Up our Newslatter to get the latest offer in your inbox.
+                                    </div>
+
+                                    <div class="sub-col-footer" >
+                                        <div class="letter-form" >
+                                            <input type="text" name="" placeholder="Your Email..." >
+                                            <button>
+                                                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="sub-col-footer" >
+                                        <a href="" class="link-social" >
+                                            <i class="fa fa-facebook" aria-hidden="true"></i>
                                         </a>
-                                        <?php }else{
-                                            echo $this->Menus()->getDescription($value);
-                                        } ?>
-                                    </li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <?php } ?>
-
-                    <?php 
-                    $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_two));
-                    if( !empty($menuRoot) ){ ?>
-                    <div class="col-lg-3 col-md-6 col-sm-12" >
-                        <div class="footer-wiget-item" >
-                            <h2 class="footer-title-wiget" >
-                                <?php echo $this->Menus()->getName($menu_two); ?>
-                            </h2>
-                            <div class="footer-body-wiget" >
-                                <ul class="menu-footer" >
-                                    <?php foreach ($menuRoot as $key => $value) { ?>
-                                    <li>
-                                        <?php if( !$this->Menus()->isDescription($value) ){ ?>
-                                        <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" >
-                                            <span>
-                                                <?php echo $this->Menus()->getName($value); ?>
-                                            </span>
+                                        <a href="" class="link-social" >
+                                            <i class="fa fa-twitter" aria-hidden="true"></i>
                                         </a>
-                                        <?php }else{
-                                            echo $this->Menus()->getDescription($value);
-                                        } ?>
-                                    </li>
-                                    <?php } ?>
-                                </ul>
+                                        <a href="" class="link-social" >
+                                            <i class="fa fa-google-plus" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="" class="link-social" >
+                                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <?php } ?>
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="bottom-footer" >
-                <div class="row" >
-
-                    <div class="col-lg-3 col-md-6 col-sm-6" >
-                        <div class="footer-col" >
-                            <h2 class="ttl-footer-col" >
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                                <?php echo $this->translate('txt_lien_he_voi_chung_toi') ?>
-                            </h2>
-                            <div class="clearfix" >
-                                <div class="mini-form-newleter" >
-                                    <form id="newsletterform" class="mini-iform-newleter" >
-                                        <input type="text" name="email" class="email" id="newsletter" placeholder="<?php echo $this->translate('txt_nhap_email_cua_ban') ?>" >
-                                        <a href="javascript:void(0);" class="btn-send-newleter neo-sent-newsletter" >
-                                            <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                        </a>
-                                    </form>
-                                </div>
+                <div class="bottom-footer" >
+                    <div class="row" >
+                        <div class="col-sm-9" >
+                            <div class="copy-right" >
+                                © 2017 IP Supply Pty Ltd. All Rights Reserved.
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-6" >
-                        <div class="footer-col" >
-                            <h2 class="ttl-footer-col" >
-                                <?php echo $this->translate('txt_thanh_vien_dien_hoa') ?>
-                            </h2>
-                            <div class="clearfix" >
-                                <div class="branche-related" >
-                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="" >
-                                        <img src="/styles/dataimages/br.png" alt="" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-6" >
-                        <div class="footer-col" >
-                            <h2 class="ttl-footer-col" >
-                                <?php echo $this->translate('txt_thanh_toan_truc_tiep') ?>
-                            </h2>
-                            <div class="clearfix" >
-                                <div class="payemt-img" >
-                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="" class="item-paymel" >
-                                        <img src="/styles/dataimages/paypal.jpg" alt="" />
-                                    </a>
-                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="" class="item-paymel" >
-                                        <img src="/styles/dataimages/master.jpg" alt="" />
-                                    </a>
-                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="" class="item-paymel" >
-                                        <img src="/styles/dataimages/visa.jpg" alt="" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-6" >
-                        <div class="footer-col" >
-                            <h2 class="ttl-footer-col" >
-                                <?php echo $this->translate('txt_theo_doi_chung_toi') ?>
-                            </h2>
-                            <div class="clearfix" >
-                                <div class="social-link" >
-                                    <?php if( !empty($this->Websites()->getUrlFacebook()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlFacebook() ?>" title="Facebook" rel="nofollow" class="link-soc" >
-                                        <i class="fa fa-facebook" aria-hidden="true"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if( !empty($this->Websites()->getUrlGooglePlus()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlGooglePlus() ?>" title="GooglePlus" rel="nofollow"  title="" class="link-soc" >
-                                        <i class="fa fa-google" aria-hidden="true"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if( !empty($this->Websites()->getUrlYoutube()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlYoutube() ?>" title="Youtube" rel="nofollow"  title="" class="link-soc" >
-                                        <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if( !empty($this->Websites()->getUrlTwister()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlTwister() ?>" title="Twister" rel="nofollow"  title="" class="link-soc" >
-                                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                                    </a>
-                                    <?php } ?>
-                                </div>
+                        <div class="col-sm-3" >
+                            <div class="pay-support" >
+                                <img src="/styles/dataimages/pay.png" class="img-fluid" alt="" >
                             </div>
                         </div>
                     </div>
@@ -212,519 +130,11 @@ $menu = $this->Menus()->getMenuWithAlias('MENU_MIDDLE_A');
             </div>
         </div>
     </div>
-</footer>
+</div>
 
-<a class="back-to-top" href="javascript:void(0);" data-btn="backToTop" >
-    <i class="fa fa-angle-up" aria-hidden="true"></i>
+<a href="javascript:void(0);" title="" class="back-to-top" >
+    <i class="fa fa-chevron-up" aria-hidden="true"></i>
 </a>
-
-<div class="mask-mobie-menu" ></div>
-<div class="coz-mobie-menu" >
-    <div class="close-mobie-menu" >
-        <a href="javascript:void(0);" >
-            <i class="ic i-mclose" ></i>
-        </a>
-    </div>
-    <div class="inner-mobie-menu scrollbar scrollbar-dynamic" data-place="scrollbarMenuMobile" >
-        <div class="coz-mobie-menu-content clearfix" >
-            <div class="mm-mobie-search" >
-                <form action="/search" class="clearfix" method="GET" >
-                    <div class="mim-mobie-search clearfix" >
-                        <input type="text" name="keyword" class="input-mobie-search" placeholder="<?php echo $this->translate('txt_search_holder') ?>" >
-                        <button type="submit" class="mm-btn-search" >
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div class="mm-mobie-language" >
-                <?php foreach ($languages as $key => $lang) { ?>
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/language/<?php echo md5($lang['languages_file']) ?>" title="<?php echo $lang['languages_name'] ?>" rel="nofollow" class="link-mobie-language <?php echo ($lang['languages_id'] == $languages_id) ? 'active' : '' ?>" >
-                        <?php echo $lang['languages_name'] ?>
-                    </a>
-                    <?php if( $key < (count($languages)-1) ){ ?>
-                    <span class="separator-mobie-language" >|</span>
-                    <?php } ?>
-                <?php } ?>
-            </div>
-            <div class="mm-mobie-nav" >
-                <div class="mm-mobie-nav-static" >
-                    <ul class="list-nav-mmobie" >
-                        <?php if( !empty($countries) ){ ?>
-                        <li class="has-sub" >
-                            <a href="javascript:void(0);" class="nav-item-mmobile has-ic-left" rel="nofollow" >
-                                <span class="mm-left-ic" >
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                </span>
-                                <span class="mm-text" >
-                                    <?php echo $this->translate('txt_van_chuyen_quoc_te') ?>
-                                </span>
-                                <span class="mm-right-ic" >
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                </span>
-                            </a>
-                            <div class="sub-nav-mmobile" >
-                                <ul class="list-nav-mmobie" >
-                                    <li >
-                                        <a title="<?php echo $this->translate('txt_tat_ca_cac_quoc_gia') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/country/set?id=0" rel="nofollow" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <i class="fa fa-globe" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $this->translate('txt_tat_ca_cac_quoc_gia') ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <?php foreach ($countries as $key => $cot ) { ?>
-                                    <li >
-                                        <a title="<?php echo $cot['title'] ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/country/set?id=<?php echo $cot['id'] ?>" rel="nofollow" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <span class="flag <?php echo $this->Contries()->getClassByCode($cot['code']) ?>" ></span>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $cot['title'] ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        </li>
-                        <?php } ?>
-
-                        <li class="has-sub"  >
-                            <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" class="nav-item-mmobile has-ic-left" >
-                                <span class="mm-left-ic" >
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                </span>
-                                <?php if( !$this->User()->hasLogin() ){ ?>
-                                <span class="mm-text" >
-                                    <?php echo $this->translate('txt_tai_khoan') ?>
-                                </span>
-                                <?php }else{ ?>
-                                <span class="mm-text" >
-                                    <?php echo $this->translate('txt_xin_chao_ban') ?>
-                                    <?php echo $this->User()->getFullName() ?>
-                                </span>
-                                <?php } ?>
-                                <span class="mm-right-ic" >
-                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                </span>
-                            </a>
-                            <div class="sub-nav-mmobile" >
-                                <ul class="list-nav-mmobie" >
-                                    <?php if( !$this->User()->hasLogin() ){ ?>
-                                    <li >
-                                        <a title="<?php echo $this->translate('txt_login') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $this->translate('txt_login') ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li >
-                                        <a title="<?php echo $this->translate('txt_sign_up') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $this->translate('txt_sign_up') ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <?php }else{ ?>
-                                    <li >
-                                        <a title="<?php echo $this->translate('txt_thong_tin') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $this->translate('txt_thong_tin') ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li >
-                                        <a title="<?php echo $this->translate('txt_logout') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/logout" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $this->translate('txt_logout') ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li>
-                            <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/history" title="<?php echo $this->translate('txt_tracking_invoice') ?>" class="nav-item-mmobile has-ic-left" >
-                                <span class="mm-left-ic" >
-                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                </span>
-                                <span class="mm-text" >
-                                    <?php echo $this->translate('txt_tracking_invoice') ?>
-                                </span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/cart" title="<?php echo $this->translate('txt_gio_hang') ?>" class="nav-item-mmobile has-ic-left" >
-                                <span class="mm-left-ic" >
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                </span>
-                                <span class="mm-text" >
-                                    <?php echo $this->translate('txt_gio_hang') ?>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <?php
-                $categoriesRoot = $this->Categories()->getRoot($categories);
-                if( !empty($categoriesRoot) ){ ?>
-                <div class="mm-mobie-nav-tree" >
-                    <ul class="list-nav-tree-mmobie" >
-                        <?php 
-                        foreach ($categoriesRoot as $key01 => $category01) { 
-                            $childrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
-                        ?>
-                        <li <?php echo !empty($childrens) ? 'class="has-sub"' : '' ?> >
-                            <a href="<?php echo $this->Categories()->getCategoriesUrl($category01); ?>" title="<?php echo $this->Categories()->getTitle($category01); ?>" class="nav-item-mmobile" >
-                                <span class="mm-text" >
-                                    <?php echo $this->Categories()->getTitle($category01); ?>
-                                </span>
-                                <?php if( !empty($childrens) ){ ?>
-                                <span class="mm-right-ic" >
-                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                </span>
-                                <?php } ?>
-                            </a>
-                            <?php if( !empty($childrens) ){ ?>
-                            <div class="sub-nav-mmobile" >
-                                <ul class="list-nav-mmobie" >
-                                    <?php foreach ($childrens as $key02 => $category02){ 
-                                        $childrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
-                                    ?>
-                                    <li <?php echo !empty($childrens02) ? 'class="has-sub"' : '' ?> >
-                                        <a href="<?php echo $this->Categories()->getCategoriesUrl($category02); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>" class="nav-item-mmobile has-ic-left" >
-                                            <span class="mm-left-ic" >
-                                                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="mm-text" >
-                                                <?php echo $this->Categories()->getTitle($category02); ?>
-                                            </span>
-                                            <?php if( !empty($childrens02) ){ ?>
-                                            <span class="mm-right-ic" >
-                                                <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                            </span>
-                                            <?php } ?>
-                                        </a>
-                                        <?php if( !empty($childrens02) ){ ?>
-                                        <div class="sub-nav-mmobile" >
-                                            <ul class="list-nav-mmobie" >
-                                                <?php foreach ($childrens02 as $key03 => $category03){ ?>
-                                                <li>
-                                                    <a href="<?php echo $this->Categories()->getCategoriesUrl($category03); ?>" title="<?php echo $this->Categories()->getTitle($category03); ?>" class="nav-item-mmobile has-ic-left" >
-                                                        <span class="mm-left-ic" >
-                                                            <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                                        </span>
-                                                        <span class="mm-text" >
-                                                            <?php echo $this->Categories()->getTitle($category03); ?>
-                                                        </span>
-                                                    </a>
-                                                </li>
-                                                <?php } ?>
-                                            </ul>
-                                        </div>
-                                        <?php } ?>
-                                    </li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                            <?php } ?>
-                        </li>
-                        <?php } ?>
-
-                    </ul>
-                </div>
-                <?php } ?>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="coz-popup-where-are-you" id="coz-popup-where-are-you" data-place="whereAreYou" style="display:none" >
-    <div class="clearfix coz-inner-popup-where-are-you" >
-        <div class="clearfix coz-logo-popup-where-are-you" >
-            <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" >
-                <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 210); ?>" class="img-fluid" alt="<?php echo $this->translate('title_site') ?>" />
-            </a>
-        </div>
-        <a href="javascript:neoClosePopup();" class="coz-btn-close-popup-where-are-you" ><i class="fa fa-times" aria-hidden="true"></i></a>
-        <div class="clearfix coz-bd-popup-where-are-you" >
-            <h2 class="coz-title-location"><?php echo $this->translate('txt_cap_nhat_vi_tri_cua_ban') ?></h2>
-            <p class="coz-note-location" ><?php echo $this->translate('txt_cap_nhat_des_vi_tri_cua_ban') ?></p>
-            <div class="clearfix" >
-                <form action="" class="form-where-are-you" data-form="whereAreYou" >
-                    <div class="row" >
-
-                        <?php 
-                        $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu));
-                        if( !empty($menuRoot) ){ ?>
-                        <div class="col-sm-6" data-place="hasTypeLocation" >
-                            <div class="form-element-payment" >
-                                <div class="row" >
-                                    <div class="col-sm-12" >
-                                        <label class="ui-lb-payment">
-                                            <?php echo $this->Menus()->getName($menu); ?>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-12" >
-                                        <div class="ui-select-payment" >
-                                            <select class="coz-select-payment" name="categories_id" id="whay_type_location" >
-                                                <option value="0" >
-                                                    <?php echo $this->translate('txt_chon') ?> 
-                                                    <?php echo $this->Menus()->getName($menu); ?>
-                                                </option>
-                                                <?php
-                                                foreach ($menuRoot as $key01 => $menu01) {
-                                                    $childrens = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu01));
-                                                    $categoriesRoot = $this->Categories()->getRoot($categories);
-                                                ?>
-                                                    <?php if( $this->Menus()->isOneCollection($menu01) ){ ?>
-                                                    <option value="<?php echo $this->Menus()->getCategoriesId($menu01); ?>" >
-                                                        <?php echo $this->Menus()->getName($menu01); ?>
-                                                    </option>
-                                                    <?php } else if( !empty($childrens) 
-                                                            && !$this->Menus()->isCollection($menu01)
-                                                            && !$this->Menus()->isBlog($menu01) ){
-                                                        foreach ($childrens as $key02 => $menu02){
-                                                            if( $this->Menus()->isOneCollection($menu02) ){ ?>
-                                                    <option value="<?php echo $this->Menus()->getCategoriesId($menu02); ?>" >
-                                                        <?php echo $this->Menus()->getName($menu02); ?>
-                                                    </option>
-                                                    <?php  }
-                                                        }
-                                                    } else if($this->Menus()->isCollection($menu01) 
-                                                    && !empty($categoriesRoot)){
-                                                        foreach ($categoriesRoot as $key01 => $category01) { 
-                                                            $categoriesChildrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
-                                                            if( !empty($categoriesChildrens) ){
-                                                                foreach ($categoriesChildrens as $key02 => $category02){
-                                                                    $categoriesChildrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
-                                                                    if( !empty($categoriesChildrens02) ){foreach ($categoriesChildrens02 as $key03 => $category03){ ?>
-                                                                        <option value="<?php echo $this->Categories()->getId($category03); ?>" >
-                                                                            <?php echo $this->Categories()->getTitle($category03); ?>
-                                                                        </option>
-                                                                        <?php }
-                                                                    }else{ ?>
-                                                                    <option value="<?php echo $this->Categories()->getId($category02); ?>" >
-                                                                        <?php echo $this->Categories()->getTitle($category02); ?>
-                                                                    </option>
-                                                                    <?php }
-                                                                }
-                                                            }else{ ?>
-                                                            <option value="<?php echo $this->Categories()->getId($category01); ?>" >
-                                                                <?php echo $this->Categories()->getTitle($category01); ?>
-                                                            </option>
-                                                            <?php }
-                                                        }
-                                                    } ?>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php } ?>
-
-                    <?php 
-                    $countrySelected = array();
-                    if( !empty($countries) ){ ?>
-                    <div class="row" >
-                        <div class="col-sm-6" data-place="hasCountry" >
-                            <div class="form-element-payment" data-place="country" style="display:none" >
-                                <div class="row" >
-                                    <div class="col-sm-12" >
-                                        <label class="ui-lb-payment">
-                                            <?php echo $this->translate('txt_dat_nuoc') ?>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-12" >
-                                        <div class="ui-select-payment" >
-                                            <select class="coz-select-payment" name="country_id" id="whay_country" >
-                                                <option value="0" >
-                                                    <?php echo $this->translate('txt_option_tat_ca_country') ?>
-                                                </option>
-                                                <?php foreach ($countries as $key => $cot ) { 
-                                                    $txtSelected = '';
-                                                    if( $cot['id'] == $country_id || $cot['is_default'] == 1 ){
-                                                        $countrySelected = $cot;
-                                                        $txtSelected = 'selected="selected"';
-                                                    }
-                                                ?>
-                                                <option value="<?php echo $cot['id'] ?>" <?php echo $txtSelected ?> >
-                                                    <?php echo $cot['title'] ?>
-                                                </option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php } ?>
-
-                    <div class="form-element-payment" data-place="noZipcode" style="margin-bottom:20px;display:none" >
-                        <div class="row" >
-                            <div class="col-sm-6"  data-place="hasCities" >
-                                <label class="ui-lb-payment">
-                                    <?php echo $this->translate('txt_thanh_pho') ?>
-                                </label>
-                                <div class="ui-select-payment" >
-                                    <select class="coz-select-payment" name="cities_id"  id="whay_city" >
-                                        <option value="0" >
-                                            <?php echo $this->translate('txt_option_tat_ca_cities') ?>
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6" data-place="hasDistricts" >
-                                <label class="ui-lb-payment">
-                                    <?php echo $this->translate('txt_quan_huyen') ?>
-                                </label>
-                                <div class="ui-select-payment" >
-                                    <select class="coz-select-payment" name="districts_id"  id="whay_distrist" >
-                                        <option value="0" >
-                                            <?php echo $this->translate('txt_option_tat_ca_districts') ?>
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-4" data-place="hasWard" style="display:none" >
-                                <label class="ui-lb-payment">
-                                    <?php echo $this->translate('txt_phuong_xa') ?>
-                                </label>
-                                <div class="ui-select-payment" >
-                                    <select class="coz-select-payment" name="wards_id"  id="whay_ward" >
-                                        <option value="0" >
-                                            <?php echo $this->translate('txt_option_tat_ca_wards') ?>
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <?php if( !empty($countrySelected) ){ ?>
-                        <div class="form-element-payment clearfix" data-place="txtOpenCountry" style="display:none" >
-                            <a href="javascript:void(0);" class="btn-open-country-where-are-you" data-btn="openCountry" >
-                                <?php echo $this->translate('txt_ban_o_ngoai_vung') ?>
-                                <?php echo $countrySelected['title'] ?>
-                            </a>
-                        </div>
-                        <?php } ?>
-                    </div>
-
-                    <div class="form-element-payment" data-place="hasZipcode" style="margin-bottom:20px;display:none" >
-                        <div class="row" >
-                            <div class="col-sm-6" >
-                                <label class="ui-lb-payment">
-                                    <?php echo $this->translate('txt_thanh_pho') ?>
-                                </label>
-                                <div class="ui-input-payment" >
-                                    <input type="text" class="input-payment" name="city"  id="whay_city" >
-                                </div>
-                            </div>
-                            <div class="col-sm-6" >
-                                <label class="ui-lb-payment">
-                                    <?php echo $this->translate('txt_zipcode') ?>
-                                </label>
-                                <div class="ui-input-payment" >
-                                    <input type="text" class="input-payment" name="zipcode"  id="whay_zipcode" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-element-payment" >
-                        <div class="row" >
-                            <div class="col-sm-offset-3 col-sm-6" >
-                                <a href="javascript:void(0);" data-btn="appLocation" class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block" >
-                                    <?php echo $this->translate('txt_app_location') ?>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php if( !empty($countries) ){ ?>
-<div style="display: none;" id="pupop-choose-country" >
-    <div class="container" >
-        <div class="pupop-choose-country" >
-            <div class="pupop-iner-choose-country clearfix" >
-                <div class="clearfix coz-logo-pupop-choose-country" >
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" >
-                        <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 210); ?>" class="img-fluid" alt="<?php echo $this->translate('title_site') ?>" />
-                    </a>
-                </div>
-                <a href="javascript:neoClosePopup();" class="coz-btn-close-popup-choose-country" >
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </a>
-                <div class="clearfix coz-bd-popup-choose-country" >
-                    <h2 class="coz-title-location">
-                        <?php echo $this->translate('txt_chon_country_cua_ban') ?>
-                    </h2>
-                    <p class="coz-note-location" >
-                        <?php echo $this->translate('txt_des_chon_country_cua_ban') ?>
-                    </p>
-                    <div class="clearfix list-country-popup" >
-                        <form action="" class="form-choose-country clearfix" data-form="chooseCountry" >
-                            <div class="form-element-payment clearfix" >
-                                <div class="row">
-                                    <?php foreach ($countries as $key => $cot ) { 
-                                        $txtSelected = '';
-                                        if( $cot['id'] == $country_id ){
-                                            $txtSelected = 'checked="checked"';
-                                        }
-                                    ?>
-                                    <div class="col-lg-2 col-md-3 col-sm-6" >
-                                        <div class="item-country-popup" >
-                                            <label>
-                                                <input type="radio" name="country_id" value="<?php echo $cot['id'] ?>" <?php echo $txtSelected ?> >
-                                                <?php echo $cot['title'] ?>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="form-element-payment" >
-                                <div class="row" >
-                                    <div class="col-sm-offset-3 col-sm-6" >
-                                        <a href="javascript:void(0);" data-btn="appCountry" class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block" >
-                                            <?php echo $this->translate('txt_app_country') ?>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<?php } ?>
 
 
 

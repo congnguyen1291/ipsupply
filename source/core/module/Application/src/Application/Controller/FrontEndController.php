@@ -102,7 +102,7 @@ class FrontEndController extends AbstractActionController {
         $this->setDataView('categories', $this->categories);
 
         $this->location =  !empty($_SESSION['LOCATION']) ? $_SESSION['LOCATION'] : array();
-        //$this->countries = $this->getModelTable('CountryTable')->getContries();
+        /*$this->countries = $this->getModelTable('CountryTable')->getContries();
         if( empty($this->website['is_local']) || empty($this->website['website_contries']) ){
             $this->countries = $this->getModelTable('CountryTable')->getContries();
         }else{
@@ -114,7 +114,7 @@ class FrontEndController extends AbstractActionController {
         }
         if( !empty($this->location['country_code']) ){
             $this->country_code = $this->location['country_code'];
-        }
+        }*/
         $this->setDataView('country_id', $this->country_id);
         $this->setDataView('country_code', $this->country_code);
         $this->setDataView('location', $this->location);
@@ -137,11 +137,11 @@ class FrontEndController extends AbstractActionController {
         $this->addJS("//cdn.coz.vn/owl-carousel/owl.carousel.min.js");
         $this->addJS("//cdn.coz.vn/ion.rangeSlider/2.1.4/js/ion.rangeSlider.min.js");
         $this->addJS("//cdn.coz.vn/magnific-popup/js/jquery.magnific-popup.min.js");
-        $this->addJS("//cdn.coz.vn/jQuery.Marquee/jquery.marquee.min.js");
-        $this->addJS("//cdn.coz.vn/jquery.scrollbar/jquery.scrollbar.js");
-        $this->addJS("//cdn.coz.vn/datepicker/dist/datepicker.min.js");
-        $this->addJS("//cdn.coz.vn/select2/dist/js/select2.min.js");
-        $this->addJS("//cdn.coz.vn/tooltipster/dist/js/tooltipster.bundle.min.js");
+        //$this->addJS("//cdn.coz.vn/jQuery.Marquee/jquery.marquee.min.js");
+        //$this->addJS("//cdn.coz.vn/jquery.scrollbar/jquery.scrollbar.js");
+        //$this->addJS("//cdn.coz.vn/datepicker/dist/datepicker.min.js");
+        //$this->addJS("//cdn.coz.vn/select2/dist/js/select2.min.js");
+        //$this->addJS("//cdn.coz.vn/tooltipster/dist/js/tooltipster.bundle.min.js");
         $this->addJS("//cdn.coz.vn/iGrowl/js/igrowl.min.js");
         $this->addJS("//cdn.coz.vn/jquery-tmpl/jquery.tmpl.min.js");
         $this->addJS("//cdn.coz.vn/nprogress/nprogress.js");
@@ -183,10 +183,10 @@ class FrontEndController extends AbstractActionController {
         $this->addCSS('//cdn.coz.vn/ion.rangeSlider/2.1.4/css/ion.rangeSlider.skinModern.css');
         $this->addCSS('//cdn.coz.vn/flags/flags.min.css');
         $this->addCSS('//cdn.coz.vn/jquery.scrollbar/jquery.scrollbar.css');
-        $this->addCSS('//cdn.coz.vn/datepicker/dist/datepicker.min.css');
+        //$this->addCSS('//cdn.coz.vn/datepicker/dist/datepicker.min.css');
         $this->addCSS('//cdn.coz.vn/magnific-popup/css/magnific-popup.css');
-        $this->addCSS('//cdn.coz.vn/select2/dist/css/select2.css');
-        $this->addCSS('//cdn.coz.vn/tooltipster/dist/css/tooltipster.bundle.min.css');
+        //$this->addCSS('//cdn.coz.vn/select2/dist/css/select2.css');
+        //$this->addCSS('//cdn.coz.vn/tooltipster/dist/css/tooltipster.bundle.min.css');
         $this->addCSS('//cdn.coz.vn/iGrowl/css/igrowl.min.css');
         $this->addCSS('//cdn.coz.vn/iGrowl/css/fonts/feather.css');
         $this->addCSS('//cdn.coz.vn/nprogress/nprogress.css');
