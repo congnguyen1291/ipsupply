@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>
+        	Cập nhật đơn hàng
+        </title>
+    </head>
+
+    <body>
+
+        <table width="100%" border="0" vspace="0" hspace="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#FFF" style="font-size:14px;font-family: 'Times New Roman', Times, serif;width:100%;margin:0;padding:0;color:#333" >
+
+            <tr >
+                <td align="center" valign="top" >
+                    <table width="600" border="0" vspace="0" hspace="0" cellspacing="0" cellpadding="0" align="center" >
+                        <tr>
+                            <td>
+                                <p style="display:block;margin:0;padding:10px 0;font-size:12px;" >
+                                    <?php echo $this->translate('txt_problem_viewing_this_email') ?> ? 
+                                    <i><?php echo $this->translate('txt_view_it_in_browser') ?></i>
+                                </p>
+                            </td>
+                            <td align="right" >
+                                <p style="display:block;margin:0;padding:10px 0;text-align:right">
+                                    <?php if( !empty($this->Websites()->getUrlFacebook()) ){ ?>
+                                    <a href="<?php echo $this->Websites()->getUrlFacebook(); ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                        facebook
+                                    </a>
+                                    <?php } ?>
+
+                                    <?php if( !empty($this->Websites()->getUrlTwister()) ){ ?>
+                                    <a href="<?php echo $this->Websites()->getUrlTwister(); ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                        twister
+                                    </a>
+                                    <?php } ?>
+
+                                    <?php if( !empty($this->Websites()->getUrlGooglePlus()) ){ ?>
+                                    <a href="<?php echo $this->Websites()->getUrlGooglePlus(); ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                        google+
+                                    </a>
+                                    <?php } ?>
+
+                                    <?php if( !empty($this->Websites()->getUrlRss()) ){ ?>
+                                    <a href="<?php echo $this->Websites()->getUrlRss() ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                        rss
+                                    </a>
+                                    <?php } ?>
+
+                                    <?php if( !empty($this->Websites()->getUrlYoutube()) ){ ?>
+                                    <a href="<?php echo $this->Websites()->getUrlYoutube() ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                        youtube
+                                    </a>
+                                    <?php } ?>
+
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr bgcolor="#FFF" >
+                <td align="center" valign="top" >
+                    <table width="600" border="0" vspace="0" hspace="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#FFF" >
+                        <tr>
+                            <td align="center" >
+                                <a href="" style="display:block;padding:20px 0" >
+                                    <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 187, 158); ?>" width="200" alt="" title="" />
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td valign="top" >
+                                <div > 
+                                    Chào bạn, <strong><?php echo $invoice->full_name ?></strong><br />
+									Đơn hàng <strong><?php echo $invoice->invoice_title ?></strong> có thông báo mới<br />
+									<?php if( $invoice->delivery !=$delivery ){ ?>
+									Trạng thái đơn hàng chuyển từ <i><?php echo $invoice->delivery ?></i> sang <i><?php echo $delivery ?></i><br />
+									<?php } ?>
+
+									<?php if( !empty($has_comment) && !empty($comment) ){ ?>
+									Với lời nhắn : <br />
+									<i><?php echo $comment ?></i><br />
+									<?php } ?>
+									Cám ơn bạn đã tin tưởng sử dụng dịch vụ của chúng tôi.
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </td>
+            </tr>
+            
+            
+        </table>
+
+    </body>
+</html>

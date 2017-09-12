@@ -1,0 +1,165 @@
+<div class="coz-wrapper-profile" >
+	<div class="container">
+	    <div class="row coz-profile">
+			<div class="col-md-3">
+				<?php echo $this->partial('application/profile/menu', array('active' => 'industry', 'point' => $point) ); ?>
+			</div>
+			<div class="col-md-9">
+	            <div class="coz-profile-content">
+				   
+	            	<div class="coz-user-info-block" >
+		                <div class="coz-user-heading">
+		                    <h3><?php echo $this->translate('txt_industry') ?></h3>
+		                    <p class="help-block"><?php echo $this->User()->getUserName(); ?></p>
+		                </div>
+
+		                <div class="coz-dasboad-navi" >
+		                	<div class="row" >
+
+		                		<div class="col-sm-12" >
+		                			<form accept-charset='UTF-8' data-form="summaryIndustry" >
+			                			<div class="form-element-payment" >
+			                				<div class="row" >
+			                					<div class="col-sm-5 coz-text-right" >
+			                						<span class="help-block">
+			                							<?php echo $this->translate('txt_ranger_industry') ?>
+			                						</span>
+			                					</div>
+			                					<div class="col-sm-7" >
+					                				<div class="clearfix coz-text-right" >
+					                					<div class="col-sm-4" >
+					                                        <div class="ui-input-payment" >
+					                                            <input type="text" value="<?php echo $from ?>" name="from" spellcheck="false" class="input-payment" aria-invalid="true" >
+					                                        </div>
+					                                    </div>
+					                                    <div class="col-sm-4" >
+					                                        <div class="ui-input-payment" >
+					                                            <input type="text" value="<?php echo $to ?>" name="to" spellcheck="false" class="input-payment" aria-invalid="true" >
+					                                        </div>
+					                                    </div>
+					                                    <div class="col-sm-4" >
+					                                    	<input type="submit" value="<?php echo $this->translate('txt_view_industry') ?>" class="coz-btn coz-btn-active coz-btn-block" >
+					                                    </div>
+					                				</div>
+				                				</div>
+			                				</div>
+			                			</div>
+		                			</form>
+		                		</div>
+
+		                		<div class="col-sm-12" >
+		                			<p class="help-block">
+		                				<?php echo $this->translate('txt_result_industry') ?>
+		                			</p>
+		                		</div>
+		                		<?php if( !empty($datas) ){ ?>
+		                		<div class="col-sm-12" >
+				                	<div class="table-responsive">
+		                                <table class="coz-table-cart" >
+		                                	<thead>
+		                                        <tr>
+		                                            <th class="text-center" width="120"  style="white-space: nowrap"  >
+		                                                <?php echo $this->translate('txt_date_invoice'); ?>
+		                                            </th>
+		                                            <th class="text-center" width="120"  style="white-space: nowrap"  >
+		                                                <?php echo $this->translate('txt_ma_invoice'); ?>
+		                                            </th>
+		                                            <th  style="white-space: nowrap"  >
+		                                                <?php echo $this->translate('txt_ten_nguoi_dat'); ?>
+		                                            </th>
+		                                            <th  class="coz-text-right"  style="white-space: nowrap" >
+		                                                <?php echo $this->translate('txt_loai_giao_dich'); ?>
+		                                            </th>
+		                                            <th  class="coz-text-right"  style="white-space: nowrap" >
+		                                                <?php echo $this->translate('txt_so_tien'); ?>
+		                                            </th>
+		                                            <th  class="coz-text-right"  style="white-space: nowrap" >
+		                                                <?php echo $this->translate('txt_commission'); ?>
+		                                            </th>
+		                                            <th  class="coz-text-right"  style="white-space: nowrap" >
+		                                                <?php echo $this->translate('txt_doanh_thu'); ?>
+		                                            </th>
+		                                        </tr>
+		                                    </thead>
+		                                    <tbody>
+		                                    	<?php 
+		                                    	$total = 0;
+		                                    	foreach($datas as $row){
+		                                    		if( !empty($row['assign_merchant_status'])
+		                                    			&& $row['assign_merchant_status'] != 'accept'
+		                                    			&& $row['assign_merchant_status'] != 'finish' ){
+		                                    			continue;
+		                                    		}
+		                                    		$total_ = ($row['total'] + $row['shipping_fee']);
+		                                    		$dt = $total_*min(((100-$row['commission'])/100), 1);
+		                                    		$dau = '+ ';
+		                                    		if( empty($row['assign_name']) ){
+		                                    			$total -= $dt;
+		                                    			$dau = '- ';
+		                                    		}else{
+		                                    			$total += $dt;
+		                                    			$dau = '+ ';
+		                                    		}
+		                                    	?>
+		                                        <tr>
+			                                        <td >
+			                                        	<?php echo $row['date_create'] ?>
+			                                        </td>
+			                                        <td >
+			                                        	<?php echo $row['invoice_title'] ?>
+			                                        </td>
+			                                        <td >
+			                                        	<?php echo $row['full_name'] ?>
+			                                        </td>
+			                                        <td  class="coz-text-right"  style="white-space: nowrap" >
+			                                        	<?php if( !empty($row['assign_name']) ){ ?>
+			                                        	Bán(+)
+			                                        	<?php }else{ ?>
+			                                        	Mua(-)
+			                                        	<?php } ?>
+			                                        </td>
+			                                        <td  class="coz-text-right"  style="white-space: nowrap" >
+			                                        	<?php echo $this->Currency()->fomatCurrency($total_) ?>
+			                                        </td>
+			                                        <td  class="coz-text-right"  style="white-space: nowrap" >
+			                                        	<?php if( !empty($row['assign_name']) ){ ?>
+			                                        	<?php echo $row['commission'].'%' ?>
+			                                        	<?php } ?>
+			                                        </td>
+			                                        <td  class="coz-text-right"  style="white-space: nowrap" >
+			                                        	<?php echo $dau.$this->Currency()->fomatCurrency($dt) ?>
+			                                        </td>
+			                                    </tr>
+		                                        <?php } ?>
+		                                        <tr>
+		                                        	<td colspan="6" >
+		                                        		<div class="coz-text-right" >
+		                                        			<?php echo $this->translate('txt_tong_doanh_thu'); ?>
+		                                        		</div>
+		                                        	</td>
+		                                        	<td class="coz-text-right" style="white-space: nowrap" >
+		                                        		<?php echo ($total < 0 ? '- ' : '+ ' ).$this->Currency()->fomatCurrency( abs($total) ) ?>
+		                                        	</td>
+		                                        </tr>
+		                                    </tbody>
+		                                </table>
+		                            </div>
+	                            </div>
+		                		<?php }else{ ?>
+		                		<div class="col-sm-12" >
+			                        <p class="cart-empty">
+			                            <?php echo $this->translate('txt_khong_co_data_trong_industry') ?>
+			                        </p>
+			                    </div>
+		                		<?php } ?>
+
+		                	</div>
+		                </div>
+
+		            </div>
+				   
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>

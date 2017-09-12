@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Đặt hàng thành công</title>
+</head>
+
+<body>
+<table width="726" border="0" align="center" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+    <td valign="top">
+        <table width="650" border="0" align="center" cellpadding="0" cellspacing="0">
+        </table>
+    </td>
+</tr>
+<tr>
+    <td align="center" valign="top">
+        <table width="650" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
+
+            <tr>
+                <td valign="top" bgcolor="#ffffff">
+                    <table width="650" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <td valign="top" width="220"><a
+                                    href=""
+                                    title="VietNam Ecom" target="_blank"><img
+                                        src="http://vietnamecom.vn/styles/images/logo.png"
+                                        alt="VietNam Ecom" width="264" height="50" border="0"/></a></td>
+                            <td valign="top" width="430">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td align="center" valign="top" bgcolor="#00aff0" height="35">
+        <table width="650" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <td align="center" valign="middle" height="30px"><a href="http://vietnamecom.vn/danh-muc/do-gia-dung-1585" target="_blank" style="color:#FF0000; font-weight::bord; text-decoration:none">Đồ gia dụng</a></td>
+                <td align="center" valign="middle" height="30px"><a href="http://vietnamecom.vn/danh-muc/dien-thoai-or-tablet-685" target="_blank" style="color:#FF0000; font-weight::bord; text-decoration:none">Điện thoại</a></td>
+                <td align="center" valign="middle" height="30px"><a href="http://vietnamecom.vn/danh-muc/may-tinh-va-laptop-761" target="_blank" style="color:#FF0000; font-weight::bord; text-decoration:none">Máy tính xách tay</a></td>
+                <td align="center" valign="middle" height="30px"><a href="http://vietnamecom.vn/danh-muc/nha-cua-amp-doi-song-1355" target="_blank" style="color:#FF0000; font-weight::bord; text-decoration:none">Nhà cửa & Đời sống   </a></td>
+                <td align="right" valign="middle" height="30px"><a href="http://vietnamecom.vn/danh-muc/may-anh-amp-may-quay-phim-890" target="_blank" style="color:#FF0000; font-weight::bord; text-decoration:none">Máy ảnh & Máy quay phim </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<tr>
+<td valign="top">
+<table width="726" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td valign="top" width="38">&nbsp;</td>
+<td valign="top" width="650">
+<table width="650" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+    <td align="center" valign="top" bgcolor="#ffffff">
+        <table width="630" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+                <td valign="top" bgcolor="#ffffff">
+                    <table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <td valign="top"><em>Đây là email tự động, quý khách vui lòng không trả lời vào email này!</em></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <table width="630" border="0" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" bgcolor="#ffffff">
+                                            <table width="600" border="0" align="center" cellpadding="0"
+                                                   cellspacing="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <?php //printf($this->translate('welcome_and_thanks'), $invoice->full_name, $invoice->invoice_title,date('d/m/Y H:i:s', strtotime($invoice->date_create)),($invoice->delivery == 'no_delivery' ? 'Chưa giao hàng' : ($invoice->delivery == 'delivered' ? 'Đã giao hàng' : 'Đang giao hàng')),($invoice->payment == 'paid' ? 'Đã thanh toán' : "Chưa thanh toán")) ?>
+                                                        <?php
+                                                            $html = $this->translate('welcome_and_thanks_success');
+                                                            $html = str_replace('{FULL_NAME}',$invoice->full_name, $html);
+                                                            $html = str_replace('{CODE}',$invoice->invoice_title, $html);
+                                                            $html = str_replace('{DATE}',date('d/m/Y H:i:s', strtotime($invoice->date_create)), $html);
+                                                            $html = str_replace('{TRANS}',($invoice->delivery == 'no_delivery' ? 'Chưa giao hàng' : ($invoice->delivery == 'delivered' ? 'Đã giao hàng' : 'Đang giao hàng')), $html);
+                                                            $html = str_replace('{PAYMENT}',($invoice->payment == 'paid' ? 'Đã thanh toán' : "Chưa thanh toán"), $html);
+                                                            echo $html;
+                                                        ?>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td colspan="5" align="right" valign="top">
+                                                                    <div align="left">Mã số đơn hàng:
+                                                                        <strong><?php echo $invoice->invoice_title ?></strong>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Sản Phẩm</td>
+                                                                <td>Mã Sản Phẩm</td>
+                                                                <td>Giá<br/>
+                                                                    (VNĐ)
+                                                                </td>
+                                                                <td>Số Lượng</td>
+                                                                <td>Thành Tiền<br/>
+                                                                    (VNĐ)
+                                                                </td>
+                                                            </tr>
+                                                            <?php foreach ($cart as $id => $product) { ?>
+                                                                <?php if ($id == 'coupon') {
+                                                                    continue;
+                                                                } ?>
+                                                                <tr>
+                                                                    <td valign="top"><?php echo @$product['title'] ?></td>
+                                                                    <td valign="top"><?php echo @$product['code'] ?></td>
+                                                                    <td valign="top"><?php echo number_format(@$product['price'], 0, ',', '.') ?></td>
+                                                                    <td valign="top"><?php echo @$product['quantity'] ?></td>
+                                                                    <td valign="top"><?php echo number_format(@$product['price_total'], 0, ',', '.') ?></td>
+                                                                </tr>
+                                                            <?php } ?>
+                                                            <tr>
+                                                                <td colspan="3" align="right" valign="top">
+                                                                    <div align="right">Phí thực hiên đơn hàng</div>
+                                                                </td>
+                                                                <td colspan="2" valign="top">
+                                                                    <div align="right">0.00</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" align="right" valign="top">
+                                                                    <div align="right">Phí giao hàng</div>
+                                                                </td>
+                                                                <td colspan="2" valign="top">
+                                                                    <div align="right">0.00</div>
+                                                                </td>
+                                                            </tr>
+                                                            <?php if (isset($cart['coupon'])) : ?>
+                                                                <tr>
+                                                                    <td colspan="3" align="right" valign="top">
+                                                                        <div align="right">Giảm giá (Voucher)</div>
+                                                                    </td>
+                                                                    <td colspan="2" valign="top">
+                                                                        <div
+                                                                            align="right"><?php echo number_format($cart['coupon']['coupon_price']) ?></div>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                            <tr>
+                                                                <td colspan="3" align="right" valign="top">
+                                                                    <div align="right"><strong>Tổng cộng</strong></div>
+                                                                </td>
+                                                                <td colspan="2" valign="top">
+                                                                    <div
+                                                                        align="right"><?php echo number_format($invoice->total, 0, ',', '.') ?> <?php echo PRICE_UNIT ?></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5" align="right" valign="top">
+                                                                    <div align="right">(Đã bao gồm VAT trong giá bán sản phẩm)
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <br/>
+
+                                                        <div>
+                                                            <div>
+                                                                <table width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>Thông Tin Giao Nhận</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><p><?php echo $invoice->address ?></p></td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div>
+                                                                <table width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>Thông Tin Liên Hệ</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><p><?php echo $invoice->full_name ?></p>
+
+                                                                            <p>
+                                                                                <a href="mailto:<?php echo $invoice->email ?>"
+                                                                                   target="_blank"><?php echo $invoice->email ?></a>
+                                                                            </p>
+
+                                                                            <p><?php echo $invoice->phone ?></p></td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" bgcolor="#ffffff">
+                                            <?php echo $this->translate('invoice_trans_detail') ?></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <p>&nbsp;</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" bgcolor="#ffffff">
+                    <?php echo $this->translate('thanks_for_buy') ?>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td align="center" valign="top">
+                    <table width="602" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td width="301" valign="middle" align="right">Kết nối với chúng tôi </td>
+                            <td width="301" valign="top">
+                                <a rel="nofollow" title="Facebook" href="https://www.facebook.com/vietnamecom.vn" target="_blank">
+                                    <img height="24" border="0" alt="Facebook" src="http://vietnamecom.vn/styles/images/share-facebook.png"/>
+                                </a>
+                            </td>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+
+</tbody>
+</table>
+</td>
+<td valign="top" width="38">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

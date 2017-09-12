@@ -1,0 +1,592 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>" >
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/category') ?>">
+                        Danh mục sản phẩm
+                    </a>
+                </li>
+                <li class="active">
+                    Đặc tính
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Đặc tính :: Cập nhật <i><?php echo $cat->categories_title ?></i>
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content" >
+    <form action="<?php echo $this->url('cms/category', array('action' => 'update-feature', 'id' => $id)) ?>" id="form-update-feature" method="post" >
+        <ul class="nav nav-stacked list-feature" id="accordion_features">
+            <?php
+            if(!empty($features[0])){
+                foreach ($features[0] as $key => $feature) {?>
+                    <li class="li_<?php echo $feature['feature_id']; ?>">
+                        <div class="clearfix" >
+                            <div class="pull-left" >
+                                <label>
+                                    <input type="checkbox" name="featureid[]" value="<?php echo $feature['feature_id']; ?>" <?php echo in_array($feature['feature_id'], $checked) ? ' checked ' : '' ?> class="checkall" >
+                                    <?php echo $feature['feature_title']; ?>
+                                </label>
+                            </div>
+
+                            <div class="pull-right" >
+                                <a data-toggle="collapse" data-parent="#accordion1" data-target="#features_<?php echo $feature['feature_id']; ?>"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div id="features_<?php echo $feature['feature_id']; ?>" class="collapse" >
+
+                            <ul class="list-child-features children_<?php echo $key;?>" >
+                                <?php
+                                if(!empty($features[$feature['feature_id']])){
+                                    foreach ($features[$feature['feature_id']] as $kl1 => $fl1) { ?>
+                                        <li class="li_<?php echo $fl1['feature_id']; ?>">
+                                            <label>
+                                                <input type="checkbox" name="featureid[]" value="<?php echo $fl1['feature_id']; ?>" <?php echo in_array($fl1['feature_id'], $checked) ? ' checked ' : '' ?> class="checksub" >
+                                                <?php echo $fl1['feature_title']; ?>
+
+                                                <?php if( $fl1['is_value'] == 3 && $fl1['feature_type'] == 2){ ?>
+                                                    <input type="color" name="favcolor" value="<?php echo $fl1['feature_color']; ?>" style="margin-left: 10px;" >
+                                                <?php }else{ ?>
+                                                    <span style="width:20px;height:20px;display:inline-block;background:url(<?php echo $fl1['feature_file']; ?>) no-repeat;vertical-align: middle;border: 1px solid #ccc;margin-left: 10px;" ></span>
+                                                <?php } ?>
+
+                                            </label>
+                                        </li>
+                                    <?php }
+                                } ?>
+                                <li>
+                                    <div class="add-future-ajax" >
+                                        <h4>Thêm thuộc tính cho <b><?php echo $feature['feature_title']; ?></b></h4>
+                                        <div class="row">
+                                            <div class="col-xs-12 box box-primary" id="box-primary-form-1" data-row="1">
+                                                <div class="box-body">
+                                                    <div class="col-md-2" style="display: none;">
+                                                        <div class="form-group">
+                                                            <input type="hidden" name="feature[<?php echo $key?>][parent_id]" id="parent_id_<?php echo $key?>" class="form-control input-sm" value="<?php echo $feature['feature_id']?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label for="feature_title"> <?php echo $this->translate("name");?></label>
+                                                            <input type="text" name="feature[<?php echo $key?>][feature_title]" id="feature_title_<?php echo $key?>" placeholder="Tiêu đề" class="form-control input-sm" onblur="javascript:locdau(this.value, '.feature_alias');" value="">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2" <?php echo $feature['feature_type'] == 1 ? "style='display: none'" : ''; ?> >
+                                                        <div class="form-group">
+                                                            <label for="feature_type"> <?php echo $this->translate("feature_type");?></label>
+                                                            <select name="feature[<?php echo $key?>][feature_type]" id="feature_type_<?php echo $key?>"
+                                                                    data-row="<?php echo $key?>"  class="form-control input-sm feature_type select-commom-feature">
+
+                                                                <option value="1" <?php echo $feature['feature_type'] == 2 ? 'selected="selected"' :'' ?> >Bình thường</option>
+                                                                <option value="2" <?php echo $feature['feature_type'] == 2 ? 'selected="selected"' :'' ?> >Màu sắc</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--ADD CHILDREN-->
+                                                    <div class="col-md-2" id="is_value_<?php echo $key?>" style="width: 110px;" >
+                                                        <div class="form-group">
+                                                            <label for="is_value">
+                                                                <?php echo $this->translate("Ban chon");?>
+                                                            </label>
+                                                            <select name="feature[<?php echo $key?>][is_value]" id="is_value_feature_<?php echo $key?>"  data-row="<?php echo $key?>"  class="form-control input-sm is_value_feature select-commom-feature">
+                                                                <option value="3" selected="selected">Color</option>
+                                                                <option value="4">Icon</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2" id="color-picker-<?php echo $key?>" style="width: 144px;">
+                                                        <label for="feature_color"> <?php echo $this->translate("feature_color");?></label>
+                                                        <div class="input-group colorpicker-component">
+                                                            <span class="input-group-addon"><i></i></span>
+                                                            <input type="text" name="feature[<?php echo $key?>][feature_color]" id="feature_color_<?php echo $key?>" class="form-control input-sm feature_file" value="#00aabb">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2" id="file_feature_<?php echo $key?>" style="width: 133px;" >
+                                                        <div class="form-group">
+                                                            <label for="feature_file_<?php echo $key?>"> <?php echo $this->translate("feature_file");?></label>
+                                                            <input type="text" name="feature[<?php echo $key?>][feature_file]" id="feature_file_<?php echo $key?>" placeholder="Đường dẫn hình" class="form-control input-sm feature_file" value="" style="display: none;">
+                                                            <img id="img-file-feature_<?php echo $key?>" src=" " class="img-thumbnail " width="80" height="80"  style="display: none;">
+                                                            <button type="button" data-row="1" class="btn btn-link btn-upload-attr" width="80" height="80">Images</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--END ADD CHILDREN-->
+                                                    <div class="col-md-1">
+                                                        <div class="form-group">
+                                                            <label for="is_published">
+                                                                <?php echo $this->translate("active");?>
+                                                                <input type="checkbox" name="feature[<?php echo $key?>][is_published]" id="is_published_<?php echo $key?>" class="form-control input-sm" checked="checked" value="1" style="position: absolute; opacity: 0;">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <div class="form-group">
+                                                            <label for="ordering"> <?php echo $this->translate("position");?></label>
+                                                            <input type="text" name="feature[<?php echo $key?>][ordering]" id="ordering_<?php echo $key?>" class="form-control input-sm numberInput" style="width:50px;text-align:center;display:inline;margin-left:5px" value="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Action
+                                                            <a href="javascript:void(0)" onclick="save_feature(<?php echo $key?>)"  title="save" class="btn glyphicon glyphicon-download-alt save_feature_<?php echo $key?>"></a>
+
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group" style="display: none;">
+                                                        <input type="text" name="feature[<?php echo $key?>][feature_alias]" id="feature_alias_<?php echo $key?>" placeholder="Đường dẫn" class="form-control input-sm feature_alias" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                <?php }
+            } ?>
+        </ul>
+
+        <div class="add-future-ajax" >
+            <h3>Thêm thuộc tính</h3>
+            <div class="row">
+                <div class="col-xs-12" id="box-primary-form-1" data-row="1">
+                    <div class="row">
+                        <div class="col-md-2" style="display: none;">
+                            <div class="form-group">
+                                <input type="hidden" name="feature[<?php echo count($features[0])?>][parent_id]" id="parent_id_<?php echo count($features[0])?>" class="form-control input-sm" value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="feature_title"> <?php echo $this->translate("name");?></label>
+                                <input type="text" name="feature[<?php echo count($features[0])?>][feature_title]" id="feature_title_<?php echo count($features[0])?>" placeholder="Tiêu đề" class="form-control input-sm" onblur="javascript:locdau(this.value, '.feature_alias');" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="feature_type"> <?php echo $this->translate("feature_type");?></label>
+                                <select name="feature[<?php echo count($features[0])?>][feature_type]" id="feature_type_<?php echo count($features[0])?>"
+                                        data-row="<?php echo count($features[0])?>"  class="form-control input-sm  feature_type select-commom-feature">
+                                    <option value="1" selected="selected">Bình thường</option>
+                                    <option value="2" >Màu sắc</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--ADD CHILDREN-->
+                        <?php if(0 == 1):?>
+                        <div class="col-md-2" id="is_value_<?php echo count($features[0])?>" style="width: 110px;" >
+                            <div class="form-group">
+                                <label for="is_value">
+                                    <?php echo $this->translate("Ban chon");?>
+                                </label>
+                                <select name="feature[<?php echo count($features[0])?>][is_value]" id="is_value_feature_<?php echo count($features[0])?>"  data-row="<?php echo count($features[0])?>"  class="form-control input-sm is_value_feature select-commom-feature">
+                                    <option value="3" selected="selected">Color</option>
+                                    <option value="4">Icon</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2" id="color-picker-<?php echo count($features[0])?>" style="width: 144px;">
+                            <label for="feature_color"> <?php echo $this->translate("feature_color");?></label>
+                            <div class="input-group colorpicker-component">
+                                <span class="input-group-addon"><i></i></span>
+                                <input type="text" name="feature[<?php echo count($features[0])?>][feature_color]" id="feature_color_<?php echo count($features[0])?>" class="form-control input-sm  feature_file" value="#00aabb">
+                            </div>
+                        </div>
+                        <div class="col-md-2" id="file_feature_<?php echo count($features[0])?>" style="width: 133px;" >
+                            <div class="form-group">
+                                <label for="feature_file_<?php echo count($features[0])?>"> <?php echo $this->translate("feature_file");?></label>
+                                <input type="text" name="feature[<?php echo count($features[0])?>][feature_file]" id="feature_file_<?php echo count($features[0])?>" placeholder="Đường dẫn hình" class="form-control input-sm feature_file" value="" style="display: none;">
+                                <img id="img-file-feature_<?php echo count($features[0])?>" src=" " class="img-thumbnail " width="80" height="80"  style="display: none;">
+                                <button type="button" data-row="1" class="btn btn-link btn-upload-attr" width="80" height="80">Images</button>
+                            </div>
+                        </div>
+                        <?php endif;?>
+                        <!--END ADD CHILDREN-->
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="is_published">
+                                    <?php echo $this->translate("active");?>
+                                    <input type="checkbox" name="feature[<?php echo count($features[0])?>][is_published]" id="is_published_<?php echo count($features[0])?>" class="form-control input-sm" checked="checked" value="1" style="position: absolute; opacity: 0;">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="ordering"> <?php echo $this->translate("position");?></label>
+                                <input type="text" name="feature[<?php echo count($features[0])?>][ordering]" id="ordering_<?php echo count($features[0])?>" class="form-control input-sm numberInput" style="width:50px;text-align:center;display:inline;margin-left:5px" value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>Action</label>
+                            <a href="javascript:void(0)" onclick="save_feature_parent(<?php echo count($features[0])?>)"  title="save" class="btn glyphicon glyphicon-download-alt save_feature_<?php echo count($features[0])?>"></a>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <input type="text" name="feature[<?php echo count($features[0])?>][feature_alias]" id="feature_alias_<?php echo count($features[0])?>" placeholder="Đường dẫn" class="form-control input-sm feature_alias" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary input-sm" >
+                Lưu đặc tính
+            </button>
+            <a href="<?php echo $this->url('cms/category') ?>" class="btn btn-danger  input-sm" >
+                Quay lại
+            </a>
+        </div>
+    </form>
+</section>
+<input type="hidden" class="count-total-feature" value="<?php echo count($features[0]);?>"/>
+<script type="template" id="li_body">
+    <li class="li_{EXT_ID}" >
+        <label>
+            <input type="checkbox" name="featureid[]" value="{EXT_ID}"  class="checksub" checked="true" >
+            {EXT_TITLE}
+        </label>
+    </li>
+</script>
+<style type="text/css">
+    input.error {
+        border: 1px solid red;
+    }
+</style>
+<script>
+    var n = $('.count-total-feature').val();
+    num_row_img = 0;
+    $(document).ready(function() {
+        $('input.color_input').colorpicker();
+
+        $('.btn-upload-attr').on('keyup keypress blur click', function(e) {
+            num_row_img = $(this).attr('data-row')
+            console.log(num_row_img);
+        });
+
+        $('.btn-upload-attr').modal_upload({ callbacks : function(response, exdata){
+            if(Object.keys(response).length>0){
+                k_frist = Object.keys(response)[0];
+                picture = response[k_frist];
+                var str = '<div class="col-sm-12" >'+
+                    '<div class="holder-img" ><img src="'+picture.picture.folder+'/'+picture.picture.name+'.'+picture.picture.type+'" class="img-responsive" /><input type="hidden" name="picture_id" value="'+k_frist+'" /></div>'+
+                    '</div>';
+                var url_img = picture.picture.folder+'/'+picture.picture.name+'.'+picture.picture.type;
+                console.log(url_img);
+                console.log(num_row_img);
+                $('#feature_file_'+num_row_img).hide();
+
+                $('#img-file-feature_'+num_row_img).show();
+                $('#img-file-feature_'+num_row_img).attr('src',url_img);
+                $('#feature_file_'+num_row_img).val(url_img);
+            }
+        }});
+
+        $(document).on('change', '.select-commom-feature', function(){
+            var row_id = $(this).attr('data-row');
+            var select_value = this.value;
+            if(select_value == 2)
+            {
+                on_change_select_image(row_id);
+            }
+            else if(select_value == 1){
+                on_change_select_normal(row_id);
+            }
+            else if(select_value ==3)
+            {
+                on_change_select_color(row_id);
+            }
+            else if(select_value == 4)
+            {
+                on_change_select_icon(row_id);
+            }
+        });
+
+        for(var j = 0;j < n ;j++){
+            $('#color-picker-'+j).colorpicker();
+            var select_value_type = $('#feature_type_'+j).val();
+            if(select_value_type == 2)
+            {
+                show_is_type_image(j);
+            }
+            else if(select_value_type == 1){
+                show_is_type_normal(j);
+            }
+        }
+
+    });
+
+
+
+    function show_is_type_normal(num_row){
+        $('#is_value_'+num_row).hide();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+        console.log('true');
+    }
+
+    function show_is_type_image(num_row){
+        $('#is_value_'+num_row).show();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+        console.log(num_row);
+        var select_is_value = $('#is_value_feature_'+num_row).val();
+        if(select_is_value == 3)
+        {
+            $('#file_feature_'+num_row).hide();
+            $('#color-picker-'+num_row).show();
+        }
+        else if(select_is_value == 4)
+        {
+            $('#file_feature_'+num_row).show();
+            $('#img-file-feature_'+num_row).show();
+            $('#color-picker-'+num_row).hide();
+        }
+        console.log(select_is_value);
+    }
+
+    function on_change_select_normal(num_row)
+    {
+        $('#is_value_'+num_row).hide();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+    }
+    function on_change_select_image(num_row){
+        $('#is_value_'+num_row).show();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+        show_is_type_image(num_row);
+    }
+    function on_change_select_color(num_row){
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).show();
+    }
+    function on_change_select_icon(num_row){
+        $('#file_feature_'+num_row).show();
+        $('#color-picker-'+num_row).hide();
+    }
+
+    function remove_feature(li_class,feature_id)
+    {
+        console.log(li_class);
+        $('li.'+li_class).remove();
+        if(typeof feature_id != 'undefined'){
+            $.ajax({
+                url: cmsUrl + '/feature/delete',
+                data: { cid: feature_id },
+                type:'post',
+                success: function (data) {
+                    if(data)
+                        $('li.'+li_class).remove();
+                },
+                error: function () {
+                    response([]);
+                }
+            });
+        }
+    }
+
+    function validator()
+    {
+
+        var error = true;
+        for(var i = 1; i < number_fear ; i++){
+            var title = $('#feature_title_'+i).val();
+
+            if(title == '' && title.length <= 0)
+            {
+                $('#feature_title_'+i).addClass('error');
+                error = false;
+            }
+
+        }
+
+        return error;
+    }
+
+    function save_feature(num_row){
+        var parent_id =$('#parent_id_'+num_row).val();
+        var feature_title =$('#feature_title_'+num_row).val();
+        var feature_type =$('#feature_type_'+num_row).val();
+        var is_value =$('#is_value_'+num_row).val();
+        var feature_color =$('#feature_color_'+num_row).val();
+        var feature_file =$('#feature_file_'+num_row).val();
+        var is_published =$('#is_published_'+num_row).val();
+        var ordering =$('#ordering_'+num_row).val();
+        var feature_alias =$('#feature_alias_'+num_row).val();
+
+        if(feature_title == '' || feature_title.length == 0)
+        {
+            alert('Bạn chưa nhập tiêu đề ');
+            $('#feature_title_'+num_row).addClass('error');
+            return false;
+        }
+
+        $.ajax({
+            url: cmsUrl + '/feature/addAjax',
+            data: { parent_id: parent_id,
+                feature_title : feature_title,
+                feature_type : feature_type,
+                is_value :is_value,
+                feature_color :feature_color,
+                feature_file :feature_file,
+                is_published :is_published,
+                ordering :ordering,
+                feature_alias :feature_alias,
+            },
+            type:'post',
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data.msg);
+                $('feature_title_'+num_row).val('');
+                var id_feature = data.id_feature;
+                var title_feature = data.title_feature;
+                var row_li = $('#li_body').html();
+                var row_feature = row_li.replace(/\{EXT_ID}/g, id_feature);
+                row_feature = row_feature.replace(/\{EXT_TITLE}/g, title_feature);
+                console.log(row_feature);
+                var body_li = $('#form-update-feature').find('ul.children_'+num_row).find('li:last');
+                console.log(body_li);
+                body_li.before(row_feature);
+                $(".li_"+id_feature+" input[type='checkbox'],.li_"+id_feature+" input[type='radio']").iCheck({
+                    checkboxClass: 'icheckbox_minimal',
+                    radioClass: 'iradio_minimal'
+                });
+            },
+            error: function () {
+                response([]);
+            }
+        });
+    }
+
+    function save_feature_parent(num_row){
+        var parent_id =$('#parent_id_'+num_row).val();
+        var feature_title =$('#feature_title_'+num_row).val();
+        var feature_type =$('#feature_type_'+num_row).val();
+        var is_value =$('#is_value_'+num_row).val();
+        var feature_color =$('#feature_color_'+num_row).val();
+        var feature_file =$('#feature_file_'+num_row).val();
+        var is_published =$('#is_published_'+num_row).val();
+        var ordering =$('#ordering_'+num_row).val();
+        var feature_alias =$('#feature_alias_'+num_row).val();
+
+        if(feature_title == '' || feature_title.length == 0)
+        {
+            alert('Bạn chưa nhập tiêu đề ');
+            $('#feature_title_'+num_row).addClass('error');
+            return false;
+        }
+
+        $.ajax({
+            url: cmsUrl + '/feature/addAjax',
+            data: { parent_id: parent_id,
+                feature_title : feature_title,
+                feature_type : feature_type,
+                is_value :is_value,
+                feature_color :feature_color,
+                feature_file :feature_file,
+                is_published :is_published,
+                ordering :ordering,
+                feature_alias :feature_alias,
+            },
+            type:'post',
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data.msg);
+                window.location.reload();
+            },
+            error: function () {
+                response([]);
+            }
+        });
+    }
+
+    function save_feature_category(num_row){
+        var categories_id =$('#categories_id').val();
+        var parent_id =$('#parent_id_'+num_row).val();
+        var feature_title =$('#feature_title_'+num_row).val();
+        var feature_type =$('#feature_type_'+num_row).val();
+        var is_value =$('#is_value_'+num_row).val();
+        var feature_color =$('#feature_color_'+num_row).val();
+        var feature_file =$('#feature_file_'+num_row).val();
+        var is_published =$('#is_published_'+num_row).val();
+        var ordering =$('#ordering_'+num_row).val();
+        var feature_alias =$('#feature_alias_'+num_row).val();
+
+        if(feature_title == '' || feature_title.length == 0)
+        {
+            alert('Bạn chưa nhập tiêu đề ');
+            $('#feature_title_'+num_row).addClass('error');
+            return false;
+        }
+
+        $.ajax({
+            url: cmsUrl + '/feature/addWithCategoryAjax',
+            data: { 
+                categories_id: categories_id,
+                parent_id: parent_id,
+                feature_title : feature_title,
+                feature_type : feature_type,
+                is_value :is_value,
+                feature_color :feature_color,
+                feature_file :feature_file,
+                is_published :is_published,
+                ordering :ordering,
+                feature_alias :feature_alias,
+            },
+            type:'post',
+            success: function (data) {
+                if(data.constructor === String){
+                    data = $.parseJSON(data);
+                }
+                alert(data.msg);
+                $('feature_title_'+num_row).val('');
+                var id_feature = data.id_feature;
+                var title_feature = data.title_feature;
+                var row_li = $('#li_feature_body').html();
+                var row_feature = row_li.replace(/\{EXT_ID}/g, id_feature);
+                row_feature = row_feature.replace(/\{EXT_TITLE}/g, title_feature);
+                console.log(row_feature);
+                var body_li = $('#accordion_features').find('ul.children_'+num_row).find('li:last');
+                console.log(body_li);
+                body_li.before(row_feature);
+                if( data.feature.feature_type == 2 ){
+                   $(".li_"+id_feature+' label').append('<input type="color" name="favcolor" value="' +data.feature.feature_color+ '">'); 
+                }
+                $(".li_"+id_feature+" input[type='checkbox'],.li_"+id_feature+" input[type='radio']").iCheck({
+                    checkboxClass: 'icheckbox_minimal',
+                    radioClass: 'iradio_minimal'
+                });
+            },
+            error: function () {
+                response([]);
+            }
+        });
+    }
+</script>

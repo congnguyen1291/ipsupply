@@ -1,0 +1,31 @@
+<?php foreach ($cats as $cat) : ?>
+	<tr itemid="<?php echo $cat['categories_id'] ?>" class="<?php echo ($cat['children'] > 0 || $cat['parent_id'] == 0) ? (" parent_node parent_node_{$cat['categories_id']}") : 'child_node' ?>" <?php echo $cat['children'] == 0 || $cat['parent_id'] != 0 ? ($cat['parent_id'] != 0 ? "parentitem='{$cat['parent_id']}'" : "") : '' ?>>
+		<td style="text-align: center"><?php echo $cat['categories_id'] ?></td>
+		<td>
+			<?php echo $cat['children'] > 0 ? '<span class="icon-parent fa fa-plus-square-o"></span>' : '' ?> <a href="<?php echo $this->url('cms/category', array('action' => 'edit', 'id' => $cat['categories_id'])) ?>"><?php echo $cat['treename'] ?></a>
+		</td>
+		<td style="text-align: center">
+			<?php if($cat['icon']!=""){?><img src="<?php echo $cat['icon'];?>" width="50px" /><?php }?>
+		   
+		</td>
+		<td style="text-align: center">
+			<input type="text" style="width: 50px;text-align: center"
+				   name="order[<?php echo $cat['categories_id'] ?>]"
+				   value="<?php echo $cat['ordering'] ?>" class="numberInput"/>
+		</td>
+		<td style="text-align: center">
+			<a href="<?php echo $this->url('cms/category', array('action' => 'update-feature', 'id' => $cat['categories_id'])) ?>"><i class="fa  fa-indent"></i></a>
+		</td>
+		<td><?php echo date('d/m/Y', strtotime($cat['date_create'])) ?></td>
+		<td style="text-align: center">
+			<?php echo $cat['is_published'] == 1 ? 'Hiển thị' : '-' ?>
+		</td>
+		<td style="text-align: center">
+			<?php echo $cat['is_delete'] == 1 ? 'Đã xóa' : '-' ?>
+		</td>
+		<td>
+			<input type="checkbox" name="cid[]"
+				   value="<?php echo $cat['categories_id'] ?>"/>
+		</td>
+	</tr>
+<?php endforeach; ?>

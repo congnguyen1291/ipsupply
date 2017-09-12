@@ -1,0 +1,75 @@
+<div class="item__edit-popover popover-edit-product-cart" data-cartid="<?php echo $products_id.'-'.$product_type_id ?>" >
+    <a href="javascript:void(0);" class="js-dismiss_itm" data-btn="btnCancelPopProductCart" >
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+    <form class="item__edit-form" name="itemEditForm" id="popEditProductCart" >
+        <input type="hidden" value="<?php echo $products_id ?>" name="products_id" >
+        <input type="hidden" value="<?php echo $product_type_id ?>" name="product_type_id" >
+        <h2 class="coz-title-payment" >
+            <?php echo $this->translate('txt_thay_doi_lua_chon_san_pham_cart'); ?>  
+        </h2>
+        <p class="coz-note-payment" >
+            <?php echo $this->translate('txt_des_thay_doi_lua_chon_san_pham_cart'); ?> 
+        </p>
+
+        <div class="form-element-payment" >
+            <label class="ui-lb-payment" >
+                <?php echo $this->translate('txt_so_luong'); ?>
+            </label>
+            <div class="ui-select-payment" >
+                <div class="ui-input-payment" >
+                    <input type="number" value="<?php echo $product['quantity'] ?>" name="quantity" spellcheck="false" class="input-payment" aria-invalid="true" placeholder="<?php echo $this->translate('txt_so_luong'); ?>" data-input="quantity" min="0" <?php echo !empty($p->is_available) ? 'max="'.$p->quantity.'"' : ''; ?> >
+                </div>
+            </div>
+        </div>
+
+        <?php if( !empty($typeProducts) ){ ?>
+        <div class="form-element-payment" >
+            <label class="ui-lb-payment" >
+                <?php echo $this->translate('txt_kieu_san_pham_cart'); ?>
+            </label>
+            <div class="ui-select-payment" >
+                <select name="product_type" class="coz-select-payment input-sm">
+                    <?php foreach ($typeProducts as $key => $type) { ?>
+                    <option value="<?php echo $type['products_type_id'] ?>" <?php echo $type['products_type_id'] == $product['products_type_id'] ? 'selected' : ''; ?> >
+                        <?php echo $type['type_name'] ?>
+                    </option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <?php } ?>
+
+        <?php if(!empty($extensions)){ ?>
+        <div class="form-element-payment" >
+            <label class="ui-lb-payment" >
+                <?php echo $this->translate('txt_san_pham_dinh_kem_cart'); ?>
+            </label>
+            <?php foreach ($extensions as $kex => $itex) { ?>
+            <div class="ui-select-payment" >
+                <label class="checkbox-inline">
+                    <?php if($this->Extension()->getIsAlways($itex)){ ?>
+                    <input type="checkbox" checked="checked" disabled="disabled" >
+                    <?php }else{ ?>
+                    <input type="checkbox" value="<?php echo $itex['id'] ?>" <?php echo in_array($itex['id'], $extIds) ? 'checked="checked"' : '' ?> name="extention[]" >
+                    <?php } ?>
+                    <?php echo $itex['ext_name']; ?>
+                    <span class="small-txt" >
+                        ( <?php echo $itex['quantity']; ?> <?php echo $this->translate('txt_san_pham'); ?> )
+                    </span>
+                </label>
+            </div>
+            <?php } ?>
+        </div>
+        <?php } ?>
+
+        <div class="clearfix coz-text-center" >
+            <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-active" title="<?php echo $this->translate('txt_save_edit_product_cart'); ?>" data-btn="btnSaveProductCart" >
+                <span><?php echo $this->translate('txt_save_edit_product_cart'); ?></span>
+            </a>
+            <a href="javascript:void(0);" class="coz-btn-flat" title="<?php echo $this->translate('txt_close_edit_product_cart'); ?>"  data-btn="btnCancelPopProductCart" >
+                <span><?php echo $this->translate('txt_close_edit_product_cart'); ?></span>
+            </a>
+        </div>
+    </form>
+</div>

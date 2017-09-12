@@ -1,0 +1,136 @@
+<section class="bread-crumb">
+	<div class="container">
+		<div class="bg-breadcrumbs" >
+			<div class="row">
+				<div class="col-xs-12">
+					<ul class="breadcrumbs">
+						<li class="home">
+	                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" ><?php echo $this->translate('txt_trang_chu') ?></a>
+	                        <span>
+		                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+		                    </span>
+	                    </li>
+	                    <li><?php echo $this->translate('txt_gio_hang'); ?></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section> 
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12" >
+			<div class="wrap-cart-page clearfix" >
+				<div class="cart">
+					<h1 class="title-head">
+						<a href="javascript:void(0);" rel="nofollow" ><?php echo $this->translate('txt_gio_hang'); ?></a>
+					</h1>
+					<?php 
+					$carts = $this->Cart()->getCart();
+					if( !empty($carts) ){
+					?>
+					<form action="<?php echo $this->url('cart', array('action' => 'update-cart')) ?>" method="post" id="cart-form" >
+						<div class="table-responsive text-xs-center">
+							<table class="table table-bordered cart-table">
+								<thead>
+									<tr>
+										<th><?php echo $this->translate('txt_anh_san_pham'); ?></th>
+	                                    <th><?php echo $this->translate('txt_ten_san_pham'); ?></th>
+	                                    <th><?php echo $this->translate('txt_don_gia'); ?></th>
+	                                    <th><?php echo $this->translate('txt_so_luong'); ?></th>
+	                                    <th><?php echo $this->translate('txt_thanh_tien'); ?></th>
+	                                    <th><?php echo $this->translate('txt_xoa'); ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+	                                foreach ($carts as $id => $product) {
+	                                    foreach ($product['product_type'] as $product_type_id => $p) {
+	                                ?>
+									<tr>
+										<td>
+
+											<a class="img-product-cart" href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" >
+												<img src="<?php echo $this->Images()->getUrlImage($product['thumb'], 84, 84); ?>" alt="<?php echo $this->Products()->getTitle($p) ?>" >
+											</a>
+											
+										</td>
+										<td>
+											<h2>
+												<a class="name-product-cart" href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" >
+													<?php echo $this->Products()->getName($p) ?>
+												</a>
+												<?php if( 	!empty($this->Products()->getExtension($p)) 
+															|| !empty($this->Products()->getExtensionRequire($p)) ){ ?>
+	                                                <a href="<?php echo $this->Products()->getCartExtentionUrl($p) ?>" data-neo="popup" data-id="<?php echo $this->Products()->getProductsId($p) ?>" data-type="<?php echo $this->Products()->getProductTypeId($p) ?>" >
+	                                                    <?php echo $this->translate('txt_view_extention_product_on_cart'); ?>
+	                                                </a>
+	                                            <?php } ?>           
+											</h2>
+											
+										</td>
+										<td>
+											<span class="product-price">
+												<?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($p)) ?>
+											</span>
+										</td>
+										<td>
+											<input type="number" title="<?php echo $this->translate('txt_so_luong'); ?>" class="inp-number" value="<?php echo $this->Cart()->getProductsQuantity($p) ?>" name="quantity[<?php echo $this->Products()->getProductsId($p) ?>][<?php echo $this->Products()->getProductTypeId($p) ?>]" min="1" >
+										</td>
+										<td>
+											<span class="product-price">
+												<?php echo $this->Currency()->fomatCurrency($this->Cart()->getProductsPriceTotal($p)) ?>
+											</span>
+										</td>
+										<td>
+											<a class="button remove-item" title="<?php echo $this->translate('txt_xoa'); ?>" href="<?php echo $this->Cart()->getUrlDel($p) ?>" data-neo="ajax"  rel="nofollow" >
+												<i class="fa fa-trash" aria-hidden="true"></i>
+											</a>
+										</td>
+									</tr>
+									<?php }
+	                                } ?>
+								</tbody>
+							</table>
+						</div>
+						<div class="row">
+							<div class="col-md-9 col-xs-12">
+				                <a title="<?php echo $this->translate('txt_mua_tiep') ?>" href="<?php echo $this->Link()->getCategoryUrl() ?>" class="btn-pcart next">
+				                    <?php echo $this->translate('txt_mua_tiep') ?>
+				                </a>
+				                <button class="btn-pcart">
+				                    <?php echo $this->translate('txt_cap_nhat_gio_hang') ?>
+				                </button>
+				            </div>
+							<div class="col-md-3 col-xs-12">
+								<table class="table table-bordered total-table">
+									<tbody>
+										<tr>
+											<td class="text-xs-left">
+												<?php echo $this->translate('txt_tong_tien') ?>
+											</td>
+											<td class="text-xs-right">
+												<div class="product-price">
+													<?php echo $this->Currency()->fomatCurrency($price_total) ?>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<a href="<?php echo $this->Cart()->getUrlPayment($p) ?>" class="btn btn-lg btn-style btn-block" title="<?php echo $this->translate('txt_thanh_toan') ?>" >
+									<span><?php echo $this->translate('txt_thanh_toan') ?></span>
+								</a>
+							</div>
+						</div>
+					</form>
+					<?php }else{ ?>
+	                <p class="cart-empty">
+	                    <?php echo $this->translate('txt_chua_c0_san_pham_trong_cart') ?>
+	                </p>
+	                <?php } ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

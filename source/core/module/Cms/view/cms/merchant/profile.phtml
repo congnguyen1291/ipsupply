@@ -1,0 +1,83 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Thành viên :: Cập nhật
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/user') ?>">Danh sách thành viên</a></li>
+        <li class="active">Cập nhật thành viên</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/user', array('action' => 'profile')));
+        $form->setAttribute('id', 'form-user');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('users_id'));
+        echo $this->formHidden($form->get('users_alias'));
+        echo $this->formHidden($form->get('type'));
+        echo $this->formHidden($form->get('is_administrator'));
+        echo $this->formHidden($form->get('groups_id'));
+        echo $this->formHidden($form->get('is_published'));
+        ?>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="full_name">Họ và tên</label>
+                        <?php echo $this->formRow($form->get('full_name')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_name">Tên đăng nhập</label>
+                        <?php echo $this->formRow($form->get('user_name')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Ngày sinh</label>
+                        <?php echo $this->formRow($form->get('birthday')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <?php echo $this->formRow($form->get('phone')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <?php echo $this->formRow($form->get('address')); ?>
+                    </div>
+                    <div class="form-group">
+                        <div class="row" >
+                            <div class="col-sm-6" >
+                                <label for="address">Thành phố</label>
+                                <select name="cities_id" id="cities" onchange="loadDistrict(this.value, -1, -1)" class="form-control">
+                                    <?php foreach ($cities as $city) : ?>
+                                        <option value="<?php echo $city['cities_id'] ?>" <?php echo $user->cities_id == $city ? "selected" : '' ?>><?php echo $city['cities_title'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-6" >
+                                <label for="address">Quận / Huyện</label>
+                                <select name="districts_id" id="districts" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="text-right" >
+                            <a href="/cms/user/edit-password" class="btn btn-link">Đổi mật khẩu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <button class="btn btn-primary">Lưu lại</button>
+            <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

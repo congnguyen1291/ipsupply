@@ -1,0 +1,475 @@
+<?php $countries = $this->Contries()->getContries(); ?>
+<div class="popup-payment" >
+    <div class="popup-inner-payment" >
+        <form name="payment" method="post" class="checkout woocommerce-checkout" action="/cart/payment" enctype="multipart/form-data" id="paymentform"  data-form="payment" >
+            <div class="ui-payment" >
+                <div class="inner-ui-paymeny" >
+                    <div class="container" >
+                        <h1 class="ui-h1-payment" >
+                            <?php echo $this->translate('txt_thanh_toan_don_hang') ?>
+                        </h1>
+                        <?php 
+                        $carts = $this->Cart()->getCart();
+                        if( !empty($carts) ){ ?>
+                        <div class="row" >
+                            <div class="col-md-4" >
+                                <div class="ui-user-payment" >
+                                    <div class="inner-ui-user-payment" >
+
+                                        <div class="coz-payment-from" >
+                                            <h2 class="coz-title-payment" >
+                                                <?php echo $this->translate('txt_thong_tin_nguoi_mua') ?>
+                                            </h2>
+                                            <div class="coz-body-user" >
+                                                <p class="coz-note-payment" >
+                                                    <?php echo $this->translate('txt_des_thong_tin_nguoi_mua') ?>
+                                                </p>
+                                                
+                                                <div class="form-element-payment" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" >
+                                                            <label class="ui-lb-payment" >
+                                                                <?php echo $this->translate('txt_lb_ten_payment') ?>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-6  first-payment" >
+                                                            <div class="ui-input-payment" >
+                                                                <input type="text" value="<?php echo $this->User()->getFirstName(); ?>" name="trans[first_name]" id="first_name" spellcheck="false" class="input-payment first_name" aria-invalid="true" data-input="trans[first_name]" >
+                                                                <span class="ui-placeholder-text-payment" style="display: block;">
+                                                                    <?php echo $this->translate('txt_lb_placeholder_ho_payment') ?>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6" >
+                                                            <div class="ui-input-payment" >
+                                                                <input type="text" value="<?php echo $this->User()->getLastName(); ?>" name="trans[last_name]" id="last_name" spellcheck="false" class="input-payment last_name" aria-invalid="true" data-input="trans[last_name]" >
+                                                                <span class="ui-placeholder-text-payment ui-form-error" style="display: block;">
+                                                                    <?php echo $this->translate('txt_lb_placeholder_ten_payment') ?>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-element-payment" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" >
+                                                            <label class="ui-lb-payment" >
+                                                                <?php echo $this->translate('txt_lb_chon_ten_nguoi_dung_payment') ?>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-12" >
+                                                            <div class="ui-input-payment" >
+                                                                <input type="text" name="trans[email]" id="email" spellcheck="false" class="input-payment email" aria-invalid="true" value="<?php echo $this->User()->getUserName(); ?>" data-input="trans[email]" >
+                                                                <span class="ui-placeholder-text-payment" style="display: block;">
+                                                                    <?php echo $this->translate('txt_lb_placeholder_email_payment') ?>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-element-payment" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" >
+                                                            <label class="ui-lb-payment" >
+                                                                <?php echo $this->translate('txt_lb_so_dien_thoai_payment') ?>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-12" >
+                                                            <div class="ui-input-payment" >
+                                                                <input type="text" name="trans[phone]" id="phone" spellcheck="false" class="input-payment phone" aria-invalid="true" value="<?php echo $this->User()->getPhone(); ?>" data-input="trans[phone]" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <?php if(empty($this->website['is_local'])){ ?>
+                                                <div class="form-element-payment" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" >
+                                                            <label class="ui-lb-payment" >
+                                                                <?php echo $this->translate('txt_lb_dat_nuoc_payment'); ?>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-12" >
+                                                            <div class="ui-select-payment" >
+                                                                <select class="cs-select cs-skin-slide select-payment"  name="trans[country_id]" id="country_id" data-input="trans[country_id]" >
+                                                                    <option value="" >
+                                                                        <?php echo $this->translate('chon_country');?>
+                                                                    </option>
+                                                                    <?php foreach ($countries as $country){ ?>
+                                                                    <option value="<?php echo $country['id'] ?>" <?php echo ($this->User()->getCountryId() == $country['id']) ? 'selected' : ''; ?> >
+                                                                        <?php echo $country['title'] ?>
+                                                                    </option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php }else{ ?>
+                                                <input type="hidden" id="country_id" name="trans[country_id]" value="<?php echo $this->website['website_contries']; ?>" class="country_id" data-input="trans[country_id]" >
+                                                <?php } ?>
+                                                <input type="hidden" id="type_address_delivery" name="trans[type_address_delivery]" value="global"  data-input="trans[type_address_delivery]" >
+                                                <div class="warp-address-payment" neo-place="addressPayment" ></div>
+
+                                                <div class="form-element-payment" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" >
+                                                            <div class="ui-radio-payment" >
+                                                                <label class="coz-ui-radio clearfix" >
+                                                                    <input type="checkbox" name="ship_to_different_address" value="1" >
+                                                                    <?php echo $this->translate('txt_ship_different_address'); ?>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
+                                            </div>
+
+                                        </div>
+
+                                        <div class="coz-payment-to" >
+
+                                            <p class="coz-summary-user-payment" data-neo="summaryAddressPayment" ></p>
+
+                                            <div class="form-element-payment" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <div class="ui-radio-payment" >
+                                                            <label class="coz-ui-radio clearfix" >
+                                                                <input type="checkbox" checked="checked" id="ship-diff-visual" >
+                                                                <?php echo $this->translate('txt_ship_different_address'); ?>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <h2 class="coz-title-payment" >
+                                                <?php echo $this->translate('txt_information_ship_address'); ?>
+                                            </h2>
+                                            <p class="coz-note-payment" >
+                                                <?php echo $this->translate('txt_des_information_ship_address'); ?>
+                                            </p>
+
+                                            <div class="form-element-payment" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <label class="ui-lb-payment" >
+                                                            <?php echo $this->translate('txt_lb_ten_payment') ?>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-6 first-payment" >
+                                                        <div class="ui-input-payment" >
+                                                            <input type="text" value="" name="ships[first_name]" id="first_name_ships" spellcheck="false" class="input-payment first_name_ships" aria-invalid="true" data-input="ships[first_name]" >
+                                                            <span class="ui-placeholder-text-payment" style="display: block;">
+                                                                <?php echo $this->translate('txt_lb_placeholder_ho_payment') ?>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6" >
+                                                        <div class="ui-input-payment" >
+                                                            <input type="text" value="" name="ships[last_name]" id="last_name_ships" spellcheck="false" class="input-payment last_name_ships" aria-invalid="true"   data-input="ships[last_name]" >
+                                                            <span class="ui-placeholder-text-payment ui-form-error" style="display: block;">
+                                                                <?php echo $this->translate('txt_lb_placeholder_ten_payment') ?>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-element-payment" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <label class="ui-lb-payment" >
+                                                            <?php echo $this->translate('txt_lb_chon_ten_nguoi_dung_payment') ?>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-12" >
+                                                        <div class="ui-input-payment" >
+                                                            <input type="text" value="" name="ships[email]" id="email_ships" spellcheck="false" class="input-payment email_ships" aria-invalid="true" data-input="ships[email]" >
+                                                            <span class="ui-placeholder-text-payment" style="display: block;">
+                                                                <?php echo $this->translate('txt_lb_placeholder_email_payment') ?>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-element-payment" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <label class="ui-lb-payment" >
+                                                            <?php echo $this->translate('txt_lb_so_dien_thoai_payment') ?>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-12" >
+                                                        <div class="ui-input-payment" >
+                                                            <input type="text" value="" name="ships[phone]" id="phone_ships" spellcheck="false" class="input-payment phone_ships" aria-invalid="true" data-input="ships[phone]" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <?php if(empty($this->website['is_local'])){ ?>
+                                            <div class="form-element-payment" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <label class="ui-lb-payment" >
+                                                            <?php echo $this->translate('txt_lb_dat_nuoc_payment'); ?>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-12" >
+                                                        <div class="ui-select-payment" >
+                                                            <select class="cs-select cs-skin-slide select-payment country_id_ships"  name="ships[country_id]" id="country_id_ships" data-input="ships[country_id]" >
+                                                                <option value="" >
+                                                                    <?php echo $this->translate('chon_country');?>
+                                                                </option>
+                                                                <?php foreach ($countries as $country){ ?>
+                                                                <option value="<?php echo $country['id'] ?>" >
+                                                                    <?php echo $country['title'] ?>
+                                                                </option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php }else{ ?>
+                                            <input type="hidden" id="country_id_ships" name="ships[country_id]" value="<?php echo $this->website['website_contries']; ?>" class="country_id_ships" data-input="ships[country_id]" >
+                                            <?php } ?>
+
+                                            <div class="warp-address-ships" neo-place="addressShip" ></div>
+
+                                        </div>
+
+                                        <div class="form-element-payment" >
+                                            <div class="row" >
+                                                <div class="col-sm-12" >
+                                                    <div class="coz-wrap-btn-sb clearfix" >
+                                                        <input name="sb" type="submit" value="<?php echo $this->translate('txt_lb_than_toan_payment') ?>" class="coz-btn coz-btn-active" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" >
+
+                                <div class="coz-wrap-shipng" >
+                                    <h2 class="coz-title-payment" >
+                                        <?php echo $this->translate('txt_lb_hinh_thuc_van_chuyen_payment'); ?>
+                                    </h2>
+                                    <div neo-place="Shipping" >
+                                        <p class="coz-note-payment" >
+                                            <?php echo $this->translate('txt_shipping_available'); ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <?php $payments = $this->Payments()->getPayments();
+                                if(!empty($payments)){ ?>
+                                <div class="coz-wrap-method-payment" >
+                                    <h2 class="coz-title-payment" >
+                                        <?php echo $this->translate('txt_lb_thanh_toan_payment') ?>
+                                    </h2>
+                                    <p class="coz-note-payment" >
+                                        <?php echo $this->translate('txt_des_thanh_toan_payment') ?>
+                                    </p>
+                                    <div class="form-element-payment" >
+                                        <div class="row" >
+                                            <div class="col-sm-12" >
+                                                <div class="ui-select-payment" >
+                                                    <select class="cs-select cs-skin-slide select-payment" name="trans[payment_method]" data-input="trans[payment_method]" >
+                                                        <option value="" selected="selected" >
+                                                            <?php echo $this->translate('txt_chon_phuong_thuc_thanh_toan_payment') ?>
+                                                        </option>
+                                                        <?php foreach ($payments as $index => $pay) { ?>
+                                                        <option value="<?php echo $pay['code']; ?>" >
+                                                            <?php echo $pay['payment_name']; ?>
+                                                        </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="coz-tab-payment" >
+                                        <?php foreach ($payments as $index => $pay) { 
+                                            if($pay['code'] !="PAYPAL"){
+                                        ?>
+                                        <div class="coz-content-tab-payment" id="<?php echo $pay['code'] ?>" >
+                                            <?php echo $pay['payment_description'] ?>
+                                        </div>
+                                        <?php }
+                                        } ?>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                               
+                                <div class="form-element-payment" style="display:none">
+									 <h2 class="coz-title-payment" >
+										<?php echo $this->translate('txt_dang_ki_nhan_ban_tin_payment') ?>
+									</h2>
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <div class="ui-input-payment" >
+                                                <input type="text" value="" name="order[email]" id="order_email" spellcheck="false" class="input-payment order_email" aria-invalid="true" data-input="order[email]" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 class="coz-title-payment" >
+                                    <?php echo $this->translate('txt_thong_tin_xuat_hoa_don_payment') ?>
+                                </h2>
+                                <div class="form-element-payment" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <div class="ui-input-payment address-payment" >
+                                                <input type="text" value="" name="order[company_name]" id="order_company_name" spellcheck="false" class="input-payment order_company_name" placeholder="<?php echo $this->translate('txt_lb_company_name_payment') ?>" aria-invalid="true" data-input="order[company_name]" >
+                                            </div>
+
+                                            <div class="ui-input-payment address-payment" >
+                                                <input type="text" value="" name="order[company_tax_code]" id="order_company_tax_code" spellcheck="false" class="input-payment order_company_tax_code" placeholder="<?php echo $this->translate('txt_lb_company_tax_code_payment') ?>" aria-invalid="true" data-input="order[company_tax_code]" >
+                                            </div>
+
+                                            <div class="ui-input-payment" >
+                                                <input type="text" value="" name="order[company_address]" id="order_company_address" spellcheck="false" class="input-payment order_company_address" placeholder="<?php echo $this->translate('txt_lb_company_address_payment') ?>" aria-invalid="true" data-input="order[company_address]" >
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4" >
+                                <div class="coz-wrap-cart" >
+                                    <h2 class="coz-title-payment" >
+                                        <?php echo $this->translate('txt_lb_cart_payment') ?>
+                                    </h2>
+                                    <div class="wrap-coz-table-cart" >
+                                        <table class="coz-table-cart" >
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <?php echo $this->translate('txt_lb_name_product_payment') ?>
+                                                    </th>
+                                                    <th>
+                                                        <?php echo $this->translate('txt_lb_sl_payment') ?>
+                                                    </th>
+                                                    <th>
+                                                        <?php echo $this->translate('txt_lb_total_payment') ?>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                foreach ($carts as $id => $product) {
+                                                    foreach ($product['product_type'] as $product_type_id => $p) {
+                                                        if($id == 'coupon'){
+                                                            continue;
+                                                        }
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/<?php echo$product['alias'] ?>-<?php echo $product['id'] ?>" title="<?php echo $product['title']; ?>" class="coz-link-product-payment" >
+                                                            <strong><?php echo $product['title']; ?></strong>
+                                                            <span>(<?php echo $p['type_name'] ?>)</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $p['quantity'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $this->Currency()->fomatCurrency($p['price_total']) ?>
+                                                    </td>
+                                                </tr>
+                                                <?php }
+                                                } ?>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr >
+                                                    <th colspan="2" >
+                                                        <?php echo $this->translate('txt_lb_sub_total_payment') ?> :
+                                                    </th>
+                                                    <th>
+                                                        <span neo-place="valueSubTotalPayment" >
+                                                            <?php echo $this->Currency()->fomatCurrency($price_total) ?>
+                                                        </span>
+                                                    </th>
+                                                </tr>
+                                                <tr >
+                                                    <th colspan="2" >
+                                                        <?php echo $this->translate('txt_lb_ship_payment') ?> :
+                                                    </th>
+                                                    <th>
+                                                        <span neo-place="valueFeeTransitions" >
+                                                            0 <?php echo $this->Currency()->getCurrencySymbol() ?>
+                                                        </span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2" >
+                                                        <?php echo $this->translate('txt_lb_total_payment') ?> :
+                                                    </th>
+                                                    <th>
+                                                        <span neo-place="valueTotalPayment" >
+                                                            <?php echo $this->Currency()->fomatCurrency($price_total) ?>
+                                                        </span>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                    <div class="wrap-btn-payment-right" >
+                                        <div class="form-element-payment" >
+                                            <div class="row" >
+                                                <div class="col-sm-12" >
+                                                    <label class="ui-lb-payment" >
+                                                        <?php echo $this->translate('txt_lb_thong_tin_them_payment') ?>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-12" >
+                                                    <div class="ui-area-payment" >
+                                                        <textarea name="trans[invoice_description]" id="invoice_description" class="area-payment invoice_description" rows="5" data-input="trans[invoice_description]" ></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-element-payment" >
+                                            <div class="row" >
+                                                <div class="col-sm-12" >
+                                                    <div class="coz-wrap-btn-sb clearfix" >
+                                                        <input name="sb" type="submit" value="<?php echo $this->translate('txt_lb_than_toan_payment') ?>" class="coz-btn coz-btn-active" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <?php }else{ ?>
+                        <p class="cart-empty">
+                            <?php echo $this->translate('txt_chua_c0_san_pham_trong_cart') ?>
+                        </p>
+                        <?php } ?>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

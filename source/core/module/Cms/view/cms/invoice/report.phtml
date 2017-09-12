@@ -1,0 +1,242 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/invoice') ?>">
+                        Hóa đơn
+                    </a>
+                </li>
+                <li class="active">Report</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Hóa đơn :: Report
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/invoice', array('action' => 'report')) ?>" method="get">
+                <div class="coz-search-bar clearfix" data-form="searchAjax" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                            </div>
+                            <div class="col-xs-5 col-coz-search" >
+                                <select name="type" class="form-control" >
+                                    <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo mã hoá đơn
+                                    </option>
+                                    <option value="1" <?php echo $type == 1 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo tên khách hàng
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/invoice', array('action' => 'report')) ?>" method="post" class="clearfix" >
+        
+        <?php if( !empty($invoices) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-invoice-report table-bordered" >
+                <thead>
+                    <tr>
+                        <th class="col-lim" >Mã Đơn Hàng</th>
+                        <th class="col-lim" >Ngày Đặt Hàng</th>
+                        <th class="col-lim" >Người Đặt hàng</th>
+                        <th class="col-lim" >Đại Lý </th>
+                        <th class="col-lim" >Loại Giao Dịch</th>
+                        <th class="col-lim" >Số Lượng</th>
+                        <th class="col-lim" >Giá Hoa</th>
+                        <th class="col-lim" >Giá Vận Chuyển</th>
+                        <th class="col-lim" >Tổng Tiền</th>
+                        <th class="col-lim" >Mức Hoa Hồng </th>
+                        <th class="col-lim" >Hoa Hồng Trả Đại Lý</th>
+                        <th class="col-lim" >Tổng Tiền Thu Chi</th>
+                        <th class="col-lim" >Lơi Nhuận</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($invoices as $key => $row) { ?>
+                    <tr>
+                        <td rowspan="2" class="col-lim" valign="middle" >
+                            <?php echo $row['invoice_id'] ?>            
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            <?php echo $row['date_create'] ?>           
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            <?php echo $row['first_name'].' '.$row['last_name'] ?>            
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            <?php echo $this->Invoice()->getAddress($row); ?>            
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            Bán(+)            
+                        </td>
+                        <td rowspan="2" class="col-lim text-right" valign="middle" >
+                            <?php echo $row['total_products'] ?>            
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency($row['total']) ?>            
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency($row['shipping_fee']) ?>            
+                        </td>
+                        <td class="col-lim text-right"  valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency($row['total'] + $row['shipping_fee']) ?>          
+                        </td>
+                        <td class="col-lim text-right"  valign="middle" >
+                            <?php echo $row['commission'] ?>%
+                        </td>
+                        <td class="col-lim text-right"  valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency(($row['total'] + $row['shipping_fee'])*($row['commission']/100)) ?>           
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency((($row['total'] + $row['shipping_fee'])-($row['total'] + $row['shipping_fee'])*($row['commission']/100))) ?>           
+                        </td>
+                        <td rowspan="2" class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency( max(((($row['total'] + $row['shipping_fee'])-($row['total'] + $row['shipping_fee'])*($row['commission']/100)) - ($row['assign_total'] + $row['assign_shipping'])), 0) ) ?>            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-lim" valign="middle" >
+                            <?php echo $row['assign_date'] ?>           
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            <?php echo $row['assign_first_name'].' '.$row['assign_last_name'] ?>            
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            <?php
+                                $imerchant = array(
+                                    'address' => $row['merchant_address'],
+                                    'address01' => $row['merchant_address01'],
+                                    'zipcode' => $row['merchant_zipcode'],
+                                    'longitude' => $row['merchant_longitude'],
+                                    'latitude' => $row['merchant_latitude'],
+                                    'country_id' => $row['merchant_country_id'],
+                                    'city' => $row['merchant_city'],
+                                    'state' => $row['merchant_state'],
+                                    'suburb' => $row['merchant_suburb'],
+                                    'region' => $row['merchant_region'],
+                                    'province' => $row['merchant_province'],
+                                    'cities_id' => $row['merchant_cities_id'],
+                                    'districts_id' => $row['merchant_districts_id'],
+                                    'wards_id' => $row['merchant_wards_id'],
+                                );
+                            ?>
+                            <?php echo $this->Invoice()->getAddress($imerchant); ?>            
+                        </td>
+                        <td class="col-lim" valign="middle" >
+                            Mua(-)            
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency($row['assign_total']) ?>           
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency($row['assign_shipping']) ?>           
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            <?php echo $this->Currency()->fomatCurrency($row['assign_total'] + $row['assign_shipping']) ?>           
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            --
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            --             
+                        </td>
+                        <td class="col-lim text-right" valign="middle" >
+                            -<?php echo $this->Currency()->fomatCurrency($row['assign_total'] + $row['assign_shipping']) ?>            
+                        </td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td colspan="10" class="text-right" >
+                            Tổng doanh thu
+                        </td>
+                        <td colspan="3" class="text-right" >
+                            <strong class="coz-color-important" >
+                                <?php echo $this->Currency()->fomatCurrency($total_revenue) ?>
+                            </strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="10" class="text-right" >
+                            Tổng chi phí đặt đại lý
+                        </td>
+                        <td colspan="3" class="text-right" >
+                            <strong class="coz-color-important" >
+                                <?php echo $this->Currency()->fomatCurrency($total_cost) ?>
+                            </strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="10" class="text-right" >
+                            Hoa hồng phải trả đại lý
+                        </td>
+                        <td colspan="3" class="text-right" >
+                            <strong class="coz-color-important" >
+                                <?php echo $this->Currency()->fomatCurrency($total_commission) ?>
+                            </strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="10" class="text-right" >
+                            Lợi Nhuận
+                        </td>
+                        <td colspan="3" class="text-right" >
+                            <strong class="coz-color-important" >
+                                <?php echo $this->Currency()->fomatCurrency(max(0, ($total_revenue-$total_cost-$total_commission) )) ?>
+                            </strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có hóa đơn
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

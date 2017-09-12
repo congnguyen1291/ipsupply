@@ -1,0 +1,69 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li><a href="<?php echo $this->url('cms/siri') ?>">Siri</a></li>
+                <li class="active" >
+                    fix image
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Siri :: fix image
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php if( !empty($msg) ){ ?>
+    <div class="row" >
+        <div class="form-group">
+            <div class="alert alert-warning" >
+                <?php echo $msg ?>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+    
+    <form action="/cms/siri/fix-image" method="post" role="form" enctype="multipart/form-data" >
+        <div class="row" >
+            <div class="col-sm-6" >
+                <div class="form-group">
+                    <label for="url" >
+                        Link hình ảnh
+                    </label>
+                    <input type="text" name="url" id="url" placeholder="Link hình ảnh" class="form-control input-sm" value="<?php echo $url ?>" >
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary btn-sm" >
+                Fix lại hình này
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+    </form>
+</section>

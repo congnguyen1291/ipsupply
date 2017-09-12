@@ -1,0 +1,69 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>" >
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>" >
+                        Từ khóa
+                    </a>
+                </li>
+                <li class="active">
+                    Thêm mới
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Từ khóa :: Thêm mới
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <form action="<?php echo $this->url('cms/language', array('action' => 'add-keyword')) ?>" id="form-keyword" method="post" >
+        <div class="clearfix">
+            <div class="row" >
+                <div class="col-sm-6" >
+                    <div class="form-group">
+                        <label for="keyword">Từ khóa</label>
+                        <input type="text" name="keyword" class="form-control input-sm" />
+                    </div>
+
+                    <?php foreach($languages as $lang) { ?>
+                    <div class="form-group">
+                        <label for="language_trangslate_<?php echo $lang['languages_id'] ?>">
+                            <?php echo $lang['languages_name'] ?>
+                        </label>
+                        <textarea name="translate[<?php echo $lang['languages_id'] ?>]" id="language_trangslate_<?php echo $lang['languages_id'] ?>" rows="3" class="form-control input-sm"></textarea>
+                    </div>
+                    <?php } ?>
+
+                </div>
+            </div>
+
+            <div class="form-group" >
+                <button class="btn btn-primary btn-sm">
+                    Thêm mới từ khóa
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                    Quay lại
+                </button>
+            </div>
+        </div>
+    </form>
+</section>

@@ -1,0 +1,34 @@
+<?php foreach ($coupons as $row) : ?>
+	<tr>
+		<td style="text-align: center"><?php echo $row['coupons_id'] ?></td>
+		<td>
+			<a href="<?php echo $this->url('cms/coupons', array('action' => 'edit', 'id' => $row['coupons_id'])) ?>"><?php echo $row['coupons_code'] ?></a>
+		</td>
+		<td>
+			<?php if($row['coupons_type'] == 0) : ?>
+				Dùng 1 lần
+			<?php else: ?>
+				Dùng nhiều lần
+			<?php endif; ?>
+		</td>
+		<td><a href="<?php echo $this->url('cms/coupons', array('action' => 'show-logs', 'id' => $row['coupons_id'])) ?>"><?php echo $row['total'] ?> lần</a></td>
+		<td>
+			<?php echo $row['start_date'] ?>
+		</td>
+		<td>
+			<?php echo $row['expire_date'] ?>
+		</td>
+		<td>
+			<?php if($row['coupon_percent']) : ?>
+				<?php echo $row['coupon_percent'] ?>%
+			<?php else: ?>
+				<?php echo number_format($row['coupon_price']) ?> VND
+			<?php endif; ?>
+		</td>
+		<td></td>
+		<td>
+			<input type="checkbox" name="cid[]"
+				   value="<?php echo $row['coupons_id'] ?>"/>
+		</td>
+	</tr>
+<?php endforeach; ?>

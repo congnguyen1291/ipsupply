@@ -1,0 +1,247 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/shipping') ?>" >
+                        Shipping
+                    </a>
+                </li>
+                <li class="active">
+                    Thêm mới
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Shipping :: Thêm mới
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/shipping', array('action' => 'add')));
+    $form->setAttribute('id', 'shipping');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('shipping_id'));
+    ?>
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <div class="form-group">
+                <label for="group_regions_id" >
+                    Khu vực
+                </label>
+                <?php echo $this->formRow($form->get('group_regions_id')); ?>
+            </div>
+
+            <div class="form-group">
+                <label for="shipping_title">
+                    Tiêu đề
+                </label>
+                <?php echo $this->formRow($form->get('shipping_title')); ?>
+            </div>
+
+            <div class="form-group">
+                <label for="shipping_type">
+                    Kiểu vận chuyển
+                </label>
+                <?php echo $this->formRow($form->get('shipping_type')); ?>
+            </div>
+
+            <div class="form-group">
+                <div class="row" >
+                    <div class="col-xs-6" >
+                        <label for="shipping_from">Từ</label>
+                        <?php echo $this->formRow($form->get('shipping_from')); ?>
+                    </div>
+                    <div class="col-xs-6" >
+                        <label for="shipping_to">Đến</label>
+                        <?php echo $this->formRow($form->get('shipping_to')); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row" >
+                    <div class="col-xs-4" >
+                        <label for="shipping_value">Phí vận chuyển thường</label>
+                        <?php echo $this->formRow($form->get('shipping_value')); ?>
+                    </div>
+                    <div class="col-xs-4" >
+                        <label for="shipping_fast_value">Phí vận chuyển nhanh</label>
+                        <?php echo $this->formRow($form->get('shipping_fast_value')); ?>
+                    </div>
+                    <div class="col-xs-4" >
+                        <label for="shipping_time">Thời gian giao hàng</label>
+                        <?php echo $this->formRow($form->get('shipping_time')); ?>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-sm-6 col-xs-12" >
+            <p>
+                Shipping sẽ được thiết lập dựa vào khu vực, cho nên bạn có thể quản lý khu vực tai link <a href="/cms/group-regions" >khu vực</a>.<br />
+                Phí vận chuyển sẽ được app dụng nếu như giá trị đơn hàng nằm trong khoảng hai giá trị <b>Từ</b> và <b>Đến</b>.
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" id="fg-shipping-districts" style="display:none" >
+        <label for="shipping_time">Thông tin chi tiết</label>
+        <div class="row" >
+            <div class="col-sm-12" >
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-data-bind">
+                        <thead>
+                            <tr>
+                                <th width="50" style="text-align: center;vertical-align: middle;" rowspan="2" >
+                                    STT
+                                </th>
+                                <th width="100" rowspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Quận huyện
+                                </th>
+                                <th width="200"  colspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Vận chuyển thường
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate("txt_tooltip_van_chuyen_thuong"); ?>" >
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                </th>
+                                <th width="200"  colspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Vận chuyển nhanh
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate("txt_tooltip_van_chuyen_nhanh"); ?>" >
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                </th>
+                                <th width="200"  colspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Thời gian giao hàng
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate("txt_tooltip_thoi_gan_giao_hang"); ?>" >
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                </th>
+                                <th width="10" rowspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Giao hàng
+                                </th>
+                            </tr>
+                            <tr>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Tùy chỉnh
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Phí
+                                </th>
+
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Tùy chỉnh
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Phí
+                                </th>
+
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Tùy chỉnh
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Phí
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-districts" >
+                            <tr>
+                                <td colspan="9" >
+                                    Không có dữ liệu
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+
+                            <tr>
+                                <th width="50" style="text-align: center;vertical-align: middle;" rowspan="2" >
+                                    STT
+                                </th>
+                                <th width="100" rowspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Quận huyện
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Tùy chỉnh
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Phí
+                                </th>
+
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Tùy chỉnh
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Phí
+                                </th>
+
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Tùy chỉnh
+                                </th>
+                                <th width="100" style="text-align: center;vertical-align: middle;">
+                                    Phí
+                                </th>
+                                <th width="10" rowspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Giao hàng
+                                </th>
+                            </tr>
+                            <tr>
+                                <th width="200"  colspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Vận chuyển thường
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate("txt_tooltip_van_chuyen_thuong"); ?>" >
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                </th>
+                                <th width="200"  colspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Vận chuyển nhanh
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate("txt_tooltip_van_chuyen_nhanh"); ?>" >
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                </th>
+                                <th width="200"  colspan="2" style="text-align: center;vertical-align: middle;" >
+                                    Thời gian giao hàng
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate("txt_tooltip_thoi_gan_giao_hang"); ?>" >
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary btn-sm" >
+            Thêm mới shipping
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+            Quay lại
+        </button>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

@@ -1,0 +1,96 @@
+<?php
+	$countries = $this->Contries()->getContries();
+	$country_id = $this->User()->getCountryId();
+?>
+<div class="coz-wrapper-profile" >
+	<div class="container">
+	    <div class="row coz-profile">
+			<div class="col-md-3">
+				<?php echo $this->partial('application/profile/menu', array('active' => 'payment', 'point' => $point) ); ?>
+			</div>
+			<div class="col-md-9">
+	            <div class="coz-profile-content">
+				   
+	            	<div class="coz-user-info-block" >
+
+		                <div class="coz-user-heading">
+		                    <h3><?php echo $this->translate('txt_san_pham_da_mua') ?></h3>
+		                    <span class="help-block"><?php echo $this->User()->getUserName(); ?></span>
+		                </div>
+		                <div class="row" >
+		                	<?php if( !empty($products) ){ ?>
+		                	<div class="col-sm-12" >
+		                		<div class="coz-wrap-chart-profile-history" >
+		                			<canvas id="profileProductsChart" data-neo="profileProductsChart" ></canvas>
+		                		</div>
+		                	</div>
+		                	<div class="col-sm-12" >
+			                	<div class="table-responsive">
+	                                <table class="table" >
+	                                	<thead>
+	                                        <tr>
+	                                            <th class="text-center" width="75" >
+	                                                <?php echo $this->translate('txt_hinh_anh'); ?>
+	                                            </th>
+	                                            <th class="text-center">
+	                                                <?php echo $this->translate('txt_ten_san_pham'); ?>
+	                                            </th>
+		                                        <th width="100" >
+		                                        	<?php echo $this->translate('txt_so_luong')?>
+		                                        </th>
+		                                        <th width="100" >
+		                                        	<?php echo $this->translate('txt_tong_cong')?>
+		                                        </th
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                    	<?php foreach($products as $p){ ?>
+	                                        <tr>
+	                                        	<td class="text-center" width="75" >
+	                                                <a href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p); ?>" target="_blank" >
+	                                                    <img src="<?php echo $this->Images()->getUrlImage($p['thumb_image'], 75, 100); ?>" alt="<?php echo $this->Products()->getTitle($p); ?>" >
+	                                                </a>
+	                                            </td>
+												<td>
+													<a href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p); ?>" target="_blank" >
+	                                                    <?php echo $this->Products()->getName($p) ?>
+	                                                </a>
+												</td>
+												<td class="text-center" width="100" >
+	                                                <?php echo $p['total_quantity'] ?>
+	                                            </td>
+												<td width="100" >
+													<?php echo $this->Currency()->fomatCurrency($p['total_pay']) ?>
+												</td>
+											</tr>
+	                                        <?php } ?>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+                            </div>
+                            <div class="col-sm-12" >
+                            	<?php if(!empty($paging)){ ?>
+		                        <nav >
+		                            <ul class="coz-pagination" >
+		                                <?php echo $paging; ?>
+		                            </ul>
+		                        </nav>
+				                <?php } ?>
+                            </div>
+                            <?php }else{ ?>
+		                    <div class="col-sm-12" >
+		                        <p class="cart-empty">
+		                            <?php echo $this->translate('txt_chua_co_giao_dich_nao') ?>
+		                        </p>
+		                    </div>
+		                    <?php } ?>
+
+		                </div>
+
+		            </div>
+				   
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>

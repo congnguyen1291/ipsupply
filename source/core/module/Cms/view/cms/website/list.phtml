@@ -1,0 +1,189 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+       <?php echo $this->translate("websites");?> :: <?php echo $this->translate("manager");?>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("home");?></a></li>
+        <li class="active"><?php echo $this->translate("websites");?></li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <form action="<?php echo $this->url('cms/website', array('action' => 'list')) ?>" method="get"
+                          class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" for="products_title"></label>
+                            <input type="text" class="form-control" id="website_name" name="website_name" placeholder="Tiêu đề" value="<?php echo isset($_GET['website_name']) ? $_GET['website_name'] : '' ?>" />
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="date_create" class="form-control date-ranger-input pull-right" placeholder="<?php echo $this->translate("date_create");?>" value="<?php echo isset($_GET['date_create']) ? $_GET['date_create'] : '' ?>"/>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="is_try" value="1" <?php echo isset($_GET['is_try']) ? 'checked' : '' ?> />
+                                <?php echo $this->translate("is_try");?>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="is_published" value="1" <?php echo isset($_GET['is_published']) ? 'checked' : '' ?> />
+                                <?php echo $this->translate("show");?>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-filter"></i>
+                            <?php echo $this->translate("filter");?>
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <form action="<?php echo $this->url('cms/website') ?>" method="post">
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'publish')) ?>')">
+                                <?php echo $this->translate("show");?>
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'unpublish')) ?>')">
+                                <?php echo $this->translate("hide");?>
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'try')) ?>')">
+                                <?php echo $this->translate("try");?>
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'notTry')) ?>')">
+                                <?php echo $this->translate("not_try");?>
+                            </button>
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'delete')) ?>')">
+                                <?php echo $this->translate("delete");?>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <div class="pull-right">
+                        <ul class="pagination">
+                            <?php echo $paging ?>
+                        </ul>
+                        </div>
+                        <?php
+                        $order_type = isset($_GET['order_type']) ? strtolower($_GET['order_type']) : 'asc';
+                        $order_current = isset($_GET['order']) ? strtolower($_GET['order']) : 'products_id';
+                        if(!in_array($order_type, array('asc','desc'))){
+                            $order_type = 'asc';
+                        }
+                        if($order_type == 'asc'){
+                            $order_type = 'desc';
+                        }else{
+                            $order_type = 'asc';
+                        }
+                        ?>
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th width="150"><a href="<?php echo $order_link ?>order=products_id&order_type=<?php echo $order_current=='products_id' ? $order_type : 'asc' ?>"><?php echo $this->translate("product_id");?> <?php echo $order_current=='products_id' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th><a href="<?php echo $order_link ?>order=products_title&order_type=<?php echo $order_current=='products_title' ? $order_type : 'asc' ?>"><?php echo $this->translate("name");?><?php echo $order_current=='products_title' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="110" style="text-align: center;"><a href="<?php echo $order_link ?>order=is_try&order_type=<?php echo $order_current=='is_try' ? $order_type : 'asc' ?>"><?php echo $this->translate("is_try");?> <?php echo $order_current=='is_try' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="110"><a href="<?php echo $order_link ?>order=date_create&order_type=<?php echo $order_current=='date_create' ? $order_type : 'asc' ?>">Ngày tạo <?php echo $order_current=='date_create' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="100" style="text-align: center"><a href="<?php echo $order_link ?>order=is_published&order_type=<?php echo $order_current=='is_published' ? $order_type : 'asc' ?>"><?php echo $this->translate("show");?> <?php echo $order_current=='is_published' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($websites as $row) : ?>
+                                <tr>
+                                    <td><?php echo $row['website_id'] ?></td>
+                                    <td>
+                                        <a href="<?php echo $this->url('cms/website', array('action' => 'edit', 'id' => $row['website_id'])) ?>"><?php echo $row['website_name'] ?></a>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <?php if($row['is_try'] == 1) : ?>
+                                            <?php $href = $this->url('cms/website', array('action' => 'singleNotTry', 'id' => $row['website_id'])) ?>
+                                        <?php else: ?>
+                                            <?php $href = $this->url('cms/website', array('action' => 'singleTry', 'id' => $row['website_id'])) ?>
+                                        <?php endif; ?>
+                                        <?php echo $row['is_try'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Thư nghiệm' data-original-title='Thư nghiệm'><i class='fa fa-circle'></i></a>" : "<a href='{$href}' data-toggle='tooltip' title='Đang chạy' data-original-title='Đang chạy'><i class='fa fa-circle-o'></i></a>" ?>
+                                    </td>
+                                    <td><?php echo date('d/m/Y', strtotime($row['date_create'])) ?></td>
+                                    <td style="text-align: center">
+                                        <?php if($row['is_published'] == 1) : ?>
+                                            <?php $href = $this->url('cms/website', array('action' => 'singleunpublish', 'id' => $row['website_id'])) ?>
+                                        <?php else: ?>
+                                            <?php $href = $this->url('cms/website', array('action' => 'singlepublish', 'id' => $row['website_id'])) ?>
+                                        <?php endif; ?>
+                                        <?php echo $row['is_published'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Đang hiển thị' data-original-title='Đang hiển thị'><i class='fa fa-circle'></i></a>" : "<a href='{$href}' data-toggle='tooltip' title='Bị ẩn' data-original-title='Bị ẩn'><i class='fa fa-circle-o'></i></a>" ?>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cid[]"
+                                               value="<?php echo $row['website_id'] ?>"/>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="150"><a href="<?php echo $order_link ?>order=products_id&order_type=<?php echo $order_current=='products_id' ? $order_type : 'asc' ?>"><?php echo $this->translate("product_id");?> <?php echo $order_current=='products_id' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th><a href="<?php echo $order_link ?>order=products_title&order_type=<?php echo $order_current=='products_title' ? $order_type : 'asc' ?>"><?php echo $this->translate("name");?><?php echo $order_current=='products_title' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="110" style="text-align: center;"><a href="<?php echo $order_link ?>order=is_try&order_type=<?php echo $order_current=='is_try' ? $order_type : 'asc' ?>"><?php echo $this->translate("is_try");?> <?php echo $order_current=='is_try' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="110"><a href="<?php echo $order_link ?>order=date_create&order_type=<?php echo $order_current=='date_create' ? $order_type : 'asc' ?>">Ngày tạo <?php echo $order_current=='date_create' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="100" style="text-align: center"><a href="<?php echo $order_link ?>order=is_published&order_type=<?php echo $order_current=='is_published' ? $order_type : 'asc' ?>"><?php echo $this->translate("show");?> <?php echo $order_current=='is_published' ? ( $order_type =='asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a></th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'publish')) ?>')">
+                                <?php echo $this->translate("show");?>
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'unpublish')) ?>')">
+                                <?php echo $this->translate("hide");?>
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'try')) ?>')">
+                                <?php echo $this->translate("try");?>
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'notTry')) ?>')">
+                                <?php echo $this->translate("not_try");?>
+                            </button>
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/website', array('action' => 'delete')) ?>')">
+                                <?php echo $this->translate("delete");?>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+
+</section><!-- /.content -->

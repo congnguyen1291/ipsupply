@@ -1,0 +1,302 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Hóa đơn :: Quản lý
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Hóa đơn</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+<div class="row">
+<form action="<?php echo $this->url('cms/invoice', array('action' => 'index')) ?>" method="get"
+      class="form-inline" role="form" name="form_filter">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="invoice_title"
+                           name="invoice_title" placeholder="Tiêu đề" value="<?php echo isset($_GET['invoice_title']) ? $_GET['invoice_title'] : '' ?>">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control product_invoice_autocomplete"
+                           placeholder="Nhập vào mã sản phẩm hoặc tên sản phẩm"/>
+                    <input name="products_id" type="hidden" id="products_id" value="<?php echo isset($_GET['products_id']) ? $_GET['products_id'] : '' ?>"/>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="date_create"
+                           class="form-control date-ranger-input pull-right"
+                           placeholder="Thời gian đăng" value="<?php echo isset($_GET['date_create']) ? $_GET['date_create'] : '' ?>"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body" style="overflow: hidden">
+                <div class="col-xs-6">
+                    <fieldset>
+                        <?php
+                        $pm_info = array();
+                        $dlvr_info = array();
+                        if(isset($_GET['payment'])){
+                            $payment = $_GET['payment'];
+                            foreach($payment as $pm){
+                                $pm_info[$pm] = 1;
+                            }
+                        }
+                        if(isset($_GET['delivery'])){
+                            $delivery = $_GET['delivery'];
+                            foreach($delivery as $dlvr){
+                                $dlvr_info[$dlvr] = 1;
+                            }
+                        }
+
+                        ?>
+
+                        <legend>Tình trạng thanh toán</legend>
+                        <label for="payment-unpaid">
+                            <input type="checkbox" name="payment[]" value="unpaid" id="payment-unpaid" <?php echo isset($pm_info['unpaid']) ? 'checked' : '' ?> />
+                            Chưa thanh toán
+                        </label>
+                        <label for="payment-paid">
+                            <input type="checkbox" name="payment[]" value="paid" id="payment-paid" <?php echo isset($pm_info['paid']) ? 'checked' : '' ?> />
+                            Đã thanh toán
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="col-xs-6">
+                    <fieldset>
+                        <legend>Tình trạng giao hàng</legend>
+                        <label for="delivery-no_delivery">
+                            <input type="checkbox" name="delivery[]" value="no_delivery"
+                                   id="delivery-no_delivery" <?php echo isset($dlvr_info['no_delivery']) ? 'checked' : '' ?> />
+                            Chưa giao hàng
+                        </label>
+                        <label for="delivery-delivered">
+                            <input type="checkbox" name="delivery[]" value="delivered" id="delivery-delivered" <?php echo isset($dlvr_info['delivered']) ? 'checked' : '' ?> />
+                            Đã giao hàng
+                        </label>
+                        <label for="delivery-delivering">
+                            <input type="checkbox" name="delivery[]" value="delivering"
+                                   id="delivery-delivering" <?php echo isset($dlvr_info['delivering']) ? 'checked' : '' ?> />
+                            Đang giao hàng
+                        </label>
+                    </fieldset>
+                </div>
+
+                    <!--                            <select name="payment" class="form-control">-->
+                    <!--                                <option value="0">__ Thanh toán __</option>-->
+                    <!--                                <option value="unpaid">Chưa thanh toán</option>-->
+                    <!--                                <option value="paid">Đã thanh toán</option>-->
+                    <!--                            </select>-->
+
+                    <!--                            <select name="delivery" class="form-control">-->
+                    <!--                                <option value="0">__ Giao hàng __</option>-->
+                    <!--                                <option value="no_delivery">Chưa giao hàng</option>-->
+                    <!--                                <option value="delivered">Đã giao hàng</option>-->
+                    <!--                                <option value="delivering">Đang giao hàng</option>-->
+                    <!--                            </select>-->
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-filter"></i>
+                    Lọc
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<form action="<?php echo $this->url('cms/product') ?>" method="post">
+    <div class="col-xs-12">
+        <table class="table table-condensed">
+            <tr>
+                <td>
+                    <button class="btn btn-danger" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'delete')) ?>')">
+                        Xóa hóa đơn
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body table-responsive">
+                <div class="pull-right">
+                    <ul class="pagination">
+                        <?php echo $paging ?>
+                    </ul>
+                </div>
+                <?php
+                $order_type = isset($_GET['order_type']) ? strtolower($_GET['order_type']) : 'asc';
+                $order_current = isset($_GET['order']) ? strtolower($_GET['order']) : 'date_create';
+                if (!in_array($order_type, array('asc', 'desc'))) {
+                    $order_type = 'asc';
+                }
+                if ($order_type == 'asc') {
+                    $order_type = 'desc';
+                } else {
+                    $order_type = 'asc';
+                }
+                ?>
+                <table class="table table-bordered table-hover table-data-bind">
+                    <thead>
+                    <tr>
+                        <th width="100"><a
+                                href="<?php echo $order_link ?>order=invoice_id&order_type=<?php echo $order_current == 'invoice_id' ? $order_type : 'asc' ?>">Mã
+                                HD <?php echo $order_current == 'invoice_id' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th>
+                            <a href="<?php echo $order_link ?>order=invoice_title&order_type=<?php echo $order_current == 'invoice_title' ? $order_type : 'asc' ?>">Tiêu
+                                đề <?php echo $order_current == 'invoice_title' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="100" style="text-align: center"><a
+                                href="<?php echo $order_link ?>order=total_products&order_type=<?php echo $order_current == 'total_products' ? $order_type : 'asc' ?>">Số
+                                sản
+                                phẩm <?php echo $order_current == 'total_products' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: right"><a
+                                href="<?php echo $order_link ?>order=total&order_type=<?php echo $order_current == 'total' ? $order_type : 'asc' ?>">Tổng
+                                tiền <?php echo $order_current == 'total' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: center"><a
+                                href="<?php echo $order_link ?>order=delivery&order_type=<?php echo $order_current == 'delivery' ? $order_type : 'asc' ?>">Tình
+                                trạng giao
+                                hàng <?php echo $order_current == 'delivery' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: center"><a
+                                href="<?php echo $order_link ?>order=payment&order_type=<?php echo $order_current == 'payment' ? $order_type : 'asc' ?>">Tình
+                                trạng thanh
+                                toán <?php echo $order_current == 'payment' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: left"><a
+                                href="<?php echo $order_link ?>order=date_create&order_type=<?php echo $order_current == 'date_create' ? $order_type : 'asc' ?>">Ngày
+                                lập <?php echo $order_current == 'date_create' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="10" style="text-align: center"><input type="checkbox" class="checkall"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($invoices as $row) : ?>
+                        <tr>
+                            <td><?php echo $row['invoice_id'] ?></td>
+                            <td>
+                                <a href="<?php echo $this->url('cms/invoice', array('action' => 'edit', 'id' => $row['invoice_id'])) ?>"><?php echo !$row['is_view'] ? '<strong style="color:red;">' : '' ?><?php echo $row['invoice_title'] ?><?php echo !$row['is_view'] ? '</strong>' : '' ?></a>
+                            </td>
+                            <td style="text-align: center">
+                                <?php echo $row['total_products'] ?>
+                            </td>
+                            <td style="text-align: right">
+                                <?php echo number_format($row['total']) ?>
+                            </td>
+                            <td style="text-align: center">
+                                <select name="data[delivery][<?php echo $row['invoice_id'] ?>]" item-name="delivery"
+                                        item-id="<?php echo $row['invoice_id'] ?>"
+                                        onchange="javascript:invoice_change(this);" class="invoice_update form-control">
+                                    <option
+                                        value="no_delivery" <?php echo $row['delivery'] == 'no_delivery' ? 'selected' : '' ?>>
+                                        Chưa giao hàng
+                                    </option>
+                                    <option
+                                        value="delivered" <?php echo $row['delivery'] == 'delivered' ? 'selected' : '' ?>>
+                                        Đã giao hàng
+                                    </option>
+                                    <option
+                                        value="delivering" <?php echo $row['delivery'] == 'delivering' ? 'selected' : '' ?>>
+                                        Đang giao hàng
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="text-align: center">
+                                <select name="data[payment][<?php echo $row['invoice_id'] ?>]" item-name="payment"
+                                        item-id="<?php echo $row['invoice_id'] ?>"
+                                        onchange="javascript:invoice_change(this);" class="invoice_update form-control">
+                                    <option value="unpaid" <?php echo $row['payment'] == 'unpaid' ? 'selected' : '' ?>>
+                                        Chưa thanh toán
+                                    </option>
+                                    <option value="paid" <?php echo $row['payment'] == 'paid' ? 'selected' : '' ?>>Đã
+                                        thanh toán
+                                    </option>
+                                    <option value="cancel" <?php echo $row['payment'] == 'cancel' ? 'selected' : '' ?>>Đã hủy
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="text-align: left">
+                                <?php echo $row['date_create'] ?>
+                            </td>
+                            <td style="text-align: center">
+                                <input type="checkbox" name="cid[]"
+                                       value="<?php echo $row['invoice_id'] ?>"/>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th width="100"><a
+                                href="<?php echo $order_link ?>order=invoice_id&order_type=<?php echo $order_current == 'invoice_id' ? $order_type : 'asc' ?>">Mã
+                                HD <?php echo $order_current == 'invoice_id' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th>
+                            <a href="<?php echo $order_link ?>order=invoice_title&order_type=<?php echo $order_current == 'invoice_title' ? $order_type : 'asc' ?>">Tiêu
+                                đề <?php echo $order_current == 'invoice_title' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="100" style="text-align: center"><a
+                                href="<?php echo $order_link ?>order=total_products&order_type=<?php echo $order_current == 'total_products' ? $order_type : 'asc' ?>">Số
+                                sản
+                                phẩm <?php echo $order_current == 'total_products' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: right"><a
+                                href="<?php echo $order_link ?>order=total&order_type=<?php echo $order_current == 'total' ? $order_type : 'asc' ?>">Tổng
+                                tiền <?php echo $order_current == 'total' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: center"><a
+                                href="<?php echo $order_link ?>order=delivery&order_type=<?php echo $order_current == 'delivery' ? $order_type : 'asc' ?>">Tình
+                                trạng giao
+                                hàng <?php echo $order_current == 'delivery' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: center"><a
+                                href="<?php echo $order_link ?>order=payment&order_type=<?php echo $order_current == 'payment' ? $order_type : 'asc' ?>">Tình
+                                trạng thanh
+                                toán <?php echo $order_current == 'payment' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="150" style="text-align: left"><a
+                                href="<?php echo $order_link ?>order=date_create&order_type=<?php echo $order_current == 'date_create' ? $order_type : 'asc' ?>">Ngày
+                                lập <?php echo $order_current == 'date_create' ? ($order_type == 'asc' ? '<i class="fa fa-caret-up"></i>' : '<i class="fa fa-caret-down"></i>') : '' ?></a>
+                        </th>
+                        <th width="10" style="text-align: center"><input type="checkbox" class="checkall"/></th>
+                    </tr>
+                    </tfoot>
+                </table>
+                <div class="pull-right">
+                    <ul class="pagination">
+                        <?php echo $paging ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table class="table table-condensed">
+            <tr>
+                <td>
+                    <button class="btn btn-danger" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'delete')) ?>')">
+                        Xóa hóa đơn
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+</div>
+
+</section><!-- /.content -->

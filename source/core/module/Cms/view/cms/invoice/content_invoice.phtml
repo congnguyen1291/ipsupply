@@ -1,0 +1,84 @@
+<table style="width:100%">
+    <tr>
+        <th colspan="2" style="font-size:18px;padding:5px 0px"><?php echo $this->translate('hoa_don_ban_hang');?></th>
+    </tr>
+    <tr>
+        <td style="width:159px"><?php echo $this->translate('khach_hang');?></td><td><strong><?php echo $datapayment['full_name'] ?></strong></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('so_dien_thoai');?></td><td><strong></strong><?php echo $datapayment['phone'] ?></strong></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('dia_chi_giao_hang');?> </td><td><strong><?php echo $datapayment['address'] ?></strong></td>
+    </tr>
+    <?php if(isset($dataorder['xuathoadon'])) : ?>
+    <tr>
+        <td colspan="2"><?php echo $this->translate('thong_tin_xuat_hoa_don');?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('ten_cong_ty');?></td><td><strong><?php echo $dataorder['company_name'] ?></strong></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('ma_so_thue');?></td><td><strong><?php echo $dataorder['company_tax_code'] ?></strong></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('dia_chi');?></td><td><strong><?php echo $dataorder['company_address'] ?></strong></td>
+    </tr>
+    <?php endif; ?>
+    <tr>
+        <td colspan="2"><?php echo $this->translate('dien_giai');?></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding:10px 0px">
+            <table style="width: 100%;border-collapse: collapse" border="1">
+                <tr>
+                    <th style="width:40px;text-align: center">#</th>
+                    <th style="width:120px;"><?php echo $this->translate('ma_hang');?></th>
+                    <th><?php echo $this->translate('ten_hang');?></th>
+                    <th style="width:150px"><?php echo $this->translate('don_gia');?></th>
+                    <th style="width: 90px;text-align: center"><?php echo $this->translate('so_luong');?></th>
+                    <th style="width: 190px"><?php echo $this->translate('thanh_tien');?></th>
+                </tr>
+                <?php $index = 1; ?>
+                <?php $total = 0 ?>
+                <?php foreach ($datacart as $key => $row) : ?>
+				<?php if($key == 'coupon') continue; ?>
+                <?php $price = $row['price_sale'] * $row['quantity'] ?>
+                <?php $price += $price * $row['vat'] / 100 ?>
+                <?php $total += $price ?>
+                <tr>
+                    <td style="text-align: center"><?php echo $index++ ?></td>
+                    <td><?php echo $row['code'] ?></td>
+                    <td><?php echo $row['title'] ?></td>
+                    <td><?php echo number_format($row['price_sale'], 2, '.', ',') ?> <?php echo PRICE_UNIT ?></td>
+                    <td style="text-align: center"><?php echo $row['quantity'] ?></td>
+                    <td align="right"><?php echo number_format($price,2,'.',',') ?> <?php echo PRICE_UNIT ?></td>
+                </tr>
+                <?php endforeach; ?>
+                <?php if(isset($datacart['coupon'])) : ?>
+                <tr>
+                    <td><strong>Khoản giảm trừ</strong></td>
+                    <td colspan="5"></td>
+                </tr>
+                <tr>
+                    <td colspan="5">Sử dụng mã khuyến mãi</td>
+                    <td><?php echo $datacart['coupon']['coupons_code'] ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                    <td colspan="2">Giá trị:</td>
+                    <td><?php echo $datacart['coupon']['coupons_price'] ?></td>
+                </tr>
+                <?php endif; ?>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><strong><?php echo $this->translate('tong_cong');?></strong></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="right"><strong><?php echo number_format($total,2,'.',',') ?> <?php echo PRICE_UNIT ?></strong></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

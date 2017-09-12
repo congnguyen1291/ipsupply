@@ -1,0 +1,74 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Hỏi đáp :: Trả lời
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/fqa') ?>">Hỏi đáp</a></li>
+        <li class="active">Trả lời câu hỏi</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Câu hỏi</h3>
+                </div>
+                <div class="box-body">
+                        <p>Tiêu đề: <strong><?php echo $question['tieu_de'] ?></strong></p>
+                        <p>Người hỏi: <strong><?php echo !$question['email'] ? $question['full_name'] : $question['email'] ?></strong></p>
+                        <p>Thời gian hỏi: <strong><?php echo date('d-m-Y H:i:s', strtotime($question['date_create'])) ?></strong></p>
+                        <label>Nội dung</label>
+                        <div>
+                            <strong>
+                            <?php echo $question['noi_dung'] ?>
+                            </strong>
+                        </div>
+                </div>
+            </div>
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Trả lời</h3>
+                </div>
+                <div class="box-body">
+                    <?php if(count($answers)) : ?>
+                    <?php foreach($answers as $answer) : ?>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <?php echo $answer['answer_content'] ?>
+							<br />
+							<a href="<?php echo $this->url('cms/fqa', array('action' => 'delete-answer', 'id' => $answer['id'])) ?>" class="btn btn-danger pull-right">Xóa</a>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php if($this->error) : ?>
+                        <ul>
+                        <?php foreach($error as $er) : ?>
+                            <li style="color: red"><?php echo $er ?></li>
+                        <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form action="" method="post">
+                                <input name="fqa_id" type="hidden" value="<?php echo $question['id'] ?>"/>
+                                <input name="users_id" type="hidden" value="<?php echo $_SESSION['CMSMEMBER']['users_id'] ?>"/>
+                                <input name="is_published" type="hidden" value="1" />
+                                <div class="form-group">
+                                    <textarea name="answer_content" id="answer_content" cols="30" rows="5" class="form-control" style="border: none" autofocus></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Trả lời</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

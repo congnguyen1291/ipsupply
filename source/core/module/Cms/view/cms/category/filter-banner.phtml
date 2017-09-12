@@ -1,0 +1,81 @@
+<?php foreach ($banners as $row) : ?>
+	<tr>
+		<td style="text-align: center"><?php echo $row['categories_banners_id'] ?></td>
+		<td>
+			<a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>"><?php echo $row['categories_banners_title'] ?></a></td>
+		<td>
+			<?php echo $row['link'] ?>
+		</td>
+		<td>
+			<input type="text" style="width: 50px;text-align: center"
+				   name="order[<?php echo $row['categories_banners_id'] ?>]"
+				   value="<?php echo $row['ordering'] ?>" class="numberInput"/>
+		</td>
+		<td>
+			<?php if($row['file']) : ?>
+<!--                                            <a href='javascript:;' data-toggle='tooltip' title='File' data-original-title='File'><i class='fa fa-circle'></i></a>-->
+<!--                                            <img src="--><?php //echo FOLDERWEB . $row['file'] ?><!--" alt="" width="100"/>-->
+				<?php if($this->CMSCommon()->isImage($row['file'])): ?>
+					<img src="<?php echo FOLDERWEB . $row['file'] ?>" alt="" width="100"/>
+				<?php elseif($this->CMSCommon()->isFlash($row['file'])) : ?>
+					<object width="100" height="100" align="middle">
+						<param name="movie" value="<?php echo FOLDERWEB . $row['file'] ?>">
+						<param name="quality" value="high">
+						<param name="bgcolor" value="#ffffff">
+						<param name="play" value="true">
+						<param name="loop" value="true">
+						<param name="wmode" value="transparent">
+						<param name="scale" value="showall">
+						<param name="menu" value="true">
+						<param name="devicefont" value="false">
+						<param name="salign" value="">
+						<param name="allowScriptAccess" value="sameDomain">
+						<!--[if !IE]>-->
+						<object type="application/x-shockwave-flash" data="<?php echo FOLDERWEB . $row['file'] ?>"
+								width="100" height="100">
+							<param name="movie" value="<?php echo FOLDERWEB . $row['file'] ?>">
+							<param name="quality" value="high">
+							<param name="bgcolor" value="#ffffff">
+							<param name="play" value="true">
+							<param name="loop" value="true">
+							<param name="wmode" value="transparent">
+							<param name="scale" value="showall">
+							<param name="menu" value="true">
+							<param name="devicefont" value="false">
+							<param name="salign" value="">
+							<param name="allowScriptAccess" value="sameDomain">
+							<!--<![endif] -->
+							<a href="http://www.adobe.com/go/getflash">
+								<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"
+									 alt="Get Adobe Flash player">
+							</a>
+							<!--[if !IE]>-->
+						</object>
+						<!--<![endif] -->
+					</object>
+				<?php else: ?>
+					Không biết định dạng
+				<?php endif; ?>
+			<?php else: ?>
+				<?php echo $row['code'] ?>
+			<?php endif; ?>
+		</td>
+		<td>
+			<?php if($row['is_published']) : ?>
+				<a href='javascript:;' data-toggle='tooltip' title='Đang hiển thị' data-original-title='Đang hiển thị'><i class='fa fa-circle'></i></a>
+			<?php else: ?>
+				<a href='javascript:;' data-toggle='tooltip' title='Đang ẩn' data-original-title='Đang ẩn'><i class='fa fa-circle'></i></a>
+			<?php endif; ?>
+		</td>
+		<td>
+			Box <?php echo $row['box_num'] ?>
+		</td>
+		<td>
+			<a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>">Cập nhật</a>
+		</td>
+		<td>
+			<input type="checkbox" name="cid[]"
+				   value="<?php echo $row['categories_banners_id'] ?>"/>
+		</td>
+	</tr>
+<?php endforeach; ?>

@@ -1,0 +1,22 @@
+<?php if ($this->pageCount): ?>
+    <?php print_r($this->pagesInRange) ?>
+    <ul class="pagination">
+        <?php if(isset($this->previous)) : ?>
+        <li><a href="#">&laquo;</a></li>
+        <?php else: ?>
+            <li class="disable"><span>&laquo;</span></li>
+        <?php endif; ?>
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if($page != $this->current): ?>
+                <li><a href="#"><?php echo $page ?></a></li>
+            <?php else: ?>
+                <li class="active"><a href="#"><?php echo $page ?></a></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <?php if(isset($this->next)) : ?>
+            <li><a href="#">&raquo;</a></li>
+        <?php else: ?>
+            <li class="disable"><span>&raquo;</span></li>
+        <?php endif; ?>
+    </ul>
+<?php endif; ?>

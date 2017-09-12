@@ -1,0 +1,220 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/category') ?>">
+                        Danh mục sản phẩm
+                    </a>
+                </li>
+                <li class="active">
+                    Quản lý banner
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Danh mục :: Quản lý banner
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/category', array('action' => 'filterBanner')) ?>" method="post" class="filter_form" role="form" data-form="searchAjax" >
+                <div class="coz-search-bar clearfix" >
+                    <div class="input-group">
+                        <input type="text" name="categories_title" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content" >
+    <form action="<?php echo $this->url('cms/category', array('action' => 'manageBanner')) ?>" method="post">
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-6" >
+                </div>
+                <div class="col-sm-6" >
+                    <div class="text-right" >
+                        <a href="<?php echo $this->url('cms/category', array('action' => 'addBanner')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm banner" >
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                        <?php if( !empty($banners) ){ ?>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'publishBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện banner" >
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'unpublishBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn banner" >
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'updateorderBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Cập nhật thứ tự" >
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'deleteBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá banner" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php if( !empty($banners) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" >ID</th>
+                        <th>Tên</th>
+                        <th class="col-lim" >Vị trí</th>
+                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($banners as $row ) { ?>
+                    <tr>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['categories_banners_id'] ?>
+                        </td>
+                        <td>
+                            <div class="clearfix" >
+                                <a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa banner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                    <?php echo $row['categories_banners_title'] ?>
+                                </a>
+                            </div>
+                            <div class="preview-banner" >
+                                <div class="inner-preview-banner clearfix" >
+                                    <?php if($row['file']) : ?>
+                                        <?php if($this->CMSCommon()->isImage($row['file'])): ?>
+                                            <img src="<?php echo FOLDERWEB . $row['file'] ?>" alt="" width="100"/>
+                                        <?php elseif($this->CMSCommon()->isFlash($row['file'])) : ?>
+                                            <object width="100" height="100" align="middle">
+                                                <param name="movie" value="<?php echo FOLDERWEB . $row['file'] ?>">
+                                                <param name="quality" value="high">
+                                                <param name="bgcolor" value="#ffffff">
+                                                <param name="play" value="true">
+                                                <param name="loop" value="true">
+                                                <param name="wmode" value="transparent">
+                                                <param name="scale" value="showall">
+                                                <param name="menu" value="true">
+                                                <param name="devicefont" value="false">
+                                                <param name="salign" value="">
+                                                <param name="allowScriptAccess" value="sameDomain">
+                                                <!--[if !IE]>-->
+                                                <object type="application/x-shockwave-flash" data="<?php echo FOLDERWEB . $row['file'] ?>"
+                                                        width="100" height="100">
+                                                    <param name="movie" value="<?php echo FOLDERWEB . $row['file'] ?>">
+                                                    <param name="quality" value="high">
+                                                    <param name="bgcolor" value="#ffffff">
+                                                    <param name="play" value="true">
+                                                    <param name="loop" value="true">
+                                                    <param name="wmode" value="transparent">
+                                                    <param name="scale" value="showall">
+                                                    <param name="menu" value="true">
+                                                    <param name="devicefont" value="false">
+                                                    <param name="salign" value="">
+                                                    <param name="allowScriptAccess" value="sameDomain">
+                                                    <!--<![endif] -->
+                                                    <a href="http://www.adobe.com/go/getflash">
+                                                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"
+                                                             alt="Get Adobe Flash player">
+                                                    </a>
+                                                    <!--[if !IE]>-->
+                                                </object>
+                                                <!--<![endif] -->
+                                            </object>
+                                        <?php else: ?>
+                                            Không biết định dạng
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <?php echo $row['code'] ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-lim text-right" >
+                            <?php echo $row['ordering'] ?>
+                        </td>
+                        <td class="col-lim" > 
+                            in <?php echo $row['categories_title'] ?>
+
+                            <?php if( !empty($row['is_published']) ){ ?>
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                </span>
+                            <?php }else{ ?>
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                    <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                                </span>
+                            <?php } ?>
+                        </td>
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa banner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'deleteBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá banner"  data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+
+                            <?php if( !empty($row['is_published']) ){ ?>
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'unpublishBanner', 'id' => $row['categories_banners_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn banner" >
+                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                            </a>
+                            <?php }else{ ?>
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'unpublishBanner', 'id' => $row['categories_banners_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện banner" >
+                                <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                            </a>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['categories_banners_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có banner
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>
+
+
+

@@ -1,0 +1,29 @@
+<?php foreach ($manufacturers as $row) : ?>
+	<tr>
+		<td style="text-align: center"><?php echo $row['manufacturers_id'] ?></td>
+		<td>
+<!--                                        <a class="editinline1" onclick="return edit_inline(this);" data-col="manufacturers_name" item-id="--><?php //echo $row['manufacturers_id'] ?><!--" href="--><?php //echo $this->url('cms/manufacturers', array('action' => 'edit', 'id' => $row['manufacturers_id'])) ?><!--">--><?php //echo $row['manufacturers_name'] ?><!--</a>-->
+			<a href="<?php echo $this->url('cms/manufacturers',array('action' => 'edit', 'id' => $row['manufacturers_id'])) ?>"><?php echo $row['manufacturers_name'] ?></a>
+		</td>
+		<td>
+			<?php if(!$row['thumb_image']) : ?>
+				Chưa có logo
+			<?php else: ?>
+				<img src="<?php echo FOLDERWEB.$row['thumb_image'] ?>" width="100" /> </td>
+			<?php endif; ?>
+		<td style="text-align: center">
+			<input type="text" style="width: 50px;text-align: center"
+				   name="order[<?php echo $row['manufacturers_id'] ?>]"
+				   value="<?php echo $row['ordering'] ?>" class="numberInput"/>
+		</td>
+
+		<td><?php echo date('d/m/Y', strtotime($row['date_create'])) ?></td>
+		<td style="text-align: center">
+			<?php echo $row['is_published'] == 1 ? 'Hiển thị' : '-' ?>
+		</td>
+		<td>
+			<input type="checkbox" name="cid[]"
+				   value="<?php echo $row['manufacturers_id'] ?>"/>
+		</td>
+	</tr>
+<?php endforeach; ?>

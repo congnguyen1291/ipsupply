@@ -1,0 +1,289 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Hóa đơn :: Thêm mới
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/invoice') ?>">Hóa đơn</a></li>
+        <li class="active">Thêm hóa đơn</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/invoice', array('action' => 'add')));
+        $form->setAttribute('id', 'form-invoice');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('invoice_id'));
+        ?>
+        <?php
+        if(isset($_SESSION['error_message'])){
+        ?>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <ul>
+                            <li style="color:red"><?php echo $_SESSION['error_message']; unset($_SESSION['error_message']) ?></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <button class="btn btn-primary">Lưu lại</button>
+                        <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Thông tin hóa đơn</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <?php echo $this->formRow($form->get('invoice_title')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="promotion">Khuyến mãi</label>
+                            <?php echo $this->formRow($form->get('promotion')); ?>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label for="is_published">
+                                    <?php echo $this->formRow($form->get('is_published')); ?>
+                                    Hiển thị
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="transportation_id">Hình thức vận chuyển</label>
+                            <?php echo $this->formRow($form->get('transportation_id')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment">Thanh toán</label>
+                            <?php echo $this->formRow($form->get('payment')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery">Tình trạng giao hàng</label>
+                            <?php echo $this->formRow($form->get('delivery')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery">Người mua hàng</label>
+                            <?php echo $this->formRow($form->get('users_id')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="full_name">Họ tên khách hàng(option)</label>
+                            <?php echo $this->formRow($form->get('full_name')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại(option)</label>
+                            <?php echo $this->formRow($form->get('phone')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email(option)</label>
+                            <?php echo $this->formRow($form->get('email')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ(option)</label>
+                            <?php echo $this->formRow($form->get('address')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="cities_id">Tỉnh/Thành phố(option)</label>
+                            <select name="cities_id" id="cities" class="form-control multichoice" onchange="loadDistrict(this.value,-1,-1)">
+                                <option value="">-- Chọn thành phố --</option>
+                                <?php foreach($cities as $city) : ?>
+                                    <option value="<?php echo $city['cities_id'] ?>"><?php echo $city['cities_title'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="districts">Quận/Huyện(option)</label>
+                            <select name="districts_id" id="districts" class="form-control" onchange="loadWard(this.value,-1)"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="wards">Phường/Xã(option)</label>
+                            <select name="wards_id" id="wards" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="email_subscription">Email nhận thông tin(option)</label>
+                            <?php echo $this->formRow($form->get('email_subscription')); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-7">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Tra cứu sản phẩm</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control product_autocomplete"
+                                           placeholder="Nhập vào mã sản phẩm hoặc tên sản phẩm"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="quantity">Số lượng</label>
+                                    <input type="text" name="quantity" class="form-control quantity_current numberInput"
+                                           placeholder="Số lượng" value="1"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Chi tiết sản phẩm</div>
+                                    <div class="panel-body">
+                                        <ul style="margin: 0;padding:0;list-style-type: none">
+                                            <li>ID: <strong class="products_id"></strong></li>
+                                            <li>Mã sản phẩm: <strong class="products_code"></strong></li>
+                                            <li>Tên sản phẩm: <strong class="products_title"></strong></li>
+                                            <li>Đơn giá: <strong class="price"></strong></li>
+                                            <li>Tình trạng hàng: <strong class="is_available"></strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <button type="button" class="btn btn-primary btn-add-to-order"
+                                        style="margin-bottom: 10px">Thêm vào hóa
+                                    đơn &raquo;</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Khách hàng doanh nghiệp</h3>
+                        <p>* bỏ qua mục này nếu là khách hàng cá nhân</p>
+                    </div>
+                    <div class="box_body">
+                        <div class="form-group">
+                            <label for="company_name">Tên công ty</label>
+                            <?php echo $this->formRow($form->get('company_name')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="company_address">Địa chỉ công ty</label>
+                            <?php echo $this->formRow($form->get('company_address')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="company_tax_code">Mã số thuế</label>
+                            <?php echo $this->formRow($form->get('company_tax_code')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Mã khuyến mãi</h3>
+                    </div>
+                    <div class="box_body">
+                        <div class="form-group">
+                            <label for="coupon_code">Nhập mã khuyến mãi</label>
+                            <input type="text" name="coupon" id="coupon_code" class="form-control" onblur="javascript:loadCouponInfo(this.value);"/>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Thông tin mã khuyến mãi</div>
+                            <div class="panel-body" id="coupon_response">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Danh sách sản phẩm</h3>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-hover table-data-bind">
+                                <thead>
+                                <tr>
+                                    <th width="20" style="text-align: center">ID</th>
+                                    <th width="200">Mã sản phẩm</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th width="100" style="text-align:center">Số lượng</th>
+                                    <th width="200">Đơn giá</th>
+                                    <th width="10"><input type="checkbox" class="checkall"/></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php if(isset($_POST['pdetail'])): ?>
+                                <?php $data = $_POST['pdetail'] ?>
+                                <?php $list_current = array() ?>
+                                <?php foreach($data as $key => $r) : ?>
+                                <?php $list_current[] = $r['products_id'] ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $key ?>
+                                        <input type='hidden' value='<?php echo $key ?>' name='pdetail[<?php echo $key ?>][products_id]' />
+                                        <input type='hidden' value='<?php echo $r['vat'] ?>' name='pdetail[<?php echo $key ?>][vat]' />
+                                    </td>
+                                    <td><?php echo $r['products_code'] ?><input type='hidden' value='<?php echo $r['products_code'] ?>' name='pdetail[<?php echo $key ?>][products_code]' /></td>
+                                    <td><?php echo $r['products_title'] ?><input type='hidden' value='<?php echo $r['products_title'] ?>' name='pdetail[<?php echo $key ?>][products_title]' /></td>
+                                    <td style='text-align:center'><input type='text' name='pdetail[<?php echo $key ?>][quantity]' value='<?php echo $r['quantity'] ?>' style='width:50px;text-align:center' /></td>
+                                    <td align="right"><?php echo number_format($r['price']) ?> <?php echo PRICE_UNIT ?><input type='hidden' name='pdetail[<?php echo $key ?>][price]' value='<?php echo $r['price'] ?>' /></td>
+                                    <td><input type='checkbox' value='<?php echo $key ?>' name='pid[]' checked /></td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Thông tin thêm</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+<!--                            <textarea name="invoice_description" id="invoice_description" cols="30" rows="5"-->
+<!--                                      placeholder="Mô tả"-->
+<!--                                      class="form-control"></textarea>-->
+
+                            <?php echo $this->formRow($form->get('invoice_description')); ?>
+                        </div>
+                        <div class="form-group">
+<!--                            <textarea name="content" id="content" cols="30" rows="5"-->
+<!--                                      placeholder="Mô tả"-->
+<!--                                      class="form-control ckeditor"></textarea>-->
+<!--                            <label for="content">Chi tiết</label>-->
+<!--                            --><?php //echo $this->formRow($form->get('content')); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <button class="btn btn-primary">Lưu lại</button>
+                        <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>
+<?php if(isset($list_current)) : ?>
+    <script type="text/javascript">
+        var products_list = <?php echo str_replace('"','',json_encode($list_current)) ?>;
+    </script>
+<?php endif; ?>

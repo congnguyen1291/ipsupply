@@ -1,0 +1,140 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/category') ?>">
+                        Danh mục sản phẩm
+                    </a>
+                </li>
+                <li class="active">Thêm mới banner</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Danh mục :: Thêm mới banner
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/category', array('action' => 'addBanner')) ?>" id="form-banner-category" method="post" enctype="multipart/form-data" >
+        <input type="hidden" name="banner_type" value="1" />
+        <input name="is_product" type="hidden" value="0"/>
+        <div class="row" >
+            <div class="col-xs-6" >
+                <div class="form-group">
+                    <label for="categories_id">Danh mục</label>
+                    <select name="categories_id" id="categories_id" class="form-control input-sm">
+                        <?php foreach($cats as $cat) : ?>
+                            <option value="<?php echo $cat['categories_id'] ?>"><?php echo $cat['treename'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="categories_banners_title">Tiêu đề</label>
+                    <input class="form-control input-sm" type="text" name="categories_banners_title"
+                           id="categories_banners_title"/>
+                </div>
+                <div class="form-group">
+                    <label for="link">Link</label>
+                    <input class="form-control input-sm" type="text" name="link" id="link"/>
+                </div>
+                <div class="form-group">
+                    <label for="box_num">Vị trí banner</label>
+                    <select name="box_num" class="form-control input-sm">
+                        <option value="1">Home</option>
+                        <option value="2">Category</option>
+                        <option value="3">Visual menu</option>
+                        <option value="4">Footer menu</option>
+                        <option value="5">Mega menu</option>
+                    </select>
+                </div>
+
+                <div class="form-group" >
+                    <label for="price">
+                        Giá(<em>sẽ hiển thị trên banner nếu có điền giá trị</em>)
+                    </label>
+                    <div class="input-group">
+						<span class="input-group-addon">$</span>
+						<input type="text" name="price" id="price" class="form-control input-sm moneyInput" value="">                    
+                        <span class="input-group-addon">.00</span>
+					</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <div class="result-list-img clearfix" >
+                <div class="list-img-upload clearfix" ></div>
+                <div class="img-prevew-upload btn-upload btn-upload-banner-category" >
+                    <a href="javascript:void(0)" class="action-upload" >
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                    <a href="javascript:void(0)" class="img-responsive"  >
+                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <label for="categories_banners_description">
+                Mô tả(<em>sẽ hiển thị trên banner nếu có điền giá trị</em>)
+            </label>
+            <textarea name="categories_banners_description" id="categories_banners_description" class="form-control input-sm" rows="4"></textarea>
+        </div>
+
+        <div class="form-group" >
+            <label for="ordering">
+                Vị trí
+                <input class="form-control input-sm numberInput input-ordering" id="ordering" name="ordering" />
+            </label>
+            <label for="is_published">
+                <input name="is_published" type="hidden" value="0"/>
+                <input class="form-control input-sm" type="checkbox" name="is_published" id="is_published" value="1"/>
+                Kích hoạt
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn btn-primary input-sm" >
+                Thêm banner
+            </button>
+            <button type="button" class="btn btn-danger  input-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+    </form>
+</section>
+<script type="template" id="code_template">
+    <label for="code">Mã</label>
+    <textarea class="form-control input-sm" id="code" name="code" cols="10" rows="10"></textarea>
+</script>
+<script type="template" id="file_template">
+    <label for="file">File</label>
+    <input class="form-control input-sm" type="file" name="file" id="file"/>
+</script>
+<style type="text/css">
+    .option-field-banner{
+        display:none;
+    }
+</style>

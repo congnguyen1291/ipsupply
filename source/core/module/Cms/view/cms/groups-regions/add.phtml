@@ -1,0 +1,114 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/group_regions') ?>" >
+                        Khu vực
+                    </a>
+                </li>
+                <li class="active">
+                    Thêm mới
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Khu vực :: Thêm mới
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/group_regions', array('action' => 'add')));
+    $form->setAttribute('id', 'form-group');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('group_regions_id'));
+    ?>
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <div class="form-group">
+                <label for="group_regions_name" >
+                    Tên Khu vực
+                </label>
+                <?php echo $this->formRow($form->get('group_regions_name')); ?>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-12" >
+            <p>
+                Khu vực sẽ được dùng để tạo <a href="/cms/shipping" >vận chuyển</a>.<br />
+                Hãy chọn những đất nước, thành phố mà bạn muốn
+            </p>
+        </div>
+    </div>
+
+    <?php $countries = $this->Contries()->getContryForWebsite(); ?>
+    <?php if( !empty($countries) ){ ?>
+    <div class="form-group">
+        <label for="list-coutries">Danh sách country</label>
+        <div class="list-coutries clearfix" id="list-coutries" >
+        <?php 
+            foreach ($countries as $ctry){ 
+                $cities = $this->Cities()->loadCitiesByCountry($ctry['id']);
+        ?>
+            <div class="item-countries <?php echo !empty($cities) ? 'has-chid' : '' ?>" >
+                <label>
+                    <input type="checkbox" name="country_id[]" value="<?php echo $ctry['id'] ?>" <?php echo in_array($ctry['id'], $idCountriesDisable) ? 'disabled="disabled"' : '' ?> >
+                    <?php echo $ctry['title'] ?>
+                </label>
+            </div>
+            <?php if( !empty($cities) ){ ?>
+            <div class="list-cities clearfix" >
+                <?php foreach ($cities as $ci){ ?>
+                <div class="item-cities" >
+                    <label>
+                        <input type="checkbox" name="regions[]" value="<?php echo $ci['cities_id'] ?>" <?php echo in_array($ci['cities_id'], $idCitiesDisable) ? 'disabled="disabled"' : '' ?> >
+                        <?php echo $ci['cities_title'] ?>
+                    </label>
+                </div>
+                <?php } ?>
+            </div>
+            <?php } ?>
+        
+        <?php } ?>
+        </div>
+    </div>
+    <?php } ?>
+
+    <div class="form-group">
+        <label for="is_published">Hiển Thị</label>
+        <?php echo $this->formRow($form->get('is_published')); ?>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary btn-sm" >
+            Thêm mới khu vực
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+            Quay lại
+        </button>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

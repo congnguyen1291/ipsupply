@@ -1,0 +1,424 @@
+<?php
+$languages_id = $datas->languages_id;
+$country_code = $datas->country_code;
+$country_id = $datas->country_id;
+$countries = $datas->countries;
+$languages = $datas->languages;
+$language = $datas->language;
+$categories = $datas->categories;
+$menus = $datas->menus;
+$menu = $this->Menus()->getMenuWithAlias('MENU_TOP');
+$menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu));
+$categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
+$news = $this->Articles()->getTopArticles(0, 10);
+?>
+<script id="tmplCartMini" data-place="productCartTemplate" type="text/x-jQuery-tmpl">
+    <div>
+        <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="link-lb-summary" rel="nofollow" >
+            <span class="inner-nav-top" >
+                <i class="ic i-cart" ></i>
+                <?php echo $this->translate('txt_gio_hang') ?>
+                <span class="num-cart" >
+                    ${carts.getNumberProductInCart()}
+                </span>
+            </span>
+        </a>
+        <div class="dropdown-menu" >
+            {{if carts.getNumberProductInCart() > 0 }}
+            <div class="top-cart-content arrow_box" >
+                <div class="dropdown-label" >
+                    <?php echo $this->translate('txt_danh_sach_san_pham_in_cart'); ?> 
+                    (${carts.getNumberProductInCart()} <?php echo $this->translate('txt_san_pham'); ?>)
+                </div>
+                <div id="cart-sidebar" class="mini-products-list count_li" >
+                    <div class="clearfix" style="padding: 10px"  >
+                        {{each products }}
+                        <div class="item clearfix" >
+                            <a class="product-image" href="${coz.view.product.getLink($value)}" ${coz.view.product.getTypeView($value)} title="${coz.view.product.getTitle($value)}" rel="nofollow" >
+                                <img class="anh-img" alt="${coz.view.product.getTitle($value)}" src="${coz.view.product.getImage($value)}" width="80">
+                            </a>
+                            <div class="detail-item">
+                                <div class="product-details">
+                                    <a href="${coz.view.product.getUrlDel($value)}" data-neo="ajax" title="<?php echo $this->translate('txt_xoa')?>" class="fa fa-remove" rel="nofollow" >&nbsp;</a>
+                                    <p class="product-name"> 
+                                        <a href="${coz.view.product.getLink($value)}" ${coz.view.product.getTypeView($value)} title="${coz.view.product.getTitle($value)}" rel="nofollow" >
+                                            ${coz.view.product.getName($value)}
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="product-details-bottom"> 
+                                    <span class="price">
+                                        ${coz.fomatCurrency(coz.view.product.getPriceSale($value))}
+                                    </span> 
+                                    <span class="title-desc">
+                                        <?php echo $this->translate('txt_so_luong')?> :
+                                    </span> 
+                                    <strong>
+                                        ${coz.view.product.getProductsQuantityInCart($value)}
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="height:10px;"></div>
+                        {{/each}}
+                    </div>
+
+                    <div class="li-fix-2" >
+                        <div class="actions clearfix" >
+                            <a href="<?php echo $this->Cart()->getUrlPayment(); ?>" class="btn-checkout" >
+                                <span>
+                                    <?php echo $this->translate('txt_thanh_toan'); ?>
+                                </span>
+                            </button>
+
+                            <a class="view-cart" href="<?php echo $this->Cart()->getUrlCart(); ?>" >
+                                <span>
+                                    <?php echo $this->translate('txt_xem_gio_hang'); ?>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="top-cart-content arrow_box">
+                <div id="cart-sidebar" class="mini-products-list">
+                    <div class="dropdown-label" >
+                        <?php echo $this->translate('txt_chua_co_san_pham'); ?>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</script>
+<header id="header" class="clearfix" itemscope itemtype="http://schema.org/WPHeader" >
+    <div class="wrap-header clearfix" >
+        <div class="header-top" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-3" >
+                        <div class="text-lg-left text-sm-center text-xs-center wrap-logo" data-neo="widget" data-widName="logo" >
+                            <div class="hidden-lg-up" >
+                                <a class="btn-togle-mm" href="javascript:void(0);" data-toggle="collapse" data-target="#main-navigation" rel="nofollow">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </a>
+                            </div>
+                            <div class="logo" itemscope='itemscope' itemtype='https://schema.org/Organization' >
+                                <meta content='/' itemprop='url' />
+                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>" data-pjax="true" data-container="Main" itemprop='logo' itemscope='itemscope' itemtype='https://schema.org/ImageObject' >
+                                    <meta content='' itemprop='url'/>
+                                    <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 210); ?>" alt="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
+                                </a>
+                            </div>
+                            <div class="mini-cart-mobile text-xs-center hidden-lg-up" >         
+                                <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="link-lb-summary" rel="nofollow">             
+                                    <span class="ic i-cart-mini">                 
+                                        <span>                     
+                                            <span class="cartCount" data-btn="numberProductInCart" >0</span>                 
+                                        </span>             
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-10 col-lg-9 hidden-md-down" >
+                        <div class="clearfix" data-neo="widget" data-widName="menu" >
+                            <ul class="mini-nav-top pull-xs-right clearfix" >
+                                <li>
+                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/history" title="<?php echo $this->translate('txt_tracking_invoice') ?>" >
+                                        <span>
+                                            <?php echo $this->translate('txt_tracking_invoice') ?>
+                                        </span>
+                                    </a>
+                                </li>
+                                <?php foreach ($languages as $key => $lang) { ?>
+                                <li class="cu-lang <?php echo ($lang['languages_id'] == $languages_id) ? 'active' : '' ?>" >
+                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/language/<?php echo md5($lang['languages_file']) ?>" title="<?php echo $lang['languages_name'] ?>" rel="nofollow"  >
+                                        <span>
+                                            <?php echo $lang['languages_name'] ?>
+                                        </span>
+                                    </a>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        <div class="clearfix" data-neo="widget" data-widName="menu" >
+                            <ul class="nav-top pull-xs-right clearfix" >
+                                <li class="mini-contact" >
+                                    <span class="inner-nav-top" >
+                                        <i class="ic i-phone" ></i>
+                                        <?php echo $this->translate('txt_hotline') ?>
+                                        <b><?php echo $this->translate('txt_number_hotline') ?></b>
+                                    </span>
+                                </li>
+
+                                <?php if( !empty($countries) ){ ?>
+                                <li class="mini-tran" >
+                                    <a href="javascript:void(0);" title="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  class="link-lb-summary" rel="nofollow" >
+                                        <span class="inner-nav-top" >
+                                            <?php echo $this->translate('txt_van_chuyen_quoc_te') ?>
+                                            <?php if( !empty($country_code)){ ?>
+                                            <span class="flag <?php echo $this->Contries()->getClassByCode($country_code) ?>" ></span>
+                                            <?php }else{ ?>
+                                            <i class="fa fa-globe" aria-hidden="true"></i>
+                                            <?php } ?>
+                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu list-countries" >
+                                        <span class="dropdown-label">
+                                            <?php echo $this->translate('txt_chon_quoc_gia') ?>            
+                                        </span>
+                                        <div class="clearfix scrollbar-countries scrollbar-dynamic" data-place="scrollbarCountries" >
+                                            <span class="dropdown-item <?php echo empty($country_code) ? 'active' : '' ?>" >
+                                                <a title="<?php echo $this->translate('txt_tat_ca_cac_quoc_gia') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/country/set?id=0" rel="nofollow" >
+                                                    <i class="fa fa-globe" aria-hidden="true"></i>
+                                                    <?php echo $this->translate('txt_tat_ca_cac_quoc_gia') ?>
+                                                </a>
+                                            </span>
+                                            <?php 
+                                            $hasBtnMoreCountry = FALSE;
+                                            foreach ($countries as $key => $cot ) {
+                                                if( !empty($cot['level_view']) && $cot['id']!=$country_id ){
+                                                    $hasBtnMoreCountry = TRUE; 
+                                                    continue;
+                                                }
+                                            ?>
+                                            <span class="dropdown-item <?php echo $cot['id']==$country_id ? 'active' : '' ?>" >
+                                                <a title="<?php echo $cot['title'] ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/country/set?id=<?php echo $cot['id'] ?>" rel="nofollow" >
+                                                    <span class="flag <?php echo $this->Contries()->getClassByCode($cot['code']) ?>" ></span>
+                                                    <?php echo $cot['title'] ?>
+                                                </a>
+                                            </span>
+                                            <?php } ?>
+
+                                            <?php if($hasBtnMoreCountry){ ?>
+                                            <span class="dropdown-item btn-more-coutry" >
+                                                <a title="<?php echo $this->translate('txt_them_lua_chon_country') ?>" href="javascript:void(0);" rel="nofollow" data-btn="loadMoreCountry" >
+                                                    <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+                                                    <?php echo $this->translate('txt_them_lua_chon_country') ?>
+                                                </a>
+                                            </span>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php } ?>
+
+                                <li class="mini-user"  data-place="miniUser" >
+                                    <a href="javascript:void(0);" title="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  class="link-lb-summary" rel="nofollow" >
+                                        <span class="inner-nav-top" >
+                                            <i class="ic i-user" ></i>
+                                            <?php echo $this->translate('txt_tai_khoan') ?>
+                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+
+                                    <div class="dropdown-menu" data-place="miniDropdownUser" >
+                                        <?php if( !$this->User()->hasLogin() ){ ?>
+                                        <span class="dropdown-label" >
+                                            <?php echo $this->translate('txt_chao_ban') ?>
+                                        </span>
+                                        <span class="dropdown-item" >
+                                            <a title="<?php echo $this->translate('txt_login') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" id='customer_login_link' >
+                                                <?php echo $this->translate('txt_login') ?>
+                                            </a>
+                                        </span>
+                                        <span class="dropdown-item" >
+                                            <a title="<?php echo $this->translate('txt_sign_up') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" id='customer_register_link'>
+                                                <?php echo $this->translate('txt_sign_up') ?>
+                                            </a>
+                                        </span>
+                                        <?php }else{ ?>
+                                        <span class="dropdown-label" >
+                                            <?php echo $this->translate('txt_xin_chao_ban') ?>
+                                            <?php echo $this->User()->getFullName() ?>
+                                        </span>
+                                        <span class="dropdown-item" >
+                                            <a title="<?php echo $this->translate('txt_profile') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" id='customer_login_link' rel="nofollow" >
+                                                <?php echo $this->translate('txt_thong_tin') ?>
+                                            </a>
+                                        </span>
+                                        <span class="dropdown-item" >
+                                            <a title="<?php echo $this->translate('txt_logout') ?>" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/logout" id='customer_login_link' rel="nofollow" >
+                                                <?php echo $this->translate('txt_logout') ?>
+                                            </a>
+                                        </span>
+                                        <?php } ?>
+                                    </div>
+                                </li>
+                                <li class="mini-cart" data-place="cartMini" >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-nav  hidden-md-down" >
+            <div class="container" >
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="nav-mm clearfix" data-neo="widget" data-widName="navi" >
+                            <?php if( !empty($menuRoot) ){ ?>
+                            <div class="clearfix pull-xs-left" >
+                                <nav class="nav-main collapse navbar-toggleable-md" itemprop='mainEntity' itemscope='itemscope' itemtype='http://schema.org/SiteNavigationElement' >
+                                    <ul class="nav navbar-nav clearfix" >
+                                        <?php 
+                                        foreach ($menuRoot as $key01 => $menu01) { 
+                                            $childrens = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu01));
+                                            $categoriesRoot = $this->Categories()->getRoot($categories);
+                                            $categoriesArticlesRoot = $this->CategoriesArticles()->getRoot($categoryArticles);
+                                        ?>
+                                        <li class="nav-item <?php echo $this->Menus()->hasChildrens($menus, $menu01, $categories, $categoryArticles) ? 'dropdown' : '' ?>" >
+                                            <a href="<?php echo $this->Menus()->getLinkForMenu($menu01); ?>" class="nav-link" title="<?php echo $this->Menus()->getName($menu01); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                <span>
+                                                    <?php echo $this->Menus()->getName($menu01); ?>
+                                                </span> 
+                                            </a>
+                                            <?php 
+                                            if( !empty($childrens) 
+                                                && !$this->Menus()->isCollection($menu01)
+                                                && !$this->Menus()->isBlog($menu01) ){ ?>
+                                            <ul class="dropdown-menu" >
+                                                <?php foreach ($childrens as $key02 => $menu02){ ?>
+                                                <li>
+                                                    <a  href="<?php echo $this->Menus()->getLinkForMenu($menu02); ?>" title="<?php echo $this->Menus()->getName($menu02); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                        <?php echo $this->Menus()->getName($menu02); ?>                     
+                                                    </a>
+                                                </li>
+                                                <?php } ?>
+                                            </ul>
+                                            <?php }else if($this->Menus()->isCollection($menu01) 
+                                                && !empty($categoriesRoot)){ ?>
+                                            <ul class="dropdown-menu" >
+                                                <?php foreach ($categoriesRoot as $key01 => $category01) { ?>
+                                                <li>
+                                                    <a  href="<?php echo $this->Categories()->getCategoriesUrl($category01); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                        <?php echo $this->Categories()->getTitle($category01); ?>                     
+                                                    </a>
+                                                    <?php 
+                                                    $categoriesChildrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
+                                                    if( !empty($categoriesChildrens) ){ ?>
+                                                    <ul>
+                                                        <?php foreach ($categoriesChildrens as $key02 => $category02){ ?>
+                                                        <li>
+                                                            <a href="<?php echo $this->Categories()->getCategoriesUrl($category02); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                                <?php echo $this->Categories()->getTitle($category02); ?>
+                                                            </a>
+                                                            <?php 
+                                                            $categoriesChildrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
+                                                            if( !empty($categoriesChildrens02) ){ ?>
+                                                            <ul class="dropdown-menu">
+                                                                <?php foreach ($categoriesChildrens02 as $key03 => $category03){ ?>
+                                                                <li>
+                                                                    <a href="<?php echo $this->Categories()->getCategoriesUrl($category03); ?>" title="<?php echo $this->Categories()->getTitle($category03); ?>" >
+                                                                        <?php echo $this->Categories()->getTitle($category03); ?>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                            <?php } ?>
+                                                        </li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                    <?php } ?>
+                                                </li>
+                                                <?php } ?>
+                                            </ul>
+                                            <?php }else if( $this->Menus()->isBlog($menu01) 
+                                                && !empty($categoriesArticlesRoot) ){ ?>
+                                            <ul class="dropdown-menu" >
+                                                
+                                                <?php foreach ($categoriesArticlesRoot as $key01 => $category01) { ?>
+                                                <li>
+                                                    <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category01); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category01); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                        <?php echo $this->CategoriesArticles()->getTitle($category01); ?>
+                                                    </a>
+                                                    <?php 
+                                                    $categoriesArticlesChildrens = $this->CategoriesArticles()->getChildrens($categoryArticles, $this->CategoriesArticles()->getId($category01));
+                                                    if( !empty($categoriesArticlesChildrens) ){ ?>
+                                                    <ul>
+
+                                                        <?php foreach ($categoriesArticlesChildrens as $key02 => $category02){ ?>
+                                                        <li>
+                                                            <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category02); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category02); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                                <?php echo $this->CategoriesArticles()->getTitle($category02); ?>
+                                                            </a>
+
+                                                            <?php 
+                                                            $categoriesArticlesChildrens02 = $this->CategoriesArticles()->getChildrens($categoryArticles, $this->CategoriesArticles()->getId($category02));
+                                                            if( !empty($categoriesArticlesChildrens02) ){ ?>
+                                                            <ul class="dropdown-menu">
+                                                                <?php foreach ($categoriesArticlesChildrens02 as $key03 => $category03){ ?>
+                                                                <li>
+                                                                    <a  href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category03); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category03); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                                        <?php echo $this->CategoriesArticles()->getTitle($category03); ?>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                            <?php } ?>
+
+                                                        </li>
+                                                        <?php } ?>
+
+                                                    </ul>
+                                                    <?php } ?>
+
+                                                </li>
+                                                <?php } ?>
+
+                                            </ul>
+                                            <?php } ?>
+                                        </li>
+                                        <?php } ?>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <?php } ?>
+
+                            <div class="clearfix pull-xs-right" data-neo="widget" data-widName="search" >
+                                <div class="form-search clearfix" >
+                                    <form action="/search" class="clearfix" method="GET" >
+                                        <div class="inner-search clearfix" >
+                                            <input type="text" name="keyword" class="input-search" placeholder="<?php echo $this->translate('txt_search_holder') ?>" >
+                                            <button type="submit" class="btn-search" >
+                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php if( !empty($news) ){ ?>
+        <div class="header-tip" >
+            <div class="container" >
+                <div class="row">
+                    <div class="col-sm-12" >
+                        <div class="marquee-news" >
+                            <?php foreach ($news as $key => $article) { ?>
+                            <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>" class="inner-item-header-tip" data-pjax="true" data-container="Main" >
+                                <i class="fa fa-caret-right" aria-hidden="true"></i> 
+                                <?php echo $this->Articles()->getTitle($article); ?>
+                            </a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+
+    </div>
+</header>

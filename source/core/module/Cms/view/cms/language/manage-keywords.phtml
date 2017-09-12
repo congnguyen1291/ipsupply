@@ -1,0 +1,131 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/language') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Ngôn ngữ
+                    </a>
+                </li>
+                <li class="active">Từ khóa</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Từ khóa :: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>" method="get">
+                <div class="coz-search-bar clearfix" data-form="searchAjax" >
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                        <span class="input-group-btn">
+                            <button type="submit" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>" method="post" class="clearfix" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-12" >
+                    <div class="text-right" >
+                        <a href="<?php echo $this->url('cms/language', array('action' => 'add-keyword')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm từ khóa" >
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                        <?php if( !empty($keywords) ){ ?>
+                        <button class="btn btn-link" type="button"
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/language', array('action' => 'delete-keyword')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá từ khóa" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <?php if( !empty($keywords) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="col-lim" >Id</th>
+                        <?php foreach($languages as $lang) { ?>
+                        <th><?php echo $lang['languages_name'] ?></th>
+                        <?php } ?>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($keywords as $row) { ?>
+                    <tr>
+                        <td class="col-lim" >
+                            <?php echo $row['keyword'] ?>
+                        </td>
+
+                        <?php foreach($languages as $lang) { ?>
+                        <td>
+                            <?php echo isset($row[$lang['languages_file']]) ? $row[$lang['languages_file']] : '' ?>
+                        </td>
+                        <?php } ?>
+
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/language', array('action' => 'edit-keyword')) ?>?word=<?php echo $row['keyword'] ?>" data-toggle="tooltip" data-placement="top" title="Sửa từ khóa" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="<?php echo $this->url('cms/language', array('action' => 'delete-keyword')) ?>?word=<?php echo $row['keyword'] ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Xoá từ khóa"  data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="text-center col-lim" >
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['languages_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có từ khoá
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

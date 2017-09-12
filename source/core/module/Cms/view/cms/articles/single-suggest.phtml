@@ -1,0 +1,37 @@
+<?php if(!empty($articles)){ ?>
+<ul class="padding-left padding-right">
+    <?php foreach ($articles as $key => $article) { ?>
+    <li data-id="<?php echo $article['articles_id']; ?>" data-title="<?php echo $article['articles_title']; ?>" data-static="<?php echo $is_static ?>" class="article-select clearfix single-suggest-select">
+        <a class="pull-left" href="javascript:void(0);" >
+            <?php echo $article['articles_title']; ?>
+        </a>
+    </li>
+    <?php } ?>
+</ul>
+<?php }else{ ?>
+<p class="empty" >Không có dữ liệu</p>
+<?php } ?>
+
+<?php if( !empty($paginator->toHtml()) ){ ?>
+<div class="padding-top dropdown-paginate pull-right text-right col-sm-12 padding-bottom">
+    <?php if ($paginator->getPrevUrl()){ ?>
+        <a class="btn-prev btn-page btn btn-default btn-sm" href="javascript:void(0);" onclick="<?php echo $paginator->getPrevUrl(); ?>" data-products_title="<?php echo $products_title; ?>" >
+            <i class="fa fa-chevron-left"></i>
+        </a>
+    <?php }else{ ?>
+        <a class="btn-prev btn-page btn btn-default disabled btn-sm" href="javascript:void(0);" >
+            <i class="fa fa-chevron-left"></i>
+        </a>
+    <?php } ?>
+
+    <?php if ($paginator->getNextUrl()){ ?>
+        <a class="btn-next btn-page btn btn-default btn-sm" href="javascript:void(0);" onclick="<?php echo $paginator->getNextUrl(); ?>" data-products_title="<?php echo $products_title; ?>" >
+            <i class="fa fa-chevron-right"></i>
+        </a>
+    <?php }else{ ?>
+        <a class="btn-next btn-page btn btn-default disabled btn-sm" href="javascript:void(0);" >
+            <i class="fa fa-chevron-right"></i>
+        </a>
+    <?php } ?>
+</div>
+<?php } ?>

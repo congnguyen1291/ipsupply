@@ -1,0 +1,112 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Menu :: Cập nhật
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/setting', array('action' => 'menu-manager')) ?>">Quản lý liên kết</a></li>
+        <li class="active">Cập nhật</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/setting', array('action' => 'edit-menu', 'id' => $id)));
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('id'));
+        ?>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+                    <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="title">Tiêu đề</label>
+                        <?php echo $this->formRow($form->get('title')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="file_icon">Icon</label>
+                        <?php echo $this->formRow($form->get('file_icon')); ?>
+                        <?php echo $this->formRow($form->get('icon')); ?>
+                    </div>
+                    <div class="col-xs-12">
+                        <?php if($this->menu && $menu['icon']) : ?>
+                        <div class="form-group">
+                            <div class="col-xs-2">
+                                <div class="thumbnail">
+                                    <img src="<?php echo $menu['icon'] ?>" style="display: block;width: 100%" />
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label for="is_remove_icon">
+                                    <?php echo $this->formRow($form->get('is_remove_icon')); ?>
+                                    Không dùng icon
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="link">Link</label>
+                        <?php echo $this->formRow($form->get('link')); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="is_published">Thứ tự</label>
+                        <?php echo $this->formRow($form->get('ordering')); ?>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="is_hot">
+                                <?php echo $this->formRow($form->get('is_hot')); ?>
+                                Có icon hot
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="is_new">
+                                <?php echo $this->formRow($form->get('is_new')); ?>
+                                Có icon new
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="in_page">
+                                <?php echo $this->formRow($form->get('in_page')); ?>
+                                Liên kết trong trang
+                            </label>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div class="box box-primary">
+				<div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+					<button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php echo $this->form()->closeTag(); ?>
+</section>

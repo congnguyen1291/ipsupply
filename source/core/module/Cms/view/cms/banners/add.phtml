@@ -1,0 +1,120 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/banners') ?>">
+                        Banners
+                    </a>
+                </li>
+                <li class="active">Thêm mới</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Banner :: Thêm mới
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/banners', array('action' => 'add')));
+        $form->setAttribute('id', 'form-banner');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('banners_id'));
+        echo $this->formHidden($form->get('status'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="form-group">
+                    <label for="banners_title">Tiêu đề</label>
+                    <?php echo $this->formRow($form->get('banners_title')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="position_id">Vị trí</label>
+                    <?php echo $this->formRow($form->get('position_id')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="link">Link</label>
+                    <?php echo $this->formRow($form->get('link')); ?>
+                </div>
+
+                <div class="row" >
+                    <div class="col-xs-6" >
+                        <div class="form-group">
+                            <label for="date_show">Thời gian bắt đầu</label>
+                            <?php echo $this->formRow($form->get('date_show')); ?>
+                        </div>
+                    </div>
+                    <div class="col-xs-6" >
+                        <div class="form-group">
+                            <label for="date_hide">Thời gian kết thúc</label>
+                            <?php echo $this->formRow($form->get('date_hide')); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <div class="result-list-img clearfix" >
+                <div class="list-img-upload clearfix" ></div>
+                <div class="img-prevew-upload btn-upload btn-upload-banner" >
+                    <a href="javascript:void(0)" class="action-upload" >
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                    <a href="javascript:void(0)" class="img-responsive"  >
+                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="display:none" >
+            <?php echo $this->formRow($form->get('code')); ?>
+        </div>
+
+        <div class="form-group">
+            <label for="banners_description">Giới thiệu</label>
+            <?php echo $this->formRow($form->get('banners_description')); ?>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Thêm banner
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

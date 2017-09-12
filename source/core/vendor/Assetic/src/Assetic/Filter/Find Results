@@ -1,0 +1,442 @@
+Searching 152 files for "CssMin"
+
+/Users/mac/Desktop/coz/chichi/Assetic/composer.json:
+   25          "meenie/javascript-packer": "^1.1",
+   26          "mrclay/minify": "<2.3",
+   27:         "natxet/cssmin": "3.0.4",
+   28          "patchwork/jsqueeze": "~1.0|~2.0",
+   29          "phpunit/phpunit": "~4.8 || ^5.6",
+
+/Users/mac/Desktop/coz/chichi/Assetic/README.md:
+   80   * `CssEmbedFilter`: embeds image data in your stylesheets
+   81   * `CssImportFilter`: inlines imported stylesheets
+   82:  * `CssMinFilter`: minifies CSS
+   83   * `CleanCssFilter`: minifies CSS
+   84   * `CssRewriteFilter`: fixes relative URLs in CSS assets when moving to a new URL
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Filter/CssMinFilter.php:
+   13  
+   14  use Assetic\Asset\AssetInterface;
+   15: use Assetic\Library\CssMin;
+   16  
+   17  /**
+   18:  * Filters assets through CssMin.
+   19   *
+   20:  * @link http://code.google.com/p/cssmin
+   21   * @author Kris Wallsmith <kris.wallsmith@gmail.com>
+   22   */
+   23: class CssMinFilter implements FilterInterface
+   24  {
+   25      private $filters;
+   ..
+   69          }
+   70  
+   71:         $asset->setContent(CssMin::minify($asset->getContent(), $filters, $plugins));
+   72      }
+   73  }
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Library/CssMin.php:
+    1  <?php
+    2  /**
+    3:  * CssMin - A (simple) css minifier with benefits
+    4   * 
+    5   * --
+    .
+   12   * --
+   13   *
+   14:  * @package		CssMin
+   15:  * @link		http://code.google.com/p/cssmin/
+   16   * @author		Joe Scylla <joe.scylla@gmail.com>
+   17   * @copyright	2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+   ..
+   22  namespace Assetic\Library;
+   23  
+   24: class CssMin
+   25  	{
+   26  	/**
+   ..
+  594  	 * 
+  595  	 * @param string $css Css as string
+  596: 	 * @param array $config {@link http://code.google.com/p/cssmin/wiki/Configuration Configuration} as array [optional]
+  597  	 * @return string Minified css
+  598  	 */
+
+12 matches across 4 files
+
+
+Searching 152 files for "JSMin"
+
+/Users/mac/Desktop/coz/chichi/Assetic/CHANGELOG-1.1.md:
+   44   * Added PackerFilter
+   45   * Add the way to contact closure compiler API using curl, if available and allow_url_fopen is off
+   46:  * Added filters for JSMin and JSMinPlus
+   47   * Added the UglifyJsFilter
+   48   * Improved the error message in getModifiedTime when a file asset uses an invalid file
+
+/Users/mac/Desktop/coz/chichi/Assetic/README.md:
+   91   * `JpegoptimFilter`: optimize your JPEGs
+   92   * `JpegtranFilter`: optimize your JPEGs
+   93:  * `JSMinFilter`: minifies Javascript
+   94:  * `JSMinPlusFilter`: minifies Javascript
+   95   * `JSqueezeFilter`: compresses Javascript
+   96   * `LessFilter`: parses LESS into CSS (using less.js with node.js)
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Filter/JSMinFilter.php:
+   15  
+   16  /**
+   17:  * Filters assets through JsMin.
+   18   *
+   19   * All credit for the filter itself is mentioned in the file itself.
+   20   *
+   21:  * @link https://raw.github.com/mrclay/minify/master/min/lib/JSMin.php
+   22   * @author Brunoais <brunoaiss@gmail.com>
+   23   */
+   24: class JSMinFilter implements FilterInterface
+   25  {
+   26      public function filterLoad(AssetInterface $asset)
+   ..
+   30      public function filterDump(AssetInterface $asset)
+   31      {
+   32:         $asset->setContent(\JSMin::minify($asset->getContent()));
+   33      }
+   34  }
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Filter/JSMinPlusFilter.php:
+   15  
+   16  /**
+   17:  * Filters assets through JSMinPlus.
+   18   *
+   19   * All credit for the filter itself is mentioned in the file itself.
+   20   *
+   21:  * @link https://raw.github.com/mrclay/minify/master/min/lib/JSMinPlus.php
+   22   * @author Brunoais <brunoaiss@gmail.com>
+   23   */
+   24: class JSMinPlusFilter implements FilterInterface
+   25  {
+   26      public function filterLoad(AssetInterface $asset)
+   ..
+   30      public function filterDump(AssetInterface $asset)
+   31      {
+   32:         $asset->setContent(\JSMinPlus::minify($asset->getContent()));
+   33      }
+   34  }
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Library/JSMin.php:
+    1  <?php
+    2  /**
+    3:  * JSMin.php - modified PHP implementation of Douglas Crockford's JSMin.
+    4   *
+    5   * <code>
+    6:  * $minifiedJs = JSMin::minify($js);
+    7   * </code>
+    8   *
+    9:  * This is a modified port of jsmin.c. Improvements:
+   10   *
+   11   * Does not choke on some regexp literals containing quote characters. E.g. /'/
+   ..
+   19   *
+   20   * Permission is hereby granted to use this version of the library under the
+   21:  * same terms as jsmin.c, which has the following license:
+   22   *
+   23   * --
+   ..
+   45   * --
+   46   *
+   47:  * @package JSMin
+   48   * @author Ryan Grove <ryan@wonko.com> (PHP port)
+   49   * @author Steve Clay <steve@mrclay.org> (modifications + cleanup)
+   50   * @author Andrea Giammarchi <http://www.3site.eu> (spaceBeforeRegExp)
+   51:  * @copyright 2002 Douglas Crockford <douglas@crockford.com> (jsmin.c)
+   52   * @copyright 2008 Ryan Grove <ryan@wonko.com> (PHP port)
+   53   * @license http://opensource.org/licenses/mit-license.php MIT License
+   54:  * @link http://code.google.com/p/jsmin-php/
+   55   */
+   56  
+   57  namespace Assetic\Library;
+   58  
+   59: class JSMin {
+   60      const ORD_LF            = 10;
+   61      const ORD_SPACE         = 32;
+   ..
+   83      public static function minify($js)
+   84      {
+   85:         $jsmin = new JSMin($js);
+   86:         return $jsmin->min();
+   87      }
+   88  
+   ..
+  161       *
+  162       * @param int $command
+  163:      * @throws JSMin_UnterminatedRegExpException|JSMin_UnterminatedStringException
+  164       */
+  165      protected function action($command)
+  ...
+  204                          if ($this->isEOF($this->a)) {
+  205                              $byte = $this->inputIndex - 1;
+  206:                             throw new JSMin_UnterminatedStringException(
+  207:                                 "JSMin: Unterminated String at byte {$byte}: {$str}");
+  208                          }
+  209                          $str .= $this->a;
+  ...
+  241                                  }
+  242                                  if ($this->isEOF($this->a)) {
+  243:                                     throw new JSMin_UnterminatedRegExpException(
+  244:                                         "JSMin: Unterminated set in RegExp at byte "
+  245                                              . $this->inputIndex .": {$pattern}");
+  246                                  }
+  ...
+  256                          } elseif ($this->isEOF($this->a)) {
+  257                              $byte = $this->inputIndex - 1;
+  258:                             throw new JSMin_UnterminatedRegExpException(
+  259:                                 "JSMin: Unterminated RegExp at byte {$byte}: {$pattern}");
+  260                          }
+  261                          $this->output .= $this->a;
+  ...
+  391       * Consume a multiple line comment from input (possibly retaining it)
+  392       *
+  393:      * @throws JSMin_UnterminatedCommentException
+  394       */
+  395      protected function consumeMultipleLineComment()
+  ...
+  416                  }
+  417              } elseif ($get === null) {
+  418:                 throw new JSMin_UnterminatedCommentException(
+  419:                     "JSMin: Unterminated comment at byte {$this->inputIndex}: /*{$comment}");
+  420              }
+  421              $comment .= $get;
+  ...
+  447  }
+  448  
+  449: class JSMin_UnterminatedStringException extends Exception {}
+  450: class JSMin_UnterminatedCommentException extends Exception {}
+  451: class JSMin_UnterminatedRegExpException extends Exception {}
+  452  
+
+38 matches across 5 files
+
+
+Searching 152 files for "lessc"
+
+/Users/mac/Desktop/coz/chichi/Assetic/CHANGELOG-1.0.md:
+   17  
+   18   * Twig 1.2 compatibility
+   19:  * Fixed filtering of large LessCSS assets
+   20   * Fixed escaping of commands on Windows
+   21   * Misc fixes to Compass filter
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Filter/LessFilter.php:
+   21   * Loads LESS files.
+   22   *
+   23:  * @link http://lesscss.org/
+   24   * @author Kris Wallsmith <kris.wallsmith@gmail.com>
+   25   */
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Filter/LessphpFilter.php:
+   89      public function filterLoad(AssetInterface $asset)
+   90      {
+   91:         $lc = new \lessc();
+   92          if ($dir = $asset->getSourceDirectory()) {
+   93              $lc->importDir = $dir;
+
+/Users/mac/Desktop/coz/chichi/Assetic/src/Assetic/Library/lessc.inc.php:
+    5   * http://leafo.net/lessphp
+    6   *
+    7:  * LESS css compiler, adapted from http://lesscss.org
+    8   *
+    9   * Copyright 2012, Leaf Corcoran <leafot@gmail.com>
+   ..
+   16   *
+   17   * Converting LESS to CSS is a three stage process. The incoming file is parsed
+   18:  * by `lessc_parser` into a syntax tree, then it is compiled into another tree
+   19:  * representing the CSS structure by `lessc`. The CSS tree is fed into a
+   20:  * formatter, like `lessc_formatter` which then outputs CSS as a string.
+   21   *
+   22   * During the first compile, all values are *reduced*, which means that their
+   ..
+   24   * handles math equations, variable dereferences, and the like.
+   25   *
+   26:  * The `parse` function of `lessc` is the entry point.
+   27   *
+   28   * In summary:
+   29   *
+   30:  * The `lessc` class creates an intstance of the parser, feeds it LESS code,
+   31   * then transforms the resulting tree to a CSS tree. This class also holds the
+   32   * evaluation context, such as all available mixins and variables at any given
+   33   * time.
+   34   *
+   35:  * The `lessc_parser` class is only concerned with parsing its input.
+   36   *
+   37:  * The `lessc_formatter` takes a CSS tree, and dumps it to a formatted string,
+   38   * handling things like indentation.
+   39   */
+   ..
+   41  namespace Assetic\Library;
+   42  
+   43: class lessc {
+   44  	static public $VERSION = "v0.4.0";
+   45  	static protected $TRUE = array("keyword", "true");
+   ..
+  188  	 * and iterating through the props, compiling each one.
+  189  	 *
+  190: 	 * See lessc::compileProp()
+  191  	 *
+  192  	 */
+  ...
+ 1767  	protected function injectVariables($args) {
+ 1768  		$this->pushEnv();
+ 1769: 		$parser = new lessc_parser($this, __METHOD__);
+ 1770  		foreach ($args as $name => $strValue) {
+ 1771  			if ($name{0} != '@') $name = '@'.$name;
+ ....
+ 1943  
+ 1944  	protected function makeParser($name) {
+ 1945: 		$parser = new lessc_parser($this, $name);
+ 1946  		$parser->writeComments = $this->preserveComments;
+ 1947  
+ ....
+ 1954  
+ 1955  	protected function newFormatter() {
+ 1956: 		$className = "lessc_formatter_lessjs";
+ 1957  		if (!empty($this->formatterName)) {
+ 1958  			if (!is_string($this->formatterName))
+ 1959  				return $this->formatterName;
+ 1960: 			$className = "lessc_formatter_$this->formatterName";
+ 1961  		}
+ 1962  
+ ....
+ 2181  // responsible for taking a string of LESS code and converting it into a
+ 2182  // syntax tree
+ 2183: class lessc_parser {
+ 2184  	static protected $nextBlockId = 0; // used to uniquely identify blocks
+ 2185  
+ ....
+ 2229  	static protected $literalCache = array();
+ 2230  
+ 2231: 	public function __construct($lessc, $sourceName = null) {
+ 2232  		$this->eatWhiteDefault = true;
+ 2233  		// reference to less needed for vPrefix, mPrefix, and parentSelector
+ 2234: 		$this->lessc = $lessc;
+ 2235  
+ 2236  		$this->sourceName = $sourceName; // name used for error messages
+ ....
+ 2240  		if (!self::$operatorString) {
+ 2241  			self::$operatorString =
+ 2242: 				'('.implode('|', array_map(array('lessc', 'preg_quote'),
+ 2243  					array_keys(self::$precedence))).')';
+ 2244  
+ 2245: 			$commentSingle = lessc::preg_quote(self::$commentSingle);
+ 2246: 			$commentMultiLeft = lessc::preg_quote(self::$commentMultiLeft);
+ 2247: 			$commentMultiRight = lessc::preg_quote(self::$commentMultiRight);
+ 2248  
+ 2249  			self::$commentMulti = $commentMultiLeft.'.*?'.$commentMultiRight;
+ ....
+ 2295  	 * they are able to capture the text that represents those rules.
+ 2296  	 *
+ 2297: 	 * Consider the function lessc::keyword(). (all parse functions are
+ 2298  	 * structured the same)
+ 2299  	 *
+ ....
+ 2304  	 * fails then it won't advance the buffer and it will return false.
+ 2305  	 *
+ 2306: 	 * All of these parse functions are powered by lessc::match(), which behaves
+ 2307  	 * the same way, but takes a literal regular expression. Sometimes it is
+ 2308  	 * more convenient to use match instead of creating a new function.
+ ....
+ 2313  	 * But, if some of the rules in the chain succeed before one fails, then
+ 2314  	 * the buffer position will be left at an invalid state. In order to
+ 2315: 	 * avoid this, lessc::seek() is used to remember and set buffer positions.
+ 2316  	 *
+ 2317  	 * Before parsing a chain, use $s = $this->seek() to remember the current
+ ....
+ 2425  				if (!isset($block->args)) {
+ 2426  					foreach ($block->tags as $tag) {
+ 2427: 						if (!is_string($tag) || $tag{0} != $this->lessc->mPrefix) {
+ 2428  							$hidden = false;
+ 2429  							break;
+ ....
+ 2470  		// TODO: cache pattern in parser
+ 2471  		$pattern = implode("|",
+ 2472: 			array_map(array("lessc", "preg_quote"), $directives));
+ 2473  		$pattern = '/^(-[a-z-]+-)?(' . $pattern . ')$/i';
+ 2474  
+ ....
+ 2479  		// move @ tags out of variable namespace
+ 2480  		foreach ($tags as &$tag) {
+ 2481: 			if ($tag{0} == $this->lessc->vPrefix)
+ 2482: 				$tag[0] = $this->lessc->mPrefix;
+ 2483  		}
+ 2484  		return $tags;
+ ....
+ 2495  		if (count($values) == 0) return false;
+ 2496  
+ 2497: 		$exps = lessc::compressList($values, ' ');
+ 2498  		return true;
+ 2499  	}
+ ....
+ 2593  		if (count($values) == 0) return false;
+ 2594  
+ 2595: 		$value = lessc::compressList($values, ', ');
+ 2596  		return true;
+ 2597  	}
+ ....
+ 2758  
+ 2759  		$stop = array("'", '"', "@{", $end);
+ 2760: 		$stop = array_map(array("lessc", "preg_quote"), $stop);
+ 2761  		// $stop[] = self::$commentMulti;
+ 2762  
+ ....
+ 2834  		// look for either ending delim , escape, or string interpolation
+ 2835  		$patt = '([^\n]*?)(@\{|\\\\|' .
+ 2836: 			lessc::preg_quote($delim).')';
+ 2837  
+ 2838  		$oldWhite = $this->eatWhiteDefault;
+ ....
+ 3077  					// escape parent selector, (yuck)
+ 3078  					foreach ($str[2] as &$chunk) {
+ 3079: 						$chunk = str_replace($this->lessc->parentSelector, "$&$", $chunk);
+ 3080  					}
+ 3081  
+ ....
+ 3230  	protected function variable(&$name) {
+ 3231  		$s = $this->seek();
+ 3232: 		if ($this->literal($this->lessc->vPrefix, false) &&
+ 3233  			($this->variable($sub) || $this->keyword($name)))
+ 3234  		{
+ ....
+ 3236  				$name = array('variable', $sub);
+ 3237  			} else {
+ 3238: 				$name = $this->lessc->vPrefix.$name;
+ 3239  			}
+ 3240  			return true;
+ ....
+ 3351  
+ 3352  		if (!isset(self::$literalCache[$what])) {
+ 3353: 			self::$literalCache[$what] = lessc::preg_quote($what);
+ 3354  		}
+ 3355  
+ ....
+ 3391  			$validChars = $allowNewline ? "." : "[^\n]";
+ 3392  		}
+ 3393: 		if (!$this->match('('.$validChars.'*?)'.lessc::preg_quote($what), $m, !$until)) return false;
+ 3394  		if ($until) $this->count -= strlen($what); // give back $what
+ 3395  		$out = $m[1];
+ ....
+ 3561  }
+ 3562  
+ 3563: class lessc_formatter_classic {
+ 3564  	public $indentChar = "  ";
+ 3565  
+ ....
+ 3656  }
+ 3657  
+ 3658: class lessc_formatter_compressed extends lessc_formatter_classic {
+ 3659  	public $disableSingle = true;
+ 3660  	public $open = "{";
+ ....
+ 3669  }
+ 3670  
+ 3671: class lessc_formatter_lessjs extends lessc_formatter_classic {
+ 3672  	public $disableSingle = true;
+ 3673  	public $breakSelectors = true;
+
+46 matches across 4 files

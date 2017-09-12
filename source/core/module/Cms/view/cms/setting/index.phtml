@@ -1,0 +1,55 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Cấu hình
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li>Cấu hình hệ thống</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h2 class="box-title">Cấu hình hiện tại</h2>
+                </div>
+                <div class="box-body">
+                    <ul>
+                        <li>Cache Menu <a href="<?php echo $this->url('cms/setting',array('action' => 'delete-menu-cache')) ?>">Xóa toàn bộ</a> </li>
+                        <li>Đường dẫn bài viết về chính sách giao hàng:
+                            <ul>
+                                <li><?php echo $configs['id_article_freeship'] ?></li>
+                                <li><a href="<?php echo $this->url('cms/setting', array('action' => 'change-post', 'name' => 'id_article_freeship')) ?>">Thay đổi</a></li>
+                            </ul>
+                        </li>
+                        <li>Đường dẫn bài viết về chính sách thanh toán:
+                            <ul>
+                                <li><?php echo $configs['id_article_payment'] ?></li>
+                                <li><a href="<?php echo $this->url('cms/setting', array('action' => 'change-post', 'name' => 'id_article_payment')) ?>">Thay đổi</a></li>
+                            </ul>
+						</li>	
+                        <li>Đường dẫn bài viết về chính sách đổi, trả hàng:
+
+                            <ul>
+                                <li><?php echo $configs['id_article_change'] ?></li>
+                                <li><a href="<?php echo $this->url('cms/setting', array('action' => 'change-post', 'name' => 'id_article_change')) ?>">Thay đổi</a></li>
+                            </ul>
+						</li>	
+						<li>Giao diện footer
+                            <ul>
+                                <li>
+									<img src="<?php echo $this->basePath() . '/admincp/img/footer.png' ?>" width="600" />
+								</li>
+                                <li><a href="<?php echo $this->url('cms/setting', array('action' => 'change-footer')) ?>">Thay đổi</a></li>
+                            </ul>
+						</li>	
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,440 @@
+<?php
+$menu = $this->Menus()->getMenuWithAlias('MENU_MIDDLE_A');
+$menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu));
+$categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
+$menuHome = $this->Menus()->getMenuWithAlias('MENU_MIDDLE_B');
+$mnroot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menuHome));
+$sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
+?>
+<h1 class="hidden-xs-up" itemprop="name" ><?php echo $this->translate('txt_h1_product') ?></h1>
+<section class="slider">
+    <div class="container">
+        <div class="slider-home" >
+            <div id="cssScrollBarHome" ></div>
+            <div class="row">
+                <div class="col-xs-12 col-lg-3 hidden-md-down" >
+                    <div class="categories-home" >
+                        <?php if( !empty($menuRoot) ){ ?>
+                        <aside class="box-aside nav-category" >
+                            <div class="box-heading" >
+                                <h2 class="title-box">
+                                    <?php echo $this->Menus()->getName($menu); ?>       
+                                </h2>
+                            </div>
+                            <div class="box-content clearfix" >
+                                <div class="clearfix scrollbar scrollbar-dynamic" data-place="scrollbar" >
+                                    <nav class="nav-category collapse navbar-toggleable-md" id="collapseNavCategory" itemscope itemtype="http://schema.org/SiteNavigationElement" >
+                                        <ul class="nav navbar-pills">
+                                            <?php 
+                                            foreach ($menuRoot as $key01 => $menu01) { 
+                                                $childrens = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu01));
+                                                $categoriesRoot = $this->Categories()->getRoot($categories);
+                                                $categoriesArticlesRoot = $this->CategoriesArticles()->getRoot($categoryArticles);
+                                            ?>
+                                            <li class="nav-item ">
+                                                <a href="<?php echo $this->Menus()->getLinkForMenu($menu01); ?>" title="<?php echo $this->Menus()->getName($menu01); ?>" class="nav-link"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                    <span itemprop="name" >
+                                                        <?php echo $this->Menus()->getName($menu01); ?>
+                                                    </span>
+                                                    <?php if( !empty($childrens) ){ ?>
+                                                    <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                                                    <?php } ?>
+                                                </a>
+                                                <?php 
+                                                if( !empty($childrens) 
+                                                    && !$this->Menus()->isCollection($menu01)
+                                                    && !$this->Menus()->isBlog($menu01) ){ ?>
+                                                <ul class="dropdown-menu">
+                                                    <?php foreach ($childrens as $key02 => $menu02){ ?>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="<?php echo $this->Menus()->getLinkForMenu($menu02); ?>" title="<?php echo $this->Menus()->getName($menu02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                            <span itemprop="name" >
+                                                                <?php echo $this->Menus()->getName($menu02); ?>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <?php } ?>
+                                                </ul>
+                                                <?php }else if($this->Menus()->isCollection($menu01) 
+                                                && !empty($categoriesRoot)){ ?>
+                                                <ul class="dropdown-menu">
+                                                    <?php foreach ($categoriesRoot as $key01 => $category01) { 
+                                                        $categoriesChildrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
+                                                    ?>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category01); ?>" title="<?php echo $this->Categories()->getTitle($category01); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                            <span itemprop="name" >
+                                                                <?php echo $this->Categories()->getTitle($category01); ?>
+                                                            </span>
+                                                            <?php if( !empty($categoriesChildrens) ){ ?>
+                                                            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                                                            <?php } ?>
+                                                        </a>
+
+                                                        <?php if( !empty($categoriesChildrens) ){ ?>
+                                                        <ul class="dropdown-menu">
+                                                            <?php foreach ($categoriesChildrens as $key02 => $category02){
+                                                                $categoriesChildrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
+                                                            ?>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category02); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                                    <span itemprop="name" >
+                                                                        <?php echo $this->Categories()->getTitle($category02); ?>
+                                                                    </span>
+                                                                    <?php if( !empty($categoriesChildrens02) ){ ?>
+                                                                    <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                                                                    <?php } ?>
+                                                                </a>
+                                                                <?php if( !empty($categoriesChildrens02) ){ ?>
+                                                                <ul class="dropdown-menu">
+                                                                    <?php foreach ($categoriesChildrens02 as $key03 => $category03){
+                                                                    ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category03); ?>" title="<?php echo $this->Categories()->getTitle($category03); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                                            <span itemprop="name" >
+                                                                                <?php echo $this->Categories()->getTitle($category03); ?>
+                                                                            </span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <?php } ?>
+                                                                </ul>
+                                                                <?php } ?>
+                                                            </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                        <?php } ?>
+
+                                                    </li>
+                                                    <?php } ?>
+
+                                                </ul>
+                                                <?php }else if( $this->Menus()->isBlog($menu01) 
+                                                    && !empty($categoriesArticlesRoot) ){ ?>
+                                                <ul class="dropdown-menu">
+                                                    <?php foreach ($categoriesArticlesRoot as $key01 => $category01) { 
+                                                        $categoriesArticlesChildrens = $this->CategoriesArticles()->getChildrens($categoryArticles, $this->CategoriesArticles()->getId($category01));
+                                                    ?>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category01); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category01); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                            <span itemprop="name" >
+                                                                <?php echo $this->CategoriesArticles()->getTitle($category01); ?>
+                                                            </span>
+                                                            <?php if( !empty($categoriesArticlesChildrens) ){ ?>
+                                                            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                                                            <?php } ?>
+                                                        </a>
+
+                                                        <?php if( !empty($categoriesArticlesChildrens) ){ ?>
+                                                        <ul class="dropdown-menu">
+                                                            <?php foreach ($categoriesArticlesChildrens as $key02 => $category02){
+                                                                $categoriesArticlesChildrens02 = $this->CategoriesArticles()->getChildrens($categoryArticles, $this->CategoriesArticles()->getId($category02));
+                                                            ?>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category02); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                                    <span itemprop="name" >
+                                                                        <?php echo $this->CategoriesArticles()->getTitle($category02); ?>
+                                                                    </span>
+                                                                    <?php if( !empty($categoriesArticlesChildrens02) ){ ?>
+                                                                    <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                                                                    <?php } ?>
+                                                                </a>
+                                                                <?php if( !empty($categoriesArticlesChildrens02) ){ ?>
+                                                                <ul class="dropdown-menu">
+                                                                    <?php foreach ($categoriesArticlesChildrens02 as $key03 => $category03){ ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category03); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category03); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                                                            <span itemprop="name" >
+                                                                                <?php echo $this->CategoriesArticles()->getTitle($category03); ?>
+                                                                            </span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <?php } ?>
+                                                                </ul>
+                                                                <?php } ?>
+                                                            </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                        <?php } ?>
+
+                                                    </li>
+                                                    <?php } ?>
+
+                                                </ul>
+                                                <?php } ?>
+
+                                            </li>
+                                            <?php } ?>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </aside>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-lg-9" >
+                    <?php if( !empty($sliders) ){ ?>
+                    <div id="slide_home" class="owl-carousel owl-theme slideshow" data-neo="owlCarousel" data-own-name="owlTopSlider" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}}' >
+                        <?php foreach ($sliders as $index => $banner) {
+                        ?>
+                        <div class="item-tween" >
+                            <?php echo $this->Banners()->getHtml( $banner ); ?>
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="search-fluid clearfix" >
+    <div class="container" >
+        <div class="search-advance" >
+            <form action="/search" class="clearfix" method="get" >
+                <div class="row" >
+                    
+                    <div class="col-lg-2 col-md-12" >
+                        <div class="search-col" >
+                            <div class="hidden-md-down" >
+                                <div class="img-seach" >
+                                    <img src="/styles/dataimages/gift.png" alt="" class="img-fluid" >
+                                </div>
+                            </div>
+                            <div class="hidden-lg-up" >
+                                <div class="search-header-mobi text-sm-center" >
+                                    <div class="clearfix" >
+                                        <i class="ic i-gift" ></i>
+                                    </div>
+                                    <div class="text-smm" >
+                                        <?php echo $this->translate('txt_ban_muon_tang_qua') ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php 
+                        $totalCol = 2;
+                        $cities = $this->Cities()->loadCitiesByCountry($country_id);
+                        if( !empty($cities) ){
+                            $totalCol += 1;
+                        }
+                        if( !empty($menuRoot) ){
+                            $totalCol += 1;
+                        }
+                    ?>
+                    
+                    <div class="col-lg-7 col-md-12" >
+                        <div class="row" >
+                            <div class="col-lg-<?php echo (12/$totalCol) ?> col-md-6 col-sm-6" >
+                                <div class="search-col" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <label class="label-search" >
+                                                <?php echo $this->translate('txt_khoang_gia') ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12" >
+                                            <div class="input-search has-icon" >
+                                                <select class="control-search" name="price" >
+                                                    <option value="0;500000" >
+                                                        0-<?php echo $this->Currency()->fomatCurrency(500000) ?>
+                                                    </option>
+                                                    <option value="500000;1000000" >
+                                                        <?php echo $this->Currency()->fomatCurrency(500000) ?>-
+                                                        <?php echo $this->Currency()->fomatCurrency(1000000) ?>
+                                                    </option>
+                                                    <option value="1000000;5000000" >
+                                                        <?php echo $this->Currency()->fomatCurrency(1000000) ?>-
+                                                        <?php echo $this->Currency()->fomatCurrency(5000000) ?>
+                                                    </option>
+                                                    <option value="5000000;10000000" >
+                                                        <?php echo $this->Currency()->fomatCurrency(5000000) ?>-
+                                                        <?php echo $this->Currency()->fomatCurrency(10000000) ?>
+                                                    </option>
+                                                    <option value="10000000;50000000" >
+                                                        <?php echo $this->Currency()->fomatCurrency(10000000) ?>-
+                                                        <?php echo $this->Currency()->fomatCurrency(50000000) ?>
+                                                    </option>
+                                                    <option value="50000000;100000000" >
+                                                        <?php echo $this->Currency()->fomatCurrency(50000000) ?>-
+                                                        <?php echo $this->Currency()->fomatCurrency(100000000) ?>
+                                                    </option>
+                                                    <option value="100000000" >
+                                                        ><?php echo $this->Currency()->fomatCurrency(100000000) ?>
+                                                    </option>
+                                                </select>
+                                                <span class="icon-search" >
+                                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php if( !empty($cities) ){ ?>
+                            <div class="col-lg-<?php echo (12/$totalCol) ?> col-md-6 col-sm-6" >
+                                <div class="search-col" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <label class="label-search" >
+                                                <?php echo $this->translate('txt_den_tu_dau') ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12" >
+                                            <div class="input-search has-icon" >
+                                                <select class="control-search" name="cities" >
+                                                    <?php foreach ($cities as $city){ ?>
+                                                    <option value="<?php echo $city['cities_id'] ?>" >
+                                                        <?php echo $city['cities_title'] ?>
+                                                    </option>
+                                                    <?php } ?>
+                                                </select>
+                                                <span class="icon-search" >
+                                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+
+                            <?php if( !empty($menuRoot) ){ ?>
+                            <div class="col-lg-<?php echo (12/$totalCol) ?> col-md-6 col-sm-6" >
+                                <div class="search-col" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <label class="label-search" >
+                                                <?php echo $this->translate('txt_tang_hoa_gi') ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12" >
+                                            <div class="input-search has-icon" >
+                                                <select class="control-search" name="categories_id" >
+                                                    <?php 
+                                                    foreach ($menuRoot as $key01 => $menu01) {
+                                                        $childrens = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu01));
+                                                        $categoriesRoot = $this->Categories()->getRoot($categories);
+                                                    ?>
+                                                        <?php if( $this->Menus()->isOneCollection($menu01) ){ ?>
+                                                        <option value="<?php echo $this->Menus()->getCategoriesId($menu01); ?>" >
+                                                            <?php echo $this->Menus()->getName($menu01); ?>
+                                                        </option>
+                                                        <?php } else if( !empty($childrens) 
+                                                                && !$this->Menus()->isCollection($menu01)
+                                                                && !$this->Menus()->isBlog($menu01) ){
+                                                            foreach ($childrens as $key02 => $menu02){
+                                                                if( $this->Menus()->isOneCollection($menu02) ){ ?>
+                                                        <option value="<?php echo $this->Menus()->getCategoriesId($menu02); ?>" >
+                                                            <?php echo $this->Menus()->getName($menu02); ?>
+                                                        </option>
+                                                        <?php  }
+                                                            }
+                                                        } else if($this->Menus()->isCollection($menu01) 
+                                                        && !empty($categoriesRoot)){
+                                                            foreach ($categoriesRoot as $key01 => $category01) { 
+                                                                $categoriesChildrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
+                                                                if( !empty($categoriesChildrens) ){
+                                                                    foreach ($categoriesChildrens as $key02 => $category02){
+                                                                        $categoriesChildrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
+                                                                        if( !empty($categoriesChildrens02) ){foreach ($categoriesChildrens02 as $key03 => $category03){ ?>
+                                                                            <option value="<?php echo $this->Categories()->getId($category03); ?>" >
+                                                                                <?php echo $this->Categories()->getTitle($category03); ?>
+                                                                            </option>
+                                                                            <?php }
+                                                                        }else{ ?>
+                                                                        <option value="<?php echo $this->Categories()->getId($category02); ?>" >
+                                                                            <?php echo $this->Categories()->getTitle($category02); ?>
+                                                                        </option>
+                                                                        <?php }
+                                                                    }
+                                                                }else{ ?>
+                                                                <option value="<?php echo $this->Categories()->getId($category01); ?>" >
+                                                                    <?php echo $this->Categories()->getTitle($category01); ?>
+                                                                </option>
+                                                                <?php }
+                                                            }
+                                                        } ?>
+                                                    <?php } ?>
+                                                </select>
+                                                <span class="icon-search" >
+                                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+
+                            <div class="col-lg-<?php echo (12/$totalCol) ?> col-md-6 col-sm-6" >
+                                <div class="search-col" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <label class="label-search" >
+                                                <?php echo $this->translate('txt_thoi_gian') ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12" >
+                                            <div class="input-search has-icon" >
+                                                <input type="text" class="control-search datetimepicker" name="time" value="<?php echo date('d-m-Y'); ?>" >
+                                                <span class="icon-search" >
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-offset-0 col-lg-3 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8" >
+                        <div class="search-col" >
+                            <input type="submit" name="" value="<?php echo $this->translate('txt_tang_hoa_ngay') ?>" class="btn btn-search-advance" >
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="co-main clearfix" >
+    <div class="container" >
+
+        <?php 
+        if(!empty($mnroot)){ 
+            foreach ($mnroot as $key01 => $menu01) {
+                $products = $this->Menus()->getProducts($menu01);
+                if( empty($products) ) continue;
+        ?>
+        <div class="box-product clearfix" >
+            <div class="box-pheading text-md-left text-sm-center text-xs-center" >
+                <h2 itemprop="name" class="title-box" >
+                    <?php echo $this->Menus()->getName($menu01); ?>
+                </h2>
+            </div>
+            <div class="box-pbody" >
+                <div class="list-mini-produxt clearfix" >
+                    <div class="row" >
+                        <?php foreach ($products as $key => $p) { ?>
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6" >
+                            <?php echo $this->partial('app/item-product', array('product' => $p)); ?>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php }
+        } ?>
+
+    </div>
+</div>

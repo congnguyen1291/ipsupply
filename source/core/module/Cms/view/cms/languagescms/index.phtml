@@ -1,0 +1,98 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Ngôn ngữ :: Quản lý
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Ngôn ngữ</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form action="<?php echo $this->url('cms/languagescms') ?>" method="post">
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/languagescms', array('action' => 'add')) ?>"
+                               class="btn btn-primary">Thêm ngôn ngữ mới</a>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/languagescms', array('action' => 'published')) ?>')">
+                                Kích hoạt
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/languagescms', array('action' => 'unpublished')) ?>')">
+                                Bỏ kích hoạt
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th width="20" style="text-align: center">ID</th>
+                                <th>Ngôn ngữ</th>
+                                <th width="150">Ngày tạo</th>
+                                <th width="100" style="text-align: center">Hiển thị</th>
+                                <th width="10"><input type="checkbox" class="checkall" /></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($languagescmss as $lang) : ?>
+                                <tr>
+                                    <td style="text-align: center"><?php echo $lang['languages_id'] ?></td>
+                                    <td>
+                                        <a href="<?php echo $this->url('cms/languagescms', array('action' => 'edit', 'id' => $lang['languages_id'])) ?>"><?php echo $lang['languages_name'] ?></a>
+                                    </td>
+                                    <td><?php echo date('d/m/Y', strtotime($lang['date_create'])) ?></td>
+                                    <td style="text-align: center">
+                                        <?php echo $lang['is_published'] == 1 ? 'Hiển thị' : '-' ?>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cid[]"
+                                               value="<?php echo $lang['languages_id'] ?>"/>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="20" style="text-align: center">ID</th>
+                                <th>Ngôn ngữ</th>
+                                <th width="150">Ngày tạo</th>
+                                <th width="100" style="text-align: center">Hiển thị</th>
+                                <th width="10"><input type="checkbox" class="checkall" /></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/languagescms', array('action' => 'add')) ?>"
+                               class="btn btn-primary">Thêm ngôn ngữ mới</a>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/languagescms', array('action' => 'publish')) ?>')">
+                                Kích hoạt
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/languagescms', array('action' => 'unpublish')) ?>')">
+                                Bỏ kích hoạt
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</section><!-- /.content -->

@@ -1,0 +1,217 @@
+<?php
+	$countries = $this->Contries()->getContries();
+	$country_id = $this->User()->getCountryId();
+?>
+<div class="coz-wrapper-profile" >
+	<div class="container">
+	    <div class="row coz-profile">
+			<div class="col-md-3">
+				<?php echo $this->partial('application/profile/menu', array('active' => 'edit', 'point' => $point) ); ?>
+			</div>
+			<div class="col-md-9">
+	            <div class="coz-profile-content">
+				   
+	            	<div class="coz-user-info-block" >
+
+		                <div class="coz-user-heading">
+		                    <h3><?php echo $this->translate('txt_account_settings') ?></h3>
+		                    <span class="help-block"><?php echo $this->User()->getUserName(); ?></span>
+		                </div>
+		                <div class="row" >
+		                	<form accept-charset='UTF-8' action="/profile/edit" method='post' data-form="editProfile" >
+		                		<div class="col-sm-12" >
+			                		<p class="coz-note-payment" >
+			                            <?php echo $this->translate('txt_thong_tin_cua_ban') ?>
+			                        </p>
+			                	</div>
+			                	<div class="col-sm-7" >
+					                <div class="wrap-form-edit-profile" >
+					                	<div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-12" >
+			                                        <label class="ui-lb-payment" >
+			                                            <?php echo $this->translate('txt_lb_ten_payment') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-6  first-payment" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $this->User()->getFirstName(); ?>" name="first_name" id="first_name" spellcheck="false" class="input-payment first_name" aria-invalid="true" data-input="first_name" >
+			                                        </div>
+			                                    </div>
+			                                    <div class="col-sm-6" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $this->User()->getLastName(); ?>" name="last_name" id="last_name" spellcheck="false" class="input-payment last_name" aria-invalid="true" data-input="last_name" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-12" >
+			                                        <label class="ui-lb-payment" >
+			                                            <?php echo $this->translate('txt_lb_so_dien_thoai_payment') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-12" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" name="phone" id="phone" spellcheck="false" class="input-payment phone" aria-invalid="true" value="<?php echo $this->User()->getPhone(); ?>" data-input="phone" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-12" >
+			                                        <label class="ui-lb-payment" >
+			                                            <?php echo $this->translate('txt_lb_birthday_payment') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-12" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" name="birthday" id="birthday" spellcheck="false" class="input-payment birthday" aria-invalid="true" value="<?php echo $this->User()->getBirthday(); ?>" data-input="phone" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-12" >
+			                                        <label class="ui-lb-payment" >
+			                                            <?php echo $this->translate('txt_lb_dat_nuoc_payment'); ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-12" >
+			                                        <div class="ui-select-payment" >
+			                                            <select class="coz-select-payment"  name="country_id" id="country_id" data-input="country_id" >
+			                                                <option value="" >
+			                                                    <?php echo $this->translate('chon_country');?>
+			                                                </option>
+			                                                <?php foreach ($countries as $country){ ?>
+			                                                <option value="<?php echo $country['id'] ?>" <?php echo ($country['id'] == $country_id ) ? 'selected' : ''; ?> >
+			                                                    <?php echo $country['title'] ?>
+			                                                </option>
+			                                                <?php } ?>
+			                                            </select>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="clearfix" neo-place="addressProfile" ></div>
+
+					                </div>
+			                	</div>
+
+			                	<div class="col-sm-5" >
+			                		<label for="profile_map_canvas"  class="ui-lb-payment" >
+					                    <?php echo $this->translate('txt_ban_do') ?>
+					                </label>
+									<div class="wrap-profile-map-canvas" >
+										<div id="profile_map_canvas" data-neo="profileMap" data-longitude="<?php echo $this->User()->getLongitude(); ?>"  data-latitude="<?php echo $this->User()->getLatitude(); ?>" ></div>
+										<input type="hidden" value="<?php echo $this->User()->getLongitude(); ?>" name="longitude"  data-input="longitude" >
+										<input type="hidden" value="<?php echo $this->User()->getLatitude(); ?>" name="latitude" data-input="latitude" >
+									</div>
+									<div class="" >
+										<a href="javascript:void(0);" class="coz-btn" data-neo="updateMapProfile" rel="nofollow" >
+											<?php echo $this->translate('txt_cap_nhat_ban_do') ?>
+										</a>
+									</div>
+			                	</div>
+
+			                	<div class="col-sm-12" >
+			                		<div class="form-element-payment" >
+		                                <div class="row" >
+		                                    <div class="col-sm-12" >
+		                                        <div class="clearfix" >
+		                                            <input name="sb" type="submit" value="<?php echo $this->translate('txt_save_edit_profile') ?>" class="coz-btn coz-btn-active" >
+		                                            <br />
+		                                            <a href="javascript:void(0);" data-neo="openFormEditPassword" class="coz-btn-link" rel="nofollow" >
+		                                            	<?php echo $this->translate('txt_edit_password') ?>
+		                                            </a>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+			                	</div>
+		                	</form>
+
+		                	<form accept-charset='UTF-8' action="/profile/editPassword" method='post' data-form="editPassword" style="display:none" >
+		                		<div class="col-sm-12" >
+			                		<p class="coz-note-payment" >
+			                            <?php echo $this->translate('txt_thong_tin_mat_khau_cua_ban') ?>
+			                        </p>
+			                	</div>
+			                	<div class="col-sm-7" >
+				                	<div class="form-element-payment" >
+		                                <div class="row" >
+		                                    <div class="col-sm-12" >
+		                                        <label class="ui-lb-payment" >
+		                                            <?php echo $this->translate('txt_mat_khau_cu') ?>
+		                                        </label>
+		                                    </div>
+		                                    <div class="col-sm-12" >
+		                                        <div class="ui-input-payment" >
+		                                            <input type="password" name="password_old" id="password_old" spellcheck="false" class="input-payment" aria-invalid="true" data-input="password_old" >
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-element-payment" >
+		                                <div class="row" >
+		                                    <div class="col-sm-12" >
+		                                        <label class="ui-lb-payment" >
+		                                            <?php echo $this->translate('txt_mat_khau_moi') ?>
+		                                        </label>
+		                                    </div>
+		                                    <div class="col-sm-12" >
+		                                        <div class="ui-input-payment" >
+		                                            <input type="password" name="password_new" id="password_new" spellcheck="false" class="input-payment" aria-invalid="true" data-input="password_new" >
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-element-payment" >
+		                                <div class="row" >
+		                                    <div class="col-sm-12" >
+		                                        <label class="ui-lb-payment" >
+		                                            <?php echo $this->translate('txt_danh_lai_mat_khau_moi') ?>
+		                                        </label>
+		                                    </div>
+		                                    <div class="col-sm-12" >
+		                                        <div class="ui-input-payment" >
+		                                            <input type="password" name="re_password_new" id="re_password_new" spellcheck="false" class="input-payment" aria-invalid="true" data-input="re_password_new" >
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+
+			                		<div class="form-element-payment" >
+		                                <div class="row" >
+		                                    <div class="col-sm-12" >
+		                                        <div class="clearfix" >
+		                                            <input name="sb" type="submit" value="<?php echo $this->translate('txt_save_edit_password') ?>" class="coz-btn coz-btn-active" >
+		                                            <br />
+		                                            <a href="javascript:void(0);" data-neo="openFormEditProfile" class="coz-btn-link" rel="nofollow" >
+		                                            	<?php echo $this->translate('txt_edit_thong_tin_cua_ban') ?>
+		                                            </a>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+			                	</div>
+
+		                	</form>
+		                </div>
+
+		            </div>
+				   
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>

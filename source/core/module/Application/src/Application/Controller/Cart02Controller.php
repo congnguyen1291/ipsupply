@@ -1,0 +1,1053 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Kent
+ * Date: 6/16/14
+ * Time: 9:27 AM
+ */
+
+namespace Application\Controller;
+
+
+use Application\Model\User;
+use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
+use Zend\Filter\File\LowerCase;
+
+use Zend\Mail\Message;
+use Zend\Mail\Transport\Smtp as SmtpTransport;
+use Zend\Mail\Transport\SmtpOptions;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Part as MimePart;
+
+use PHPVnpay\Vnpay;
+use PHPOnepay\Onepay;
+use PHPPaypal\Paypal;
+
+class Cart02Controller extends FrontEndController
+{
+    private $version = '02';
+    
+    public function indexAction()
+    {
+        if ( $this->getVersionCart() != $this->version ) {
+            return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+                'action' => 'index'
+            ));
+        }
+
+        $script = $this->getServiceLocator()->get('viewhelpermanager')->get('inlineScript');
+        $translator = $this->getServiceLocator()->get('translator');
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->headTitle('Cart');
+        $helper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+        $calculate = $helper->sumSubTotalPriceInCart();
+        $price_total = $calculate['price_total'];
+        $price_total_old = $calculate['price_total_old'];
+        $this->data_view['price_total'] = $price_total;
+        $this->data_view['price_total_old'] = $price_total_old;
+        return $this->data_view;
+    }
+
+    public function processAction()
+    {
+        if ( $this->getVersionCart() != $this->version ) {
+            return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+                'action' => 'auth'
+            ));
+        }
+
+        $script = $this->getServiceLocator()->get('viewhelpermanager')->get('inlineScript');
+        $translator = $this->getServiceLocator()->get('translator');
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->headTitle('Cart');
+        $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+
+        $cart = $cartHelper->getCart();
+        if( empty($cart) ){
+            return $this->redirect()->toRoute($this->getUrlRouterLang().'home');
+        }
+        $shipper = (!empty($_SESSION['PAYMENT_SHIPPER']) ? $_SESSION['PAYMENT_SHIPPER'] : array());
+        $buyer = (!empty($_SESSION['PAYMENT_BUYER']) ? $_SESSION['PAYMENT_BUYER'] : array());
+        $this->data_view['buyer'] = $buyer;
+        $this->data_view['shipper'] = $shipper;
+        return $this->data_view;
+    }
+
+
+    public function buyerAction()
+    {
+        $translator = $this->getServiceLocator()->get('translator');
+        $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+        $cart = $cartHelper->getCart();
+        if( !empty($cart) ){
+            $error = array();
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $trans = $request->getPost("trans");
+                if ( empty($trans['first_name']) ) {
+                    $error['first_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($trans['last_name']) ) {
+                    $error['last_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($trans['email']) || !filter_var($trans['email'], FILTER_VALIDATE_EMAIL)) {
+                    $error['email'] = $translator->translate('txt_email_khong_hop_le');
+                }
+                if ( empty($trans['phone']) || !is_numeric($trans['phone'])) {
+                    $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
+                }
+                if ( empty($trans['country_id']) ) {
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    $country = $this->getModelTable('CountryTable')->getOne($trans['country_id']);
+                    $err = $this->validateInputContryPayment($trans, $country);
+                    $error = array_merge($error, $err);
+                }
+                $trans['full_name'] = $trans['first_name'].' '.$trans['last_name'];
+
+                
+                if( empty($error) ){
+                    $member = isset($_SESSION['MEMBER']) ? $_SESSION['MEMBER'] : array();
+                    $buyer = array();
+                    $buyer['first_name'] = $trans['first_name'];
+                    $buyer['last_name'] = $trans['last_name'];
+                    $buyer['full_name'] = $trans['full_name'];
+                    $buyer['phone'] = $trans['phone'];
+                    $buyer['email'] = $trans['email'];
+                    $buyer['type_address_delivery'] = $trans['type_address_delivery'];
+                    $buyer['country_id'] = $trans['country_id'];
+                    $buyer['address'] = $trans['address'];
+                    $buyer['address01'] = empty($trans['address01']) ? '' : $trans['address01'];
+                    $buyer['city'] = empty($trans['city']) ? '' : $trans['city'];
+                    $buyer['state'] = empty($trans['state']) ? '' : $trans['state'];
+                    $buyer['suburb'] = empty($trans['suburb']) ? '' : $trans['suburb'];
+                    $buyer['region'] = empty($trans['region']) ? '' : $trans['region'];
+                    $buyer['province'] = empty($trans['province']) ? '' : $trans['province'];
+                    $buyer['zipcode'] = empty($trans['zipcode']) ? '' : $trans['zipcode'];
+                    $buyer['cities_id'] = empty($trans['cities_id']) ? 0 : $trans['cities_id'];
+                    $buyer['districts_id'] = empty($trans['districts_id']) ? 0 : $trans['districts_id'];
+                    $buyer['wards_id'] = empty($trans['wards_id']) ? 0 : $trans['wards_id'];
+                    $buyer['users_id'] = (!empty($member['users_id'])) ? $member['users_id'] : NULL;
+
+                    $_SESSION['PAYMENT_BUYER'] = $buyer;
+                    $viewModel = new ViewModel();
+                    $viewModel->setTerminal(true);
+                    $viewModel->setTemplate("application/cart02/shipper");
+                    $viewModel->setVariables(array('buyer' => $buyer));
+                    $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                    $html = $viewRender->render($viewModel);
+                    $html_confirm = '';
+                    if( !empty($_SESSION['PAYMENT_BUYER']) 
+                        && !empty($_SESSION['PAYMENT_SHIPPER'])
+                        && isset($_SESSION['PAYMENT_BUYER']['shipping_id'])
+                        && !empty($_SESSION['PAYMENT_BUYER']['payment_id']) ){
+                        $viewModel = new ViewModel();
+                        $viewModel->setTerminal(true);
+                        $viewModel->setTemplate("application/cart02/confirm");
+                        $viewModel->setVariables(array('buyer' => $_SESSION['PAYMENT_BUYER'], 'shipper' => $_SESSION['PAYMENT_SHIPPER']));
+                        $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                        $html_confirm = $viewRender->render($viewModel);
+                    }
+
+                    echo json_encode(array(
+                        'type' => 'cartBuyer',
+                        'flag' => TRUE,
+                        'msg' => $translator->translate('txt_buyer_thanh_cong'),
+                        'buyer' => $_SESSION['PAYMENT_BUYER'],
+                        'html' => $html,
+                        'html_confirm' => $html_confirm,
+                    ));
+                    die;
+                }
+            }
+        }
+        echo json_encode(array(
+            'type' => 'cartBuyer',
+            'flag' => FALSE,
+            'msg' => $translator->translate('txt_buyer_ko_thanh_cong'),
+            'html' => $translator->translate('txt_buyer_ko_thanh_cong'),
+            'html_confirm' => $translator->translate('txt_buyer_ko_thanh_cong'),
+        ));
+        die;
+    }
+
+    public function shipperAction()
+    {
+        $translator = $this->getServiceLocator()->get('translator');
+        $couponsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Coupons');
+        $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+        $cart = $cartHelper->getCart();
+        $error = array();
+        if( !empty($cart)  && !empty($_SESSION['PAYMENT_BUYER']) ){
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $ships = $request->getPost("ships");
+                if ( empty($ships['first_name']) ) {
+                    $error['first_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($ships['last_name']) ) {
+                    $error['last_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($ships['email']) ) {
+                    $error['email'] = $translator->translate('txt_email_khong_hop_le');
+                }
+                if ( empty($ships['phone']) ) {
+                    $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
+                }
+                if ( empty($ships['country_id']) ) {
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    $country_ships = $this->getModelTable('CountryTable')->getOne($ships['country_id']);
+                    $err = $this->validateInputContryPayment($ships, $country_ships);
+                    $error = array_merge($error, $err);
+                }
+
+                if( empty($error) ){
+                    $ships['full_name'] = $ships['first_name'].' '.$ships['last_name'];
+                    $country_id = $ships['country_id'];
+                    $cities_id = 0;
+                    $districts_id = 0;
+
+                    $country = $this->getModelTable('CountryTable')->getOne($country_id);
+                    if( empty($country) ){
+                        $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                    }else{
+                        if( $country->country_type == 2 ){
+                            $cities_id = $ships['state'];
+                        }else if( $country->country_type == 5 ){
+                            $cities_id = $ships['region'];
+                        }else if( $country->country_type == 6 ){
+                            $cities_id = $ships['province'];
+                        }else if( $country->country_type == 7 ){
+                            $cities_id = $ships['cities_id'];
+                            $districts_id = $ships['districts_id'];
+                        }
+                    }
+
+                    if( !empty($country_id) && empty($error) ){
+                        $lsShippings = array();
+                        $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
+                        if( empty($cities) ){
+                            $lsShippings = $this->getModelTable('ShippingTable')->getShippingOfCountry($country_id);
+                        }else{
+                            $city = $this->getModelTable('CitiesTable')->getRow($cities_id);
+                            if( !empty($city) ){
+                                $lsShippings = $this->getModelTable('ShippingTable')->getShippingOfCityAndDistricts($cities_id, $districts_id);
+                            }
+                        }
+
+                        if( !empty($lsShippings) ){
+                            foreach ($lsShippings as $key => $shipping) {
+                                if( !($shipping['no_shipping'] == 1 
+                                    && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                                    && $this->isAvaiableShip($shipping) ){
+                                    $shippings[$shipping['shipping_id']] = $shipping;
+                                }
+                            }
+                            if( empty($shippings) ){
+                                $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                            }
+                        }else{
+                            $lsShips = $this->getModelTable('ShippingTable')->getShippings();
+                            if( !empty($lsShips) ){
+                                $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                            }
+                        }
+                    }
+                }
+
+                $coupon = $couponsHelper->getCoupon();
+                if( !empty($coupon) ){
+                    $check_coupon = $this->getModelTable('InvoiceTable')->getCoupon($coupon['coupons_code']);
+                    if( empty($check_coupon) || !$couponsHelper->isAvaliable() ){
+                        $error['coupon'] = $translator->translate('txt_coupon_khong_hop_le');
+                    }
+                }
+                
+                if( empty($error) ){
+                    $member = isset($_SESSION['MEMBER']) ? $_SESSION['MEMBER'] : array();
+                    $shipper = array();
+                    $shipper['ships_first_name'] = $ships['first_name'];
+                    $shipper['ships_last_name'] = $ships['last_name'];
+                    $shipper['ships_full_name'] = $ships['full_name'];
+                    $shipper['ships_email'] = $ships['email'];
+                    $shipper['ships_phone'] = $ships['phone'];
+                    $shipper['ships_country_id'] = $ships['country_id'];
+                    $shipper['ships_address'] = $ships['address'];
+                    $shipper['ships_address01'] = empty($ships['address01']) ? '' : $ships['address01'];
+                    $shipper['ships_city'] = empty($ships['city']) ? '' : $ships['city'];
+                    $shipper['ships_state'] = empty($ships['state']) ? '' : $ships['state'];
+                    $shipper['ships_suburb'] = empty($ships['suburb']) ? '' : $ships['suburb'];
+                    $shipper['ships_region'] = empty($ships['region']) ? '' : $ships['region'];
+                    $shipper['ships_province'] = empty($ships['province']) ? '' : $ships['province'];
+                    $shipper['ships_zipcode'] = empty($ships['zipcode']) ? '' : $ships['zipcode'];
+                    $shipper['ships_cities_id'] = empty($ships['cities_id']) ? 0 : $ships['cities_id'];
+                    $shipper['ships_districts_id'] = empty($ships['districts_id']) ? 0 : $ships['districts_id'];
+                    $shipper['ships_wards_id'] = empty($ships['wards_id']) ? 0 : $ships['wards_id'];
+
+                    $_SESSION['PAYMENT_SHIPPER'] = $shipper;
+
+                    $viewModel = new ViewModel();
+                    $viewModel->setTerminal(true);
+                    $viewModel->setTemplate("application/cart02/shipping");
+                    $viewModel->setVariables(array('buyer' => $_SESSION['PAYMENT_BUYER'], 'shipper' => $shipper));
+                    $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                    $html = $viewRender->render($viewModel);
+
+                    $html_confirm = '';
+                    if( !empty($_SESSION['PAYMENT_BUYER']) 
+                        && !empty($_SESSION['PAYMENT_SHIPPER'])
+                        && isset($_SESSION['PAYMENT_BUYER']['shipping_id'])
+                        && !empty($_SESSION['PAYMENT_BUYER']['payment_id']) ){
+                        $viewModel = new ViewModel();
+                        $viewModel->setTerminal(true);
+                        $viewModel->setTemplate("application/cart02/confirm");
+                        $viewModel->setVariables(array('buyer' => $_SESSION['PAYMENT_BUYER'], 'shipper' => $_SESSION['PAYMENT_SHIPPER']));
+                        $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                        $html_confirm = $viewRender->render($viewModel);
+                    }
+
+                    echo json_encode(array(
+                        'type' => 'cartShipper',
+                        'flag' => TRUE,
+                        'msg' => $translator->translate('txt_shipper_thanh_cong'),
+                        'shipper' => $_SESSION['PAYMENT_SHIPPER'],
+                        'html' => $html,
+                        'html_confirm' => $html_confirm,
+                    ));
+                    die;
+                }
+            }
+        }
+        echo json_encode(array(
+            'type' => 'cartBuyer',
+            'flag' => FALSE,
+            'msg' => $translator->translate('txt_shipper_ko_thanh_cong'),
+            'error' => $error,
+            'html' => $translator->translate('txt_shipper_ko_thanh_cong'),
+            'html_confirm' => $translator->translate('txt_shipper_ko_thanh_cong'),
+        ));
+        die;
+    }
+
+    public function shippingAction()
+    {
+        $translator = $this->getServiceLocator()->get('translator');
+        $couponsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Coupons');
+        $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+        $cart = $cartHelper->getCart();
+        if( !empty($cart) && !empty($_SESSION['PAYMENT_BUYER']) && !empty($_SESSION['PAYMENT_SHIPPER']) ){
+            $shipper = $_SESSION['PAYMENT_SHIPPER'];
+            $buyer = $_SESSION['PAYMENT_BUYER'];
+            $error = array();
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $trans = $request->getPost("trans");
+                $error = array();
+                if ( empty($trans['shipping_id']) && $trans['shipping_id'] != 0 ) {
+                    $error['shipping_id'] = $translator->translate('txt_chua_chon_transportation');
+                }
+                if ( empty($trans['payment_id']) ) {
+                    $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
+                }
+
+                $payment = $this->getModelTable('PaymentTable')->getPayment($trans['payment_id']);
+                if ( empty($payment) ) {
+                    $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
+                }else{
+                    if( $payment->code == 'ONEPAY' 
+                        && empty($payment->is_local)
+                        && (    empty($trans['avs_street01']) || empty($trans['avs_city']) 
+                                || empty($trans['avs_stateprov']) || empty($trans['avs_postCode']) || empty($trans['avs_country'])) ){
+                        $error['payment_id'] = $translator->translate('txt_chua_nhap_day_du_thong_tin_payment_method');
+                    }
+                }
+
+                $payment_id = $payment->payment_id;
+                $no_shipping = FALSE;
+                $shipping = array();
+                $is_free = FALSE;
+                $fee = 0;
+
+                $country_id = $shipper['ships_country_id'];
+                $cities_id = 0;
+                $districts_id = 0;
+                $transport_type = $trans['transport_type'];
+                $shipping_id = $trans['shipping_id'];
+
+                $country = $this->getModelTable('CountryTable')->getOne($country_id);
+                if( empty($country) ){
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    if( $country->country_type == 2 ){
+                        $cities_id = $shipper['ships_state'];
+                    }else if( $country->country_type == 5 ){
+                        $cities_id = $shipper['ships_region'];
+                    }else if( $country->country_type == 6 ){
+                        $cities_id = $shipper['ships_province'];
+                    }else if( $country->country_type == 7 ){
+                        $cities_id = $shipper['ships_cities_id'];
+                        $districts_id = $shipper['ships_districts_id'];
+                    }
+                }
+
+                $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
+                if( empty($cities) ){
+                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
+                }else{
+                    $city = $this->getModelTable('CitiesTable')->getCityOfCountry($cities_id, $country_id);
+                    if( !empty($city) ){
+                        $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
+                    }
+                }
+
+                if( !empty($shipping) ){
+                    if( empty($cities) ){
+                        $fee = $this->getFeeShip($shipping, $transport_type);
+                        if( empty($fee) ){
+                            $is_free = TRUE;
+                        }
+                    }else{
+                        if( !($shipping['no_shipping'] == 1 
+                            && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                            && $this->isAvaiableShip($shipping) ){
+                            $isFreeShip = $this->isFreeShip($shipping);
+                            $fee = $this->getFeeShip($shipping, $transport_type);
+                            if( empty($fee) ){
+                                $is_free = TRUE;
+                            }
+                        }else{
+                            $no_shipping = TRUE;
+                            $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                        }
+                    }
+                }else{
+                    $lsShips = $this->getModelTable('ShippingTable')->getShippings();
+                    if( empty($lsShips) ){
+                        $is_free = TRUE;
+                    }else{
+                        $no_shipping = TRUE;
+                        $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                    }
+                }
+                
+                $coupon = $couponsHelper->getCoupon();
+                if( !empty($coupon) ){
+                    $check_coupon = $this->getModelTable('InvoiceTable')->getCoupon($coupon['coupons_code']);
+                    if( empty($check_coupon) || !$couponsHelper->isAvaliable() ){
+                        $error['coupon'] = $translator->translate('txt_coupon_khong_hop_le');
+                    }
+                }
+
+                if( empty($error) ){
+                    $member = isset($_SESSION['MEMBER']) ? $_SESSION['MEMBER'] : array();
+                    $buyer['transport_type'] = $transport_type;
+                    $buyer['transport_type'] = $transport_type;
+                    $buyer['shipping_id'] = $shipping_id;
+                    $buyer['payment_id'] = $payment_id;
+                    if( $payment->code == 'ONEPAY' 
+                        && empty($payment->is_local) ){
+                        $buyer['avs_street01'] = $trans['avs_street01'];
+                        $buyer['avs_city'] = $trans['avs_city'];
+                        $buyer['avs_stateprov'] = $trans['avs_stateprov'];
+                        $buyer['avs_postCode'] = $trans['avs_postCode'];
+                        $buyer['avs_country'] = $trans['avs_country'];
+                    }
+
+                    $_SESSION['PAYMENT_BUYER'] = $buyer;
+
+                    $viewModel = new ViewModel();
+                    $viewModel->setTerminal(true);
+                    $viewModel->setTemplate("application/cart02/confirm");
+                    $viewModel->setVariables(array('buyer' => $buyer, 'shipper' => $shipper));
+                    $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                    $html = $viewRender->render($viewModel);
+                    
+                    echo json_encode(array(
+                        'type' => 'cartShipping',
+                        'flag' => TRUE,
+                        'msg' => $translator->translate('txt_shipping_thanh_cong'),
+                        'buyer' => $buyer,
+                        'shipper' => $shipper,
+                        'html' => $html
+                    ));
+                    die;
+                }
+            }
+        }
+        echo json_encode(array(
+            'type' => 'cartBuyer',
+            'flag' => FALSE,
+            'msg' => $translator->translate('txt_shipping_ko_thanh_cong'),
+            'html' => $translator->translate('txt_shipping_ko_thanh_cong'),
+        ));
+        die;
+    }
+
+    public function paymentAction()
+    {
+        $translator = $this->getServiceLocator()->get('translator');
+        $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+        $couponsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Coupons');
+        $currencyHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Currency');
+        $invoiceHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Invoice');
+        $cart = $cartHelper->getCart();
+        if( empty($cart) ){
+            return $this->redirect()->toRoute($this->getUrlRouterLang().'home');
+        }
+
+        if (    empty($_SESSION['PAYMENT_BUYER'])
+                || empty($_SESSION['PAYMENT_SHIPPER']) ) {
+            unset($_SESSION['PAYMENT_BUYER']);
+            unset($_SESSION['PAYMENT_SHIPPER']);
+            return $this->redirect()->toRoute('cart02', array(
+                'action' => 'process'
+            ));
+        }
+        $buyer = $_SESSION['PAYMENT_BUYER'];
+        $shipper = $_SESSION['PAYMENT_SHIPPER'];
+        $invoice = array_merge( $buyer, $shipper);
+        $error = array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $trans = $request->getPost("trans");
+            $order = $request->getPost("order");
+            if ( empty($buyer['first_name']) ) {
+                $error['first_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+            }
+            if ( empty($buyer['last_name']) ) {
+                $error['last_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+            }
+            if ( empty($buyer['email']) || !filter_var($buyer['email'], FILTER_VALIDATE_EMAIL)) {
+                $error['email'] = $translator->translate('txt_email_khong_hop_le');
+            }
+            if ( empty($buyer['phone']) || !is_numeric($buyer['phone'])) {
+                $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
+            }
+            if ( empty($buyer['country_id']) ) {
+                $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+            }else{
+                $country = $this->getModelTable('CountryTable')->getOne($buyer['country_id']);
+                $err = $this->validateInputContryPayment($buyer, $country);
+                $error = array_merge($error, $err);
+            }
+
+            if ( !empty($buyer['ship_to_different_address']) && $buyer['ship_to_different_address'] == 1){
+                if ( empty($shipper['ships_first_name']) ) {
+                    $error['first_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($shipper['ships_last_name']) ) {
+                    $error['last_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($shipper['ships_email']) || !filter_var($shipper['ships_email'], FILTER_VALIDATE_EMAIL)) {
+                    $error['email'] = $translator->translate('txt_email_khong_hop_le');
+                }
+                if ( empty($shipper['ships_phone']) || !is_numeric($shipper['ships_phone'])) {
+                    $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
+                }
+                if ( empty($shipper['ships_country_id']) ) {
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    $country_ships = $this->getModelTable('CountryTable')->getOne($shipper['ships_country_id']);
+                    $err = $this->validateInputContryShipper($shipper, $country_ships);
+                    $error = array_merge($error, $err);
+                }
+            }
+            if ( empty($buyer['shipping_id']) && $buyer['shipping_id'] != 0 ) {
+                $error['shipping_id'] = $translator->translate('txt_chua_chon_transportation');
+            }
+            if ( empty($buyer['payment_id']) ) {
+                $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
+            }
+
+            $payment = $this->getModelTable('PaymentTable')->getPayment($buyer['payment_id']);
+            if ( empty($payment) ) {
+                $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
+            }else{
+                if( $payment->code == 'ONEPAY' 
+                    && empty($payment->is_local)
+                    && (    empty($buyer['avs_street01']) || empty($buyer['avs_city']) 
+                            || empty($buyer['avs_stateprov']) || empty($buyer['avs_postCode']) || empty($buyer['avs_country'])) ){
+                    $error['payment_id'] = $translator->translate('txt_chua_nhap_day_du_thong_tin_payment_method');
+                }
+            }
+
+            $payment_id = $payment->payment_id;
+            $no_shipping = FALSE;
+            $shipping = array();
+            $is_free = FALSE;
+            $fee = 0;
+
+            $country_id = $shipper['ships_country_id'];
+            $cities_id = 0;
+            $districts_id = 0;
+            $transport_type = $buyer['transport_type'];
+            $shipping_id = $buyer['shipping_id'];
+
+            $country = $this->getModelTable('CountryTable')->getOne($country_id);
+            if( empty($country) ){
+                $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+            }else{
+                if( $country->country_type == 2 ){
+                    $cities_id = $shipper['ships_state'];
+                }else if( $country->country_type == 5 ){
+                    $cities_id = $shipper['ships_region'];
+                }else if( $country->country_type == 6 ){
+                    $cities_id = $shipper['ships_province'];
+                }else if( $country->country_type == 7 ){
+                    $cities_id = $shipper['ships_cities_id'];
+                    $districts_id = $shipper['ships_districts_id'];
+                }
+            }
+
+            $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
+            if( empty($cities) ){
+                $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
+            }else{
+                $city = $this->getModelTable('CitiesTable')->getCityOfCountry($cities_id, $country_id);
+                if( !empty($city) ){
+                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
+                }
+            }
+
+            if( !empty($shipping) ){
+                if( empty($cities) ){
+                    $fee = $this->getFeeShip($shipping, $transport_type);
+                    if( empty($fee) ){
+                        $is_free = TRUE;
+                    }
+                }else{
+                    if( !($shipping['no_shipping'] == 1 
+                        && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                        && $this->isAvaiableShip($shipping) ){
+                        $isFreeShip = $this->isFreeShip($shipping);
+                        $fee = $this->getFeeShip($shipping, $transport_type);
+                        if( empty($fee) ){
+                            $is_free = TRUE;
+                        }
+                    }else{
+                        $no_shipping = TRUE;
+                        $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                    }
+                }
+            }else{
+                $lsShips = $this->getModelTable('ShippingTable')->getShippings();
+                if( empty($lsShips) ){
+                    $is_free = TRUE;
+                }else{
+                    $no_shipping = TRUE;
+                    $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                }
+            }
+            
+            $coupon = $couponsHelper->getCoupon();
+            if( !empty($coupon) ){
+                $check_coupon = $this->getModelTable('InvoiceTable')->getCoupon($coupon['coupons_code']);
+                if( empty($check_coupon) || !$couponsHelper->isAvaliable() ){
+                    $error['coupon'] = $translator->translate('txt_coupon_khong_hop_le');
+                }
+            }
+            
+            if( empty($error) ){
+                $member = isset($_SESSION['MEMBER']) ? $_SESSION['MEMBER'] : array();
+                $extensions = array();
+                $dataCart = $_SESSION['cart'];
+                unset($dataCart['shipping']);
+
+                foreach ($cart as $key => $products) {
+                    if($key == 'coupon' || $key == 'shipping' ) continue;
+                    foreach ($products['product_type'] as $type_id => $row) {
+                        if(isset($row['extensions']) && count($row['extensions']) > 0){
+                            if(!isset($extensions[$products['id']][$type_id])){
+                                $extensions[$products['id']][$type_id] = array();
+                            }
+                            foreach($row['extensions'] as $ext){
+                                if(!isset($extensions[$products['id']][$type_id][$ext['id']])){
+                                    $extensions[$products['id']][$type_id][$ext['id']] = array();
+                                }
+                                $extensions[$products['id']][$type_id][$ext['id']] = array(
+                                    'ext_name' => $ext['ext_name'],
+                                    'price' => $ext['price'],
+                                    'is_available' => $ext['is_available'],
+                                    'is_always' => $ext['is_always'],
+                                    'type' => $ext['type'],
+                                    'refer_product_id' => $ext['refer_product_id']
+                                );
+                            }
+                        }
+
+                        if(isset($row['extensions_require']) && count($row['extensions_require']) > 0){
+                            if(!isset($extensions[$products['id']][$type_id])){
+                                $extensions[$products['id']][$type_id] = array();
+                            }
+                            foreach($row['extensions_require'] as $ext){
+                                if(!isset($extensions[$products['id']][$type_id][$ext['id']])){
+                                    $extensions[$products['id']][$type_id][$ext['id']] = array();
+                                }
+                                $extensions[$products['id']][$type_id][$ext['id']] = array(
+                                    'ext_name' => $ext['ext_name'],
+                                    'price' => $ext['price'],
+                                    'is_available' => $ext['is_available'],
+                                    'is_always' => $ext['is_always'],
+                                    'type' => $ext['type'],
+                                    'refer_product_id' => $ext['refer_product_id']
+                                );
+                            }
+                        }
+                    }
+                }
+
+                $calculate = $cartHelper->sumSubTotalPriceInCart();
+                $total = $calculate['price_total'];
+                $total_old = $calculate['price_total_old'];
+                $total_orig = $calculate['price_total_orig'];
+                $total_tax = $calculate['price_total_tax'];
+                $total_old_tax = $calculate['price_total_old_tax'];
+                $total_orig_tax = $calculate['price_total_orig_tax'];
+
+                $viewModel = new ViewModel();
+                $viewModel->setTerminal(true);
+                $viewModel->setTemplate("application/cart/content_invoice");
+                $viewModel->setVariables(array(
+                    'data' => $invoice,
+                    'datamember' => $member,
+                    'datacart' => $dataCart,
+                    'dataorder' => $order,
+                    'dataExtensions' => $extensions,
+                    'shipping' => $shipping,
+                    'is_free' => $is_free,
+                    'transport_type' => $transport_type,
+                    'fee' => $fee,
+                    'total' => $total,
+                    'total_old' => $total_old,
+                    'total_orig' => $total_orig,
+                    'total_tax' => $total_tax,
+                    'total_old_tax' => $total_old_tax,
+                    'total_orig_tax' => $total_orig_tax,
+                    'ship' => $this->website['ship'],
+                ));
+                $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                $html = $viewRender->render($viewModel);
+                
+                $invoice['invoice_title'] = $this->website['website_order_code_prefix'] . strtotime(date("Y-m-d H:i:s")) . $this->website['website_order_code_suffix'];
+                $invoice['invoice_description'] = empty($trans['invoice_description']) ? '' : strip_tags($trans['invoice_description']);
+                $invoice['is_published'] = 1;
+                $invoice['is_delete'] = 0;
+                $invoice['payment_id'] = $payment_id;
+                $invoice['payment_code'] = $payment->code;
+                $invoice['payment'] = 'unpaid';
+                $invoice['delivery'] = 'no_delivery';
+                $invoice['date_create'] = date('Y-m-d H:i:s');
+                $invoice['date_update'] = date('Y-m-d H:i:s');
+                
+                
+                if( isset($dataCart['coupon']) ){
+                    $dataCart['coupon']['price_used'] = $total_orig_tax;
+                }
+                $invoice['total'] = $total;//chua co ship
+                $invoice['total_old'] = $total_old;//chua co ship
+                $invoice['total_orig'] = $total_orig;//chua co ship
+                $invoice['total_tax'] = $total_tax;//chua co ship
+                $invoice['total_old_tax'] = $total_old_tax;//chua co ship
+                $invoice['total_orig_tax'] = $total_orig_tax;//chua co ship
+                $invoice['value_ship'] = $this->website['ship'];
+                $invoice['content'] = htmlentities($html, ENT_QUOTES, 'UTF-8');
+                if( empty($total_tax) ){
+                    $invoice['payment'] = 'paid';
+                }
+
+                $invoice['company_name'] = (!empty($order['xuathoadon'])) ? $order['company_name'] : '';
+                $invoice['company_tax_code'] = (!empty($order['xuathoadon'])) ? $order['company_tax_code'] : '';
+                $invoice['company_address'] = (!empty($order['xuathoadon'])) ? $order['company_address'] : '';
+                $invoice['email_subscription'] = (!empty($order['subscription'])) ? $order['email'] : '';
+                $invoice['ip_addr'] = $_SERVER['REMOTE_ADDR'];
+                $invoice['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+
+                //ko la hoa don ban si
+                $invoice['is_wholesale'] = 0;
+                if( !empty($shipping) ){
+                    $shipping['shipping_fee'] = $fee;
+                }
+                try{
+                    $id = $this->getModelTable('InvoiceTable')->saveInvoice($invoice, $dataCart, $shipping, $extensions);
+                }catch(\Exception $e ){
+                    //die($e->getMessage());
+                    return $this->redirect()->toRoute($this->getUrlRouterLang().'cart02', array('action' => 'process'));
+                }
+
+                unset($_SESSION['cart']);
+                unset($_SESSION['PAYMENT_BUYER']);
+                unset($_SESSION['PAYMENT_SHIPPER']);
+                if( empty($total_tax) ){
+                    $_SESSION['invoice_id'] = $id;
+                    return $this->redirect()->toRoute($this->getUrlRouterLang().'cart', array('action' => 'success'));
+                }
+
+                if(!empty($payment) 
+                    && (    $payment->code == 'HOME'
+                            || $payment->code == 'ATM'
+                            || ($payment->code == 'PAYPAL' && !empty($payment->sale_account))
+                            || ($payment->code == 'ONEPAY' && !empty($payment->vpc_merchant) 
+                                && !empty($payment->vpc_accesscode) 
+                                && !empty($payment->vpc_hashcode) )
+                            || ($payment->code == 'VNPAY' && !empty($payment->vnp_merchant) && !empty($payment->vnp_tmncode) && !empty($payment->vnp_hashsecret))  ) ){
+                    switch ( $payment->code ) {
+                        case 'HOME':
+                        {
+                            $_SESSION['invoice_id'] = $id;
+                            return $this->redirect()->toRoute($this->getUrlRouterLang().'cart', array('action' => 'success'));
+                            break;
+                        }
+                            
+                        case 'ATM':
+                        {
+                            $_SESSION['invoice_id'] = $id;
+                            return $this->redirect()->toRoute($this->getUrlRouterLang().'cart', array('action' => 'success'));
+                            break;
+                        }
+                            
+                        case 'PAYPAL':
+                        {
+                            $total_all = $fee + $total_tax;
+                            $currency_code = $_SESSION['website']['website_currency'];
+                            $rate_exchange = 1;
+                            if( strtolower($currency_code) != 'usd' ){
+                                $rate_exchange = $currencyHelper->exchangerates('USD', $currency_code, 1);
+                            }
+
+                            $products = array();
+                            foreach ($cart as $id_x => $product) {
+                                foreach ($product['product_type'] as $product_type_id => $p) {
+                                    $item = array();
+                                    $item['title'] = $p['products_title'];
+                                    $item['type_name'] = $p['type_name'];
+                                    $item['quantity'] = $p['quantity'];
+                                    $item['price_total'] = $p['price_total_tax'];
+                                    $products[] = $item;
+                                }
+                            }
+
+                            $amount = $total_tax/$rate_exchange;
+                            $row = array(
+                                        'from_currency' => $currency_code,
+                                        'to_currency' => 'USD',
+                                        'rate_exchange' => $rate_exchange,
+                                        'total_converter' => $amount
+                                    );
+                            try{
+                                $invoice = $this->getModelTable('InvoiceTable')->getInvoiceByTitle($id);
+                                $this->getModelTable('InvoiceTable')->updateData($row, $invoice->invoice_id);
+                            }catch(\Exception $ex){}
+
+                            $cb_return = $this->baseUrl.'/paypal/return/'.$invoice->invoice_id;
+                            $cb_cancel = $this->baseUrl.'/paypal/cancel/'.$invoice->invoice_id;
+                            $cb_notifi = $this->baseUrl.'/paypal/notifi/'.$invoice->invoice_id;
+
+                            $paypal = new Paypal( );
+                            $is_sandbox = TRUE;
+                            if( $payment->is_sandbox == 0 ){
+                                $is_sandbox = FALSE;
+                            }
+                            $paypal->setIsSandbox( $is_sandbox );
+                            $paypal->setCmd( '_cart' );
+                            $paypal->setCharset( 'utf-8' );
+                            $paypal->setUpload( 1 );
+                            $paypal->setInvoice( $invoice->invoice_id );
+                            $paypal->setBusiness( $payment->sale_account );
+                            $paypal->setCurrencyCode( 'USD' );
+                            $paypal->setReturn( $cb_return );
+                            $paypal->setCancelReturn( $cb_cancel );
+                            $paypal->setNotifyUrl( $cb_notifi );
+                            $paypal->setRm( 2 );
+                            $paypal->setLc( 2 );
+                            $paypal->setCbt( $translator->translate('txt_paypal_tiep_tuc_thanh_toan') );
+                            $paypal->setProducts( $products );
+                            //$paypal->setItemName( 'test mua hang paypal' );
+                            //$paypal->setAmount( 30000 );
+                            $paypal->setRateExchange( $rate_exchange );
+                            $url = $paypal->getUrlPay();
+                            return $this->redirect()->toUrl($url);
+                            break;
+                        }
+
+                        case 'ONEPAY':
+                        {
+                            $total_all = $fee + $total_tax;
+                            $currency_code = $_SESSION['website']['website_currency'];
+
+                            $row = array(
+                                        'from_currency' => $currency_code,
+                                        'to_currency' => $currency_code,
+                                        'rate_exchange' => 1,
+                                        'total_converter' => $total_all
+                                    );
+                            try{
+                                $invoice = $this->getModelTable('InvoiceTable')->getInvoiceByTitle($id);
+                                $this->getModelTable('InvoiceTable')->updateData($row, $invoice->invoice_id);
+                            }catch(\Exception $ex){}
+
+                            $cb_return = $this->baseUrl.'/onepay/return/'.$invoice->invoice_id;
+                            $onepay = new Onepay( );
+                            $is_sandbox = TRUE;
+                            if( $payment->is_sandbox == 0 ){
+                                $is_sandbox = FALSE;
+                            }
+                            $is_local = FALSE;
+                            if( !empty($payment->is_local) ){
+                                $is_local = TRUE;
+                            }
+                            $onepay->setIsSandbox( $is_sandbox );
+                            $onepay->setIsLocal( $is_local );
+
+                            $onepay->setVpcMerchant( $payment->vpc_merchant );
+                            $onepay->setVpcAccessCode( $payment->vpc_accesscode );
+                            $onepay->setVpcHashSecret( $payment->vpc_hashcode );
+
+                            $onepay->setTitle( $translator->translate('txt_onepay_thanh_toan_don_hang'). ' '. $id );
+                            $onepay->setVpcMerchTxnRef( $invoice->invoice_id );
+                            $onepay->setVpcOrderInfo( $id );
+                            $onepay->setVpcAmount( $total_all );
+                            $onepay->setVpcReturnURL( $cb_return );
+                            $onepay->setVpcCommand( 'pay' );
+                            $locale = 'vn';
+                            $quocGia = $this->getModelTable('CountryTable')->getOne($this->website->website_contries);
+                            if( !empty($quocGia) 
+                                && strtolower($quocGia->code) != 'vn' ){
+                                $locale = 'en';
+                            }
+                            $onepay->setVpcLocale( $locale );
+
+                            $onepay->setVpcTicketNo( $_SERVER['REMOTE_ADDR'] );
+                            $onepay->setVpcSHIPStreet01( $invoiceHelper->getAddress($invoice, 1) );
+                            $onepay->setVpcSHIPProvice( $invoiceHelper->getProvice($invoice, 1) );
+                            $onepay->setVpcSHIPCity( $invoiceHelper->getCity($invoice, 1) );
+                            $onepay->setVpcSHIPCountry( $country->title );
+                            $onepay->setVpcCustomerPhone( $invoice->ships_phone );
+                            $onepay->setVpcCustomerEmail( $invoice->ships_email );
+                            $onepay->setVpcCustomerId( $invoice->users_id );
+
+                            if( $is_local ){
+                                $onepay->setVpcCurrency( $currency_code );
+                            }else{
+                                $onepay->setAVSStreet01( $buyer['avs_street01'] );
+                                $onepay->setAVSCity( $buyer['avs_city'] );
+                                $onepay->setAVSStateProv( $buyer['avs_stateprov'] );
+                                $onepay->setAVSPostCode( $buyer['avs_postCode'] );
+                                $AVS_Country = $this->getModelTable('CountryTable')->getOne($buyer['avs_country']);
+                                if( empty($AVS_Country) ){
+                                    $onepay->setAVSCountry( $AVS_Country->title );
+                                }
+                                $onepay->setDisplay( '' );
+                                $onepay->setAgainLink( $_SERVER['HTTP_REFERER'] );
+                            }
+
+                            $url = $onepay->getUrlPay();
+                            return $this->redirect()->toUrl($url);
+                            break;
+                        }
+
+                        case 'VNPAY':
+                        {
+                            $total_all = $fee + $total_tax;
+                            $currency_code = $_SESSION['website']['website_currency'];
+
+                            $row = array(
+                                        'from_currency' => $currency_code,
+                                        'to_currency' => $currency_code,
+                                        'rate_exchange' => 1,
+                                        'total_converter' => $total_all
+                                    );
+                            try{
+                                $invoice = $this->getModelTable('InvoiceTable')->getInvoiceByTitle($id);
+                                $this->getModelTable('InvoiceTable')->updateData($row, $invoice->invoice_id);
+                            }catch(\Exception $ex){}
+
+                            $cb_return = $this->baseUrl.'/vnpay/return/'.$invoice->invoice_id;
+                            $vnpay = new Vnpay();
+                            $is_sandbox = TRUE;
+                            if( $payment->is_sandbox == 0 ){
+                                $is_sandbox = FALSE;
+                            }
+                            $vnpay->setIsSandbox( $is_sandbox );
+                            $vnpay->setVnpMerchant( $payment->vnp_merchant );
+                            $vnpay->setVnpTmnCode( $payment->vnp_tmncode );
+                            $vnpay->setVnpAmount( $total_all );
+                            $vnpay->setVnpCommand( 'pay' );
+                            $vnpay->setVnpCurrCode( $currency_code );
+                            $locale = 'vn';
+                            $quocGia = $this->getModelTable('CountryTable')->getOne($this->website->website_contries);
+                            if( !empty($quocGia) 
+                                && strtolower($quocGia->code) != 'vn' ){
+                                $locale = 'en';
+                            }
+                            $vnpay->setVnpLocale( $locale );
+                            $vnpay->setVnpOrderInfo( ' ' );
+                            $vnpay->setVnpOrderType( 'billpayment' );
+                            $vnpay->setVnpReturnUrl( $cb_return );
+                            $vnpay->setVnpTxnRef( $invoice->invoice_id );
+                            //$vnpay->setVnpBankCode( 'NCB' );
+                            $vnpay->setHashSecret( $payment->vnp_hashsecret );
+                            //$vnpay->setWebsiteId( $this->website->website_id );
+                            $url = $vnpay->getUrlPay();
+                            return $this->redirect()->toUrl($url);
+                            break;
+                        }
+                    }
+                }
+
+                return $this->redirect()->toRoute('cart', array('action' => 'success'));
+            }
+        }
+        
+        return $this->redirect()->toRoute($this->getUrlRouterLang().'cart02', array(
+            'action' => 'index'
+        ));
+    }
+
+    public function updateCartAction()
+    {
+        $productsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Products');
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $list_update = $request->getPost('quantity');
+
+            foreach ($list_update as $id => $quantitys) {
+                foreach ($quantitys as $product_type => $quantity) {
+                    if( isset($_SESSION['cart'][$id]) 
+                        && isset($_SESSION['cart'][$id]['product_type'][$product_type]) ){
+                        
+                        $product = $_SESSION['cart'][$id]['product_type'][$product_type];
+                        $_SESSION['cart'][$id]['product_type'][$product_type]['quantity'] = $quantity;
+
+                        $price_this = $productsHelper->getPriceSale($product)*$quantity;
+                        $price_tax =  $price_this + ($price_this * $product['vat'] / 100);
+                        $price_this_old = $productsHelper->getPrice($product)*$quantity;
+                        $price_old_tax =  $price_this_old + ($price_this_old * $product['vat'] / 100);
+
+                        if( !empty($product['extensions']) ){
+                            $ext_list = $product['extensions'];
+                            foreach($ext_list as $ext){
+                                $price_this += $ext['price'];
+                                $price_tax += $ext['price'];
+                                $price_this_old += $ext['price'];
+                                $price_old_tax += $ext['price'];
+                            }
+                        }
+
+                        
+                        $_SESSION['cart'][$id]['product_type'][$product_type]['price_total'] = $price_this;
+                        $_SESSION['cart'][$id]['product_type'][$product_type]['price_total_old'] = $price_this_old;
+                        $_SESSION['cart'][$id]['product_type'][$product_type]['price_total_tax'] = $price_tax;
+                        $_SESSION['cart'][$id]['product_type'][$product_type]['price_total_old_tax'] = $price_old_tax;
+                    }
+                }
+            }
+
+        }
+        return $this->redirect()->toRoute($this->getUrlRouterLang().'cart02', array(
+            'action' => 'index'
+        ));
+    }
+
+} 

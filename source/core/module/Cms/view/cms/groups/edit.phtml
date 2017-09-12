@@ -1,0 +1,104 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/permission') ?>">
+                        Nhóm người dùng
+                    </a>
+                </li>
+                <li class="active">Cập nhật</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Nhóm người dùng :: Cập nhật
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/group', array('action' => 'edit', 'id' => $id)));
+        $form->setAttribute('id', 'form-group');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('groups_id'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="form-group">
+                    <label for="groups_name" >
+                        Tên nhóm
+                    </label>
+                    <?php echo $this->formRow($form->get('groups_name')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="manufacturers_name" >
+                        Mô tả
+                    </label>
+                    <?php echo $this->formRow($form->get('groups_description')); ?>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <?php if( !empty($permissions) ){ ?>
+        <div class="form-group" >
+            <label for="box-group" >
+                Phân quyền
+            </label>
+            <?php foreach($permissions as $key => $permits) { ?>
+            <div class="box-group" >
+                <div class="group-heading" >
+                    <?php echo strtoupper($key) ?>
+                </div>
+                <ul class="list-group">
+                    <?php foreach($permits as $permit) { ?>
+                        <li class="list-group-item">
+                            <span style="display:inline-block;width:500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap"><?php echo $permit['permissions_name'] ?></span>
+                            <input type="checkbox" name="permits[]" <?php echo in_array($permit['permissions_id'],$group_access) ? 'checked' : '' ?> value="<?php echo $permit['permissions_id'] ?>"/>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <?php } ?>
+        </div>
+        <?php } ?>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Cập nhật nhóm người dùng
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

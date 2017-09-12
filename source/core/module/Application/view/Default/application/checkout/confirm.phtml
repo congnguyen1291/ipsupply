@@ -1,0 +1,476 @@
+<?php
+if( !empty($buyer) 
+    && !empty($shipper)
+    && isset($buyer['shipping_id'])
+    && !empty($buyer['payment_id']) ){ 
+    $carts = $this->Cart()->getCart();
+    if( !empty($carts) ){
+        $caculator = $this->Cart()->sumSubTotalPriceInCart();
+        $countries = $this->Contries()->getContries();
+?>
+<div class="coz-tab-step" >
+    <div class="clearfix" style="padding:20px;display:none" data-place="hasErrorShipper" >
+        <div class="coz-error" data-place="errorShipper" ></div>
+    </div>
+    <div class="clearfix" >
+        <h2 class="ui-h2-cart-confirm"  >
+            <?php echo $this->translate('txt_gio_hang_cua_ban') ?>
+        </h2>
+        <div class="coz-table-responsive">
+            <table class="coz-table-cart coz-table-cart-idex" >
+                <?php
+                $_i = 0; 
+                foreach ($carts as $id => $product) {
+                    foreach ($product['product_type'] as $product_type_id => $p) {
+                ?>
+
+                <?php if( !empty($_i) ){ ?>
+                <tr class="line-tbl-cart-idex"  data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                    <td colspan="6" ></td>
+                </tr>
+                <?php } ?>
+
+                <tr data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                    <td rowspan="2" >
+                        <div class="coz-cart-img" >
+                            <a class="img-product-cart" data-place="linkProduct" href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($p), 84); ?>" alt="<?php echo $this->Products()->getTitle($p) ?>" >
+                            </a>
+                        </div>
+                    </td>
+                    <td colspan="3" >
+                        <a class="coz-cart-product-name" data-place="linkProduct"  href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                            <span data-place="nameProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                <?php echo $this->Products()->getName($p) ?>
+                            </span>
+                        </a>
+                    </td>
+                    <td class="coz-text-right" colspan="2" >
+                        <div class="clearfix" >
+                            <?php 
+                                $price = $this->Products()->getPrice($p);
+                                $price_sale = $this->Products()->getPriceSale($p);
+                                if( $price_sale < $price){
+                            ?>
+                            <div class="coz-cart-price-root"  data-place="priceProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                <?php echo $this->Currency()->fomatCurrency($price) ?>
+                            </div>
+                            <div class="coz-cart-price-sale" >
+                                <?php echo $this->translate('txt_giam_con') ?>&nbsp&nbsp
+                                <span data-place="priceSaleProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" > 
+                                    <?php echo $this->Currency()->fomatCurrency($price_sale) ?>
+                                </span>
+                            </div>
+                            <?php }else{ ?>
+                            <div class="coz-cart-price-sale" data-place="priceSaleProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" > 
+                                <?php echo $this->Currency()->fomatCurrency($price_sale) ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                    <td >
+                        <div class="coz-item-dest-product-cart" >
+                            <a href="<?php echo $this->Cart()->getUrlEditProduct($p) ?>" class="coz-btn-edit-item-dest-product-cart" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" data-place="btnEditPropertiesCartProduct" data-pin="[data-type='name'][data-cartid='<?php echo $id.'-'.$product_type_id ?>']" >
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                            <div class="icoz-item-dest-product-cart" >
+                                <div class="coz-qual-dest-cart" >
+                                    <span class="coz-label-des-pro" >
+                                        <?php echo $this->translate('txt_so_luong'); ?>
+                                    </span>
+                                    <span class="coz-label-des-pro" >
+                                        <span data-place="quantityProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                            <?php echo $this->Cart()->getProductsQuantity($p) ?>
+                                        </span>
+                                        <input type="hidden" value="<?php echo $this->Cart()->getProductsQuantity($p) ?>" name="quantity[<?php echo $this->Products()->getProductsId($p) ?>][<?php echo $this->Products()->getProductTypeId($p) ?>]" data-place="quantityProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                    </span>
+                                </div>
+                                <?php $typeName = $this->Products()->getProductTypeName($p);  ?>
+                                <div class="coz-qual-dest-cart" data-place="hasTypeName" <?php echo empty($typeName) ? 'style="display:none"' : '' ?> >
+                                    <span class="coz-label-des-pro" >
+                                        <?php echo $this->translate('txt_loai_san_pham'); ?>
+                                    </span>
+                                    <span class="coz-label-des-pro" data-place="typeNameProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                        <?php echo $typeName; ?>
+                                    </span>
+                                </div>
+
+                                <?php 
+                                $ext = $this->Products()->getExtension($p);
+                                $ext_m = $this->Products()->getExtensionRequire($p);
+                                $lsExt = array_merge($ext, $ext_m);
+                                ?>
+                                <div class="coz-qual-dest-cart" data-place="hasExtentionProduct" <?php echo (empty($ext) && empty($ext_m)) ? 'style="display:none"' : '' ?> >
+                                    <span class="coz-label-des-pro" >
+                                        <?php echo $this->translate('txt_extention_product_on_cart'); ?>
+                                    </span>
+                                    <span class="coz-label-des-pro" data-place="extentionProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                        <?php 
+                                        foreach ($lsExt as $kex => $itex) {
+                                            echo (empty($kex) ? '' : ';').$itex['ext_name'];
+                                        }
+                                        ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="4" class="coz-position-relative" >
+                        <span class="coz-cart-product-note" data-place="noteProduct" >
+                            <?php echo $this->translate('txt_tong_tien_payment') ?>&nbsp&nbsp
+                            <span class="coz-product-price" data-place="priceTotalProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" > 
+                                <?php echo $this->Currency()->fomatCurrency($p['price_total']) ?>
+                            </span><br />
+                            <span class="coz-text-price-not-tax" >
+                                <?php echo $this->translate('txt_gia_khong_bao_gom_thue_payment') ?>
+                            </span>
+                        </span>
+                        <a class="coz-btn-cart-remove-product" href="<?php echo $this->Cart()->getUrlDel($p) ?>" data-btn="delCartProduct"  data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" rel="nofollow" >
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+
+                <?php }
+                } ?>
+            </table>
+        </div>
+    </div>
+    <div class="clearfix" >
+        <?php $coupon = $this->Coupons()->getCoupon(); ?>
+        <div class="box-coupon-cart-idex clearfix"  data-place="coupon"  >
+            <div class="clearfix box-coupon-cart-confirm" >
+                <div class="clearfix box-staus-coupon" data-place="notHasCoupon" <?php echo (!empty($coupon) ? 'style="display:none"' : '') ?> >
+                    <div class="title-coupon-cart-idex clearfix" data-btn="toggleBoxCoupon" >
+                        <?php echo $this->translate('txt_nhap_ma_giam_gia') ?>
+                        <div class="pull-right" >
+                            <div class="visiable-coupon-close" >
+                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            </div>
+                            <div class="visiable-coupon-open" >
+                                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-coupon-cart-idex visiable-coupon-open" >
+                        <div class="clearfix" >
+                            <div class="formCoupon" data-form="formCoupon" >
+                                <div class="coz-input-group" >
+                                    <div class="coz-form-control" >
+                                        <div class="ui-input-payment" >
+                                            <input id="couponCode" name="couponcode" class="input-payment" type="text" placeholder="<?php echo $this->translate('txt_nhap_ma_giam_gia') ?>" value="" data-input="coupon" >
+                                        </div>
+                                    </div>
+                                    <div class="coz-input-group-addon" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block" data-btn="btnAppCounpon" >
+                                           <?php echo $this->translate('txt_app_ma_giam_gia') ?>                        
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix  box-staus-coupon open" <?php echo (empty($coupon) ? 'style="display:none"' : '') ?> data-place="hasCoupon" >
+                    <div class="title-coupon-cart-idex clearfix" data-btn="toggleBoxCoupon" >
+                        <?php echo $this->translate('txt_ma_giam_gia_hien_tai') ?>
+                        <div class="pull-right" >
+                            <div class="visiable-coupon-close" >
+                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            </div>
+                            <div class="visiable-coupon-open" >
+                                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-coupon-cart-idex visiable-coupon-open" >
+                        <div class="clearfix" >
+                            <div class="row" >
+                                <div class="col-xs-6" >
+                                    <label class="ui-lb-payment">
+                                        <?php echo $this->translate('txt_ma_coupon_payment') ?> : 
+                                        <span class="coz-curent-coupon" data-place="valueCouponCode" ><?php echo (empty($coupon) ? '' : $coupon['coupons_code'] ) ?></span>
+                                    </label>
+                                </div>
+                                <div class="col-xs-6" >
+                                    <a href="javascript:void(0);" title="<?php echo $this->translate('txt_sua_coupon_payment') ?>" data-btn="btnEditCounpon" rel="nofollow" >
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" title="<?php echo $this->translate('txt_xoa_coupon_payment') ?>" data-btn="btnRemoveCounpon" rel="nofollow" >
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="col-xs-12" >
+                                    <label class="ui-lb-payment" >
+                                        <?php echo $this->translate('txt_gia_tri_coupon_payment') ?> : 
+                                        <span class="coz-value-coupon" data-place="valueCoupon" >
+                                            <?php echo $this->Coupons()->getPriceWithCurrency() ?>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="clearfix" >
+        <table class="table table-bordered total-table  coz-table-sumary-cart">
+            <tbody>
+                <tr>
+                    <td class="text-xs-left">
+                        <?php echo $this->translate('txt_tong_tien') ?>
+                    </td>
+                    <td class="text-xs-right">
+                        <div class="coz-product-price" data-place="priceCartTotalOrig" >
+                            <?php echo $this->Currency()->fomatCurrency($caculator['price_total_orig']) ?>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr data-place="hasFeeTransitions" style="display:none" >
+                    <td class="text-xs-left">
+                        <?php echo $this->translate('txt_lb_ship_payment') ?> :
+                    </td>
+                    <td class="text-xs-right">
+                        <div  class="coz-product-price" data-place="valueFeeTransitions" ></div>
+                    </td>
+                </tr>
+
+                <tr <?php echo ( empty($coupon) ? 'style="display:none"' : '') ?> id="coz-tr-coupon-payment" data-place="hasCoupon" >
+                    <td class="text-xs-left">
+                        <?php echo $this->translate('txt_giam_gia_payment') ?>
+                    </td>
+                    <td class="text-xs-right">
+                        <div class="coz-product-price" data-place="valueCoupon" >
+                            <?php echo $this->Coupons()->getPriceWithCurrency() ?>
+                        </div>
+                    </td>
+                </tr>
+
+                <?php if( $caculator['price_total'] < $caculator['price_total_tax'] ){ ?>
+                <tr data-place="hasPriceCartTax" >
+                    <td class="text-xs-left">
+                        <?php echo $this->translate('txt_tien_thue_payment') ?>
+                    </td>
+                    <td class="text-xs-right">
+                        <div class="coz-product-price" data-place="priceCartTax" >
+                            <?php echo $this->Currency()->fomatCurrency($caculator['price_total_tax'] - $caculator['price_total']) ?>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
+
+                <tr>
+                    <td class="text-xs-left">
+                        <?php echo $this->translate('txt_lb_total_tax_payment') ?>
+                    </td>
+                    <td class="text-xs-right">
+                        <div class="coz-product-price"  data-place="priceCartTotalTax" >
+                            <?php echo $this->Currency()->fomatCurrency($caculator['price_total_tax']) ?>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <?php 
+        $payment = $this->Payments()->getPayment($buyer['payment_id']);
+        $shipping = $this->Shipping()->getShipping($buyer['shipping_id']); 
+        if( !empty($shipping) || !empty($payment) ){
+    ?>
+    <div class="clearfix" >
+        <div class="table-sum-confirm" >
+            <?php if( !empty($shipping) ){ ?>
+            <div class="row" >
+                <div class="col-xs-3" >
+                    <strong><?php echo $this->translate('txt_phuong_thuc_van_chuyen_payment') ?></strong>
+                </div>
+                <div class="col-xs-9" >
+                    <?php echo $shipping->shipping_title ?>
+                </div>
+            </div>
+            <?php } ?>
+
+            <?php if( !empty($payment) ){ ?>
+            <div class="row" >
+                <div class="col-xs-3" >
+                    <strong><?php echo $this->translate('txt_phuong_thuc_thanh_toan_payment') ?></strong>
+                </div>
+                <div class="col-xs-9" >
+                    <?php echo $payment->payment_name ?>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+    <?php } ?>
+
+    <div class="clearix" >
+        <form class="clearfix" action="<?php echo $this->url('checkout', array('action' => 'payment')) ?>" data-form="corfirm" method="post" >
+            <div class="row" >
+                <div class="col-sm-12" >
+                    <div class="clearfix" style="padding:0 20px" >
+
+                        <div class="form-element-payment" >
+                            <div class="row" >
+                                <div class="col-sm-12" >
+                                    <label class="ui-lb-payment" >
+                                        <?php echo $this->translate('txt_lb_ngay_nhan_hang_payment') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-6" >
+                                    <div class="ui-input-payment" >
+                                        <input type="text" name="trans[date_delivery]" class="input-payment date_delivery" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-element-payment" >
+                            <div class="row" >
+                                <div class="col-sm-12" >
+                                    <label class="ui-lb-payment" >
+                                        <input type="checkbox" name="trans[is_incognito]" value="1" >
+                                        <?php echo $this->translate('txt_lb_dau_ten_payment') ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-element-payment" >
+                            <div class="row" >
+                                <div class="col-sm-12" >
+                                    <label class="ui-lb-payment" >
+                                        <?php echo $this->translate('txt_lb_thong_tin_them_payment') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-12" >
+                                    <div class="ui-area-payment" >
+                                        <textarea name="trans[invoice_description]" id="invoice_description" class="area-payment invoice_description" rows="5" data-input="trans[invoice_description]"  ></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="coz-pai-in-more-payment clearfix" data-place="moreLinkPayment" >
+                            <div class="coz-ctpai-in-more-payment clearfix" data-place="moreBodyLinkPayment" >
+                                
+                                <div class="form-element-payment" style="display: none" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <label class="ui-lb-payment" >
+                                                <?php echo $this->translate('txt_dang_ki_nhan_ban_tin_payment') ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12" >
+                                            <div class="ui-input-payment" >
+                                                <input type="text" value="" name="order[email]" id="order_email" spellcheck="false" class="input-payment order_email" aria-invalid="true" data-input="order[email]" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-element-payment" >
+                                    <div class="row" >
+                                        <div class="col-sm-12" >
+                                            <label class="ui-lb-payment" >
+                                                <?php echo $this->translate('txt_thong_tin_xuat_hoa_don_payment') ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12" >
+                                            <div class="ui-input-payment address-payment" >
+                                                <input type="text" value="" name="order[company_name]" id="order_company_name" spellcheck="false" class="input-payment order_company_name" placeholder="<?php echo $this->translate('txt_lb_company_name_payment') ?>" aria-invalid="true" data-input="order[company_name]" >
+                                            </div>
+
+                                            <div class="ui-input-payment address-payment" >
+                                                <input type="text" value="" name="order[company_tax_code]" id="order_company_tax_code" spellcheck="false" class="input-payment order_company_tax_code" placeholder="<?php echo $this->translate('txt_lb_company_tax_code_payment') ?>" aria-invalid="true" data-input="order[company_tax_code]" >
+                                            </div>
+
+                                            <div class="ui-input-payment" >
+                                                <input type="text" value="" name="order[company_address]" id="order_company_address" spellcheck="false" class="input-payment order_company_address" placeholder="<?php echo $this->translate('txt_lb_company_address_payment') ?>" aria-invalid="true" data-input="order[company_address]" >
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix" >
+                                <a href="javascript:void(0);" class="coz-link-more-payment" data-btn="moreLinkPayment" rel="nofollow" >
+                                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                    <?php echo $this->translate('txt_xem_them_thong_tin_tax_payment') ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-offset-3  col-sm-6" >
+                    <div class="form-element-payment" >
+                        <div class="row">
+                            <div class="col-md-12" >
+                                <div class="coz-text-center" >
+                                    <button type="submit" class="coz-btn-flat coz-btn-flat-active"  data-btn="processPayment" >
+                                        <?php echo $this->translate('txt_thanh_toan_payment') ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" >
+                    <div class="form-element-payment" >
+                        <div class="coz-text-center" >
+                            <label class="checkbox-inline coz-signup-newsletter-payment">
+                                <input type="checkbox" value="1" name="order[signup_newsletter]" >
+                                <?php echo $this->translate('txt_dang_ki_nhan_ban_tin_tu_web_payment') ?>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="coz-footer-confrim-cart coz-text-center" data-place="footerConfrimCart" >
+
+                        <div class="form-element-payment" >
+                            <div class="row" >
+                                <div class="col-sm-12 coz-text-center" >
+                                    <label class="ui-lb-payment" >
+                                        <?php echo $this->translate('txt_mua_sam_an_toan_payment') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-12" >
+                                    <ul class="coz-list-trust-payment clearfix" >
+                                        <li>
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            <?php echo $this->translate('txt_chuan_bao_mat_payment') ?>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            <?php echo $this->translate('txt_bao_ve_chu_the_payment') ?>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            <?php echo $this->translate('txt_mang_bao_mat_payment') ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-12" >
+                                    <div class="coz-logo-ext-payment" data-place="logoExtPayment" ></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+<?php }
+} ?>

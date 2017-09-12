@@ -1,0 +1,48 @@
+
+<div class="dropdown-menu dropdown-filter product-dropdown dropdown arrow-style single-dropdown">
+    <div class="arrow"></div>
+    <div class="product-result" style="display:none" >
+        <input placeholder="Tìm kiếm sản phẩm" type="text" class="query-collection single-query" bind-event-keyup="suggest()" />
+    </div>
+    <div class="single-suggest-result clear-ul">
+        <?php if(!empty($categories)){ ?>
+        <ul class="padding-left padding-right">
+            <?php foreach ($categories[0] as $key => $cat01) { ?>
+                <li data-id="<?php echo $cat01['categories_id']; ?>" data-title="<?php echo $cat01['categories_title']; ?>" class="collection-select clearfix single-suggest-select">
+                    <a class="pull-left" href="javascript:void(0);" >
+                        <?php echo $cat01['categories_title']; ?>
+                    </a>
+                </li>
+                <?php if( !empty($categories[$cat01['categories_id']]) ){ ?>
+                <li class="lv-child" >
+                    <ul class="padding-left">
+                        <?php foreach ($categories[$cat01['categories_id']] as $key => $cat02) { ?>
+                            <li data-id="<?php echo $cat02['categories_id']; ?>" data-title="<?php echo $cat02['categories_title']; ?>" class="collection-select clearfix single-suggest-select">
+                                <a class="pull-left" href="javascript:void(0);" >
+                                    <?php echo $cat02['categories_title']; ?>
+                                </a>
+                            </li>
+                            <?php if( !empty($categories[$cat02['categories_id']]) ){ ?>
+                            <li class="lv-child" >
+                                <ul class="padding-left">
+                                    <?php foreach ($categories[$cat02['categories_id']] as $key => $cat03) { ?>
+                                    <li data-id="<?php echo $cat03['categories_id']; ?>" data-title="<?php echo $cat03['categories_title']; ?>" class="collection-select clearfix single-suggest-select">
+                                        <a class="pull-left" href="javascript:void(0);" >
+                                            <?php echo $cat03['categories_title']; ?>
+                                        </a>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                            </li>
+                            <?php } ?>
+                        <?php } ?>
+                    </ul>
+                </li>
+                <?php } ?>
+            <?php } ?>
+        </ul>
+        <?php }else{ ?>
+        <p class="empty" >Không có  dữ liệu</p>
+        <?php } ?>
+    </div>
+</div>

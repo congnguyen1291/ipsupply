@@ -1,0 +1,52 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Ngôn ngữ :: Thêm từ khóa
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/languagescms') ?>">Ngôn ngữ</a></li>
+        <li class="active">Thêm từ khóa</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <?php if(isset($_SESSION['error'])) : ?>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <ul>
+                        <li><strong style="color:red"><?php echo $_SESSION['error'] ?></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+        <form action="<?php echo $this->url('cms/languagescms', array('action' => 'add-keyword')) ?>" method="post">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="keyword">Từ khóa</label>
+                        <input type="text" name="keyword" class="form-control" />
+                    </div>
+                    <?php foreach($languages as $lang) : ?>
+                    <div class="form-group">
+                        <label for="language_trangslate_<?php echo $lang['languages_id'] ?>"><?php echo $lang['languages_name'] ?></label>
+                        <textarea name="translate[<?php echo $lang['languages_id'] ?>]" id="language_trangslate_<?php echo $lang['languages_id'] ?>" rows="3" class="form-control"></textarea>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <button class="btn btn-primary">Lưu lại</button>
+            <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

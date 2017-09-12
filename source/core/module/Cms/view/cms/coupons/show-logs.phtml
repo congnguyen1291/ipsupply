@@ -1,0 +1,101 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/coupons') ?>">
+                        Mã khuyến mãi
+                    </a>
+                </li>
+                <li class="active">Lịch sử sử dụng</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Khuyến mãi :: Lịch sử sử dụng mã <i><?php echo $coupons->coupons_code ?></i>
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/coupons') ?>" method="post" class="clearfix" >
+        
+        <?php if( !empty($logs) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" >Id</th>
+                        <th>Đơn hàng</th>
+                        <th class="col-lim" >Ngày lập đơn hàng</th>
+                        <th class="col-lim" >Ngày sử dụng</th>
+                        <th class="col-lim" >Số tiền sử dụng</th>
+                        <th class="col-lim" ></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($logs as $row) { ?>
+                    <tr>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['id'] ?>
+                        </td>
+
+                        <td >
+                            <?php echo $row['invoice_code'] ?>
+                        </td>
+
+                        <td class="col-lim" >
+                            <?php echo $coupon['date_create'] ?>
+                        </td>
+
+                        <td class="col-lim" >    
+                            <?php echo $coupon['date_use'] ?>
+                        </td>
+
+                        <td class="col-lim text-right" >    
+                            <?php echo $coupon['price_used'] ?>
+                        </td>
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/coupons', array('action' => 'edit', 'id' => $id)) ?>" data-toggle="tooltip" data-placement="top" title="Xem khuyến mại" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có giao dịch
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

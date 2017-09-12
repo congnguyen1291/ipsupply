@@ -1,0 +1,92 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Sản phẩm :: "<?php echo $product->products_title ?>"
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/product') ?>">Sản phẩm</a></li>
+        <li class="active">Quản lý bài viết sản phẩm</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form action="<?php echo $this->url('cms/product', array('action' => 'addarticle', 'id' => $product->products_id)) ?>" id="form-article-products" method="post" >
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body box-primary">
+                        <button class="btn btn-primary">Lưu lại</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        Tổng cộng: <strong><?php echo $total ?></strong> bài viết cho sản phẩm này
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <dib class="box-body">
+                        <input type="text" class="form-control article_autocomplete"
+                               placeholder="Nhập vào tiêu đề bài viết"/>
+                    </dib>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th width="50" style="text-align: center">ID</th>
+                                <th>Tiêu đề</th>
+                                <th width="100" style="text-align: center">Thứ tự</th>
+                                <th width="150">Ngày tạo</th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if($this->articles && count($articles) > 0) : ?>
+                            <?php $article_list = array(); ?>
+                            <?php foreach ($articles as $row) : ?>
+                            <?php $article_list[] = $row['articles_id'] ?>
+                                <tr>
+                                    <td style="text-align: center"><?php echo $row['articles_id'] ?></td>
+                                    <td>
+                                        <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>"><?php echo $row['articles_title'] ?></a>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <?php echo $row['ordering'] ?>
+                                    </td>
+                                    <td><?php echo date('d/m/Y', strtotime($row['date_create'])) ?></td>
+                                    <td>
+                                        <input type="checkbox" <?php echo $row['productid'] == $product->products_id ? 'checked' : '' ?> name="cid[]"
+                                               value="<?php echo $row['articles_id'] ?>" />
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="50" style="text-align: center">ID</th>
+                                <th>Tiêu đề</th>
+                                <th width="100" style="text-align: center">Thứ tự</th>
+                                <th width="150">Ngày tạo</th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section><!-- /.content -->
+<script type="text/javascript">
+    var article_list = <?php echo isset($article_list) ? json_encode($article_list) : '[]' ?>;
+</script>

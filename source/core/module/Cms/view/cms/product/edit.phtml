@@ -1,0 +1,1524 @@
+<?php
+$list_thumb_image = array();
+$list_thumb_order = array();
+try{
+    $list_thumbs = json_decode($product->list_thumb_image, TRUE);
+    if( is_array($list_thumbs) ){
+        foreach ($list_thumbs as $key => $item_thumb ) {
+            if( !empty($item_thumb['src']) ){
+                $key = md5($item_thumb['src']);
+                $list_thumb_image[] = $item_thumb['src'];
+                $list_thumb_order[$key] = $item_thumb['order'];
+            }
+        }
+    }
+} catch ( \Exception $e ) {
+    $list_thumb_image = array();
+    $list_thumb_order = array();
+}
+?>
+<script type="text/javascript">
+var folder = "<?php echo 'folder'.date('YmdGis') ?>";
+    var uploadfor = 'product';
+    var products_id = '<?php echo $product->products_id; ?>';
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+$(document).ready(function() {
+    $(".list_category_multi").select2();
+    var selectvalues = []; 
+    $("select[id^=list_category_multi_data]").change(function(e){
+        $("#categories_id_list").val($(this).val()); 
+    });
+
+    $(".select-multiple-publisher").select2().on("change", function(e) {
+        var val = $(this).val();
+    });
+
+    $(".select-multiple-cities").select2().on("change", function(e) {
+        var val = $(this).val();
+    });
+
+    $(".select-multiple-country").select2().on("change", function(e) {
+        var val = $(this).val();
+        coz.loadCity( val, function( datas ){
+            if( typeof datas.success != 'undefined'
+                &&  (datas.success == 'true' || datas.success == true) ){
+                var items = [];
+                var vals = $('.select-multiple-cities').select2("val");
+                $('.select-multiple-cities').select2("destroy");
+                $('.select-multiple-cities').html('<option value="0" >Chọn thành phố</option>');
+                if(datas.results.length>0){
+                    $.each(datas.results, function(i, row){
+                        items.push({
+                            "id": row.cities_id,
+                            "text": row.cities_title
+                        });
+                        $('.select-multiple-cities').append($('<option></option>').attr('value', row.cities_id).text(row.cities_title));
+                        if(i>=datas.results.length-1){
+                            $(".select-multiple-cities").select2().on("change", function(e) {
+                                var val = $(this).val();
+                            });
+                            $(".select-multiple-cities").val(vals).trigger('change');
+                        }
+                    });
+                }else{
+                    $(".select-multiple-cities").select2().on("change", function(e) {
+                        var val = $(this).val();
+                    });
+                    $(".select-multiple-cities").val(vals).trigger('change');
+                }
+
+            }else{
+                var vals = $('.select-multiple-country').select2("val");
+                if( vals.length <=0 ){
+                    $('.select-multiple-cities').select2("destroy");
+                    $('.select-multiple-cities').html('<option value="0" >Chọn thành phố</option>');
+                    $(".select-multiple-cities").select2().on("change", function(e) {
+                        var val = $(this).val();
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>" >
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/product') ?>" >
+                        Sản phẩm
+                    </a>
+                </li>
+                <li class="active">
+                    Cập nhật sản phẩm
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Sản phẩm :: Cập nhật
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/product', array('action' => 'edit', 'id' => $id)));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('products_id'));
+    echo $this->formHidden($form->get('users_id'));
+    echo $this->formHidden($form->get('users_fullname'));
+    ?>
+    <input name="is_published" type="hidden" value="0" />
+    <input name="is_new" type="hidden" value="0" />
+    <input name="is_available" type="hidden" value="0" />
+    <input name="folder" type="hidden" id="folder" value="" />
+    <?php if( !empty($_SERVER["HTTP_REFERER"]) ){ ?>
+    <input type="hidden" name="link_redirect" value="<?php echo urlencode($_SERVER["HTTP_REFERER"]);?>" />
+    <?php } ?>
+
+    <div class="clearfix" >
+        <ul class="nav nav-inline coz-tab clearfix" role="tablist">
+            <li class="nav-item active" >
+                <a class="nav-link" data-toggle="tab" href="#tab_common" role="tab" rel="nofollow">
+                    Thông tin chung                                    
+                </a>
+            </li>
+
+            <li class="nav-item" >
+                <a class="nav-link" data-toggle="tab" href="#tab_view" role="tab" rel="nofollow">
+                    Sản phẩm hiển thị tại                                   
+                </a>
+            </li>
+
+            <?php if($this->CMSCommon()->hasPermission('cms','extension', 'index')){ ?>
+            <li class="nav-item" >
+                <a class="nav-link" data-toggle="tab" href="#tab_extention" role="tab" rel="nofollow">
+                    Sản phẩm đính kèm                                    
+                </a>
+            </li>
+            <?php } ?>
+
+            <li class="nav-item" >
+                <a class="nav-link" data-toggle="tab" href="#tab_seo" role="tab" rel="nofollow">
+                    Seo / khuyến mại                                  
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content clearfix" >
+        <div class="tab-pane fade in clearfix active" id="tab_common" role="tabpanel" >
+            <div class="coz-tab-content clearfix" >
+                <div class="row" >
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label for="languageoption">
+                                Ngôn ngữ
+                            </label>
+                            <input type="hidden" name="language" value="<?php echo $this->langselected;?>" />
+                            <select name="languageoption" id="languageoption" class="form-control input-sm" disabled >
+                            <?php
+                            if(!empty($this->language_list)){
+                                foreach($this->language_list as $listlanguage){
+                                    $selected="";
+                                    if(!empty($this->langselected) && $this->langselected==$listlanguage["languages_id"]){
+                                        $selected="selected";
+                                    }
+                                    echo "<option value='".$listlanguage["languages_id"]."' $selected>".$listlanguage["languages_name"]."</option>";
+                                }
+                            }
+                            ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_code" > 
+                                Mã sản phẩm
+                            </label>
+                            <?php echo $this->formRow($form->get('products_code')); ?>
+                        </div>
+
+                        <div class="form-group">
+                           <label for="products_title">
+                                Tên sản phẩm
+                                <?php if( empty($product->products_title) ){ ?>
+                                <div class="coz-color-disable" >
+                                    Gợi ý : tên của nó trên ngôn ngữ khác là : 
+                                    (<i><?php echo $product->products_title_root ?></i>)
+                                </div>
+                                <?php } ?>
+                           </label>
+                            <?php echo $this->formRow($form->get('products_title')); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="products_alias">
+                                Đường dẫn
+                            </label>
+                            <?php echo $this->formRow($form->get('products_alias')); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="contai-product-type clearfix" >
+                                <h2 class="lbl-type-sp" >
+                                    Kiểu sản phẩm
+                                </h2>
+                                <div class="data-product-type" >
+                                <?php if(!empty($products_type)){ 
+                                    foreach ($products_type as $key => $productye) {
+                                ?>
+                                    <div class="item-product-type" data-id="<?php echo $key;  ?>" >
+                                        <div class="text-right" >
+                                            <a href="javascript:void(0);" class="btn-remove-item-product-type" >
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div class="inner-item-product-type has-image" >
+                                            <input type="hidden" name="products_type[<?php echo $key;  ?>][products_type_id]" value="<?php echo $productye['products_type_id'];  ?>" >
+
+                                            <div class="clearfix">
+                                                <div class="row" >
+                                                    <div class="col-sm-3" >
+                                                        <div class="form-group">
+                                                            <div class="thumb-image-product-type" >
+                                                                <span class="remove-image-product-type" >
+                                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                                </span>
+                                                                <a href="javascript:void(0);" class="btn-upload-image-product-type" >
+                                                                    <img src="<?php echo $productye['thumb_image'];  ?>" data-src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" alt="" class="img-thumbnail">
+                                                                    <input type="hidden" name="products_type[<?php echo $key;  ?>][thumb_image]" value="<?php echo $productye['thumb_image'];  ?>" >
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9" >
+                                                        <div class="form-group">
+                                                            <label >
+                                                                Tên kiểu (ví dụ : XL, XS ...)
+                                                                <?php if( empty($productye['type_name']) ){ ?>
+                                                                <div class="coz-color-disable" >
+                                                                    Gợi ý : tên của nó trên ngôn ngữ khác là : 
+                                                                    (<i><?php echo $productye['type_name_root'] ?></i>)
+                                                                </div>
+                                                                <?php } ?>
+                                                            </label>
+                                                            <input type="text" class="form-control input-sm" placeholder="Name" name="products_type[<?php echo $key;  ?>][type_name]" value="<?php echo $productye['type_name'];  ?>" >
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group">
+                                                                    <label >Giá gốc</label>
+                                                                    <input type="text" class="form-control moneyInput input-sm" placeholder="Giá gốc" name="products_type[<?php echo $key;  ?>][price]" value="<?php echo $productye['price'];  ?>" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group">
+                                                                    <label >Giá bán</label>
+                                                                    <input type="text" class="form-control moneyInput input-sm" placeholder="Giá bán" name="products_type[<?php echo $key;  ?>][price_sale]" value="<?php echo $productye['price_sale'];  ?>" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group">
+                                                                    <label >Số lượng</label>
+                                                                    <input type="text" class="form-control numberInput input-sm" placeholder="Số lượng" name="products_type[<?php echo $key;  ?>][quantity]" value="<?php echo $productye['quantity'];  ?>" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12" >
+                                                                <div class="form-group">
+                                                                    <label class="clearfix">
+                                                                        <input type="radio" name="products_type_default" class="pro_type_is_default" value="<?php echo $key;  ?>" <?php echo $productye['is_default'] == 1 ? 'checked' : ''; ?> > 
+                                                                        Là mặc định
+                                                                    </label>
+                                                                    <label class="checkbox-inline">
+                                                                        <input type="hidden" name="products_type[<?php echo $key;  ?>][is_available]" value="0" >
+                                                                        <input type="checkbox" name="products_type[<?php echo $key;  ?>][is_available]" value="1" <?php echo $productye['is_available'] == 1 ? 'checked' : ''; ?> > 
+                                                                        Luôn còn hàng
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <?php }
+                                    } ?>
+
+                                </div>
+                                <div class="clearfix" >
+                                    <a href="javascript:void(0);" class="btn btn-success  btn-sm btn-add-more-type-product" >
+                                        Thêm kiểu <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cat_recommend">
+                                Sản phẩm liên quan
+                            </label>
+                            <input type="hidden" class="product_ajax_select2 form-control" name="products_recommend" value="<?php echo $precommends ?>" id="cat_recommend" />
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4" >
+                        <div class="form-group">
+                           <label for="ordering">
+                                Vị trí
+                                <?php echo $this->formRow($form->get('ordering')); ?>
+                            </label>
+                        </div>
+                        <input type="hidden" name="tra_gop" value="0" >
+
+                        <div class="form-group">
+                            <label for="is_published">
+                                <?php echo $this->formRow($form->get('is_published')); ?>
+                                Hiển thị
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="is_new">
+                                <?php echo $this->formRow($form->get('is_new')); ?>
+                                Sản phẩm mới
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="is_available">
+                                <?php echo $this->formRow($form->get('is_available')); ?>
+                                Có trong kho (<i>Quản lý kho</i>)
+                            </label>
+                        </div>
+
+                        <input type="hidden" name="is_sellonline" value="1" >
+
+                        <div class="form-group">
+                            <label for="is_hot" >
+                                <?php echo $this->formRow($form->get('is_hot')); ?>
+                                Sản phẩm hót
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="is_goingon">
+                                <?php echo $this->formRow($form->get('is_goingon')); ?>
+                                Hàng sắp về
+                            </label>
+                        </div>
+
+                        <input type="hidden" name="hide_price" value="0" >
+                        <input type="hidden" name="wholesale" value="0" >
+                        <input type="hidden" name="type_view" value="0" >
+                        <input type="hidden" name="position_view" value="0" >
+                        <input type="hidden" name="bao_hanh" value="" >
+                       
+                       <div class="box-hide-price" >
+                            <div class="form-group">
+                                <label for="price">
+                                    Price
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <?php echo $this->formRow($form->get('price')); ?>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                 <label for="price_sale">
+                                     Sale
+                                 </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <?php echo $this->formRow($form->get('price_sale')); ?>
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="quantity">
+                                Số lượng 
+                            </label>
+                            <?php echo $this->formRow($form->get('quantity')); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vat">VAT</label>
+                            <div class="input-group">
+                                <?php echo $this->formRow($form->get('vat')); ?>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="youtube_video">
+                                ID video (<i>youtube</i>)
+                            </label>
+                            <?php echo $this->formRow($form->get('youtube_video')); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Tags
+                            </label>
+                            <?php echo $this->formRow($form->get('tags')); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="manufacturers_id" >
+                                Nhà cung cấp
+                            </label>
+                            <?php echo $this->formRow($form->get('manufacturers_id')); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="seo_description" >
+                                Merchant ( đại lý )
+                            </label>
+                            <?php echo $this->formRow($form->get('publisher_id')); ?>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <div class="result-list-img clearfix" >
+                        <div class="list-img-upload clearfix listImgUploadPopComment" >
+                            <?php foreach($list_image as $key => $img) { ?>
+                            <div class="img-prevew-upload" data-place="prevewImage" >
+                                <a href="javascript:void(0)" class="action-upload" data-btn="removePrevewImage" >
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </a>
+                                <img data="<?php echo $img->images ?>"
+                                             src="<?php echo $img->images ?>" style="display: block;width:100%"
+                                             onclick="javascript:insertImageToCkEditor(this.src,'products_longdescription');" class="img-responsive" >
+                                <div class="action-left" >
+                                    <input type="checkbox" value="<?php echo $img->images ?>" name="thumb_image[]" <?php echo ($product->thumb_image == $img->images || in_array($img->images, $list_thumb_image)) ? 'checked' : '' ?> />
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <div class="img-prevew-upload btn-upload btn-upload-image-product" >
+                            <a href="javascript:void(0)" class="action-upload" >
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="img-responsive"  >
+                                <i class="fa fa-picture-o" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <div role="tabpanel" class="clearfix" >
+                        <ul class="nav nav-tabs clearfix" role="tablist">
+                            <li role="presentation" class="active ms-hover">
+                                <a href="#note_top" aria-controls="note_top" role="tab" data-toggle="tab">
+                                    Mô tả ngắn
+                                </a>
+                            </li>
+                            <li role="presentation" >
+                                <a href="#note_right" aria-controls="note_right" role="tab" data-toggle="tab">
+                                    Thông tin sản phẩm
+                                </a>
+                            </li>
+                            <li role="presentation" >
+                                <a href="#note_left" aria-controls="note_left" role="tab" data-toggle="tab">
+                                    Thông tin chi tiết
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" >
+                            <div role="tabpanel" class="tab-pane clearfix active" id="note_top" >
+                                <div class="clearfix" >
+                                    <?php echo $this->formRow($form->get('products_description')); ?>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane clearfix" id="note_right" >
+                                <div class="clearfix" >
+                                    <?php echo $this->formRow($form->get('products_more')); ?>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane clearfix" id="note_left" >
+                                <div class="clearfix" >
+                                    <?php echo $this->formRow($form->get('products_longdescription')); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade in clearfix" id="tab_view" role="tabpanel" >
+            <div class="coz-tab-content clearfix" >
+                <?php if( !empty($categories) ){ ?>
+                <h3>
+                    Hiển thị theo danh mục
+                </h3>
+                <div class="list-categories clearfix" >
+                    <?php foreach ($categories[0] as $key01 => $categories01){ ?>
+                    <div class="item-categories item-categories-lv1 clearfix" >
+                        <div class="lb-item-categories" >
+                            <label>
+                                <?php if( empty($categories[$categories01['categories_id']]) ){ ?>
+                                <input type="checkbox" name="categories_id_list[]" value="<?php echo $categories01['categories_id'] ?>" <?php echo in_array($categories01['categories_id'], $catSelected) ? 'checked="checked"' : '' ?> >
+                                <?php }else{ ?>
+                                <input type="checkbox" value="" disabled="disabled" >
+                                <?php } ?>
+
+                                <?php 
+                                    if( !empty($categories01['has_language']) )
+                                        echo $categories01['categories_title'];
+                                    else
+                                        echo '<i class="coz-color-disable" >'.$categories01['categories_title'].'</i><a href="'.$this->url('cms/category', array('action' => 'edit', 'id' => $categories01['categories_id'])).'?language='.$langselected.'" class="coz-color-important" data-toggle="tooltip" data-placement="top" title="Bạn vui lòng cập nhật danh mục này, nó đang trống cho ngôn ngữ hiện tại" > Warning ,Empty !</a>';
+                                ?>
+                            </label>
+                        </div>
+                        <?php if( !empty($categories[$categories01['categories_id']]) ){ ?>
+                        <div class="list-categories clearfix" >
+                            <?php foreach ($categories[$categories01['categories_id']] as $categories02){ ?>
+                            <div class="item-categories clearfix" >
+                                <div class="lb-item-categories" >
+                                    <label>
+                                        <?php if( empty($categories[$categories02['categories_id']]) ){ ?>
+                                        <input type="checkbox" name="categories_id_list[]" value="<?php echo $categories02['categories_id'] ?>" <?php echo in_array($categories02['categories_id'], $catSelected) ? 'checked="checked"' : '' ?> >
+                                        <?php }else{ ?>
+                                        <input type="checkbox" value="" disabled="disabled" >
+                                        <?php } ?>
+                                        <?php 
+                                            if( !empty($categories02['has_language']) )
+                                                echo $categories02['categories_title'];
+                                            else
+                                                echo '<i class="coz-color-disable" >'.$categories02['categories_title'].'</i><a href="'.$this->url('cms/category', array('action' => 'edit', 'id' => $categories02['categories_id'])).'?language='.$langselected.'" class="coz-color-important" data-toggle="tooltip" data-placement="top" title="Bạn vui lòng cập nhật danh mục này, nó đang trống cho ngôn ngữ hiện tại" > Warning ,Empty !</a>';
+                                        ?>
+                                    </label>
+                                </div>
+                                <?php if( !empty($categories[$categories02['categories_id']]) ){ ?>
+                                <div class="list-categories clearfix" >
+                                    <?php foreach ($categories[$categories02['categories_id']] as $categories03){ ?>
+                                    <div class="item-categories clearfix" >
+                                        <div class="lb-item-categories" >
+                                            <label>
+                                                <input type="checkbox" name="categories_id_list[]" value="<?php echo $categories03['categories_id'] ?>" <?php echo in_array($categories03['categories_id'], $catSelected) ? 'checked="checked"' : '' ?> >
+                                                <?php 
+                                                    if( !empty($categories03['has_language']) )
+                                                        echo $categories03['categories_title'];
+                                                    else
+                                                        echo '<i class="coz-color-disable" >'.$categories03['categories_title'].'</i><a href="'.$this->url('cms/category', array('action' => 'edit', 'id' => $categories03['categories_id'])).'?language='.$langselected.'" class="coz-color-important" data-toggle="tooltip" data-placement="top" title="Bạn vui lòng cập nhật danh mục này, nó đang trống cho ngôn ngữ hiện tại" > Warning ,Empty !</a>';
+                                                ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                                <?php } ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <?php } ?>
+                    </div>
+
+                    <?php if($key01%2 == 1) ?>
+                    <div class="line-clear clearfix" style="width: 100%;height: 1px" ></div>
+                    <?php } ?>
+                </div>
+                <?php } ?>
+
+                <?php $countries = $this->Contries()->getContryForWebsite(); ?>
+                <?php if( !empty($countries) ){ ?>
+                <h3>
+                    Hiển thị theo vị trí
+                </h3>
+                <div class="list-coutries clearfix" >
+                <?php 
+                    foreach ($countries as $ctry){ 
+                        $cities = $this->Cities()->loadCitiesByCountry($ctry['id']);
+                ?>
+                    <div class="item-countries <?php echo !empty($cities) ? 'has-chid' : '' ?>" >
+                        <label>
+                            <input type="checkbox" name="country_id[]" value="<?php echo $ctry['id'] ?>" <?php echo in_array($ctry['id'], $targetCountry) ? 'checked="checked"' : '' ?> >
+                            <?php echo $ctry['title'] ?>
+                        </label>
+                    </div>
+                    <?php if( !empty($cities) ){ ?>
+                    <div class="list-cities clearfix" >
+                        <?php foreach ($cities as $ci){ ?>
+                        <div class="item-cities" >
+                            <label>
+                                <input type="checkbox" name="cities_id[]" value="<?php echo $ci['cities_id'] ?>" <?php echo in_array($ci['cities_id'], $targetCities) ? 'checked="checked"' : '' ?> >
+                                <?php echo $ci['cities_title'] ?>
+                            </label>
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
+                
+                <?php } ?>
+                </div>
+                <?php } ?>
+                
+                <div class="form-group feature-info">
+                    <label>
+                        Đặc tính
+                        <span class="open">+</span>
+                    </label>
+                    <div class="feature-list" style="display: none">
+                        <ul class="nav nav-stacked list-feature" id="accordion_features">
+                            <?php echo $htmlFeature; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php if($this->CMSCommon()->hasPermission('cms','extension', 'index')){ ?>
+        <div class="tab-pane fade in clearfix" id="tab_extention" role="tabpanel" >
+            <div class="coz-tab-content clearfix" >
+                <div class="template_ext" >
+                    <div class="row" >
+                        <div class="col-sm-12" >
+                            <h3 class="clearfix" >
+                                Sản phẩm đính kèm
+                                <button type="button" onclick="addExt()" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm sản phẩm" >
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div id="ext_box" class="clearfix" >
+                    <?php if(isset($_POST['ext'])) : ?>
+                        <?php if(count($_POST['ext']) > 0) : ?>
+                            <?php $exts = $_POST['ext'] ?>
+                            <?php $indexExt = 0; ?>
+                            <?php foreach($exts as $ext) : ?>
+                                <div class="item-ext" data-id="<?php echo $indexExt ?>" >
+                                    <div class="inner-item-ext" >
+                                        <div class="text-right" >
+                                            <a href="javascript:void(0);" class="btn-remove-item-ext" >
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <input name="ext[<?php echo $indexExt ?>][id]" type="hidden" value="<?php echo $ext['id'] ?>" />
+                                        <input name="ext[<?php echo $indexExt ?>][ext_id]" type="hidden" value="<?php echo $ext['ext_id'] ?>" />
+
+                                        <div class="clearfix">
+                                            <div class="row" >
+                                                <div class="col-sm-3" >
+                                                    <div class="form-group">
+                                                        <div class="thumb-image-product-extension has-image" >
+                                                            <span class="remove-image-product-extension" >
+                                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                            </span>
+                                                            <a href="javascript:void(0);" class="btn-upload-image-product-extension" >
+                                                                <img src="<?php echo $ext['icons'] ?>" data-src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" alt="" class="img-thumbnail">
+                                                                <input type="hidden" name="ext[<?php echo $indexExt ?>][icons]"  value="<?php echo $ext['icons'] ?>" >
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9" >
+                                                    <div class="form-group">
+                                                        <label>Loại phí</label>
+                                                        <select name="ext[<?php echo $indexExt ?>][type]" class="form-control input-sm ext_type" >
+                                                            <option value="default" <?php echo $ext['type'] == 'default' ? 'selected' : ''; ?> >Default</option>
+                                                            <option value="product" <?php echo $ext['type'] == 'product' ? 'selected' : ''; ?> >Product</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="row" >
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label>Tên loại phí</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][ext_name]" class="form-control input-sm ext_name" value="<?php echo $ext['ext_name'] ?>" placeholder="Tên loại phí"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label>Giá</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][price]" class="form-control moneyInput input-sm" value="<?php echo $ext['price'] ?>" placeholder="Giá"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label>Số lượng</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][quantity]" class="form-control input-sm numberInput" value="<?php echo $ext['quantity'] ?>" placeholder="Số lượng" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-8" >
+                                                            <div class="form-group ext-product tgole-hi-show" style="display:none" >
+                                                                <label>Tìm sản phẩm</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][products_title]" class="form-control input-sm ext_product_name" value="<?php echo $ext['products_title'] ?>" />
+                                                                <input type="hidden" name="ext[<?php echo $indexExt ?>][refer_product_id]" class="form-control input-sm ext_product_id" value="<?php echo $ext['refer_product_id'] ?>" />
+                                                            </div>
+
+                                                            <div class="form-group ext-default tgole-hi-show">
+                                                                <label>Mô tả</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][ext_description]" class="form-control input-sm" value="<?php echo $ext['ext_description'] ?>" placeholder="Mô tả" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label >
+                                                                    <input type="checkbox" name="ext[<?php echo $indexExt ?>][is_always]" class="form-control" value="<?php echo $ext['is_always'] ?>" <?php echo $ext['is_always'] == 0 ? '' : 'checked="checked"'; ?> >
+                                                                    Bắt buộc               
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <?php $indexExt++; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <?php if(count($extensions_current) > 0) : ?>
+                            <?php $exts = $extensions_current ?>
+                            <?php $indexExt = 0; ?>
+                            <?php foreach($exts as $ext) : ?>
+                                <div class="item-ext" data-id="<?php echo $indexExt ?>" >
+                                    <div class="inner-item-ext" >
+                                        <div class="text-right" >
+                                            <a href="javascript:void(0);" class="btn-remove-item-ext" >
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <input name="ext[<?php echo $indexExt ?>][id]" type="hidden" value="<?php echo $ext['id'] ?>" />
+                                        <input name="ext[<?php echo $indexExt ?>][ext_id]" type="hidden" value="<?php echo $ext['ext_id'] ?>" />
+
+                                        <div class="clearfix">
+                                            <div class="row" >
+                                                <div class="col-sm-3" >
+                                                    <div class="form-group">
+                                                        <div class="thumb-image-product-extension has-image" >
+                                                            <span class="remove-image-product-extension" >
+                                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                            </span>
+                                                            <a href="javascript:void(0);" class="btn-upload-image-product-extension" >
+                                                                <img src="<?php echo $ext['icons'] ?>" data-src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" alt="" class="img-thumbnail">
+                                                                <input type="hidden" name="ext[<?php echo $indexExt ?>][icons]" value="<?php echo $ext['icons'] ?>" >
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9" >
+                                                    <div class="form-group">
+                                                        <label>Loại phí</label>
+                                                        <select name="ext[<?php echo $indexExt ?>][type]" class="form-control input-sm ext_type" >
+                                                            <option value="default" <?php echo $ext['type'] == 'default' ? 'selected' : ''; ?> >Default</option>
+                                                            <option value="product" <?php echo $ext['type'] == 'product' ? 'selected' : ''; ?> >Product</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="row" >
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label>Tên loại phí</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][ext_name]" class="form-control input-sm ext_name" value="<?php echo $ext['ext_name'] ?>" placeholder="Tên loại phí"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label>Giá</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][price]" class="form-control moneyInput input-sm" value="<?php echo $ext['price'] ?>" placeholder="Giá"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label>Số lượng</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][quantity]" class="form-control input-sm numberInput" value="<?php echo $ext['quantity'] ?>" placeholder="Số lượng" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" >
+                                                    <div class="row" >
+                                                        <div class="col-sm-8" >
+                                                            <div class="form-group ext-product tgole-hi-show" style="display:none" >
+                                                                <label>Tìm sản phẩm</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][products_title]" class="form-control input-sm ext_product_name" value="<?php echo $ext['products_title'] ?>" />
+                                                                <input type="hidden" name="ext[<?php echo $indexExt ?>][refer_product_id]" class="form-control input-sm ext_product_id" value="<?php echo $ext['refer_product_id'] ?>" />
+                                                            </div>
+
+                                                            <div class="form-group ext-default tgole-hi-show">
+                                                                <label>Mô tả</label>
+                                                                <input type="text" name="ext[<?php echo $indexExt ?>][ext_description]" class="form-control input-sm" value="<?php echo $ext['ext_description'] ?>" placeholder="Mô tả" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4" >
+                                                            <div class="form-group">
+                                                                <label >
+                                                                    <input type="checkbox" name="ext[<?php echo $indexExt ?>][is_always]" class="form-control" value="<?php echo $ext['is_always'] ?>" <?php echo $ext['is_always'] == 0 ? '' : 'checked="checked"'; ?> >
+                                                                    Bắt buộc               
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <?php $indexExt++; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                
+            </div>
+        </div>
+        <?php } ?>
+
+        <div class="tab-pane fade in clearfix" id="tab_seo" role="tabpanel" >
+            <div class="coz-tab-content clearfix" >
+                <div class="form-group" >
+                    <label for="seo_title">SEO Title</label>
+                    <?php echo $this->formRow($form->get('seo_title')); ?>
+                </div>
+                <div class="form-group">
+                    <label for="seo_keywords">SEO Keywords</label>
+                    <?php echo $this->formRow($form->get('seo_keywords')); ?>
+                </div>
+                <div class="form-group">
+                    <label for="seo_description">SEO Description</label>
+                    <?php echo $this->formRow($form->get('seo_description')); ?>
+                </div>
+
+                <?php if($this->CMSCommon()->hasPermission('cms','coupons', 'index')){ ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Thông tin khuyến mại
+                    </div>
+                    <div class="panel-body">
+                        <input type="hidden" name="promotion_ordering" value="" >
+                        <div class="form-group">
+                            <label for="products_alias">
+                                Giá trị
+                            </label>
+                            <div class="input-group">
+                                <?php echo $this->formRow($form->get('promotion')); ?>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="promotion_description">
+                                Mô tả
+                            </label>
+                            <?php echo $this->formRow($form->get('promotion_description')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default" style="display:none">
+                    <div class="panel-heading">Khuyến mãi 1</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="products_alias">Khuyến mãi</label>
+                            <div class="input-group">
+                                <?php echo $this->formRow($form->get('promotion1')); ?>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_alias">Thứ tự ưu tiên</label>
+                            <?php echo $this->formRow($form->get('promotion1_ordering')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_alias">Mô tả</label>
+                            <?php echo $this->formRow($form->get('promotion1_description')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default"  style="display:none">
+                    <div class="panel-heading">Khuyến mãi 2</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="products_alias">Khuyến mãi</label>
+                            <div class="input-group">
+                                <?php echo $this->formRow($form->get('promotion2')); ?>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_alias">Thứ tự ưu tiên</label>
+                            <?php echo $this->formRow($form->get('promotion2_ordering')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_alias">Mô tả</label>
+                            <?php echo $this->formRow($form->get('promotion2_description')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default"  style="display:none">
+                    <div class="panel-heading">Khuyến mãi 3</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="products_alias">Khuyến mãi</label>
+                            <div class="input-group">
+                                <?php echo $this->formRow($form->get('promotion3')); ?>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_alias">Thứ tự ưu tiên</label>
+                            <?php echo $this->formRow($form->get('promotion3_ordering')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="products_alias">Mô tả</label>
+                            <?php echo $this->formRow($form->get('promotion3_description')); ?>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group" >
+        <button class="btn btn-primary btn-sm" >
+            Cập nhật sản phẩm
+        </button>
+        <button type="button" class="btn btn-danger  btn-sm" onclick="window.location='/cms/product'">
+            Quay lại
+        </button>
+    </div>
+
+    <?php echo $this->form()->closeTag(); ?>
+</section>
+<script type="template" id="tmp_extension">
+    <div class="item-ext" data-id="{EXTID}" >
+        <div class="inner-item-ext" >
+            <div class="text-right" >
+                <a href="javascript:void(0);" class="btn-remove-item-ext" >
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <input name="ext[{EXTID}][id]" type="hidden" value="0" />
+            <input name="ext[{EXTID}][ext_id]" type="hidden" value="{ext_id}" />
+            
+            <div class="clearfix">
+                <div class="row" >
+                    <div class="col-sm-3" >
+                        <div class="form-group">
+                            <div class="thumb-image-product-extension" >
+                                <span class="remove-image-product-extension" >
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </span>
+                                <a href="javascript:void(0);" class="btn-upload-image-product-extension" >
+                                    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" alt="" class="img-thumbnail">
+                                    <input type="hidden" name="ext[{EXTID}][icons]" >
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9" >
+                        <div class="form-group">
+                            <label>Loại phí</label>
+                            <select name="ext[{EXTID}][type]" class="form-control input-sm ext_type" >
+                                <option value="default" >Default</option>
+                                <option value="product" >Product</option>
+                            </select>
+                        </div>
+                        <div class="row" >
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label>Tên loại phí</label>
+                                    <input type="text" name="ext[{EXTID}][ext_name]" class="form-control input-sm ext_name" value="{ext_name}" placeholder="Tên loại phí"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label>Giá</label>
+                                    <input type="text" name="ext[{EXTID}][price]" class="form-control moneyInput input-sm" value="{price}" placeholder="Giá"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label>Số lượng</label>
+                                    <input type="text" name="ext[{EXTID}][quantity]" class="form-control input-sm numberInput" value="" placeholder="Số lượng" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" >
+                        <div class="row" >
+                            <div class="col-sm-8" >
+                                <div class="form-group ext-product tgole-hi-show" style="display:none" >
+                                    <label>Tìm sản phẩm</label>
+                                    <input type="text" name="ext[{EXTID}][products_title]" class="form-control input-sm ext_product_name" />
+                                    <input type="hidden" name="ext[{EXTID}][refer_product_id]" class="form-control input-sm ext_product_id" value="" />
+                                </div>
+
+                                <div class="form-group ext-default tgole-hi-show">
+                                    <label>Mô tả</label>
+                                    <input type="text" name="ext[{EXTID}][ext_description]" class="form-control input-sm" value="{ext_description}" placeholder="Mô tả" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label >
+                                        <input type="hidden" name="ext[{EXTID}][is_always]" value="0">
+                                        <input type="checkbox" name="ext[{EXTID}][is_always]" class="form-control input-sm" value="1" >
+                                        Bắt buộc                 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</script>
+<script type="template" id="tmp_extension_require">
+    <div class="row row-item-stransport all-select" data-id="{EXTID}" >
+        <div class="col-xs-6">
+            <select name="ext_require[{EXTID}][type]" class="form-control input-sm ext_box_require_area" >
+                <option value="all" >Tất cả</option>
+                <?php if(!empty($areas)){
+                    foreach ($areas as $key => $area) {
+                ?>
+                <option value="<?php echo $area['area_id']; ?>" ><?php echo $area['area_title']; ?></option>
+                <?php }
+                } ?>
+            </select>
+        </div>
+        <div class="col-xs-6">
+            <div class="align-right" >
+                <a href="javascript:void(0);" class="btn-add-item-stransport" >
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-12 place-area-cities" >
+            <div class="header-list-cities clearfix" >
+                <a href="javascript:void(0);" class="btn-add-all-item-cities-stransport" >
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </a>
+                <div class="list-cities connect-cities" ></div>
+            </div>
+            <div class="item-stransport" data-id=0 >
+                <a href="javascript:void(0);" class="btn-remove-item-stransport">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+                <div class="row" >
+                    <div class="col-sm-3 pin-list-cities-child" >
+                        <div class="list-cities-child connect-cities" >
+                            
+                        </div>
+                    </div>
+                    <div class="col-sm-9" >
+                        <div class="form-group">
+                            <label >Tiêu đề</label>
+                            <input type="text" class="form-control input-sm" name="ext_require[{EXTID}][data][0][title]" placeholder="Tiêu đề" >
+                        </div>
+                        <div class="form-group">
+                            <label >Mô tả</label>
+                            <textarea class="form-control input-sm" rows="3" name="ext_require[{EXTID}][data][0][descriptrion]" ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label >Giá</label>
+                            <input type="text" class="form-control input-sm moneyInput" name="ext_require[{EXTID}][data][0][price]" placeholder="Giá trị" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="template" id="tmp_col_extension_require">
+    <div class="item-stransport"  data-id="{EXT_ID}" >
+        <a href="javascript:void(0);" class="btn-remove-item-stransport">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
+        <div class="row" >
+            <div class="col-sm-3 pin-list-cities-child" >
+                <div class="list-cities-child connect-cities" ></div>
+            </div>
+            <div class="col-sm-9" >
+                <div class="form-group">
+                    <label >Tiêu đề</label>
+                    <input type="text" class="form-control input-sm" name="ext_require[{EXTID}][data][{EXT_ID}][title]" placeholder="Tiêu đề" >
+                </div>
+                <div class="form-group">
+                    <label >Mô tả</label>
+                    <textarea class="form-control input-sm" rows="3" name="ext_require[{EXTID}][data][{EXT_ID}][descriptrion]" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label >Giá</label>
+                    <input type="text" class="form-control input-sm moneyInput" name="ext_require[{EXTID}][data][{EXT_ID}][price]" placeholder="Giá trị" >
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="template" id="tmp_product_type">
+    <div class="item-product-type" data-id="{EXTID}" >
+        <div class="text-right" >
+            <a href="javascript:void(0);" class="btn-remove-item-product-type" >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="inner-item-product-type" >
+            <input type="hidden" name="products_type[{EXTID}][products_type_id]" value="0" >
+            <div class="clearfix">
+                <div class="row" >
+                    <div class="col-sm-3" >
+                        <div class="form-group">
+                            <div class="thumb-image-product-type" >
+                                <span class="remove-image-product-type" >
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </span>
+                                <a href="javascript:void(0);" class="btn-upload-image-product-type" >
+                                    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNWM2NzM1NGQzOSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1YzY3MzU0ZDM5Ij48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" alt="" class="img-thumbnail">
+                                    <input type="hidden" name="products_type[{EXTID}][thumb_image]" >
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9" >
+                        <div class="form-group">
+                            <label >Tên kiểu (ví dụ : XL, XS ...)</label>
+                            <input type="text" class="form-control input-sm" placeholder="Name" name="products_type[{EXTID}][type_name]" >
+                        </div>
+                        <div class="row" >
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label >Giá gốc</label>
+                                    <input type="text" class="form-control moneyInput input-sm" placeholder="Giá gốc" name="products_type[{EXTID}][price]" >
+                                </div>
+                            </div>
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label >Giá bán</label>
+                                    <input type="text" class="form-control moneyInput input-sm" placeholder="Giá bán" name="products_type[{EXTID}][price_sale]" >
+                                </div>
+                            </div>
+                            <div class="col-sm-4" >
+                                <div class="form-group">
+                                    <label >Số lượng</label>
+                                    <input type="text" class="form-control numberInput input-sm" placeholder="Số lượng" name="products_type[{EXTID}][quantity]" >
+                                </div>
+                            </div>
+                            <div class="col-sm-12" >
+                                <div class="form-group">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="products_type_default"  class="pro_type_is_default"  value="{EXTID}" > 
+                                        Là mặc định
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="hidden" name="products_type[{EXTID}][is_available]" value="0" >
+                                        <input type="checkbox" name="products_type[{EXTID}][is_available]"  value="1" > Luôn còn hàng
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+    var ext_id = <?php echo isset($indexExt) ? $indexExt : 0 ?>;
+    var ext_id_require = <?php echo isset($indexExtRequire) ? $indexExtRequire : 0 ?>;
+</script>
+<script type="template" id="li_feature_body" >
+    <li class="li_{EXT_ID}" >
+        <label>
+            <input type="checkbox" name="featureid[]" value="{EXT_ID}"  class="checksub" checked="true" >
+            {EXT_TITLE}
+        </label>
+    </li>
+
+</script>
+<script type="text/javascript">
+    var n = $('.count-total-feature').val();
+    num_row_img = 0;
+    $(document).ready(function() {
+        $('input.color_input').colorpicker();
+        $('.color-feature-picker').colorpicker();
+
+        $('.btn-upload-attr').on('keyup keypress blur click', function(e) {
+            num_row_img = $(this).attr('data-row');
+            console.log(num_row_img);
+        });
+        $('.btn-upload-attr').modal_upload({ callbacks : function(response, exdata){
+            if(Object.keys(response).length>0){
+                k_frist = Object.keys(response)[0];
+                picture = response[k_frist];
+                var str = '<div class="col-sm-12" >'+
+                    '<div class="holder-img" ><img src="'+picture.picture.folder+'/'+picture.picture.name+'.'+picture.picture.type+'" class="img-responsive" /><input type="hidden" name="picture_id" value="'+k_frist+'" /></div>'+
+                    '</div>';
+                var url_img = picture.picture.folder+'/'+picture.picture.name+'.'+picture.picture.type;
+                console.log(url_img);
+                console.log(num_row_img);
+                $('#feature_file_'+num_row_img).hide();
+
+                $('#img-file-feature_'+num_row_img).show();
+                $('#img-file-feature_'+num_row_img).attr('src',url_img);
+                $('#feature_file_'+num_row_img).val(url_img);
+            }
+        }});
+
+        $(document).on('change', '.select-commom-feature',function(){
+            var row_id = $(this).attr('data-row');
+            var select_value = this.value;
+            if(select_value == 2)
+            {
+                on_change_select_image(row_id);
+            }
+            else if(select_value == 1){
+                on_change_select_normal(row_id);
+            }
+            else if(select_value ==3)
+            {
+                on_change_select_color(row_id);
+            }
+            else if(select_value == 4)
+            {
+                on_change_select_icon(row_id);
+            }
+        });
+
+        for(var j = 0;j < n ;j++){
+            $('#color-picker-'+j).colorpicker();
+            var select_value_type = $('#feature_type_'+j).val();
+            if(select_value_type == 2)
+            {
+                show_is_type_image(j);
+            }
+            else if(select_value_type == 1){
+                show_is_type_normal(j);
+            }
+        }
+
+    });
+
+
+
+    function show_is_type_normal(num_row){
+        $('#is_value_'+num_row).hide();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+        console.log('true');
+    }
+
+    function show_is_type_image(num_row){
+        $('#is_value_'+num_row).show();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+        console.log(num_row);
+        var select_is_value = $('#is_value_feature_'+num_row).val();
+        if(select_is_value == 3)
+        {
+            $('#file_feature_'+num_row).hide();
+            $('#color-picker-'+num_row).show();
+        }
+        else if(select_is_value == 4)
+        {
+            $('#file_feature_'+num_row).show();
+            $('#img-file-feature_'+num_row).show();
+            $('#color-picker-'+num_row).hide();
+        }
+        console.log(select_is_value);
+    }
+
+    function on_change_select_normal(num_row)
+    {
+        $('#is_value_'+num_row).hide();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+    }
+    function on_change_select_image(num_row){
+        $('#is_value_'+num_row).show();
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).hide();
+        show_is_type_image(num_row);
+    }
+    function on_change_select_color(num_row){
+        $('#file_feature_'+num_row).hide();
+        $('#color-picker-'+num_row).show();
+    }
+    function on_change_select_icon(num_row){
+        $('#file_feature_'+num_row).show();
+        $('#color-picker-'+num_row).hide();
+    }
+
+    function remove_feature(li_class,feature_id)
+    {
+        console.log(li_class);
+        $('li.'+li_class).remove();
+        if(typeof feature_id != 'undefined'){
+            $.ajax({
+                url: cmsUrl + '/feature/delete',
+                data: { cid: feature_id },
+                type:'post',
+                success: function (data) {
+                    if(data)
+                        $('li.'+li_class).remove();
+                },
+                error: function () {
+                    response([]);
+                }
+            });
+        }
+    }
+
+    function validator()
+    {
+
+        var error = true;
+        for(var i = 1; i < number_fear ; i++){
+            var title = $('#feature_title_'+i).val();
+
+            if(title == '' && title.length <= 0)
+            {
+                $('#feature_title_'+i).addClass('error');
+                error = false;
+            }
+
+        }
+
+        return error;
+    }
+
+    function save_feature(num_row){
+        var parent_id =$('#parent_id_'+num_row).val();
+        var feature_title =$('#feature_title_'+num_row).val();
+        var feature_type =$('#feature_type_'+num_row).val();
+        var is_value =$('#is_value_'+num_row).val();
+        var feature_color =$('#feature_color_'+num_row).val();
+        var feature_file =$('#feature_file_'+num_row).val();
+        var is_published =$('#is_published_'+num_row).val();
+        var ordering =$('#ordering_'+num_row).val();
+        var feature_alias =$('#feature_alias_'+num_row).val();
+
+        if(feature_title == '' || feature_title.length == 0)
+        {
+            alert('Bạn chưa nhập tiêu đề ');
+            $('#feature_title_'+num_row).addClass('error');
+            return false;
+        }
+
+        $.ajax({
+            url: cmsUrl + '/feature/addAjax',
+            data: { parent_id: parent_id,
+                feature_title : feature_title,
+                feature_type : feature_type,
+                is_value :is_value,
+                feature_color :feature_color,
+                feature_file :feature_file,
+                is_published :is_published,
+                ordering :ordering,
+                feature_alias :feature_alias,
+            },
+            type:'post',
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data.msg);
+                $('feature_title_'+num_row).val('');
+                var id_feature = data.id_feature;
+                var title_feature = data.title_feature;
+                var row_li = $('#li_body').html();
+                var row_feature = row_li.replace(/\{EXT_ID}/g, id_feature);
+                row_feature = row_feature.replace(/\{EXT_TITLE}/g, title_feature);
+                console.log(row_feature);
+                var body_li = $('#form-update-feature').find('ul.children_'+num_row).find('li:last');
+                console.log(body_li);
+                body_li.before(row_feature);
+
+            },
+            error: function () {
+                response([]);
+            }
+        });
+    }
+
+    function save_feature_parent(num_row){
+        var parent_id =$('#parent_id_'+num_row).val();
+        var feature_title =$('#feature_title_'+num_row).val();
+        var feature_type =$('#feature_type_'+num_row).val();
+        var is_value =$('#is_value_'+num_row).val();
+        var feature_color =$('#feature_color_'+num_row).val();
+        var feature_file =$('#feature_file_'+num_row).val();
+        var is_published =$('#is_published_'+num_row).val();
+        var ordering =$('#ordering_'+num_row).val();
+        var feature_alias =$('#feature_alias_'+num_row).val();
+
+        if(feature_title == '' || feature_title.length == 0)
+        {
+            alert('Bạn chưa nhập tiêu đề ');
+            $('#feature_title_'+num_row).addClass('error');
+            return false;
+        }
+
+        $.ajax({
+            url: cmsUrl + '/feature/addAjax',
+            data: { parent_id: parent_id,
+                feature_title : feature_title,
+                feature_type : feature_type,
+                is_value :is_value,
+                feature_color :feature_color,
+                feature_file :feature_file,
+                is_published :is_published,
+                ordering :ordering,
+                feature_alias :feature_alias,
+            },
+            type:'post',
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data.msg);
+                window.location.reload();
+            },
+            error: function () {
+                response([]);
+            }
+        });
+    }
+
+    function save_feature_category(num_row){
+        var categories_id =$('#categories_id').val();
+        var parent_id =$('#parent_id_'+num_row).val();
+        var feature_title =$('#feature_title_'+num_row).val();
+        var feature_type =$('#feature_type_'+num_row).val();
+        var is_value =$('#is_value_feature_'+num_row).val();
+        var feature_color =$('#feature_color_'+num_row).val();
+        var feature_file =$('#feature_file_'+num_row).val();
+        var is_published =$('#is_published_'+num_row).val();
+        var ordering =$('#ordering_'+num_row).val();
+        var feature_alias =$('#feature_alias_'+num_row).val();
+
+        if(feature_title == '' || feature_title.length == 0)
+        {
+            alert('Bạn chưa nhập tiêu đề ');
+            $('#feature_title_'+num_row).addClass('error');
+            return false;
+        }
+
+        $.ajax({
+            url: cmsUrl + '/feature/addWithCategoryAjax',
+            data: { 
+                categories_id: categories_id,
+                parent_id: parent_id,
+                feature_title : feature_title,
+                feature_type : feature_type,
+                is_value :is_value,
+                feature_color :feature_color,
+                feature_file :feature_file,
+                is_published :is_published,
+                ordering :ordering,
+                feature_alias :feature_alias,
+            },
+            type:'post',
+            success: function (data) {
+                if(data.constructor === String){
+                    data = $.parseJSON(data);
+                }
+                alert(data.msg);
+                $('feature_title_'+num_row).val('');
+                var id_feature = data.id_feature;
+                var title_feature = data.title_feature;
+                var row_li = $('#li_feature_body').html();
+                var row_feature = row_li.replace(/\{EXT_ID}/g, id_feature);
+                row_feature = row_feature.replace(/\{EXT_TITLE}/g, title_feature);
+                console.log(row_feature);
+                var body_li = $('#accordion_features').find('ul.children_'+num_row).find('li:last');
+                console.log(body_li);
+                body_li.before(row_feature);
+                if( data.feature.feature_type == 2 ){
+                    if( data.feature.is_value == 3 ){
+                        $(".li_"+id_feature+' label').append('<input type="color" name="favcolor" value="' +data.feature.feature_color+ '">');
+                    }else{
+                        $(".li_"+id_feature+' label').append('<span style="width:20px;height:20px;display:inline-block;background:url(' +data.feature.feature_file+ ') no-repeat;vertical-align: middle" ></span>');
+                    } 
+                }
+                $(".li_"+id_feature+" input[type='checkbox'],.li_"+id_feature+" input[type='radio']").iCheck({
+                    checkboxClass: 'icheckbox_minimal',
+                    radioClass: 'iradio_minimal'
+                });
+                $('.li_'+id_feature+'.color-feature-picker').colorpicker();
+            },
+            error: function () {
+                response([]);
+            }
+        });
+    }
+</script>

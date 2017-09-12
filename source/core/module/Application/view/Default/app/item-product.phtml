@@ -1,0 +1,68 @@
+<?php 
+if( !empty($product) ){
+    $price = $this->Products()->getPrice($product);
+    $price_sale = $this->Products()->getPriceSale($product);
+    $promotion = $this->Products()->getPromotion($product);
+?>
+<div class="mini-product clearfix" >
+    <?php if ( !empty($promotion) ){ ?>
+    <div class="sale-flash">
+        <?php echo $promotion ?>
+    </div>
+    <?php } ?>
+
+    <div class="product-thumbnail" data-place="tooltip" data-tooltip-content="#tooltip-thumbnail-<?php echo $this->Products()->getProductsId($product) ?>" >
+        <a href="<?php echo $this->Products()->getLink($product) ?>" <?php echo $this->Products()->getTypeView($product) ?> title="<?php echo $this->Products()->getTitle($product); ?>"  data-pjax="true" data-container="Main" >
+            <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($product), 271, 271); ?>" alt="<?php echo $this->Products()->getTitle($product); ?>" class="img-fluid" >
+        </a>
+    </div>
+    <div class="hidden-xs-up" >
+        <div class="tooltip-product" id="tooltip-thumbnail-<?php echo $this->Products()->getProductsId($product) ?>" >
+            <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($product), 400, 400); ?>" alt="<?php echo $this->Products()->getTitle($product); ?>" />
+        </div>
+    </div>
+    <div class="grib-ipt clearfix" >
+        <div class="product-code" >
+            <?php echo $this->translate('txt_ma_san_pham'); ?> : 
+            <?php echo $this->Products()->getCode($product) ?>
+        </div>
+        <h3 class="product-name" >
+            <a href="<?php echo $this->Products()->getLink($product) ?>" <?php echo $this->Products()->getTypeView($product) ?> title="<?php echo $this->Products()->getTitle($product); ?>"  data-pjax="true" data-container="Main" >
+                <?php echo $this->Products()->getName($product) ?>
+            </a>
+        </h3>
+        <?php if( $this->Products()->IsAvailablePrice($product) ){ ?>
+        <div class="product-price clearfix" >
+            <?php if($price > $price_sale){ ?>
+            <span class="price-speacial" >
+                <?php echo $this->Currency()->fomatCurrency($price) ?>
+            </span>
+            <?php }  ?>
+            <span class="price-sale" >
+                <?php echo $this->Currency()->fomatCurrency($price_sale) ?>
+            </span>
+        </div>
+        <?php }else{  ?>
+        <div class="product-price clearfix" >
+            <span class="price-sale" >
+                <?php echo $this->Products()->stringWhenNotAvailablePrice(); ?>
+            </span>
+        </div>
+        <?php }  ?>
+        <form action="/cart/addToCart" data-neo="form" method="post" class="variants pro-action-btn" enctype="multipart/form-data" data-form="addToCart" >
+            <input type="hidden" value="<?php echo $this->Products()->getProductsId($product); ?>" name="products_id" data-input="products_id" >
+            <div class="clearfix" >
+                <?php if ($this->Products()->getToBuy($product)){ ?>
+                    <a href="<?php echo $this->Products()->getAddToCartProductsUrl($product) ?>" class="btn btn-style btn-style-active" data-neo="ajax" data-role="form" >
+                        <?php echo $this->translate('txt_mua_ngay') ?>
+                    </a>
+                <?php }else{ ?>
+                    <a href="<?php echo $this->Products()->getBuyProductsByEmailUrl($product) ?>" class="btn btn-style btn-style-active" title="<?php echo $this->translate('txt_register_email') ?>" data-neo="popup" rel="nofollow" >
+                        <?php echo $this->translate('txt_register_email') ?>
+                    </a>
+                <?php } ?>
+            </div>
+        </form>
+    </div>
+</div>
+<?php } ?>

@@ -1,0 +1,114 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".input-select2").select2().on("change", function(e) {
+            var val = $(this).val();
+        });
+    });
+</script>
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/merchant') ?>" >
+                        Đại lý
+                    </a>
+                </li>
+                <li class="active">
+                    Cập nhật commission
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Commission :: Cập nhật
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/merchant', array('action' => 'editCommission', 'id' => $id)));
+    $form->setAttribute('enctype', 'multipart/form-data');
+    $form->setAttribute('id', 'form-commission');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('commission_id'));
+    ?>
+    <div class="row" >
+        <div class="col-sm-6" >
+            <div class="form-group">
+                <label for="merchant_id" >
+                    Đại lý
+                </label>
+                <?php echo $this->formRow($form->get('merchant_id')); ?>
+            </div>
+
+            <div class="form-group">
+                <label for="rate">
+                    Tỉ số
+                </label>
+                <div class="input-group">
+                    <?php echo $this->formRow($form->get('rate')); ?>
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="col-sm-6" >
+                    <div class="form-group">
+                        <label for="start_date" >
+                            Ngày bắt đầu
+                        </label>
+                        <?php echo $this->formRow($form->get('start_date')); ?>
+                    </div>
+                </div>
+                <div class="col-sm-6" >
+                    <div class="form-group">
+                        <label for="end_date" >
+                            Ngày kết thúc
+                        </label>
+                        <?php echo $this->formRow($form->get('end_date')); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" >
+        <label for="is_published">
+            <?php echo $this->formRow($form->get('is_published')); ?>
+            Kích hoạt
+        </label>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary btn-sm" >
+            Cập nhật commission
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+            Quay lại
+        </button>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

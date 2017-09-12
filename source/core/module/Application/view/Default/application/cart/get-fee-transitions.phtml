@@ -1,0 +1,105 @@
+<div id="feeTransitions" >
+    <?php
+    if(!empty($transportation) && !empty($cities) && $transportation['transportation_type'] == 0){ 
+        if($total > $this->website['ship']){
+    ?>
+
+    <h2 class="coll-title  tfl-pfeed-tran"><?php echo $this->translate('txt_phi_van_chuyen'); ?></h2>
+    <div class="tfl-pfeed-tran01" ><?php echo $this->translate('txt_khong_co_phi_van_chuyen') ?></div>
+
+    <?php }else{ ?>
+
+    <?php
+    $price_total = 0; 
+    $carts = $this->Cart()->getCart();
+    if( !empty($carts) ){
+        foreach ($carts as $id => $product) {
+            foreach ($product['product_type'] as $product_type_id => $p) {
+                if(!empty($product['extensions_transportations'])){
+                    $_tran = array();
+                    foreach ($product['extensions_transportations'] as $key => $tran) {
+                        $id_cities = explode(',', $tran['transportation_cities']);
+                        if(in_array($cities_id, $id_cities)){
+                            $_tran = $tran;
+                        }else if(empty($_tran) && $tran['transportation_type'] == 'all'){
+                            $_tran = $tran;
+                        }
+                    }
+                    if(!empty($_tran)){
+                        $price_total += $_tran['transportation_price'];
+                    }
+                }
+            }
+        }
+    } ?>
+
+    <?php 
+    if(!empty($price_total)){ ?>
+    <div class="table-reponsive clearfix" >
+        <div class="right-cart" >
+            <h2 class="has-tfl-pfeed-tran" >
+                <label class="has-tfl-pfeed-tran01" ><?php echo $this->translate('txt_phi_van_chuyen') ?> : </label>
+                <label class="has-tfl-pfeed-tran02" ><?php echo $this->Currency()->fomatCurrency($price_total) ?></label>
+            </h2>
+        </div>
+    </div>
+    <?php }else{ ?>
+
+    <h2 class="coll-title  tfl-pfeed-tran"><?php echo $this->translate('txt_phi_van_chuyen'); ?></h2>
+    <div class="tfl-pfeed-tran01" ><?php echo $this->translate('txt_khong_co_phi_van_chuyen') ?></div>
+    
+    <?php } ?>
+
+    <?php 
+        }
+    }else if(!empty($transportation) && !empty($cities) && $transportation['transportation_type'] == 1){
+        $branches = $this->Branches()->getAllBranches();
+    ?>
+        <?php if(!empty($branches)){ ?>
+        <h2 class="coll-title  tfl-pfeed-tran">
+            <?php echo $this->translate('txt_noi_ban_nhan_hang'); ?>
+        </h2>
+        <div class="table-reponsive clearfix" >
+            <div class="clearfix overflow-cart">
+                <table id="table-cart">
+                    <tbody>
+                        <?php foreach ($branches as $index => $branche) { ?>
+                        <tr class="line-item" >
+                            <td> 
+                                <div class="row" >
+                                    <div class="col-sm-2">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <div class="col-sm-10 text-left" >
+                                        <span><?php echo $branche['phone'] ?></span>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </div>
+                                    <div class="col-sm-10 text-left" >
+                                        <span><?php echo $branche['email'] ?></span>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <i class="fa fa-map-marker"></i>
+                                    </div>
+                                    <div class="col-sm-10 text-left" >
+                                        <span><?php echo $branche['address'] ?></span>
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                            
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php } ?>
+    <?php }else{ ?>
+    <h2 class="coll-title  tfl-pfeed-tran"><?php echo $this->translate('txt_phi_van_chuyen'); ?></h2>
+    <div class="tfl-pfeed-tran01" ><?php echo $this->translate('txt_khong_co_phi_van_chuyen') ?></div>
+    <?php } ?>
+</div>

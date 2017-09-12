@@ -1,0 +1,151 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="active">
+                    Vị trí banner
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Vị trí banner :: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/BannerPosition', array('action' => 'index')) ?>" method="get" role="form" data-form="searchAjax" >
+                <div class="coz-search-bar clearfix" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                            </div>
+                            <div class="col-xs-5 col-coz-search" >
+                                <select name="type" class="form-control" >
+                                    <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo tên
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/BannerPosition') ?>" method="post" class="clearfix" id="form-list-article" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-6" ></div>
+                <div class="col-sm-6" >
+                    <div class="text-right" >
+                        <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm vị trí" >
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                        <?php if( !empty($positions) ){ ?>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/BannerPosition', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá vị trí" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-box" id="error-box" ></div>
+
+        <?php if( !empty($positions) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" >ID</th>
+                        <th class="col-lim" >Hình</th>
+                        <th>Tên</th>
+                        <th class="col-lim" >Alias</th>
+                        <th class="col-lim text-center" ></th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="container-article-sort" >
+                    <?php foreach ($positions as $key=>$row ) { ?>
+                    <tr>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['position_id'] ?>
+                        </td>
+                        <td class="col-lim" >
+                            <img src="<?php echo $this->Images()->getUrlImage($row['image_preview'],100); ?>" class="img-reponsive" >
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'edit', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa vị trí" >
+                                <?php echo $row['position_name']; ?>
+                            </a>
+                        </td>
+                        <td class="col-lim" >
+                            <?php echo $row['position_alias'] ?>
+                        </td>
+                        <td class="col-lim" >
+                            Có <?php echo $row['total_banner'] ?> banner cho vị trí này
+                        </td>
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'edit', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa vị trí" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="<?php echo $this->url('cms/banners', array('action' => 'index')).'?position_id='.$row['position_id'] ?>" data-toggle="tooltip" data-placement="top" title="Xem banner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'delete', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá vị trí" data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['position_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có vị trí
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

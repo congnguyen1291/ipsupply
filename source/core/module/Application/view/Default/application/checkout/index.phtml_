@@ -1,0 +1,345 @@
+<div class="coz-wrap-cart-idex clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-sm-9" >
+            	<h1 class="ui-h1-cart-idex" >
+                    <?php echo $this->translate('txt_gio_hang_cua_ban') ?>
+                </h1>
+                <div class="clearfix" >
+                	<?php 
+		            $carts = $this->Cart()->getCart();
+		            if( !empty($carts) ){ ?>
+                	<div class="title-cart-idex" >
+                		ĐƯỢC CUNG CẤP BỞI SUVI (2 SẢN PHẨM )
+                	</div>
+                	<div class="clearfix" >
+                		<form action="<?php echo $this->url('checkout', array('action' => 'update-cart')) ?>" method="post" data-form="cart" >
+                			<div class="row" >
+			                    <div class="col-md-12">
+			                        <div class="coz-wrap-cart-form-auth" >
+			                            <div class="table-responsive">
+			                                <table class="coz-table-cart coz-table-cart-idex" >
+			                                    
+			                                    <tr>
+			                                    	<td rowspan="2" >
+			                                    		<div class="coz-cart-img" >
+			                                    			<img src="https://dynamic.zacdn.com/E_VxmOhwh0S6NUvwNy91kptGtCI=/fit-in/75x108/filters:quality(90):fill(ffffff)/http://static.vn.zalora.net/p/suvi-9169-764586-1.jpg" width="75" >
+			                                    		</div>
+			                                    	</td>
+			                                    	<td colspan="3" >
+			                                    		<span class="coz-cart-product-name" >
+			                                    			ÁO THUN IN HÌNH BAD-ASS CUNG CẤP BỞI SUVI
+			                                    		</span>
+			                                    	</td>
+			                                    	<td class="coz-text-right" colspan="2" >
+			                                    		<div class="coz-cart-price-root" >199.000 VNĐ</div>
+			                                    		<div class="coz-cart-price-sale" >
+			                                    			GIẢM CÒN 189.000 VNĐ
+			                                    		</div>
+			                                    	</td>
+			                                    </tr>
+			                                    <tr>
+			                                    	<td >
+			                                    		<div class="coz-item-dest-product-cart" >
+			                                    			<a href="javascript:void(0);" class="coz-btn-edit-item-dest-product-cart" >
+			                                    				<i class="fa fa-pencil" aria-hidden="true"></i>
+			                                    			</a>
+			                                    			<div class="icoz-item-dest-product-cart" >
+				                                    			<div class="coz-qual-dest-cart" >
+				                                    				<span class="coz-label-des-pro" >
+				                                    					so luong
+				                                    				</span>
+				                                    				<span class="coz-label-des-pro" >
+				                                    					4
+				                                    				</span>
+				                                    			</div>
+
+				                                    			<div class="coz-qual-dest-cart" >
+				                                    				<span class="coz-label-des-pro" >
+				                                    					kieu san pham
+				                                    				</span>
+				                                    				<span class="coz-label-des-pro" >
+				                                    					mau do
+				                                    				</span>
+				                                    			</div>
+			                                    			</div>
+			                                    		</div>
+			                                    	</td>
+			                                    	<td colspan="4" class="coz-position-relative" >
+			                                    		<span class="coz-cart-product-note" >
+				                                    		trong 3-5 ngày làm việc
+				                                    		Không áp dụng được mã giảm giá
+			                                    		</span>
+			                                    		<a href="javascript:void(0);" class="coz-btn-cart-remove-product" >
+			                                    			<i class="fa fa-times" aria-hidden="true"></i>
+			                                    		</a>
+			                                    	</td>
+			                                    </tr>
+			                                    <!-- end -->
+
+			                                    <tr>
+			                                    	<td rowspan="2" >
+			                                    		<div class="coz-cart-img" >
+			                                    			<img src="https://dynamic.zacdn.com/E_VxmOhwh0S6NUvwNy91kptGtCI=/fit-in/75x108/filters:quality(90):fill(ffffff)/http://static.vn.zalora.net/p/suvi-9169-764586-1.jpg" width="75" >
+			                                    		</div>
+			                                    	</td>
+			                                    	<td colspan="3" >
+			                                    		<span class="coz-cart-product-name" >
+			                                    			ÁO THUN IN HÌNH BAD-ASS CUNG CẤP BỞI SUVI
+			                                    		</span>
+			                                    	</td>
+			                                    	<td class="coz-text-right" colspan="2" >
+			                                    		<div class="coz-cart-price-root" >199.000 VNĐ</div>
+			                                    		<div class="coz-cart-price-sale" >
+			                                    			GIẢM CÒN 189.000 VNĐ
+			                                    		</div>
+			                                    	</td>
+			                                    </tr>
+			                                    <tr>
+			                                    	<td >
+			                                    		<div class="coz-item-dest-product-cart" >
+			                                    			<a href="javascript:void(0);" class="coz-btn-edit-item-dest-product-cart" >
+			                                    				<i class="fa fa-pencil" aria-hidden="true"></i>
+			                                    			</a>
+			                                    			<div class="icoz-item-dest-product-cart" >
+				                                    			<div class="coz-qual-dest-cart" >
+				                                    				<span class="coz-label-des-pro" >
+				                                    					so luong
+				                                    				</span>
+				                                    				<span class="coz-label-des-pro" >
+				                                    					4
+				                                    				</span>
+				                                    			</div>
+
+				                                    			<div class="coz-qual-dest-cart" >
+				                                    				<span class="coz-label-des-pro" >
+				                                    					kieu san pham
+				                                    				</span>
+				                                    				<span class="coz-label-des-pro" >
+				                                    					mau do
+				                                    				</span>
+				                                    			</div>
+			                                    			</div>
+			                                    		</div>
+			                                    	</td>
+			                                    	<td colspan="4" class="coz-position-relative" >
+			                                    		<span class="coz-cart-product-note" >
+				                                    		trong 3-5 ngày làm việc
+				                                    		Không áp dụng được mã giảm giá
+			                                    		</span>
+			                                    		<a href="javascript:void(0);" class="coz-btn-cart-remove-product" >
+			                                    			<i class="fa fa-times" aria-hidden="true"></i>
+			                                    		</a>
+			                                    	</td>
+			                                    </tr>
+			                                    <!-- end -->
+
+			                                    <tr>
+			                                    	<td rowspan="2" >
+			                                    		<div class="coz-cart-img" >
+			                                    			<img src="https://dynamic.zacdn.com/E_VxmOhwh0S6NUvwNy91kptGtCI=/fit-in/75x108/filters:quality(90):fill(ffffff)/http://static.vn.zalora.net/p/suvi-9169-764586-1.jpg" width="75" >
+			                                    		</div>
+			                                    	</td>
+			                                    	<td colspan="3" >
+			                                    		<span class="coz-cart-product-name" >
+			                                    			ÁO THUN IN HÌNH BAD-ASS CUNG CẤP BỞI SUVI
+			                                    		</span>
+			                                    	</td>
+			                                    	<td class="coz-text-right" colspan="2" >
+			                                    		<div class="coz-cart-price-root" >199.000 VNĐ</div>
+			                                    		<div class="coz-cart-price-sale" >
+			                                    			GIẢM CÒN 189.000 VNĐ
+			                                    		</div>
+			                                    	</td>
+			                                    </tr>
+			                                    <tr>
+			                                    	<td >
+			                                    		<div class="coz-item-dest-product-cart" >
+			                                    			<a href="javascript:void(0);" class="coz-btn-edit-item-dest-product-cart" >
+			                                    				<i class="fa fa-pencil" aria-hidden="true"></i>
+			                                    			</a>
+			                                    			<div class="icoz-item-dest-product-cart" >
+				                                    			<div class="coz-qual-dest-cart" >
+				                                    				<span class="coz-label-des-pro" >
+				                                    					so luong
+				                                    				</span>
+				                                    				<span class="coz-label-des-pro" >
+				                                    					4
+				                                    				</span>
+				                                    			</div>
+
+				                                    			<div class="coz-qual-dest-cart" >
+				                                    				<span class="coz-label-des-pro" >
+				                                    					kieu san pham
+				                                    				</span>
+				                                    				<span class="coz-label-des-pro" >
+				                                    					mau do
+				                                    				</span>
+				                                    			</div>
+			                                    			</div>
+			                                    		</div>
+			                                    	</td>
+			                                    	<td colspan="4" class="coz-position-relative" >
+			                                    		<span class="coz-cart-product-note" >
+				                                    		trong 3-5 ngày làm việc
+				                                    		Không áp dụng được mã giảm giá
+			                                    		</span>
+			                                    		<a href="javascript:void(0);" class="coz-btn-cart-remove-product" >
+			                                    			<i class="fa fa-times" aria-hidden="true"></i>
+			                                    		</a>
+			                                    	</td>
+			                                    </tr>
+			                                    <!-- end -->
+			                                    
+			                                </table>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+
+			                <div class="col-xs-12 coz-text-center" >
+			                    <button class="coz-btn-flat" >
+				                    <?php echo $this->translate('txt_cap_nhat_gio_hang') ?>
+				                </button>
+							</div>
+						</form>
+                	</div>
+                	<?php } ?>
+                </div>
+            </div>
+
+            <div class="col-sm-3" >
+
+            	<div class="box-coupon-cart-idex clearfix" >
+            		<div class="title-coupon-cart-idex" >
+            			Nhập mã giảm giá
+            		</div>
+            		<a href="javascript:void(0);" class="btn-js-toggle-coupon" >
+            			<i class="fa fa-times" aria-hidden="true"></i>
+            		</a>
+            		<div class="form-coupon-cart-idex" >
+            			<div class="clearfix" >
+            				<div class="coz-input-group" >
+            					<div class="coz-form-control" >
+            						<div class="ui-input-payment" >
+            							<input id="couponCode" name="couponcode" class="input-payment" type="text" placeholder="Nhập mã giảm giá" value="" >
+            						</div>
+            					</div>
+			                    <div class="coz-input-group-addon" >
+			                        <button type="submit" class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block" >
+			                           Áp dụng                        
+			                        </button>
+			                    </div>
+		                    </div>
+		                </div>
+            		</div>
+            	</div>
+
+            	<table class="table table-bordered total-table">
+					<tbody>
+						<tr>
+							<td class="text-xs-left">
+								<?php echo $this->translate('txt_tong_tien') ?>
+							</td>
+							<td class="text-xs-right">
+								<div class="coz-product-price">
+									<?php echo $this->Currency()->fomatCurrency($price_total) ?>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="text-xs-left">
+								<?php echo $this->translate('txt_giam_gia_payment') ?>
+							</td>
+							<td class="text-xs-right">
+								<div class="coz-product-price">
+									<?php echo $this->Currency()->fomatCurrency($price_total) ?>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="text-xs-left">
+								<?php echo $this->translate('txt_tien_thue_payment') ?>
+							</td>
+							<td class="text-xs-right">
+								<div class="coz-product-price">
+									<?php echo $this->Currency()->fomatCurrency($price_total) ?>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="text-xs-left">
+								<?php echo $this->translate('txt_lb_total_tax_payment') ?>
+							</td>
+							<td class="text-xs-right">
+								<div class="coz-product-price">
+									<?php echo $this->Currency()->fomatCurrency($price_total) ?>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="list-action-cart-idex clearfix" >
+					<a href="<?php echo $this->url('checkout', array('action' => 'shipping')) ?>" class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block coz-mgb" title="<?php echo $this->translate('txt_thanh_toan') ?>" >
+						<span><?php echo $this->translate('txt_thanh_toan') ?></span>
+					</a>
+
+					<a href="<?php echo $this->url('checkout', array('action' => 'shipping')) ?>" class="coz-btn-flat  coz-btn-flat-block" title="<?php echo $this->translate('txt_thanh_toan') ?>" >
+						<span><?php echo $this->translate('txt_mua_tiep') ?></span>
+					</a>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="item__edit-popover box" style="top: 470px; left: 182.5px; display: block;">
+    <a class="js-dismiss_itm">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+    <form class="item__edit-form" name="itemEditForm" id="itemEditForm" data-supplier="2558">
+    	<h2 class="coz-title-payment" >
+            Thay đổi lựa chọn?  
+        </h2>
+        <p class="coz-note-payment" >
+            Thay đổi lựa chọn . .asas aassdff 
+        </p>
+
+        <div class="form-element-payment" >
+        	<label class="ui-lb-payment" >
+                Kích cỡ hiện có
+            </label>
+            <div class="ui-select-payment" >
+            	<select name="size_brand" class="coz-select-payment">
+                    <option value="International">International</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-element-payment" >
+        	<label class="ui-lb-payment" >
+                Số lượng
+            </label>
+            <div class="ui-select-payment" >
+            	<select name="size_brand" class="coz-select-payment">
+                    <option value="1">1</option>
+	                <option value="2">2</option>
+	                <option value="3">3</option>
+	                <option value="4" selected="">4</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="clearfix coz-text-center" >
+        	<a href="/checkout/shipping" class="coz-btn-flat coz-btn-flat-active" title="Lưu">
+				<span>Lưu</span>
+			</a>
+			<a href="/checkout/shipping" class="coz-btn-flat" title="Lưu">
+				<span>huy</span>
+			</a>
+        </div>
+    </form>
+</div>

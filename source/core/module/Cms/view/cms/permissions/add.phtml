@@ -1,0 +1,102 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/permission') ?>">
+                        Permission
+                    </a>
+                </li>
+                <li class="active">Thêm mới</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Permission :: Thêm mới
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/permission', array('action' => 'add')));
+        $form->setAttribute('id', 'form-permission');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('permissions_id'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="form-group">
+                    <label for="permissions_name" >
+                        Tên quyền
+                    </label>
+                    <?php echo $this->formRow($form->get('permissions_name')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="module" >
+                        Khu vực
+                    </label>
+                    <?php echo $this->formRow($form->get('module')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="module" >
+                        Chức năng
+                    </label>
+                    <?php echo $this->formRow($form->get('controller')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="module" >
+                        Hành động
+                    </label>
+                    <?php echo $this->formRow($form->get('action')); ?>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="module" >
+                Mô tả
+            </label>
+            <?php echo $this->formRow($form->get('description')); ?>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Thêm mới permission
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Cấu hình :: Tổng quát
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/setting') ?>">Cấu hình</a></li>
+        <li class="active">Tổng quát</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form action="<?php echo $this->url('cms/setting', array('action' => 'edit-config')) ?>" method="post">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+                    <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="is_show_footer_breadcrumb">Hiển thị breadcrumb dưới footer: </label>
+                        <input type="radio" name="data[is_show_footer_breadcrumb]" value="1" <?php echo $configs['is_show_footer_breadcrumb'] == 1 ? 'checked' : '' ?> /> Có
+                        <input type="radio" name="data[is_show_footer_breadcrumb]" value="0" <?php echo $configs['is_show_footer_breadcrumb'] == 0 ? 'checked' : '' ?> /> Không
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+                    <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

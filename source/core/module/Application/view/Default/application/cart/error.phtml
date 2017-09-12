@@ -1,0 +1,35 @@
+<section class="bread-crumb">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<ul class="breadcrumbs">
+					<li class="home">
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" ><?php echo $this->translate('txt_trang_chu') ?></a>
+                        <span> / </span>
+                    </li>
+                    
+                    <li><strong><?php echo $this->translate('txt_gio_hang'); ?></strong></li>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</section> 
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="cart">
+				<h1 class="title-head">
+					<a href="javascript:void(0);" rel="nofollow" >
+						<?php echo $this->translate('txt_gio_hang_error'); ?>
+					</a>
+				</h1>
+				
+                <p class="cart-empty">
+                    <?php echo $msg; ?>
+                </p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,299 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+				<li><a href="/cms" ><i class="fa fa-dashboard"></i> Home</a></li>
+				<li class="active">Dashboard</li>
+			</ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+				Dashboard
+				<small>Control panel</small>
+			</h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<div class="sumary-dashboard clearfix">
+		<!-- Small boxes (Stat box) -->
+	  	<div class="row" >
+
+	  		<?php if($this->CMSCommon()->hasPermission('cms','invoice', 'index')){ ?>
+	        <div class="col-lg-3 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-aqua">
+					<div class="inner">
+						<h3><?php echo $new_invoice; ?>/<?php echo $total_invoice; ?></h3>
+
+						<p>Đơn hàng mới/Đơn hàng</p>
+					</div>
+					<div class="icon">
+					  <i class="ion ion-bag"></i>
+					</div>
+					<a href="<?php echo $this->url('cms/invoice') ?>" class="small-box-footer">
+						Xem chi tiếp <i class="fa fa-arrow-circle-right"></i>
+					</a>
+				</div>
+	        </div>
+	        <!-- ./col -->
+	        <?php } ?>
+
+	        <?php if($this->CMSCommon()->hasPermission('cms','product', 'index')){ ?>
+	        <div class="col-lg-3 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-green">
+					<div class="inner">
+						<h3><?php  echo $total_product; ?></h3>
+						<p>Sản phẩm</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-stats-bars"></i>
+					</div>
+					<a href="<?php echo $this->url('cms/product') ?>" class="small-box-footer">
+						Xem chi tiếp <i class="fa fa-arrow-circle-right"></i>
+					</a>
+				</div>
+	        </div>
+	        <!-- ./col -->
+	        <?php } ?>
+
+	        <?php if($this->CMSCommon()->hasPermission('cms','articles', 'index')){ ?>
+	        <div class="col-lg-3 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-yellow" >
+					<div class="inner">
+						<h3><?php echo $total_articles; ?></h3>
+
+						<p>Bài viết</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-person-add"></i>
+					</div>
+					<a href="<?php echo $this->url('cms/articles') ?>" class="small-box-footer" >
+						Xem chi tiếp <i class="fa fa-arrow-circle-right"></i>
+					</a>
+				</div>
+	        </div>
+	        <!-- ./col -->
+	        <?php } ?>
+
+	        <?php if($this->CMSCommon()->hasPermission('cms','user', 'index')){ ?>
+	        <div class="col-lg-3 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-red">
+					<div class="inner">
+						<h3><?php echo $total_user; ?></h3>
+
+						<p>Khách hàng</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-pie-graph"></i>
+					</div>
+					<a href="<?php echo $this->url('cms/user') ?>" class="small-box-footer">
+						Xem chi tiếp <i class="fa fa-arrow-circle-right"></i>
+					</a>
+				</div>
+	        </div>
+	        <!-- ./col -->
+	        <?php } ?>
+
+	  	</div>
+	  	<!-- /.row -->
+	</div>
+
+	<div class="row" >
+        <div class="col-lg-12 repot-table" >
+          	<!-- Custom tabs (Charts with tabs)-->
+          	<div class="nav-tabs-custom" >
+	            <!-- Tabs within a box -->
+	            <ul class="nav nav-tabs repot-tab">
+					<li class="active">
+						<a href="#tab-today-chart" data-toggle="tab">
+							<span class="range" >Hôm nay</span>
+							<span class="revenue" >
+								<?php echo $this->Currency()->fomatCurrency($subtotal_today,''); ?>
+							</span>
+							<span class="order-total" >
+								<?php echo $total_today; ?> đơn hàng
+							</span>
+						</a>
+					</li>
+					<li>
+						<a href="#tab-yesterday-chart" data-toggle="tab">
+							<span class="range" >Hôm qua</span>
+							<span class="revenue" >
+								<?php echo $this->Currency()->fomatCurrency($subtotal_yesterday,''); ?>
+							</span>
+							<span class="order-total" >
+								<?php echo $total_yesterday; ?> đơn hàng
+							</span>
+						</a>
+					</li>
+					<li>
+						<a href="#tab-lastweek-chart" data-toggle="tab">
+							<span class="range" >7 ngày trước</span>
+							<span class="revenue" >
+								<?php echo $this->Currency()->fomatCurrency($subtotal_last_seven_days,''); ?>
+							</span>
+							<span class="order-total" >
+								<?php echo $total_last_seven_days; ?> đơn hàng
+							</span>
+						</a>
+					</li>
+					<li>
+						<a href="#tab-lastthirty-chart" data-toggle="tab">
+							<span class="range" >30 ngày trước</span>
+							<span class="revenue" >
+								<?php echo $this->Currency()->fomatCurrency($subtotal_last_thirty_days,''); ?>
+							</span>
+							<span class="order-total" >
+								<?php echo $total_last_thirty_days; ?> đơn hàng
+							</span>
+						</a>
+					</li>
+					<li>
+						<a href="#tab-lastsixty-chart" data-toggle="tab">
+							<span class="range" >90 ngày trước</span>
+							<span class="revenue" >
+								<?php echo $this->Currency()->fomatCurrency($subtotal_last_ninety_days,''); ?>
+							</span>
+							<span class="order-total" >
+								<?php echo $total_last_ninety_days; ?> đơn hàng
+							</span>
+						</a>
+					</li>
+	            </ul>
+	            <div class="tab-content no-padding">
+
+					<!-- Morris chart - Sales -->
+					<div class="chart tab-pane active" id="tab-today-chart" >
+						<div class="wrap-inner-chart" >
+							<div class="row" >
+								<div class="col-sm-7" >
+									<div id="today-chart"  style="height:300px" ></div>
+								</div>
+								<div class="col-sm-5" >
+									<div class="warp-product-buyest" >
+										<h3>Bán chạy</h3>
+										<ul class="list-product-buyest" ></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="chart tab-pane" id="tab-yesterday-chart" >
+						<div class="wrap-inner-chart" >
+							<div class="row" >
+								<div class="col-sm-7" >
+									<div id="yesterday-chart"  style="height:300px" ></div>
+								</div>
+								<div class="col-sm-5" >
+									<div class="warp-product-buyest" >
+										<h3>Bán chạy</h3>
+										<ul class="list-product-buyest" ></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="chart tab-pane" id="tab-lastweek-chart" >
+						<div class="wrap-inner-chart" >
+							<div class="row" >
+								<div class="col-sm-7" >
+									<div id="lastweek-chart" style="height:300px" ></div>
+								</div>
+								<div class="col-sm-5" >
+									<div class="warp-product-buyest" >
+										<h3>Bán chạy</h3>
+										<ul class="list-product-buyest" ></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="chart tab-pane" id="tab-lastthirty-chart" >
+						<div class="wrap-inner-chart" >
+							<div class="row" >
+								<div class="col-sm-7" >
+									<div id="lastthirty-chart"  style="height:300px" ></div>
+								</div>
+								<div class="col-sm-5" >
+									<div class="warp-product-buyest" >
+										<h3>Bán chạy</h3>
+										<ul class="list-product-buyest" ></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="chart tab-pane" id="tab-lastsixty-chart" >
+						<div class="wrap-inner-chart" >
+							<div class="row" >
+								<div class="col-sm-7" >
+									<div id="lastsixty-chart"  style="height:300px" ></div>
+								</div>
+								<div class="col-sm-5" >
+									<div class="warp-product-buyest" >
+										<h3>Bán chạy</h3>
+										<ul class="list-product-buyest" ></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	            </div>
+	        </div>
+	        <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.Left col -->
+    </div>
+
+    <?php 	$yesterday_timestamp =  strtotime('today - 10 day');
+            $date_from = date("m/d/Y",$yesterday_timestamp); ?>
+    <div class="row" >
+    	<div class="col-sm-6" >
+    		<h3 class="clearfix" >
+    			Traffic
+    		</h3>
+    	</div>
+    	<div class="col-sm-6 col-xs-12 pull-right" >
+            <form method="get" role="form" data-form="searchTraffix" >
+                <div class="coz-search-bar clearfix" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control date_range_input" placeholder="Search..." value="<?php echo $date_from.' - '.date("m/d/Y"); ?>" >
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="button" id="search-traffix" class="btn btn-flat"  data-btn="searchTraffix" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    	<div class="col-xs-12" >
+    		<div id="traffic-chart"  style="height:300px" ></div>
+    	</div>
+    </div>
+
+</section>
+<!-- /.content -->

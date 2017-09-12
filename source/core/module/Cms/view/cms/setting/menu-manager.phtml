@@ -1,0 +1,103 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Cấu hình :: Quản lý menu top
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Quản lý menu</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form action="<?php echo $this->url('cms/setting', array('action' => 'menu-manager')) ?>" method="post">
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/setting', array('action' => 'add-menu')) ?>"
+                               class="btn btn-primary">Thêm mới</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php //echo $paging ?>
+                            </ul>
+                        </div>
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th width="20" style="text-align: center">ID</th>
+                                <th>Icon</th>
+                                <th>Tiêu đề</th>
+                                <th>Link</th>
+                                <th width="20" style="text-align: center;">Thứ tự</th>
+                                <th width="10"><input type="checkbox" class="checkall" /></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($menus as $menu) : ?>
+                                <tr>
+                                    <td style="text-align: center"><?php echo $menu['id'] ?></td>
+                                    <td>
+                                        <?php if($menu['icon']): ?>
+                                            <img src="<?php echo FOLDERWEB.$menu['icon'] ?>" width="50" height="50" />
+                                        <?php else: ?>
+
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo $this->url('cms/setting',array('action' => 'edit-menu', 'id' => $menu['id'])) ?>"><?php echo $menu['title'] ?></a>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo (strpos($menu['link'],'http://') !== FALSE ? $menu['link'] : (FOLDERWEB.'/'.trim($menu['link'],'/'))) ?>" target="__blank"><?php echo $menu['link'] ?></a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="text" name="order[<?php echo $menu['id'] ?>]" value="<?php echo $menu['ordering'] ?>" style="text-align: center;width: 50px" />
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cid[]"
+                                               value="<?php echo $menu['id'] ?>"/>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="20" style="text-align: center">ID</th>
+                                <th>Icon</th>
+                                <th>Tiêu đề</th>
+                                <th>Link</th>
+                                <th style="text-align: center;width: 50px">Thứ tự</th>
+                                <th width="10"><input type="checkbox" class="checkall" /></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php //echo $paging ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/setting', array('action' => 'add-menu')) ?>"
+                               class="btn btn-primary">Thêm mới</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</section><!-- /.content -->

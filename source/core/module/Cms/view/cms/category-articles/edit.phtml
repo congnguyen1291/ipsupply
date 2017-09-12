@@ -1,0 +1,163 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/carticles') ?>" >
+                        Danh mục bài viết
+                    </a>
+                </li>
+                <li class="active">
+                    Cập nhật danh mục
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Danh mục bài viết :: Cập nhật
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/carticles', array('action' => 'edit', 'id' => $id)));
+    $form->setAttribute('enctype', 'multipart/form-data');
+    $form->setAttribute('id', 'form-category-articles');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('categories_articles_id'));
+    ?>
+    <div class="clearfix" >
+        <ul class="nav nav-inline coz-tab clearfix" role="tablist">
+            <li class="nav-item active" >
+                <a class="nav-link" data-toggle="tab" href="#tab_common" role="tab" rel="nofollow">
+                    Thông tin chung                                    
+                </a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link" data-toggle="tab" href="#tab_seo" role="tab" rel="nofollow">
+                    SEO                                    
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content clearfix" >
+        <div class="tab-pane fade in clearfix active" id="tab_common" role="tabpanel" >
+            <div class="coz-tab-content clearfix" >
+                <div class="row" >
+                    <div class="col-sm-6 col-xs-6" >
+                        <div class="form-group">
+                            <label for="languageoption">
+                                Ngôn ngữ
+                            </label>
+                            <input type="hidden" name="language" value="<?php echo $this->langselected;?>" />
+                            <select name="languageoption" id="languageoption" class="form-control input-sm" disabled >
+                            <?php
+                            if(!empty($this->language_list)){
+                                foreach($this->language_list as $listlanguage){
+                                    $selected="";
+                                    if(!empty($this->langselected) && $this->langselected==$listlanguage["languages_id"]){
+                                        $selected="selected";
+                                    }
+                                    echo "<option value='".$listlanguage["languages_id"]."' $selected>".$listlanguage["languages_name"]."</option>";
+                                }
+                            }
+                            ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="parent_id">
+                                Danh mục cha
+                            </label>
+                            <?php echo $this->formRow($form->get('parent_id')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="categories_articles_title">
+                                Tên danh mục
+                                <?php if( empty($category->categories_articles_title) ){ ?>
+                                <div class="coz-color-disable" >Gợi ý : tên của nó trên ngôn ngữ khác là : (<i><?php echo $category->categories_articles_title_root ?></i>)</div>
+                                <?php } ?>
+                            </label>
+                            <?php echo $this->formRow($form->get('categories_articles_title')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="categories_articles_alias" >
+                                Đường dẫn
+                            </label>
+                            <?php echo $this->formRow($form->get('categories_articles_alias')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <label for="ordering">
+                        Vị trí
+                        <?php echo $this->formRow($form->get('ordering')); ?>
+                    </label>
+                    <label for="is_static">
+                        <?php echo $this->formRow($form->get('is_static')); ?>
+                        Danh mục tĩnh
+                    </label>
+                    <label for="is_published">
+                        <?php echo $this->formRow($form->get('is_published')); ?>
+                        Hiển thị
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade in clearfix" id="tab_seo" role="tabpanel" >
+            <div class="coz-tab-content clearfix" >
+                <div class="form-group">
+                    <label for="seo_title" >
+                        Seo title
+                    </label>
+                    <?php echo $this->formRow($form->get('seo_title')); ?>
+                </div>
+                <div class="form-group">
+                    <label for="seo_keywords" >
+                        SEO Keywords
+                    </label>
+                    <?php echo $this->formRow($form->get('seo_keywords')); ?>
+                </div>
+                <div class="form-group">
+                    <label for="seo_description">
+                        SEO Description
+                    </label>
+                    <?php echo $this->formRow($form->get('seo_description')); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary btn-sm" >
+            Cập nhật danh mục
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+            Quay lại
+        </button>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

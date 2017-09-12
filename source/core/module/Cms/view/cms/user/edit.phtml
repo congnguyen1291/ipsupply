@@ -1,0 +1,183 @@
+<script type="text/javascript" >
+    var user = <?php echo json_encode($user); ?>;
+    $(document).ready(function() {
+        $(".select-multiple-publisher").select2().on("change", function(e) {
+            var val = $(this).val();
+        });
+    });
+</script>
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a href="<?php echo $this->url('cms/user') ?>">Thành viên</a></li>
+                <li class="active">Cập nhật</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Thành viên :: Cập nhật
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/user', array('action' => 'edit', 'id' => $id)));
+        $form->setAttribute('id', 'form-user');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('users_id'));
+        echo $this->formHidden($form->get('users_alias'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="row">
+                    <div class="col-sm-6" >
+                        <div class="form-group">
+                            <label for="first_name">First name</label>
+                            <?php echo $this->formRow($form->get('first_name')); ?>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" >
+                        <div class="form-group">
+                            <label for="last_name">Last name</label>
+                            <?php echo $this->formRow($form->get('last_name')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="user_name">Tên đăng nhập</label>
+                    <?php echo $this->formRow($form->get('user_name')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số DT</label>
+                    <?php echo $this->formRow($form->get('phone')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthday">Ngày sinh</label>
+                    <?php echo $this->formRow($form->get('birthday')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label >Loại người dùng</label>
+                    <div class="clearfix" >
+                        <label for="type_admin" >
+                            <input type="radio" name="type" id="type_admin" value="admin" <?php echo $user->type == 'admin' ? 'checked="checked"' : '' ?> >
+                            Admin
+                        </label>
+                        <label for="type_user" >
+                            <input type="radio" name="type" id="type_user" value="user" <?php echo $user->type != 'admin' ? 'checked="checked"' : '' ?> >
+                            User
+                        </label>
+                    </div>
+                </div>
+
+                <div class="wrap-user-admin" <?php echo $user->type == 'admin' ? 'style="display:block"' : '' ?> >
+                    <div class="row" >
+                        <div class="col-sm-12" >
+
+                            <?php if( !empty($_SESSION['CMSMEMBER']['is_administrator']) ){ ?>
+                            <div class="form-group">
+                                <p class="bg-info" >
+                                    Kiểu dùng xác định tài khoản này là supper admin, khi đó chủ tài khoản sẽ có toàn quyền trên trang
+                                </p>
+                                <label>
+                                    <input type="checkbox" name="is_administrator" <?php echo !empty($user->is_administrator) ? 'checked="checked"' : '' ?> >
+                                    Là administrator
+                                </label>
+                            </div>
+                            <?php } ?>
+
+                            <div class="form-group group-admin" >
+                                <label for="groups_id">Nhóm admin</label>
+                                <p class="bg-info" >
+                                    Nhóm này sẽ phân loại quyền của admin theo nhóm, nó chỉ xuất hiện khi admin không phải là supper admin
+                                </p>
+                                <select name="groups_id" class="form-control input-sm" id="groups_id" >
+                                    <?php foreach ($groups as $group){ ?>
+                                    <option value="<?php echo $group['groups_id'] ?>" <?php echo $user->groups_id == $group['groups_id'] ? 'selected="selected"' : '' ?> >
+                                        <?php echo $group['groups_name'] ?>
+                                    </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="merchant_id">Thuộc đại lý</label>
+                    <?php echo $this->formRow($form->get('merchant_id')); ?>
+                </div>
+
+            </div>
+        </div>
+        
+        <?php $countries = $this->Contries()->getContryForWebsite(); ?>
+        <div class="row address-user" >
+            <div class="col-sm-12" >
+                <div class="form-group" >
+                    <h3>Thông tin vị trí</h3>
+                </div>
+            </div>
+            <div class="col-sm-6" >
+                <?php if( !empty($countries) ){ ?>
+                <div class="form-group" >
+                    <label for="country_id">Đất nước</label>
+                    <select name="country_id" class="form-control input-sm" id="country_id" >
+                        <option value="" >
+                            <?php echo $this->translate('chon_country');?>
+                        </option>
+                        <?php foreach ($countries as $country){ ?>
+                        <option value="<?php echo $country['id'] ?>" <?php echo $user->country_id == $country['id'] ? 'selected="selected"' : '' ?> >
+                            <?php echo $country['title'] ?>
+                        </option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <?php } ?>
+                <div class="warp-address-payment" neo-place="addressPayment" ></div>
+            </div>
+            <div class="col-sm-6" >
+                <div class="form-group" >
+                    <div id="profile_map_canvas" data-neo="profileMap" data-latitude="<?php echo $user->latitude; ?>" data-longitude="<?php echo $user->longitude; ?>" ></div>
+                    <input type="hidden" value="<?php echo $user->longitude; ?>" name="longitude"  >
+                    <input type="hidden" value="<?php echo $user->latitude; ?>" name="latitude" >
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Cập nhật thành viên
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

@@ -1,0 +1,699 @@
+<div class="clearfix" id="COZFBContainer" >
+	<div class="coz-fb-container clearfix" >
+		<div class="coz-fb-empty" >
+			<div class="coz-fb-dtb" >
+				<div class="coz-fb-dtbc" >
+					<div class="coz-fb-empty-ct" >
+						<div class="coz-fb-loadding" >
+							<div class="coz-fb-process-ld" ></div>
+							<div class="coz-fb-text-ld" >Loading...</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script id="FBTemplate" type="text/x-jQuery-tmpl">
+
+	{{if ! tmlFacebook.isAuth(auth) }}
+	<div class="coz-fb-container clearfix" >
+		<div class="coz-fb-empty" >
+			<div class="coz-fb-dtb" >
+				<div class="coz-fb-dtbc" >
+					<div class="coz-fb-empty-ct" >
+						<a href="${tmlFacebook.getUrlAuth(auth)}" class="coz-fb-btn-oauth" >
+							Get access token
+						</a>
+						<p>
+							${tmlFacebook.getReasonAuth(auth)}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{else}}
+		{{if ! tmlFacebook.hasConfiged() }}
+		<div class="clearfix" id="COZFBContainer" >
+			<div class="coz-fb-container clearfix" >
+				<div class="coz-fb-empty" >
+					<div class="coz-fb-dtb" >
+						<div class="coz-fb-dtbc" >
+							<div class="coz-fb-empty-ct" >
+								<div class="row" >
+									<div class="col-sm-12" >
+										<p>Chọn trang bạn muốn quản lý</p>
+									</div>
+									<div class="col-sm-offset-4 col-sm-4" >
+										<form action="" method="post" data-form="configApp" >
+											<div class="form-group">
+												<label class="control-label strong" for="fb_page_id">
+													Fanpage
+												</label>
+												<div class="controls">
+													<select name="page_id" id="fb_page_id" class="form-control fb_page_id" >
+														{{if ! tmlFacebook.isLoadingUser(user) }}
+														<option value="${tmlFacebook.user.getId(tmlFacebook.user.getUser(user))}" >
+															${tmlFacebook.user.getName(tmlFacebook.user.getUser(user))}
+														</option>
+														{{/if}}
+
+														{{if tmlFacebook.hasAccounts(accounts) }}
+															{{each accounts.accounts }}
+																<option value="${tmlFacebook.accounts.getId($value)}" >
+																	${tmlFacebook.accounts.getName($value)}
+																</option>
+															{{/each}}
+														{{/if}}
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="coz-fb-btn-refresh" >
+													<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="appConfig" >
+														Sử dụng
+													</a>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{else}}
+			{{if ! tmlFacebook.isSynsc() }}
+				<div class="clearfix" id="COZFBContainer" >
+					<div class="coz-fb-container clearfix" >
+						<div class="coz-fb-empty" >
+							<div class="coz-fb-dtb" >
+								<div class="coz-fb-dtbc" >
+									<div class="coz-fb-empty-ct" >
+										<div class="coz-fb-loadding" >
+											<div class="coz-fb-process-ld" ></div>
+											<div class="coz-fb-text-ld" >
+												Đồng bộ dữ liệu,
+												vui lòng đợi
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{else}}
+			<div class="coz-fb-container clearfix" >
+				<div class="coz-fb-ce_inne" >
+					<div class="coz-fb-nav-tabs" >
+						<ul class="nav nav-tabs  clearfix" role="tablist">
+							<li role="presentation" {{if tmlFacebook.isTabActive('#fb-comment') }} class="active" {{/if}} >
+								<a href="#fb-comment" aria-controls="fb-comment" role="tab" data-toggle="tab">
+									Danh sách trả lời trên facebook
+								</a>
+							</li>
+
+							<li role="presentation" {{if tmlFacebook.isTabActive('#fb-feed') }} class="active" {{/if}} >
+								<a href="#fb-feed" aria-controls="fb-feed" role="tab" data-toggle="tab">
+									Danh sách bài đăng trên facebook
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="coz-fb-nav-content" >
+						<div class="tab-content clearfix" >
+							<div role="tabpanel" class="tab-pane {{if tmlFacebook.isTabActive('#fb-comment') }} active {{/if}}" id="fb-comment">
+								{{if ! tmlFacebook.hasComment(comments) }}
+									{{if tmlFacebook.isLoadingComment(comments) }}
+									<div class="coz-fb-empty" >
+										<div class="coz-fb-dtb" >
+											<div class="coz-fb-dtbc" >
+												<div class="coz-fb-empty-ct" >
+													<div class="coz-fb-loadding" >
+														<div class="coz-fb-process-ld" ></div>
+														<div class="coz-fb-text-ld" >Loading...</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{else}}
+										{{if tmlFacebook.hasErrorComment(comments) }}
+										<div class="coz-fb-empty" >
+											<div class="coz-fb-dtb" >
+												<div class="coz-fb-dtbc" >
+													<div class="coz-fb-empty-ct" >
+														<div class="coz-fb-loadd-error" >
+															<div class="coz-fb-in-loadd-error" >
+																<div class="coz-fb-text-loadd-error" >
+																	${tmlFacebook.getErrorComment(comments)}
+																</div>
+																<div class="coz-fb-btn-refresh" >
+																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshComments" >
+																		Tải lại
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										{{else}}
+										<div class="coz-fb-empty" >
+											<div class="coz-fb-dtb" >
+												<div class="coz-fb-dtbc" >
+													<div class="coz-fb-empty-ct" >
+														<div class="coz-fb-loadd-error" >
+															<div class="coz-fb-in-loadd-error" >
+																<div class="coz-fb-text-loadd-error" >
+																	Không có dữ liệu trả về
+																</div>
+																<div class="coz-fb-btn-refresh" >
+																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshComments" >
+																		Tải lại
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										{{/if}}
+									{{/if}}
+								{{else}}
+								<div class="coz-fb-table" >
+									<div class="table-responsive clearfix" >
+										<table class="table">
+											<tbody>
+												{{each comments.data.comments }}
+												<tr>
+													<td class="coz-fb-chbk" >
+														{{if ! tmlFacebook.comment.isOpen($value) }}
+														<i class="fa fa-caret-right" aria-hidden="true"></i>
+														{{else}}
+														<i class="fa fa-caret-down" aria-hidden="true"></i>
+														{{/if}}
+														<input type="checkbox" name="comment_id" value="${tmlFacebook.comment.getId($value)}" style="display: none;" >
+													</td>
+													<td class="coz-fb-action" >
+														<span class="coz-fb-ac-in" >
+															<a href="${tmlFacebook.comment.getUrlPost($value)}" target="_blank" class="coz-fb-btn-ac" data-id="${tmlFacebook.comment.getId($value)}" data-toggle="tooltip" data-placement="top" title="Đặt hàng" >
+																<i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+															</a>
+
+															<a href="javascript:void(0);" style="display: none;" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Xóa bài viết" >
+																<i class="fa fa-trash-o" aria-hidden="true"></i>
+															</a>
+
+															{{if tmlFacebook.comment.isImportant($value) }}
+															<a href="javascript:void(0);" data-btn="toggleImportant" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac is-important" data-toggle="tooltip" data-placement="top" title="Nội dung nổi bật" >
+																<i class="fa fa-star" aria-hidden="true"></i>
+															</a>
+															{{else}}
+															<a href="javascript:void(0);" data-btn="toggleImportant" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Nội dung không nổi bật" >
+																<i class="fa fa-star" aria-hidden="true"></i>
+															</a>
+															{{/if}}
+
+															{{if tmlFacebook.comment.hasPermissionComment($value) }}
+															<a href="javascript:void(0);" data-btn="replayComment" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Trả lời" >
+																<i class="fa fa-reply" aria-hidden="true"></i>
+															</a>
+															{{/if}}
+
+															{{if tmlFacebook.comment.hasComment($value) }}
+																{{if ! tmlFacebook.comment.isOpen($value) }}
+																<a href="javascript:void(0);" data-btn="toggleSubComment" data-id="${tmlFacebook.comment.getId($value)}"  class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Xem bình luận con" >
+																	<i class="fa fa-plus" aria-hidden="true"></i>
+																</a>
+																{{else}}
+																<a href="javascript:void(0);" data-btn="toggleSubComment" data-id="${tmlFacebook.comment.getId($value)}"  class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Đóng bình luận con" >
+																	<i class="fa fa-minus" aria-hidden="true"></i>
+																</a>
+																{{/if}}
+															{{/if}}
+														</span>
+													</td>
+													<td class="coz-fb-feed-stautus" >
+														{{if tmlFacebook.comment.isReaded($value) }}
+														<a href="javascript:void(0);" class="coz-fb-in-feed-stautus is-readed" data-btn="toggleReaded" data-id="${tmlFacebook.comment.getId($value)}" data-toggle="tooltip" data-placement="top" title="Nội dung đã xử lý" >
+															<i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+														</a>
+														{{else}}
+														<a href="javascript:void(0);" class="coz-fb-in-feed-stautus" data-btn="toggleReaded" data-id="${tmlFacebook.comment.getId($value)}" data-toggle="tooltip" data-placement="top" title="Nội dung chưa đã xử lý" >
+															<i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+														</a>
+														{{/if}}
+													</td>
+													<td class="coz-fb-feed-name" >
+														<a href="${tmlFacebook.comment.getUrlPost($value)}" target="_blank" class="coz-fb-feed-aname" data-id="${tmlFacebook.comment.getId($value)}" >
+															${tmlFacebook.comment.getMessage($value)}
+														</a>
+													</td>
+													<td class="coz-fb-feed-time" >
+														<span class="coz-fb-in-feed-time" data-id="${tmlFacebook.comment.getId($value)}" >
+															${tmlFacebook.comment.getShortCreatedTime($value)}
+														</span>
+													</td>
+												</tr>
+
+												{{if tmlFacebook.comment.hasPermissionComment($value) && tmlFacebook.comment.hasReply($value) }}
+												<tr class="fb-tr-comment-form" >
+													<td colspan="5" >
+											            <div class="coz-fb-cm-form clearfix" >
+											            	<div class="coz-fb-cm-form-img" >
+											                	<a href="${tmlFacebook.user.getLink(tmlFacebook.user.getUser(user))}" target="_blank" >
+											                		<img src="${tmlFacebook.user.getPicture(tmlFacebook.user.getUser(user))}" width="60"  />
+											                	</a>
+											                </div>
+											                <div class="coz-fb-cm-form-mm" >
+											                	<form action="" method="post"  data-form="fbComment" data-id="${tmlFacebook.comment.getId($value)}" >
+											                		<input type="hidden" name="id" value="${tmlFacebook.comment.getId($value)}" >
+											                		<input type="hidden" name="post_id" value="${tmlFacebook.feed.getId($value.feed)}" >
+											                		<input type="hidden" name="type" value="comment" >
+											                		<textarea name="message" class="coz-fb-cm-form-tst" rows="1" placeholder="Nhập nội dung" data-id="${tmlFacebook.comment.getId($value)}" ></textarea>
+											                	</form>
+											                </div>
+											            </div>
+										            </td>
+									            </tr>
+									            {{/if}}
+												{{if tmlFacebook.comment.hasComment($value) }}
+													{{tmpl({parent: $value, comments: $value.comments, user: user, feed: $value.feed}) "#tplTrCommentSub"}}
+												{{/if}}
+
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								{{if tmlFacebook.hasPagingComment(comments) }}
+								<div class="coz-fb-more" >
+									<div class="coz-fb-inner-more" >
+										<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="moreComments" data-page="${tmlFacebook.getPageComment(comments)}" data-offset="${tmlFacebook.getOffsetComment(comments)}" data-since="${tmlFacebook.getSinceComment(comments)}" data-xoffset="${tmlFacebook.getXOffsetComment(comments)}" data-yoffset="${tmlFacebook.getYOffsetComment(comments)}" >
+											Xem thêm bình luận
+										</a>
+									</div>
+								</div>
+								{{/if}}
+
+								{{/if}}
+							</div>
+
+							<div role="tabpanel" class="tab-pane {{if tmlFacebook.isTabActive('#fb-feed') }} active {{/if}}" id="fb-feed">
+								{{if ! tmlFacebook.hasFeed(feeds) }}
+									{{if tmlFacebook.isLoadingFeed(feeds) }}
+									<div class="coz-fb-empty" >
+										<div class="coz-fb-dtb" >
+											<div class="coz-fb-dtbc" >
+												<div class="coz-fb-empty-ct" >
+													<div class="coz-fb-loadding" >
+														<div class="coz-fb-process-ld" ></div>
+														<div class="coz-fb-text-ld" >Loading...</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									{{else}}
+										{{if tmlFacebook.hasErrorFeed(feeds) }}
+										<div class="coz-fb-empty" >
+											<div class="coz-fb-dtb" >
+												<div class="coz-fb-dtbc" >
+													<div class="coz-fb-empty-ct" >
+														<div class="coz-fb-loadd-error" >
+															<div class="coz-fb-in-loadd-error" >
+																<div class="coz-fb-text-loadd-error" >
+																	${tmlFacebook.getErrorFeed(feeds)}
+																</div>
+																<div class="coz-fb-btn-refresh" >
+																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshFeeds" >
+																		Tải lại
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										{{else}}
+										<div class="coz-fb-empty" >
+											<div class="coz-fb-dtb" >
+												<div class="coz-fb-dtbc" >
+													<div class="coz-fb-empty-ct" >
+														<div class="coz-fb-loadd-error" >
+															<div class="coz-fb-in-loadd-error" >
+																<div class="coz-fb-text-loadd-error" >
+																	Không có dữ liệu trả về
+																</div>
+																<div class="coz-fb-btn-refresh" >
+																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshFeeds" >
+																		Tải lại
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										{{/if}}
+									{{/if}}
+								{{else}}
+								<div class="list-feed clearfix" >
+									{{each feeds.data.feeds }}
+									<div class="item-feed clearfix" >
+			                        	<div class="_4-u2 coz-fb-feed-type-${tmlFacebook.feed.getType($value)}" >
+			                            	<div class="_5pcr" >
+			                                	<div class="clearfix" >
+
+			                                		{{if tmlFacebook.feed.isStatus($value) }}
+			                                    	<h5 class="_5pbw clearfix" >
+			                                        	<a href="${tmlFacebook.feed.getLink($value)}" >
+			                                        		${tmlFacebook.feed.getLink($value)}
+			                                        	</a>
+			                                        </h5>
+			                                        {{/if}}
+
+			                                        <div class="user-content clearfix" >
+			                                        	<div class="_5x46  clearfix" >
+			                                            	<a href="${tmlFacebook.user.getLink($value.from)}" class="img" >
+			                                                	<img src="${tmlFacebook.user.getPicture($value.from)}"  />	
+			                                                </a>
+			                                                <div class="_3dp" >
+			                                                	<div class="_6a" >
+			                                                		<a href="${tmlFacebook.user.getLink($value.from)}" >
+						                                        		${tmlFacebook.user.getName($value.from)}
+						                                        	</a>
+						                                        	đã chia sẻ
+			                                                    	<a href="${tmlFacebook.feed.getLink($value)}" >
+						                                        		một liên kết
+						                                        	</a>
+			                                                    </div>
+			                                                </div>
+			                                            </div>
+
+			                                        	{{if tmlFacebook.feed.isVideo($value) || tmlFacebook.feed.isLink($value) }}
+			                                        	<div class="_5x48  clearfix" >
+			                                                <div class="_3da" >
+			                                                	<div class="_67a" >
+			                                                    	<a href="${tmlFacebook.feed.getLink($value)}" >
+						                                        		${tmlFacebook.feed.getLink($value)}
+						                                        	</a>
+			                                                    </div>
+			                                                </div>
+			                                            </div>
+			                                            {{/if}}
+			                                            <div class="_78p clearfix" >
+			                                                <div class="coz-fb-lg-img clearfix" >
+			                                                    <a href="" >
+			                                                        <img src="${tmlFacebook.feed.getPicture($value)}"  />
+			                                                    </a>
+			                                                </div>
+			                                                <div class="coz-fb-lg-description clearfix" >
+			                                                    <div class="_6m3" >
+			                                                        <div class="mbs" >
+			                                                            <a href="${tmlFacebook.feed.getLink($value)}" >
+			                                                                ${tmlFacebook.feed.getName($value)}
+			                                                            </a>
+			                                                        </div>
+			                                                        <div class="_6ma" >
+			                                                            <div class="_6m7" >
+			                                                            	{{if !tmlFacebook.feed.isVideo($value) && !tmlFacebook.feed.isLink($value) }}
+			                                                                ${tmlFacebook.feed.getMessage($value)}
+			                                                                {{/if}}
+			                                                            </div>
+			                                                            <div class="_59tj">
+			                                                            	<div class="_6lz">
+			                                                            		${tmlFacebook.feed.getCaption($value)}
+			                                                            	</div>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                </div>
+			                                            </div>
+			                                            
+			                                        </div>
+			                                    </div>
+			                                </div>
+
+			                                <div class="_4bl9" >
+			                                	<div class="_5pcp clearfix" >
+			                                		{{if tmlFacebook.feed.hasPermissionLike($value) }}
+			                                		<a href="javascript:void(0);" >Thích</a> ·
+			                                		<a href="javascript:void(0);" data-btn="fbLike" data-id="${tmlFacebook.feed.getId($value)}" >
+			                                			(${tmlFacebook.feed.getNumberLike($value)})
+			                                		</a>
+			                                		<b>-</b>
+			                                		{{/if}}
+
+			                                		{{if tmlFacebook.feed.hasPermissionComment($value) }}
+			                                        <a href="javascript:void(0);" data-btn="fbComment" data-id="${tmlFacebook.feed.getId($value)}" >Bình luận</a> ·
+			                                        <a href="javascript:void(0);" >
+			                                			(${tmlFacebook.feed.getNumberComment($value)})
+			                                		</a>
+			                                		<b>-</b>
+			                                		{{/if}}
+
+			                                        <a href="javascript:void(0);" data-btn="fbShare" data-id="${tmlFacebook.feed.getId($value)}" >Chia sẻ</a> · 
+			                                        <a href="javascript:void(0);" >
+			                                			(${tmlFacebook.feed.getNumberShares($value)})
+			                                		</a>
+			                                	</div>
+			                                </div>
+
+			                                {{if tmlFacebook.feed.hasComment($value) }}
+			                                <ul class="coz-fb-listcm clearfix" >
+			                                	{{tmpl({comments: $value.comments, user: user, feed: $value}) "#tplFeedComment"}}
+			                                </ul>
+			                                {{/if}}
+			                            </div>
+
+			                            {{if tmlFacebook.feed.hasPermissionComment($value) }}
+			                            <div class="_cm457 clearfix" >
+			                                <div class="_cm457-img" >
+			                                    <a class="th" role="button" aria-label="Thumbnail" href="${tmlFacebook.user.getLink(tmlFacebook.user.getUser(user))}" target="_blank" >
+			                                        <img src="${tmlFacebook.user.getPicture(tmlFacebook.user.getUser(user))}">
+			                                    </a>
+			                                </div>
+			                                <div class="_cm457-ct" >
+			                                    <div class="boor clearfix" >
+			                                        <div class="row" >
+			                                            <div class="col-xs-12">
+			                                                <div class="_und7" >
+			                                                	<form action="" method="post"  data-form="fbComment" data-id="${tmlFacebook.feed.getId($value)}" >
+			                                                		<input type="hidden" name="id" value="${tmlFacebook.feed.getId($value)}" >
+			                                                		<input type="hidden" name="type" value="feed" >
+			                                                    	<textarea name="message" class="auto-height" placeholder="" data-id="${tmlFacebook.feed.getId($value)}" ></textarea>
+			                                                    </form>
+			                                                </div> 
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            {{/if}}
+
+			                        </div>
+			                        {{/each}}
+								</div>
+
+								{{if tmlFacebook.hasPagingFeed(feeds) }}
+								<div class="coz-fb-more" >
+									<div class="coz-fb-inner-more" >
+										<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="moreFeeds" data-page="${tmlFacebook.getPageFeed(feeds)}" data-offset="${tmlFacebook.getOffsetFeed(feeds)}" data-since="${tmlFacebook.getSinceFeed(feeds)}" >
+											Xem thêm bài viết
+										</a>
+									</div>
+								</div>
+								{{/if}}
+
+								{{/if}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{/if}}
+		{{/if}}
+	{{/if}}
+</script>
+<script id="tplFeedComment" type="text/x-jQuery-tmpl" >
+	{{each comments }}
+	<li class="first clearfix" >
+    	<div class="coz-fb-cm-img" >
+        	<a href="${tmlFacebook.user.getLink($value.from)}" class="box-sizing" >
+        		<img src="${tmlFacebook.user.getPicture($value.from)}" width="100"  />
+        	</a>
+        </div>
+        <div class="coz-fb-cm-ct clearfix" >
+        	<a href="${tmlFacebook.user.getLink($value.from)}" target="_blank" class="coz-fb-cm-name" >
+        		${tmlFacebook.user.getName($value.from)}
+        	</a>
+        	<div class="coz-fb-cm-nd" >
+        		${tmlFacebook.comment.getMessage($value)}
+        	</div>
+            <div class="coz-fb-cm-bt clearfix" >
+            	<span class="coz-fb-cm-time" >
+            		${tmlFacebook.comment.getShortCreatedTime($value)}
+            	</span>
+            	<b>-</b>
+
+            	{{if tmlFacebook.comment.hasPermissionLike($value) }}
+                <a href="javascript:void(0);"  data-btn="fbLike" data-id="${tmlFacebook.comment.getId($value)}" >Thích</a>
+        		<a href="javascript:void(0);" >
+        			(${tmlFacebook.comment.getNumberLike($value)})
+        		</a>
+        		<b>-</b>
+        		{{/if}}
+
+        		{{if tmlFacebook.comment.hasPermissionComment($value) }}
+                <a href="javascript:void(0);"  data-btn="fbComment" data-id="${tmlFacebook.comment.getId($value)}" >Bình luận</a> ·
+                <a href="javascript:void(0);" >
+        			(${tmlFacebook.comment.getNumberComment($value)})
+        		</a>
+        		<b>-</b>
+        		{{/if}}
+
+                <a href="javascript:void(0);"  data-btn="fbShare" data-id="${tmlFacebook.comment.getId($value)}" >Chia sẻ</a> · 
+                <a href="javascript:void(0);" >
+        			(${tmlFacebook.comment.getNumberShares($value)})
+        		</a>
+            </div>
+
+            {{if tmlFacebook.feed.hasComment($value) }}
+            <ul class="coz-fb-listcm  clearfix" >
+            	{{tmpl({comments: $value.comments, user: user, feed: feed}) "#tplFeedCommentSub"}}
+            </ul>
+            {{/if}}
+
+            {{if tmlFacebook.comment.hasPermissionComment($value) }}
+            <div class="coz-fb-cm-form clearfix" >
+            	<div class="coz-fb-cm-form-img" >
+                	<a href="${tmlFacebook.user.getLink(tmlFacebook.user.getUser(user))}" target="_blank" >
+                		<img src="${tmlFacebook.user.getPicture(tmlFacebook.user.getUser(user))}" width="60"  />
+                	</a>
+                </div>
+                <div class="coz-fb-cm-form-mm" >
+                	<form action="" method="post"  data-form="fbComment" data-id="${tmlFacebook.comment.getId($value)}" >
+                		<input type="hidden" name="id" value="${tmlFacebook.comment.getId($value)}" >
+                		<input type="hidden" name="post_id" value="${tmlFacebook.feed.getId(feed)}" >
+                		<input type="hidden" name="type" value="comment" >
+                		<textarea name="message" class="coz-fb-cm-form-tst" rows="1" placeholder="Nhập nội dung" data-id="${tmlFacebook.comment.getId($value)}" ></textarea>
+                	</form>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </li>
+    {{/each}}
+</script>
+<script id="tplFeedCommentSub" type="text/x-jQuery-tmpl" >
+	{{each comments }}
+	<li class="first clearfix" >
+	    <div class="coz-fb-cm-img" >
+	        <a href="${tmlFacebook.user.getLink($value.from)}" class="box-sizing" >
+	        	<img src="${tmlFacebook.user.getPicture($value.from)}" width="60"  />
+	        </a>
+	    </div>
+	    <div class="coz-fb-cm-ct clearfix" >
+        	<a href="${tmlFacebook.user.getLink($value.from)}" target="_blank" class="coz-fb-cm-name" >
+        		${tmlFacebook.user.getName($value.from)}
+        	</a>
+        	<div class="coz-fb-cm-nd" >
+        		${tmlFacebook.comment.getMessage($value)}
+        	</div>
+	        <div class="coz-fb-cm-bt clearfix" >
+	        	<span class="coz-fb-cm-time" >
+            		${tmlFacebook.comment.getShortCreatedTime($value)}
+            	</span>
+            	<b>-</b>
+
+            	{{if tmlFacebook.comment.hasPermissionLike($value) }}
+                <a href="javascript:void(0);"  data-btn="fbLike" data-id="${tmlFacebook.comment.getId($value)}" >Thích</a>
+        		<a href="javascript:void(0);" >
+        			(${tmlFacebook.comment.getNumberLike($value)})
+        		</a>
+        		<b>-</b>
+        		{{/if}}
+
+                <a href="javascript:void(0);"  data-btn="fbShare" data-id="${tmlFacebook.comment.getId($value)}" >Chia sẻ</a> · 
+                <a href="javascript:void(0);" >
+        			(${tmlFacebook.comment.getNumberShares($value)})
+        		</a>
+	        </div>
+	    </div>
+	</li>
+	{{/each}}
+</script>
+
+<script id="tplTrCommentSub" type="text/x-jQuery-tmpl" >
+	<tr class="tr-subcoment tr-subcoment-${tmlFacebook.comment.getParentId(parent)}" data-parent="${tmlFacebook.comment.getParentId(parent)}" {{if ! tmlFacebook.comment.isOpen(parent) }} style="display: none;" {{/if}} >
+		<td colspan="5" >
+			<table class="table-comment-sub" >           
+				<tbody> 
+				{{each comments }}
+				<tr >
+					<td class="coz-fb-chbk" >
+						<span class="coz-fb-tree" ></span>
+						<input type="checkbox" name="comment_id" value="${tmlFacebook.comment.getId($value)}" style="display: none;" >
+					</td>
+					<td class="coz-fb-action" >
+						<span class="coz-fb-ac-in" >
+							<a href="${tmlFacebook.comment.getUrlPost($value)}" target="_blank" class="coz-fb-btn-ac" data-id="${tmlFacebook.comment.getId($value)}" data-toggle="tooltip" data-placement="top" title="Đặt hàng" >
+								<i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+							</a>
+
+							<a href="javascript:void(0);" style="display: none;" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Xóa bài viết" >
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							</a>
+
+							{{if tmlFacebook.comment.isImportant($value) }}
+							<a href="javascript:void(0);" data-btn="toggleImportant" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac is-important" data-toggle="tooltip" data-placement="top" title="Nội dung nổi bật" >
+								<i class="fa fa-star" aria-hidden="true"></i>
+							</a>
+							{{else}}
+							<a href="javascript:void(0);" data-btn="toggleImportant" data-id="${tmlFacebook.comment.getId($value)}" class="coz-fb-btn-ac" data-toggle="tooltip" data-placement="top" title="Nội dung không nổi bật" >
+								<i class="fa fa-star" aria-hidden="true"></i>
+							</a>
+							{{/if}}
+						</span>
+					</td>
+					<td class="coz-fb-feed-stautus" >
+						{{if tmlFacebook.comment.isReaded($value) }}
+						<a href="javascript:void(0);" class="coz-fb-in-feed-stautus is-readed" data-btn="toggleReaded" data-id="${tmlFacebook.comment.getId($value)}" data-toggle="tooltip" data-placement="top" title="Nội dung đã xử lý" >
+							<i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+						</a>
+						{{else}}
+						<a href="javascript:void(0);" class="coz-fb-in-feed-stautus" data-btn="toggleReaded" data-id="${tmlFacebook.comment.getId($value)}" data-toggle="tooltip" data-placement="top" title="Nội dung chưa đã xử lý" >
+							<i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+						</a>
+						{{/if}}
+					</td>
+					<td class="coz-fb-feed-name" >
+						<a href="${tmlFacebook.comment.getUrlComment($value)}" target="_blank" class="coz-fb-feed-aname" data-id="${tmlFacebook.comment.getId($value)}" >
+							${tmlFacebook.comment.getMessage($value)}
+						</a>
+					</td>
+					<td class="coz-fb-feed-time" >
+						<span class="coz-fb-in-feed-time" data-id="${tmlFacebook.comment.getId($value)}" >
+							${tmlFacebook.comment.getShortCreatedTime($value)}
+						</span>
+					</td>
+				</tr>
+				{{/each}}
+				</tbody>
+			</table>
+		</td>
+	</tr>
+</script>

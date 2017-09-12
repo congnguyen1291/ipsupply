@@ -1,0 +1,94 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Nhóm người dùng :: Quản lý
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Gói</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form action="<?php echo $this->url('cms/themes', array('action' =>'list')) ?>" method="post">
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/themes', array('action' => 'add')) ?>"
+                               class="btn btn-primary">Thêm templete</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th width="50" style="text-align: center">ID</th>
+                                <th style="width:200px">Tên templete</th>
+                                <th>Trạng thái</th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($themes as $row) : ?>
+                                <tr>
+                                    <td style="text-align: center"><?php echo $row['template_id'] ?></td>
+                                    <td>
+                                        <a href="<?php echo $this->url('cms/themes', array('action' => 'edit', 'id' => $row['template_id'])) ?>"><?php echo $row['template_name'] ?></a>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <?php if($row['template_status'] == 1) : ?>
+                                            <?php $href = $this->url('cms/themes', array('action' => 'singleunpublish', 'id' => $row['template_id'])) ?>
+                                        <?php else: ?>
+                                            <?php $href = $this->url('cms/themes', array('action' => 'singlepublish', 'id' => $row['template_id'])) ?>
+                                        <?php endif; ?>
+                                        <?php echo $row['template_status'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Đang hiển thị' data-original-title='Đang hiển thị'><i class='fa fa-circle'></i></a>" : "<a href='{$href}' data-toggle='tooltip' title='Bị ẩn' data-original-title='Bị ẩn'><i class='fa fa-circle-o'></i></a>" ?>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cid[]"
+                                               value="<?php echo $row['pack_id'] ?>" />
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="50" style="text-align: center">ID</th>
+                                <th>Tên template</th>
+                                <th>Trạng thái</th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/themes', array('action' => 'add')) ?>"
+                               class="btn btn-primary">Thêm template mới</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</section><!-- /.content -->

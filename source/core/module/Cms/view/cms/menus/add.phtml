@@ -1,0 +1,383 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a href="<?php echo $this->url('cms/merchant') ?>">Menus</a></li>
+                <li class="active">Cập nhật</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Menus :: Cập nhật
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <form action="" context="form" method="post" novalidate="novalidate" id="form-menus" >
+            <input name="menus_id" type="hidden" value="<?php echo ((isset($menu) && !empty($menu))? $menu->menus_id : '') ?>" >
+            <input name="parent_id" type="hidden" value="<?php echo ((isset($menu) && !empty($menu))? $menu->parent_id : 0) ?>" >
+            <div class="form-group">
+                <h4>Thông tin menu</h4>
+                <p class="text-muted">Nhập tên của menu</p>
+            </div>
+            <div class="row" >
+                <div class="col-sm-6 col-xs-6" >
+                    <div class="form-group">
+                        <label for="merchant_type">Tên</label>
+                        <input bind="linklist.title" class="form-control title-menus input-sm" id="Title" name="Title" placeholder="vd: Menu chính, Footer,..." type="text" value="<?php echo ((isset($menu) && !empty($menu))? $this->translate($menu->menus_name) : '') ?>">
+                    </div>
+
+                    <?php if( empty($menu) || ( !empty($menu) && empty($menu->is_root)) ){ ?>
+                    <div class="form-group">
+                        <label for="merchant_name">Đường dẫn / Alias</label>
+                        <input class="form-control input-sm"  id="Alias" name="Alias" type="text" value="<?php echo ((isset($menu) && !empty($menu))? $menu->menus_alias : '') ?>" placeholder="">
+                    </div>
+                    <?php }else{ ?>
+                    <input name="Alias" type="hidden" value="<?php echo $menu->menus_alias ?>" placeholder="" >
+                    <?php } ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="is_published" >
+                    <input type="hidden" name="is_published" value="0">
+                    <input type="checkbox" name="is_published" id="is_published" class="form-control input-sm" value="1" <?php echo !empty($menu) && $menu->is_published==1 ? 'checked="checked"' : ''; ?> >                                
+                    Kích hoạt
+                </label>
+            </div>
+
+            <div class="child-menus clearfix" >
+                <div class="toolbar clearfix" >
+                    <div class="row" >
+                        <div class="col-sm-6" >
+                            <h4>Liên kết</h4>
+                            <p class="text-muted">Kéo thả liên kết để thay đổi thứ tự hiển thị.</p>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="text-right" >
+                                <a href="javascript:void(0);" class="btn btn-link btn-add-links-menus" data-toggle="tooltip" data-placement="top" title="Thêm liên kết" >
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center <?php echo (isset($menu) && isset($menus[$menu->menus_id]) ? 'hide' : '' ) ?> linklist-links-empty" >
+                    <h5>Menu này chưa có liên kết nào.</h5>
+                    <p class="text-muted">Ấn vào nút <i class="fa fa-plus" aria-hidden="true"></i> bên trên để thêm liên kết.</p>
+                </div>
+                <div class="table-responsive" >
+                    <table class="table linklist-links ui-sortable linklist-links-table table-data-bind table-no-border <?php echo (isset($menu) && isset($menus[$menu->menus_id]) ? '' : 'hide' ) ?>" >
+                        <thead>
+                            <tr>
+                                <th class="col-lim text-center" width="50" >
+                                    <i class="fa fa-sort" aria-hidden="true"></i>
+                                </th>
+                                <th class="col-lim link-name">Tên liên kết</th>
+                                <th class="link-values">Liên kết tới...</th>
+                                <th class="col-lim text-right" ></th>
+                            </tr>
+                        </thead>
+                        <tbody id="container-menu-sort" >
+                            <?php if(isset($menu) && isset($menus[$menu->menus_id])){
+                                foreach ($menus[$menu->menus_id] as $key => $menuc) {
+                            ?>
+                            <tr class="linklist-links ui-sortable row-linklist-links" >
+                                <td class="col-lim drag drag-handle text-muted text-center" width="50" >
+                                    <i class="fa fa-arrows"></i>
+                                </td>
+                                <td class="col-lim" >
+                                    <input name="Links[<?php echo $key; ?>][Id]" type="hidden" value="<?php echo $menuc['menus_id'] ?>" class="hd-Links-Id" >
+                                    <input name="Links[<?php echo $key; ?>][Position]" class="link-position hd-Links-Position" type="hidden" value="0">
+                                    <input name="Links[<?php echo $key; ?>][Title]" class="form-control  input-sm  smaller hd-Links-Title" placeholder="Nhập tên liên kết" value="<?php echo $this->translate($menuc['menus_name']) ?>" >
+                                </td>
+                                <td>
+                                    <div class="btn-group margin-sm-right">
+                                        <select bind="appliesToResource_0" class="form-control  input-sm smaller list-poisition-for-links hd-Links-Type" name="Links[<?php echo $key; ?>][Type]">
+                                            <option selected="selected" value="frontpage" <?php echo $menuc['menus_type'] == 'frontpage' ? 'selected="selected"' : '' ?> >
+                                                Trang chủ
+                                            </option>
+
+                                            <optgroup label="Danh mục sản phẩm" >
+                                                <option value="allcollection" <?php echo $menuc['menus_type'] == 'allcollection' ? 'selected="selected"' : '' ?> >
+                                                    Tất cả danh mục sản phẩm
+                                                </option>
+                                                <option value="collection" <?php echo $menuc['menus_type'] == 'collection' ? 'selected="selected"' : '' ?> >
+                                                    Một danh mục sản phẩm
+                                                </option>
+                                                <option value="subcollection" <?php echo $menuc['menus_type'] == 'subcollection' ? 'selected="selected"' : '' ?> >
+                                                    Tất cả danh mục con của một danh mục sản phẩm
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup label="Sản phẩm" >
+                                                <option value="catalog" <?php echo $menuc['menus_type'] == 'catalog' ? 'selected="selected"' : '' ?> >
+                                                    Tất cả sản phẩm
+                                                </option>
+                                                <option value="product" <?php echo $menuc['menus_type'] == 'product' ? 'selected="selected"' : '' ?> >
+                                                    Một sản phẩm
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup label="Danh mục bài viết" >
+                                                <option value="allblog" <?php echo $menuc['menus_type'] == 'allblog' ? 'selected="selected"' : '' ?> >
+                                                    Tất cả danh mục bài viết
+                                                </option>
+                                                <option value="blog" <?php echo $menuc['menus_type'] == 'blog' ? 'selected="selected"' : '' ?> >
+                                                    Một danh mục bài viết
+                                                </option>
+                                                <option value="subblog" <?php echo $menuc['menus_type'] == 'subblog' ? 'selected="selected"' : '' ?> >
+                                                    Tất cả danh mục con của một danh mục bài viết
+                                                </option>
+                                                <option value="articleNew" <?php echo $menuc['menus_type'] == 'articleNew' ? 'selected="selected"' : '' ?> >
+                                                    Bài viết mới
+                                                </option>
+                                                <option value="articleNewInCategory" <?php echo $menuc['menus_type'] == 'articleNewInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Bài viết mới trong danh mục bài viết
+                                                </option>
+                                                <option value="articleHot" <?php echo $menuc['menus_type'] == 'articleHot' ? 'selected="selected"' : '' ?> >
+                                                    Bài viết nổi bật
+                                                </option>
+                                                <option value="articleHotInCategory" <?php echo $menuc['menus_type'] == 'articleHotInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Bài viết nổi bật trong danh mục bài viết
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup label="Bài viết" >
+                                                <option value="page" <?php echo $menuc['menus_type'] == 'page' ? 'selected="selected"' : '' ?> >
+                                                    Bài viết tĩnh
+                                                </option>
+                                                <option value="article" <?php echo $menuc['menus_type'] == 'article' ? 'selected="selected"' : '' ?> >
+                                                    Bài viết động
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup label="Theo chủ đề" >
+                                                <option value="bestseller" <?php echo $menuc['menus_type'] == 'bestseller' ? 'selected="selected"' : '' ?> >
+                                                    Bán chạy nhất
+                                                </option>
+                                                <option value="BestsellerInCategory" <?php echo $menuc['menus_type'] == 'BestsellerInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Bán chạy nhất trong danh mục
+                                                </option>
+                                                <option value="BuyMost" <?php echo $menuc['menus_type'] == 'BuyMost' ? 'selected="selected"' : '' ?> >
+                                                    Mua nhiều nhất
+                                                </option>
+                                                <option value="BuyMostInCategory" <?php echo $menuc['menus_type'] == 'BuyMostInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Mua nhiều nhất trong danh mục
+                                                </option>
+                                                <option value="Hot" <?php echo $menuc['menus_type'] == 'Hot' ? 'selected="selected"' : '' ?> >
+                                                    Nổi bật nhất
+                                                </option>
+                                                <option value="HotInCategory" <?php echo $menuc['menus_type'] == 'HotInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Nổi bật nhất trong danh mục
+                                                </option>
+                                                <option value="New" <?php echo $menuc['menus_type'] == 'New' ? 'selected="selected"' : '' ?> >
+                                                    Mới nhất
+                                                </option>
+                                                <option value="NewInCategory" <?php echo $menuc['menus_type'] == 'NewInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Mới nhất trong danh mục
+                                                </option>
+                                                <option value="Deal" <?php echo $menuc['menus_type'] == 'Deal' ? 'selected="selected"' : '' ?> >
+                                                    Giảm giá
+                                                </option>
+                                                <option value="DealInCategory" <?php echo $menuc['menus_type'] == 'DealInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Giảm giá trong danh mục
+                                                </option>
+                                                <option value="GoingOn" <?php echo $menuc['menus_type'] == 'GoingOn' ? 'selected="selected"' : '' ?> >
+                                                    Hàng sắp về
+                                                </option>
+                                                <option value="GoingOnInCategory" <?php echo $menuc['menus_type'] == 'GoingOnInCategory' ? 'selected="selected"' : '' ?> >
+                                                    Hàng sắp về trong danh mục
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup label="Có sẵn trong hệ thống" >
+                                                <option value="SignIn" <?php echo $menuc['menus_type'] == 'SignIn' ? 'selected="selected"' : '' ?> >
+                                                    Trang đăng nhập
+                                                </option>
+
+                                                <option value="SignUp" <?php echo $menuc['menus_type'] == 'SignUp' ? 'selected="selected"' : '' ?> >
+                                                    Trang đăng kí
+                                                </option>
+
+                                                <option value="user" <?php echo $menuc['menus_type'] == 'user' ? 'selected="selected"' : '' ?> >
+                                                    Trang user
+                                                </option>
+
+                                                <option value="contact" <?php echo $menuc['menus_type'] == 'contact' ? 'selected="selected"' : '' ?> >
+                                                    Trang liên hệ
+                                                </option>
+
+                                                <option value="search" <?php echo $menuc['menus_type'] == 'search' ? 'selected="selected"' : '' ?> >
+                                                    Trang tìm kiếm
+                                                </option>
+
+                                                <option value="error" <?php echo $menuc['menus_type'] == 'error' ? 'selected="selected"' : '' ?> >
+                                                    Trang lỗi
+                                                </option>
+                                            </optgroup>
+
+                                            <option value="http" <?php echo $menuc['menus_type'] == 'http' ? 'selected="selected"' : '' ?> >
+                                                Địa chỉ web
+                                            </option>
+
+                                            <option value="description" <?php echo $menuc['menus_type'] == 'description' ? 'selected="selected"' : '' ?> >
+                                                Nội dung
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <input type="hidden" name="Links[<?php echo $key; ?>][ItemId]" value="<?php echo $menuc['menus_reference_id'] ?>" class="form-control  input-sm smaller single-dropdown-select-id hd-Links-ItemId" placeholder="">
+                                    <input type="hidden" name="Links[<?php echo $key; ?>][ItemName]" value="<?php echo $menuc['menus_reference_name'] ?>" class="form-control  input-sm smaller single-dropdown-select-name hd-Links-ItemName" placeholder="">
+
+                                    
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'collection' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-collection applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'collection') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'product' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-product applies-to-resource-el" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-product" href="javascript:void(0);" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'product') ? $menuc['menus_reference_name'] : 'Chọn sản phẩm' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'page' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-page applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-page" href="javascript:void(0);" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'page') ? $menuc['menus_reference_name'] : 'Chọn trang nội dung' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'article' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-article applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-article" href="javascript:void(0);" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'article') ? $menuc['menus_reference_name'] : 'Chọn trang nội dung' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'blog' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-blog applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-blog" href="javascript:void(0);"  >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'blog') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'subblog' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-subblog applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-blog" href="javascript:void(0);"  >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'subblog') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'articleNewInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-articleNewInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-blog" href="javascript:void(0);"  >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'articleNewInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'articleHotInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-articleHotInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-blog" href="javascript:void(0);"  >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'articleHotInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'http' ? 'hide' : '' ?> results-dropdown-map-links-http applies-to-resource-el" >
+                                        <input type="text" name="Links[<?php echo $key; ?>][Url]" value="<?php echo $menuc['menus_reference_url'] ?>" class="form-control form-control smaller hd-Links-Url input-sm">
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'subcollection' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-subcollection applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'subcollection') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'BestsellerInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-BestsellerInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'BestsellerInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'BuyMostInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-BuyMostInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'BuyMostInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'HotInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-HotInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'HotInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'NewInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-NewInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'NewInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'DealInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-DealInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'DealInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'GoingOnInCategory' ? 'hide' : '' ?> results-dropdown results-dropdown-map-links-GoingOnInCategory applies-to-resource-el dropdown" >
+                                        <a class="btn btn-default btn-sm dropdown-toggle btn-filter btn-choose-collection" href="javascript:void(0)" >
+                                            <span class="choosed-single"><?php echo (!empty($menuc['menus_reference_name']) && $menuc['menus_type'] == 'GoingOnInCategory') ? $menuc['menus_reference_name'] : 'Chọn danh mục' ?></span>
+                                            <span class="caret"></span>
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group diable-hidden-input <?php echo $menuc['menus_type'] != 'description' ? 'hide' : '' ?> results-dropdown-map-links-description applies-to-resource-el" style="width: 100%;margin-top: 10px;" data-id="ckeditor-mini-<?php echo $key; ?>" >
+                                        <textarea name="Links[<?php echo $key; ?>][Description]" class="form-control ckeditor-mini input-sm" rows="3" id="ckeditor-mini-<?php echo $key; ?>" ><?php echo $menuc['menus_description'] ?></textarea>
+                                    </div>
+
+                                </td>
+                                <td class="col-lim text-right" >
+                                    <a class="btn-remove-row-links" href="javascript:void(0);" >
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php }
+                            } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group" >
+                <button class="btn btn-primary btn-sm">
+                    Cập nhật menu
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                    Quay lại
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

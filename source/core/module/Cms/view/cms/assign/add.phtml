@@ -1,0 +1,361 @@
+<script type="text/javascript" >
+    var merchants = <?php echo json_encode($merchants); ?>;
+    var merchantsOrther = <?php echo json_encode($merchantsOrther); ?>;
+    var kmAssign = <?php echo json_encode($KMAssign); ?>;
+    var longitude = <?php echo $longitude; ?>;
+    var latitude = <?php echo $latitude; ?>;
+</script>
+
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/assign') ?>">
+                        Assign
+                    </a>
+                </li>
+                <li class="active">Cập nhật</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Assign :: Cập nhật
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12" >
+            <div class="wmap-assign" >
+                <div id="map_assign" style="height: 300px" data-longitude="<?php echo $longitude ?>" data-latitude="<?php echo $latitude ?>" ></div>
+            </div>
+            <div class="note-map-assign" >
+                <span class="item-map-assign" >
+                    <img src="http://dienhoa.coz.vn/styles/images/pred.png" >
+                    <span class="txt-map-assign" >Customer</span>
+                </span>
+                <span class="item-map-assign" >
+                    <img src="http://dienhoa.coz.vn/styles/images/pblue.png" >
+                    <span class="txt-map-assign" >Merchant</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-12" >
+            <form class="clearfix form-assign" action="/cms/assign/create" method="post" >
+                <input type="hidden" name="invoice_id" value="<?php echo $invoice_id ?>" >
+                <input type="hidden" name="assign_id" value="" >
+
+                <?php if( !empty($products) ){ ?>
+                <div class="form-group" >
+                    <h6>
+                        Đơn hàng để assign
+                        <a href="javascript:void(0);" class="more-assign-cart" data-toggle="tooltip" data-placement="top" title="Xem chi tiết đơn hàng" >
+                            Xem chi tiết
+                        </a>
+                    </h6>
+                </div>
+                <div class="form-group assign-cart active" >
+                    <div class="table-responsive">
+                        <table class="table table-data-bind table-bordered" >
+                            <thead>
+                                <tr>
+                                    <th class="text-left col-lim" >Mã</th>
+                                    <th class="text-center" width="100" >Hình</th>
+                                    <th colspan="5" >Sản phẩm</th>
+                                    <th class="text-right col-lim" colspan="2" >Giá cho đại lý/Giá gốc</th>
+                                    <th class="text-right col-lim" >Số lượng</th>
+                                    <th class="text-right col-lim" >Thành tiền</th>
+                                    <th class="text-right col-lim" >Tổng tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php 
+                            foreach($products as $key => $product){
+                                foreach($product['product_type'] as $product_type_id => $row){
+                                    $extentions = array_merge($row['extensions'], $row['extensions_require']);
+                            ?>
+                                <tr>
+                                    <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> class="text-left col-lim" >
+                                        <?php echo $product['products_code'] ?>
+                                    </td>
+
+                                    <td>
+                                        <a href="<?php echo $this->Products()->getLink($row); ?>" target="_blank">
+                                            <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($row),100); ?>" class="img-reponsive" width="100" >
+                                        </a>
+                                    </td>
+
+                                    <td colspan="5" >
+                                        <a href="<?php echo $this->Products()->getLink($row); ?>" target="_blank">
+                                            <?php echo $this->Products()->getName($row); ?>
+                                        </a>
+                                    </td>
+
+                                    <td class="text-right col-lim" <?php echo empty($row['extensions_require']) ? 'colspan="2"' : '' ?> >
+                                        <input type="text" name="price[<?php echo $row['id'] ?>]" class="form-control input-sm moneyInput" value="<?php echo $this->Products()->getPriceSaleSimple($row) ?>" style="width: 100px;text-align: right;display: inline-block;border: 1px solid #f1f1f1;height: 30px;" >
+                                        /<?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSaleSimple($row)) ?>
+                                    </td>
+
+                                    <?php if( !empty($row['extensions_require']) ){ ?>
+                                    <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+                                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)) ?>
+                                    </td>
+                                    <?php } ?>
+
+                                    <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+                                        <?php echo $this->Cart()->getProductsQuantity($row) ?>
+                                    </td>
+
+                                    <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+                                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)*$this->Cart()->getProductsQuantity($row)) ?>
+                                    </td>
+                                    
+                                    <td class="text-right col-lim" <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> >
+                                        <?php echo $this->Currency()->fomatCurrency($row['price_total']) ?>
+                                        <input type='hidden' name='pdetail[<?php echo $product['products_id'] ?>][price_total]' value='<?php echo $row['price_total'] ?>' />
+                                    </td>
+                                </tr>
+
+                                <?php 
+                                $k_ex = 0;
+                                if(!empty($row['extensions_require'])){
+                                    foreach ($row['extensions_require'] as $k_ => $ext) {
+                                        $quality = $ext['quantity'];
+                                ?>
+                                <tr>
+                                    <?php if($k_ex == 0){ ?>
+                                    <td rowspan="<?php echo count($extentions); ?>" class="col-lim text-center" >
+                                        <?php echo $this->translate('txt_sp_dinh_kem');?>
+                                    </td>
+                                    <?php } ?>
+                                    <td class="col-lim text-right">
+                                        <?php echo ($k_ex+1); ?>
+                                    </td>
+                                    <td colspan="2" >
+                                        <?php echo $ext['ext_name'] ?>
+                                    </td>
+                                    <td class="col-lim text-right" >
+                                        <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
+                                    </td>
+                                    <td class="col-lim text-right" >
+                                        <?php echo $quality; ?>
+                                    </td>
+                                    <td class="col-lim text-right" >
+                                        <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
+                                    </td>
+                                </tr>
+                                <?php 
+                                        $k_ex++;
+                                    }
+                                } ?>
+
+                                <?php 
+                                if( !empty($row['extensions']) ){
+                                    foreach ($row['extensions'] as $k_ => $ext) {
+                                        $quality = $ext['quantity'];
+                                ?>
+                                <tr>
+                                    <td class="col-lim" >
+                                        <?php echo ($k_ex+1); ?>
+                                    </td>
+                                    <td colspan="5" >
+                                        <?php echo $ext['ext_name'] ?>
+                                    </td>
+                                    <td class="col-lim text-right" >
+                                        <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
+                                    </td>
+                                    <td class="col-lim text-right" >
+                                        <?php echo $quality; ?>
+                                    </td>
+                                    <td class="col-lim text-right" >
+                                        <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
+                                    </td>
+                                </tr>
+                                <?php $k_ex++; 
+                                    }
+                                } ?>
+
+                            <?php }
+                            } ?>
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Tạm tính
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important" >
+                                            <?php echo $this->Currency()->fomatCurrency($total_orig) ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <?php if ( !empty($coupon) ) { ?>
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Giảm giá
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important" >
+                                            <?php echo $this->Currency()->fomatCurrency($coupon['coupon_price']) ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Phí vận chuyển
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important" >
+                                            <input type="text" name="shipping" class="form-control input-sm moneyInput" value="<?php echo $fee ?>" style="width: 100px;text-align: right;display: inline-block;border: 1px solid #f1f1f1;height: 30px;" >
+                                            <?php echo $this->Currency()->getCurrencySymbol() ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <?php if( $total < $total_tax ){ ?>
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Tổng cộng trước
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important"  >
+                                            <?php echo $this->Currency()->fomatCurrency($total + $fee) ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Tiền thuế
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important"  >
+                                            <?php echo $this->Currency()->fomatCurrency(($total_tax - $total)) ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Tổng sau thuế
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important" >
+                                            <?php echo $this->Currency()->fomatCurrency($total_tax + $fee) ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <?php }else{ ?>
+                                <tr>
+                                    <td colspan="10" class="text-right" >
+                                        Tổng cộng
+                                    </td>
+                                    <td colspan="2" class="text-right" >
+                                        <strong class="coz-color-important"  >
+                                            <?php echo $this->Currency()->fomatCurrency($total + $fee) ?>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <div class="row" >
+                    <div class="col-sm-6" >
+                        <input type="hidden" id="assign_id" >
+                        <div class="form-group">
+                            <label for="assign_code" >Code</label>
+                            <input type="text" class="form-control input-sm" id="assign_code" placeholder="code" value="<?php echo date('YmdHms'); ?>" name="assign_code" >
+                        </div>
+                        <div class="form-group">
+                            <label for="assign_name">Name</label>
+                            <input type="text" class="form-control  input-sm" id="assign_name" name="assign_name" placeholder="name" >
+                        </div>
+                    </div>
+                    <div class="col-sm-6" >
+                        
+                    </div>
+                </div>
+
+                <h5>List Merchant(<i>Lấy từ nhà cung cấp của sản phẩm</i>)</h5>
+                <?php if( !empty($merchants) ){ ?>
+                <div class="form-group" >
+                    <ul class="list-merchant-assign clearfix">
+                        <?php foreach ($KMAssign as $key => $KMA ) { ?>
+                        <li class="item-merchant-assign" >
+                            <label>
+                                <input type="checkbox" name="merchant_id[]" value="<?php echo $KMA['to']['merchant_id']; ?>" <?php echo !in_array($KMA['to']['merchant_id'], $merchantsOfAssigns) ? '' : 'disabled="disabled" checked="checked"' ?> >
+                                <?php echo $KMA['to']['merchant_name']; ?>
+                                <span class="pull-right badge distance-<?php echo str_replace('.', '_', $KMA['to']['latitude'].'-'.$KMA['to']['longitude']); ?>" >
+                                    <?php echo $KMA['distance'].' '.$KMA['unit']; ?>
+                                    <span class="txt-distance-km" >( ~<?php echo floor($KMA['distance']/1000).' Km'; ?> )</span>
+                                </span>
+                            </label>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+                <?php }else{ ?>
+                <div class="form-group" >
+                    <p>Không có merchant cho đơn hàng này</p>
+                </div>
+                <?php } ?>
+
+                <?php if( !empty($merchantsOrther) ){ ?>
+                <div class="form-group" >
+                    <a href="javascript:void(0);" class="more-merchant-not-join" data-toggle="tooltip" data-placement="top" title="Xem thêm merchant không được liên kết" >
+                        Xem thêm merchant <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="form-group merchant-not-join" >
+                    <ul class="list-merchant-assign clearfix">
+                        <?php foreach ($merchantsOrther as $key => $mco ) { ?>
+                        <li class="item-merchant-assign" >
+                            <label>
+                                <input type="checkbox" name="merchant_id[]" value="<?php echo $mco['merchant_id']; ?>" <?php echo !in_array($mco['merchant_id'], $merchantsOfAssigns) ? '' : 'disabled="disabled" checked="checked"' ?> >
+                                <?php echo $mco['merchant_name']; ?>
+                            </label>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+                <?php } ?>
+
+                <?php if( !empty($invoice) 
+                    && ( $invoice->delivery = 'pending' || $invoice->delivery = 'processing' ) ){ ?>
+                <div class="form-group" >
+                    <button class="btn btn-primary btn-sm">
+                        Cập nhật assign
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                        Quay lại
+                    </button>
+                </div>
+                <?php } ?>
+
+            </form>
+        </div>
+
+    </div>
+</section>

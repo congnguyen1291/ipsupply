@@ -1,0 +1,179 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Hỏi đáp :: Quản lý
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Hỏi đáp</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+		<div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <form action="<?php echo $this->url('cms/fqa', array('action' => 'filter')) ?>" method="post"
+                          class="filter_form form-inline" role="form" name="form_filter">
+							<div class="form-group">
+								<input type="hidden" class="product_ajax_select" name="filter[products_id]" style="width:300px" placeholder="Tìm sản phẩm" />
+							</div>
+							<div class="form-group">
+								<input type="text" name="filter[date_create]" class="form-control date_range_input pull-right" placeholder="Thời gian đăng"/>
+							</div>
+							<div class="form-group">
+								<select name="filter[answer]" class="form-control">
+									<option value="-1">--Tình trạng--</option>
+									<option value="0">Chưa trả lời</option>
+									<option value="1">Đã trả lời</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="is_published">
+								<input type="checkbox" value="1" name="filter[is_published]" id="is_published" />
+								Hiển thị
+								</label>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary">
+									<i class="fa fa-filter"></i>
+									Lọc
+								</button>
+							</div>
+						</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <form action="<?php echo $this->url('cms/fqa') ?>" method="post">
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+<!--                            <a href="--><?php //echo $this->url('cms/fqa', array('action' => 'add')) ?><!--"-->
+<!--                               class="btn btn-primary">Thêm ngân hàng mới</a>-->
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/fqa', array('action' => 'delete')) ?>')">
+                                Xóa
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/fqa', array('action' => 'published')) ?>')">
+                                Hiển thị
+                            </button>
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/fqa', array('action' => 'unpublished')) ?>')">
+                                Ẩn
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th width="50" style="text-align: center">ID</th>
+                                <th>Người hỏi</th>
+                                <th>Tiêu đề</th>
+                                <th>Sản phẩm</th>
+                                <th>Lượt trả lời</th>
+								<th>Hiển thị</th>
+                                <th>Ngày hỏi</th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($datas as $row) : ?>
+                                <tr>
+                                    <td style="text-align: center"><?php echo $row['id'] ?></td>
+                                    <td>
+                                        <?php if($row['email']) : ?>
+                                            <?php echo $row['email'] ?>
+                                        <?php else: ?>
+                                            <?php echo $row['full_name'] ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $row['tieu_de'] ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo $this->Common()->getProductsUrl($row) ?>" target="_blank"><?php echo $row['products_title'] ?></a>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo $this->url('cms/fqa', array('action' => 'answer','id' => $row['id'])) ?>"  data-toggle='tooltip' title='Vào trả lời' data-original-title='Vào trả lời'><?php echo !$row['total_answer'] ? 'Chưa trả lời' : "Có <strong>{$row['total_answer']}</strong> câu trả lời"  ?></a>
+                                    </td>
+									<td style="text-align:center">
+										<?php
+										if($row['is_published']){
+											$href = $this->url('cms/fqa', array('action' => 'unpublished','id' => $row['id']));
+										}else{
+											$href = $this->url('cms/fqa', array('action' => 'published','id' => $row['id']));
+										}
+										?>
+										<?php echo $row['is_published'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Đang hiển thị' data-original-title='Đang hiển thị'><i class='fa fa-circle'></i></a>" : "<a href='{$href}' data-toggle='tooltip' title='Bị ẩn' data-original-title='Bị ẩn'><i class='fa fa-circle-o'></i></a>" ?>
+									</td>
+                                    <td>
+                                        <?php echo date('d-m-Y H:i:s', strtotime($row['date_create'])) ?>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="cid[]"
+                                               value="<?php echo $row['id'] ?>"/>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="50" style="text-align: center">ID</th>
+                                <th>Người hỏi</th>
+                                <th>Tiêu đề</th>
+                                <th>Sản phẩm</th>
+                                <th>Lượt trả lời</th>
+								<th>Hiển thị</th>
+                                <th>Ngày hỏi</th>
+                                <th width="10"><input type="checkbox" class="checkall"/></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <!--                            <a href="--><?php //echo $this->url('cms/fqa', array('action' => 'add')) ?><!--"-->
+                            <!--                               class="btn btn-primary">Thêm ngân hàng mới</a>-->
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/fqa', array('action' => 'delete')) ?>')">
+                                Xóa
+                            </button>
+                            <button class="btn btn-primary" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/fqa', array('action' => 'published')) ?>')">
+                                Hiển thị
+                            </button>
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/fqa', array('action' => 'unpublished')) ?>')">
+                                Ẩn
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</section><!-- /.content -->

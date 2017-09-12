@@ -1,0 +1,169 @@
+<?php 
+$menus = $this->Menus()->getAllMenuAndSort();
+$categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
+$menu = $this->Menus()->getMenuWithAlias('HOOK_MENU_HEADER_01');
+//$banner = $this->Banners()->getBannerWithPositionAlias('HOOK_BANNER_HEADER_01');
+?>
+
+<div id="site-title" class="site-title-image clearfix">
+    <div class="row" >
+        <div class="col-sm-3" >
+        	<a href="/" >
+        		<img src="<?php echo $this->basePath().$website['logo']; ?>" title="<?php echo $this->translate('title_site') ?>" alt="<?php echo $this->translate('title_site') ?>" class="img-responsive" />
+        	</a>
+        </div>
+        <div class="col-sm-9" >
+            <div class="flash-top" >
+                <div class="inner-flash-top" >
+                    <div class="bg-flash" >
+                        <div id="clouds">
+                            <div class="cloud x1"></div>
+                            <div class="cloud x2"></div>
+                            <div class="cloud x3"></div>
+                            <div class="cloud x4"></div>
+                            <div class="cloud x5"></div>
+                        </div>
+                    </div>
+                    <div class="screen-flash clearfix" >
+                        <span class="air-img" >
+                            <span class="wrap-img-flash" >
+                                <img src="/custom/domain_1/19a4c5061650867ef8db5074db5f93b5/maybay.png" class="img-responsive" >
+                            </span>
+                        </span>
+                        <span class="ship-img" >
+                            <span class="wrap-img-flash" >
+                                <img src="/custom/domain_1/19a4c5061650867ef8db5074db5f93b5/taubien.png" class="img-responsive" >
+                            </span>
+                        </span>
+                        <span class="truck-img" >
+                            <span class="wrap-img-flash" >
+                                <img src="/custom/domain_1/19a4c5061650867ef8db5074db5f93b5/ototai.png" class="img-responsive" >
+                            </span>
+                        </span>
+                        <span class="air-img" >
+                            <span class="wrap-img-flash" >
+                                <img src="/custom/domain_1/19a4c5061650867ef8db5074db5f93b5/maybay.png" class="img-responsive" >
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bn-all-blur"></div>
+
+<!-- BEGIN .main-menu-wrapper -->
+<div id="main-menu-wrapper" class="clearfix" >
+    <div id="mobile-menu">
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+    <?php if(!empty($menus) && !empty($menu) && !empty($menus[$menu['menus_id']])){ ?>
+    <ul id="main-menu" class="fl clearfix">
+
+        <?php foreach ($menus[$menu['menus_id']] as $key01 => $menu01) { ?>
+            <li id="menu-item-<?php echo $menu01['menus_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $menu01['menus_id'] ?>" >
+                <a href="<?php echo $this->Menus()->getLinkForMenu($menu01); ?>" title="<?php echo $this->translate($menu01['menus_name']); ?>" >
+                    <?php echo $this->translate($menu01['menus_name']); ?>
+                </a>
+
+                <?php if(!empty($menus[$menu01['menus_id']]) && $menu01['menus_type'] != 'allcollection' && $menu01['menus_type'] != 'allblog' ){ ?>
+                <ul class="sub-menu">
+                    <?php foreach ($menus[$menu01['menus_id']] as $key02 => $menu02){ ?>
+                    <li id="menu-item-<?php echo $menu02['menus_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $menu02['menus_id'] ?>">
+                        <a href="<?php echo $this->Menus()->getLinkForMenu($menu02); ?>" title="<?php echo $this->translate($menu02['menus_name']) ?>" >
+                            <?php echo $this->translate($menu02['menus_name']); ?>
+                        </a>
+                    </li>
+                    <?php } ?>
+                </ul>    
+                <?php }else if($menu01['menus_type'] == 'allcollection' && !empty($categories)){ ?>
+                    <ul class="sub-menu">
+                        <?php foreach ($categories[0] as $key01 => $category01) { ?>
+                        <li id="menu-item-<?php echo $category01['categories_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $category01['categories_id'] ?>">
+                            <a href="/category/<?php echo $category01['categories_alias'] ?>-<?php echo $category01['categories_id'] ?>" title="<?php echo $category01['categories_title'] ?>" >
+                                <?php echo $category01['categories_title'] ?>
+                            </a>
+                            <?php if(isset($categories[$category01['categories_id']]) && count($categories[$category01['categories_id']])>0){ ?>
+                            <ul class="sub-menu">
+                                <?php foreach ($categories[$category01['categories_id']] as $key02 => $category02){ ?>
+                                <li id="menu-item-<?php echo $category02['categories_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $category02['categories_id'] ?>">
+                                    <a href="/category/<?php echo $category02['categories_alias'] ?>-<?php echo $category02['categories_id'] ?>" title="<?php echo $category02['categories_title'] ?>" >
+                                        <?php echo $category02['categories_title'] ?>
+                                    </a>
+                                    <?php if(isset($categories[$category02['categories_id']]) && count($categories[$category02['categories_id']])>0){ ?>
+                                    <ul class="sub-menu">
+                                        <?php foreach ($categories[$category02['categories_id']] as $key03 => $category03){ ?>
+                                            <li id="menu-item-<?php echo $category03['categories_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $category03['categories_id'] ?>">
+                                                <a href="/category/<?php echo $category03['categories_alias'] ?>-<?php echo $category03['categories_id'] ?>" title="<?php echo $category03['categories_title'] ?>" >
+                                                    <?php echo $category03['categories_title'] ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                    <?php } ?>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                            <?php } ?>
+                        </li>
+                        <?php } ?>
+                    </ul>   
+                <?php }else if($menu01['menus_type'] == 'allblog' && !empty($categoryArticles)){ ?>
+                    <ul class="sub-menu">
+                        <?php foreach ($categoryArticles[0] as $key01 => $category01) { ?>
+                        <li id="menu-item-<?php echo $category01['categories_articles_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $category01['categories_articles_id'] ?>">
+                            <a href="/articles/<?php echo $category01['categories_articles_alias'] ?>-<?php echo $category01['categories_articles_id'] ?>" title="<?php echo $category01['categories_articles_title'] ?>" >
+                                <?php echo $category01['categories_articles_title'] ?>
+                            </a>
+                            <?php if(isset($categories[$category01['categories_articles_id']]) && count($categories[$category01['categories_articles_id']])>0){ ?>
+                            <ul class="sub-menu">
+                                <?php foreach ($categories[$category01['categories_articles_id']] as $key02 => $category02){ ?>
+                                <li id="menu-item-<?php echo $category02['categories_articles_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $category02['categories_articles_id'] ?>">
+                                    <a href="/articles/<?php echo $category02['categories_articles_alias'] ?>-<?php echo $category02['categories_articles_id'] ?>" title="<?php echo $category02['categories_articles_title'] ?>" >
+                                        <?php echo $category02['categories_articles_title'] ?>
+                                    </a>
+                                    <?php if(isset($categories[$category02['categories_articles_id']]) && count($categories[$category02['categories_articles_id']])>0){ ?>
+                                    <ul class="sub-menu">
+                                        <?php foreach ($categories[$category02['categories_articles_id']] as $key03 => $category03){ ?>
+                                            <li id="menu-item-<?php echo $category03['categories_articles_id'] ?>" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-<?php echo $category03['categories_articles_id'] ?>">
+                                                <a href="/articles/<?php echo $category03['categories_articles_alias'] ?>-<?php echo $category03['categories_articles_id'] ?>" title="<?php echo $category03['categories_articles_title'] ?>" >
+                                                    <?php echo $category03['categories_articles_title'] ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                    <?php } ?>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                            <?php } ?>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                <?php } ?>
+
+            </li>
+        <?php } ?>
+
+    </ul>
+    <?php } ?>
+
+    <?php if(!empty($languages)){ ?>
+    <div class="wrap-langue fr" >
+        <div class="list-langue clearfix" >
+            <?php foreach ($languages as $key => $language) { ?>
+            <a href="/language?code=<?php echo $language['languages_file']; ?>" class="item-langue" >
+                <i class="langs lang-<?php echo $language['languages_id']; ?>" ></i>
+                <?php echo $language['languages_name']; ?>
+            </a>
+            <?php } ?>
+        </div>
+    </div>
+    <?php } ?>
+    
+<!-- END .main-menu-wrapper --> 
+</div>

@@ -1,0 +1,146 @@
+<div class="coz-wrapper-profile" >
+	<div class="container">
+	    <div class="row coz-profile">
+			<div class="col-md-3">
+				<?php echo $this->partial('application/profile/menu', array('active' => 'assign', 'point' => $point) ); ?>
+			</div>
+			<div class="col-md-9">
+	            <div class="coz-profile-content">
+				   
+	            	<div class="coz-user-info-block" >
+
+		                <div class="coz-user-heading">
+		                    <h3><?php echo $this->translate('txt_danh_sach_assign') ?></h3>
+		                    <span class="help-block"><?php echo $this->User()->getUserName(); ?></span>
+		                </div>
+		                <div class="row" >
+		                	<?php if( !empty($assigns) ){ ?>
+		                	<div class="col-sm-12" >
+		                		<div class="coz-wrap-chart-profile-assign" >
+		                			<canvas id="profileAssignsChart" data-neo="profileAssignsChart" ></canvas>
+		                		</div>
+		                	</div>
+		                	<div class="col-sm-12" >
+			                	<div class="table-responsive">
+	                                <table class="table table-data-bind table-no-border" >
+	                                	<thead>
+	                                        <tr>
+	                                            <th class="col-lim" >Id</th>
+						                        <th class="col-lim" >Code</th>
+						                        <th >Tên</th>
+						                        <th class="col-lim" >Invoice</th>
+						                        <th class="col-lim text-xs-right"  >Giá assign</th>
+						                        <th class="col-lim text-xs-right" >Trạng thái</th>
+						                        <th class="col-lim" ></th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                    	<?php foreach($assigns as $row){ ?>
+	                                        <tr>
+		                                        <td class="col-lim" >
+		                                        	<?php echo $row['assign_id']; ?>
+		                                        </td>
+		                                        <td class="col-lim" >
+		                                        	<?php echo $row['assign_code']; ?>
+		                                        </td>
+		                                        <td >
+		                                        	<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/deassign?id=<?php echo $row['assign_id']; ?>" title="<?php echo $this->translate('txt_chi_tiet_assign'); ?>" >
+		                                            	<?php echo $row['assign_name']; ?>
+		                                            </a>
+		                                        </td>
+		                                        <td class="col-lim" >
+						                            <?php echo $row['invoice_title'] ?>
+						                        </td>                                 
+		                                        <td class="text-xs-right col-lim" >
+		                                            <?php echo $this->Currency()->fomatCurrency($row['assign_total_tax'] + $row['assign_extention_total_tax'] + $row['assign_shipping']) ?>
+		                                        </td>
+		                                        <td class="col-lim" >
+	                                        		<?php if( !empty($row['is_important']) ){ ?>
+		                                            <a href="javascript:void(0);" class="is-important" data-btn="unimportantAssign" data-id="<?php echo $row['assign_id']; ?>" data-toggle='tooltip' title='Lưu ý' >
+		                                            	<i class="fa fa-star" aria-hidden="true"></i>
+		                                            </a>
+		                                            <?php }else{ ?>
+		                                            <a href="javascript:void(0);" class="un-important" data-btn="importantAssign" data-id="<?php echo $row['assign_id']; ?>" data-toggle='tooltip' title='Không lưu ý' >
+		                                            	<i class="fa fa-star-o" aria-hidden="true"></i>
+		                                            </a>
+		                                            <?php } ?>
+
+		                                            <?php if( !empty($row['is_read']) ){ ?>
+		                                            <a href="javascript:void(0);" class="is-read" data-btn="unreadAssign" data-id="<?php echo $row['assign_id']; ?>" data-toggle='tooltip' title='Đã xem' >
+		                                            	<i class="fa fa-circle-o" aria-hidden="true"></i>
+		                                            </a>
+		                                            <?php }else{ ?>
+		                                            <a href="javascript:void(0);" class="un-read" data-btn="readAssign" data-id="<?php echo $row['assign_id']; ?>" data-toggle='tooltip' title='Chưa xem' >
+		                                            	<i class="fa fa-circle" aria-hidden="true"></i>
+		                                            </a>
+		                                            <?php } ?>
+		                                        </td>
+		                                        <td class="col-lim text-xs-right" >
+		                                        	<div class="wrap-action-assign" >
+		                                        		<?php if( !($row['assign_merchant_status'] == 'pending' 
+		                                        					&& $row['assign_status'] == 'pending'
+		                                        					&& $row['delivery'] == 'processing') ){ ?>
+			                                        	<a href="javascript:void(0);" class="coz-btn-link disable" rel="nofollow" >
+				                                        	<?php echo $this->translate('txt_accept_assign'); ?>
+				                                        </a>
+				                                        <?php }else{ ?>
+				                                        <a href="javascript:void(0);" class="coz-btn-link" rel="nofollow" data-btn="acceptAssign" data-id="<?php echo $row['assign_id']; ?>" >
+				                                        	<?php echo $this->translate('txt_accept_assign'); ?>
+				                                        </a>
+				                                        <?php } ?>
+
+				                                        <?php if( !($row['assign_merchant_status'] == 'pending' 
+		                                        					&& $row['assign_status'] == 'pending'
+		                                        					&& $row['delivery'] == 'processing') ){ ?>
+				                                        <a href="javascript:void(0);" class="coz-btn-link disable" rel="nofollow" >
+				                                        	<?php echo $this->translate('txt_cancel_assign'); ?>
+				                                        </a>
+				                                        <?php }else{ ?>
+				                                        <a href="javascript:void(0);" class="coz-btn-link" rel="nofollow" data-btn="cancelAssign" data-id="<?php echo $row['assign_id']; ?>" >
+				                                        	<?php echo $this->translate('txt_cancel_assign'); ?>
+				                                        </a>
+				                                        <?php } ?>
+
+				                                        <?php if( !($row['assign_merchant_status'] == 'accept' 
+		                                        					&& $row['assign_status'] == 'accept'
+		                                        					&& $row['delivery'] == 'accept') ){ ?>
+				                                        <a href="javascript:void(0);" class="coz-btn-link disable" rel="nofollow" >
+				                                        	<?php echo $this->translate('txt_finish_assign'); ?>
+				                                        </a>
+				                                        <?php }else{ ?>
+				                                        <a href="javascript:void(0);" class="coz-btn-link" rel="nofollow" data-btn="finishAssign" data-id="<?php echo $row['assign_id']; ?>" >
+				                                        	<?php echo $this->translate('txt_finish_assign'); ?>
+				                                        </a>
+				                                        <?php } ?>
+			                                        </div>
+		                                        </td>
+		                                    </tr>
+	                                        <?php } ?>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+                            </div>
+                            <div class="col-sm-12" >
+                            	<?php if(!empty($paging)){ ?>
+		                        <nav >
+		                            <?php echo $paging; ?>
+		                        </nav>
+				                <?php } ?>
+                            </div>
+                            <?php }else{ ?>
+		                    <div class="col-sm-12" >
+		                        <p class="cart-empty">
+		                            <?php echo $this->translate('txt_chua_co_giao_dich_nao') ?>
+		                        </p>
+		                    </div>
+		                    <?php } ?>
+
+		                </div>
+
+		            </div>
+				   
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>

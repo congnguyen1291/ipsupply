@@ -1,0 +1,391 @@
+<div class="coz-wrapper-profile" >
+	<div class="container">
+	    <div class="row coz-profile">
+			<div class="col-md-3">
+				<?php echo $this->partial('application/profile/menu', array('active' => 'assign', 'point' => $point) ); ?>
+			</div>
+			<div class="col-md-9">
+	            <div class="coz-profile-content">
+				   
+	            	<div class="coz-user-info-block" >
+
+		                <div class="coz-user-heading">
+		                    <h3><?php echo $this->translate('txt_detail_assign') ?></h3>
+		                    <span class="help-block"><?php echo $this->User()->getUserName(); ?></span>
+		                </div>
+		                <div class="row" >
+		                	<?php if( !empty($assign) ){ ?>
+		                	<div class="clearfix" >
+		                		<div class="col-sm-12" >
+			                		<p class="coz-note-payment" >
+			                            <?php echo $this->translate('txt_thong_tin_assign') ?>
+			                        </p>
+			                	</div>
+			                	<div class="col-sm-12" >
+					                <div class="wrap-form-edit-profile" >
+
+					                	<div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-3" >
+			                                        <label class="ui-lb-payment coz-text-right" >
+			                                            <?php echo $this->translate('txt_assign_code') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-9" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $assign->assign_code; ?>" spellcheck="false" class="input-payment" disabled="disabled" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-3" >
+			                                        <label class="ui-lb-payment coz-text-right" >
+			                                            <?php echo $this->translate('txt_assign_name') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-9" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $assign->assign_name; ?>" spellcheck="false" class="input-payment" disabled="disabled" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-3" >
+			                                        <label class="ui-lb-payment coz-text-right" >
+			                                            <?php echo $this->translate('txt_assign_money') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-9" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $this->Currency()->fomatCurrency($total); ?>" spellcheck="false" class="input-payment" disabled="disabled" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-3" >
+			                                        <label class="ui-lb-payment coz-text-right" >
+			                                            <?php echo $this->translate('txt_assign_shipping') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-9" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $this->Currency()->fomatCurrency($fee); ?>" spellcheck="false" class="input-payment" disabled="disabled" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-3" >
+			                                        <label class="ui-lb-payment coz-text-right" >
+			                                            <?php echo $this->translate('txt_assign_status') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-9" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $assign->assign_status; ?>" data-place="assignStatus" data-id="<?php echo $row['assign_id']; ?>" spellcheck="false" class="input-payment" disabled="disabled" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+
+			                            <div class="form-element-payment" >
+			                                <div class="row" >
+			                                    <div class="col-sm-3" >
+			                                        <label class="ui-lb-payment coz-text-right" >
+			                                            <?php echo $this->translate('txt_assign_date') ?>
+			                                        </label>
+			                                    </div>
+			                                    <div class="col-sm-9" >
+			                                        <div class="ui-input-payment" >
+			                                            <input type="text" value="<?php echo $assign->assign_date; ?>" spellcheck="false" class="input-payment" disabled="disabled" >
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            
+					                </div>
+			                	</div>
+
+			                	<div class="col-sm-12" >
+			                		<div class="form-element-payment" >
+		                                <div class="row" >
+		                                    <div class="col-sm-12" >
+		                                        <div class="clearfix coz-text-right" >
+		                                        	<?php if( !($assign->assign_merchant_status == 'pending' 
+		                                        					&& $assign->assign_status == 'pending'
+		                                        					&& $assign->delivery == 'processing') ){ ?>
+		                                            <input name="sb" type="button" value="<?php echo $this->translate('txt_accept_assign') ?>" class="coz-btn disable" >
+		                                            <?php }else{ ?>
+		                                            <input name="sb" type="button" value="<?php echo $this->translate('txt_accept_assign') ?>" class="coz-btn coz-btn-active" data-btn="acceptAssign" data-id="<?php echo $assign->assign_id; ?>" >
+		                                            <?php } ?>
+
+		                                            <?php if( !($assign->assign_merchant_status == 'pending' 
+		                                        					&& $assign->assign_status == 'pending'
+		                                        					&& $assign->delivery == 'processing') ){ ?>
+		                                            <input name="sb" type="button" value="<?php echo $this->translate('txt_cancel_assign') ?>" class="coz-btn disable" >
+		                                            <?php }else{ ?>
+		                                            <input name="sb" type="button" value="<?php echo $this->translate('txt_cancel_assign') ?>" class="coz-btn coz-btn-active" data-btn="cancelAssign" data-id="<?php echo $assign->assign_id; ?>" >
+		                                            <?php } ?>
+
+		                                            <?php if( !($assign->assign_merchant_status == 'accept' 
+		                                        					&& $assign->assign_status == 'accept'
+		                                        					&& $assign->delivery == 'accept') ){ ?>
+		                                            <input name="sb" type="button" value="<?php echo $this->translate('txt_finish_assign') ?>" class="coz-btn disable" >
+		                                            <?php }else{ ?>
+		                                            <input name="sb" type="button" value="<?php echo $this->translate('txt_finish_assign') ?>" class="coz-btn coz-btn-active" data-btn="finishAssign" data-id="<?php echo $assign->assign_id; ?>" >
+		                                            <?php } ?>
+
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+			                	</div>
+		                	</div>
+
+		                	<?php if( !empty($products) ){ ?>
+		                	<div class="col-sm-12" >
+		                		<p class="coz-note-payment" >
+		                            <?php echo $this->translate('txt_danh_sach_san_pham') ?>
+		                        </p>
+		                	</div>
+		                	<div class="col-sm-12" >
+			                	<div class="table-responsive">
+	                                <table class="table table-data-bind table-bordered" >
+						                <thead>
+						                    <tr>
+						                        <th class="text-left col-lim" >Mã</th>
+						                        <th class="text-center  col-lim" >Hình</th>
+						                        <th colspan="5" >Sản phẩm</th>
+						                        <th class="text-xs-right col-lim" colspan="2" >Đơn giá</th>
+						                        <th class="text-xs-right col-lim" >Số lượng</th>
+						                        <th class="text-xs-right col-lim" >Thành tiền</th>
+						                        <th class="text-xs-right col-lim" >Tổng tiền</th>
+						                    </tr>
+						                </thead>
+						                <tbody>
+						                <?php 
+						                foreach($products as $key => $product){
+						                    foreach($product['product_type'] as $product_type_id => $row){
+						                        $extentions = array_merge($row['extensions'], $row['extensions_require']);
+						                ?>
+						                    <tr>
+						                        <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> class="text-left col-lim" >
+						                            <?php echo $product['products_code'] ?>
+						                        </td>
+
+						                        <td class="col-lim" >
+						                            <a href="<?php echo $this->Products()->getLink($row); ?>" target="_blank">
+						                                <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($row),100); ?>" class="img-reponsive" width="100" >
+						                            </a>
+						                        </td>
+
+						                        <td colspan="5" >
+						                            <a href="<?php echo $this->Products()->getLink($row); ?>" target="_blank">
+						                                <?php echo $this->Products()->getName($row); ?>
+						                            </a>
+						                        </td>
+
+						                        <td class="text-xs-right col-lim" <?php echo empty($row['extensions_require']) ? 'colspan="2"' : '' ?> >
+						                            <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSaleSimple($row)) ?>
+						                        </td>
+
+						                        <?php if( !empty($row['extensions_require']) ){ ?>
+			                                    <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+			                                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)) ?>
+			                                    </td>
+			                                    <?php } ?>
+
+						                        <td class="text-xs-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+						                            <?php echo $this->Cart()->getProductsQuantity($row) ?>
+						                        </td>
+
+						                        <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+			                                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)*$this->Cart()->getProductsQuantity($row)) ?>
+			                                    </td>
+
+						                        <td class="text-xs-right col-lim" <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> >
+						                            <?php echo $this->Currency()->fomatCurrency($row['price_total']) ?>
+						                            <input type='hidden' name='pdetail[<?php echo $product['products_id'] ?>][price_total]' value='<?php echo $row['price_total'] ?>' />
+						                        </td>
+						                    </tr>
+
+						                    <?php 
+			                                $k_ex = 0;
+			                                if(!empty($row['extensions_require'])){
+			                                    foreach ($row['extensions_require'] as $k_ => $ext) {
+			                                        $quality = $ext['quantity'];
+			                                ?>
+			                                <tr>
+			                                    <?php if($k_ex == 0){ ?>
+			                                    <td rowspan="<?php echo count($extentions); ?>" class="col-lim text-center" >
+			                                        <?php echo $this->translate('txt_sp_dinh_kem');?>
+			                                    </td>
+			                                    <?php } ?>
+			                                    <td class="col-lim text-right">
+			                                        <?php echo ($k_ex+1); ?>
+			                                    </td>
+			                                    <td colspan="2" >
+			                                        <?php echo $ext['ext_name'] ?>
+			                                    </td>
+			                                    <td class="col-lim text-right" >
+			                                        <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
+			                                    </td>
+			                                    <td class="col-lim text-right" >
+			                                        <?php echo $quality; ?>
+			                                    </td>
+			                                    <td class="col-lim text-right" >
+			                                        <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
+			                                    </td>
+			                                </tr>
+			                                <?php 
+			                                        $k_ex++;
+			                                    }
+			                                } ?>
+
+			                                <?php 
+			                                if( !empty($row['extensions']) ){
+			                                    foreach ($row['extensions'] as $k_ => $ext) {
+			                                        $quality = $ext['quantity'];
+			                                ?>
+			                                <tr>
+			                                    <td class="col-lim" >
+			                                        <?php echo ($k_ex+1); ?>
+			                                    </td>
+			                                    <td colspan="5" >
+			                                        <?php echo $ext['ext_name'] ?>
+			                                    </td>
+			                                    <td class="col-lim text-right" >
+			                                        <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
+			                                    </td>
+			                                    <td class="col-lim text-right" >
+			                                        <?php echo $quality; ?>
+			                                    </td>
+			                                    <td class="col-lim text-right" >
+			                                        <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
+			                                    </td>
+			                                </tr>
+			                                <?php $k_ex++; 
+			                                    }
+			                                } ?>
+
+						                <?php }
+						                } ?>
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Tạm tính
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important" >
+						                                <?php echo $this->Currency()->fomatCurrency($total_orig) ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+
+						                    <?php if ( !empty($coupon) ) { ?>
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Giảm giá
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important" >
+						                                <?php echo $this->Currency()->fomatCurrency($coupon['coupon_price']) ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+						                    <?php } ?>
+
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Phí vận chuyển
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important" >
+						                                <?php echo $this->Currency()->fomatCurrency($fee, 'txt_mien_phi_ship') ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+
+						                    <?php if( $total < $total_tax ){ ?>
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Tổng cộng trước
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important"  >
+						                                <?php echo $this->Currency()->fomatCurrency($total + $fee) ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Tiền thuế
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important"  >
+						                                <?php echo $this->Currency()->fomatCurrency(($total_tax - $total)) ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Tổng sau thuế
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important" >
+						                                <?php echo $this->Currency()->fomatCurrency($total_tax + $fee) ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+						                    <?php }else{ ?>
+						                    <tr>
+						                        <td colspan="10" class="text-xs-right" >
+						                            Tổng cộng
+						                        </td>
+						                        <td colspan="2" class="text-xs-right" >
+						                            <strong class="coz-color-important"  >
+						                                <?php echo $this->Currency()->fomatCurrency($total + $fee) ?>
+						                            </strong>
+						                        </td>
+						                    </tr>
+						                    <?php } ?>
+
+						                </tbody>
+						            </table>
+	                            </div>
+                            </div>
+                            <?php }else{ ?>
+		                    <div class="col-sm-12" >
+		                        <p class="cart-empty">
+		                            <?php echo $this->translate('txt_khong_co_san_pham_trong_assign') ?>
+		                        </p>
+		                    </div>
+		                    <?php } ?>
+
+                            <?php }else{ ?>
+		                    <div class="col-sm-12" >
+		                        <p class="cart-empty">
+		                            <?php echo $this->translate('txt_assign_khong_thay') ?>
+		                        </p>
+		                    </div>
+		                    <?php } ?>
+
+		                </div>
+
+		            </div>
+				   
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,315 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="active">Hóa đơn</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Hóa đơn :: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/invoice') ?>" method="get">
+                <div class="coz-search-bar clearfix" data-form="searchAjax" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                            </div>
+                            <div class="col-xs-5 col-coz-search" >
+                                <select name="type" class="form-control" >
+                                    <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo mã hoá đơn
+                                    </option>
+                                    <option value="1" <?php echo $type == 1 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo tên khách hàng
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/invoice') ?>" method="post" class="clearfix" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-12" >
+                    <div class="text-right" >
+                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'add')) ?>"
+                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm hóa đơn" >
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                        <?php if( !empty($invoices) ){ ?>
+                        <span class="inline-box" >
+                            <a href="javascript:void(0);" title="Trạng thái hóa đơn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <i class="fa fa-bolt" aria-hidden="true"></i>
+                            </a>
+                            <span class="dropdown-menu dropdown-langs" >
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'pending')) ?>')" data-toggle="tooltip" data-placement="top" title="Pending" >
+                                        <span>
+                                            Pending
+                                        </span>
+                                    </a>
+                                </span>
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'processing')) ?>')" data-toggle="tooltip" data-placement="top" title="Processing" >
+                                        <span>
+                                            Processing
+                                        </span>
+                                    </a>
+                                </span>
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'delivered')) ?>')" data-toggle="tooltip" data-placement="top" title="Delivered" >
+                                        <span>
+                                            Delivered
+                                        </span>
+                                    </a>
+                                </span>
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'update')) ?>')" data-toggle="tooltip" data-placement="top" title="Update" >
+                                        <span>
+                                            Update
+                                        </span>
+                                    </a>
+                                </span>
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'cancel')) ?>')" data-toggle="tooltip" data-placement="top" title="Cancel" >
+                                        <span>
+                                            Cancel
+                                        </span>
+                                    </a>
+                                </span>
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'accept')) ?>')" data-toggle="tooltip" data-placement="top" title="Accept" >
+                                        <span>
+                                            Accept
+                                        </span>
+                                    </a>
+                                </span>
+                                <span class="dropdown-item" >
+                                    <a href="javascript:void(0);" onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'finish')) ?>')" data-toggle="tooltip" data-placement="top" title="Finish" >
+                                        <span>
+                                            Finish
+                                        </span>
+                                    </a>
+                                </span>
+                            </span>
+                        </span>
+                        <button class="btn btn-link" type="button"
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/invoice', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá hóa đơn" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <?php if( !empty($invoices) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" >Id</th>
+                        <th class="text-center col-lim" >Thanh toán/giao hàng</th>
+                        <th >Khách hàng</th>
+                        <th class="col-lim text-right"  >Thành tiền</th>
+                        <th class="col-lim"  >Ngày đặt</th>
+                        <th class="col-lim"  >Ngày giao</th>
+                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($invoices as $row) { ?>
+                    <tr class="order-<?php echo $row['delivery'] ?>" >
+                        <td class="text-center col-lim" >
+                            <?php echo $row['invoice_id'] ?>
+                        </td>
+                        <td class="text-center col-lim" >
+                            <?php if( in_array($row['payment_code'], array('HOME', 'ATM')) ){ ?>
+                            agents
+                            <?php }else{ echo $row['payment_code']; } ?>/
+                            agents
+                        </td>
+                        <td >
+                            <?php echo $row['first_name'].' '.$row['last_name'] ?>
+                        </td>
+
+                        <td class="col-lim text-right" >
+                            <?php echo $this->Currency()->fomatCurrency($row['total_tax']+$row['shipping_fee']) ?>
+                        </td>
+
+                        <td class="col-lim" >
+                            <?php echo $row['date_create'] ?>
+                        </td>
+                        <td class="col-lim" >
+                            <?php echo $row['date_delivery'] ?>
+                        </td>
+
+                        <td class="col-lim text-right" >    
+                            Có <?php echo $row['total_products'] ?> sản phẩm
+
+                            <?php if( !empty($row['date_delivery']) ){
+                                $day = $this->Common()->getDayBetweenDate(date('Y-m-d H:m:s'), $row['date_delivery']);
+                                if($day>=0){
+                            ?>
+                            <span class="coz-color-ative <?php echo $day <=2 ? 'coz-color-important' : '' ?>" data-toggle="tooltip" data-placement="top" title="Còn <?php echo empty($day) ? 'chưa đầy' : $day ?> ngày để giao hàng" >
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            </span>
+                            <?php 
+                                }
+                            }else{ 
+                                $day = $this->Common()->getDayBetweenDate($row['date_create']);
+                            ?>
+                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đã <?php echo $day ?> ngày từ lúc mua hàng" >
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            </span>
+                            <?php } ?>
+
+                            <?php if( !empty($row['is_incognito']) ){ ?>
+                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Không dấu tên với người nhận" >
+                                <i class="fa fa-user-times" aria-hidden="true"></i>
+                            </span>
+                            <?php }else{ ?>
+                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Dấu tên với người nhận" >
+                                <i class="fa fa-user-times" aria-hidden="true"></i>
+                            </span>
+                            <?php } ?>
+
+                            <?php if( !empty($row['invoice_description']) ){ ?>
+                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Có comment" >
+                                <i class="fa fa-comment" aria-hidden="true"></i>
+                            </span>
+                            <?php }else{ ?>
+                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Không có comment" >
+                                <i class="fa fa-comment" aria-hidden="true"></i>
+                            </span>
+                            <?php } ?>
+
+                            <span class="round-order-status round-order-<?php echo $row['delivery'] ?>" >
+                                <?php echo $row['delivery'] ?>
+                            </span>
+                        </td>
+
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/invoice', array('action' => 'edit', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xem hóa đơn" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+
+                            <span class="inline-box" >
+                                <a href="javascript:void(0);" title="Trạng thái hóa đơn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                    <i class="fa fa-bolt" aria-hidden="true"></i>
+                                </a>
+                                <span class="dropdown-menu dropdown-langs" >
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'pending', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Pending" >
+                                            <span>
+                                                Pending
+                                            </span>
+                                        </a>
+                                    </span>
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'processing', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Processing" >
+                                            <span>
+                                                Processing
+                                            </span>
+                                        </a>
+                                    </span>
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'delivered', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Delivered" >
+                                            <span>
+                                                Delivered
+                                            </span>
+                                        </a>
+                                    </span>
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'update', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Update" >
+                                            <span>
+                                                Update
+                                            </span>
+                                        </a>
+                                    </span>
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'cancel', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Cancel" >
+                                            <span>
+                                                Cancel
+                                            </span>
+                                        </a>
+                                    </span>
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'accept', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Accept" >
+                                            <span>
+                                                Accept
+                                            </span>
+                                        </a>
+                                    </span>
+                                    <span class="dropdown-item" >
+                                        <a href="<?php echo $this->url('cms/invoice', array('action' => 'finish', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Finish" >
+                                            <span>
+                                                Finish
+                                            </span>
+                                        </a>
+                                    </span>
+                                </span>
+                            </span>
+
+                            <a href="<?php echo $this->url('cms/invoice', array('action' => 'delete', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá hóa đơn"  data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['invoice_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có hóa đơn
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

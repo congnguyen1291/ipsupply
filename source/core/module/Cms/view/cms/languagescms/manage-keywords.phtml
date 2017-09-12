@@ -1,0 +1,126 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Ngôn ngữ :: Quản lý từ khóa
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/languagescms') ?>">Ngôn ngữ</a></li>
+        <li class="active">Từ khóa</li>
+    </ol>
+</section>
+<?php
+$languages = $languages->toArray();
+$keywords = $keywords->toArray();
+$data = array();
+foreach($keywords as $key => $row){
+    $data[$key]['keyword'] = $row['keyword'];
+    $tmp = $row['translate'];
+    $tmp1 = explode('__AND__', $tmp);//Tách các ngôn ngữ ra
+    foreach($tmp1 as $r){
+        $tmp2 = explode('_transto_', $r);
+        $data[$key][$tmp2[0]] = $tmp2[1];
+    }
+}
+?>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <form action="<?php echo $this->url('cms/languagescms', array('action' => 'filter-keyword')) ?>" method="post"
+                          class="filter_form form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" for="keyword"></label>
+                            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-filter"></i>
+                            Tìm từ khóa
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <form action="<?php echo $this->url('cms/languagescms') ?>" method="post">
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/languagescms', array('action' => 'add-keyword')) ?>"
+                               class="btn btn-primary">Thêm từ khóa mới</a>
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/languagescms', array('action' => 'delete-keyword')) ?>')">
+                                Xóa từ khóa
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                        <table class="table table-bordered table-hover table-data-bind">
+                            <thead>
+                            <tr>
+                                <th>Từ khóa</th>
+                                <?php foreach($languages as $lang) : ?>
+                                    <th><?php echo $lang['languages_name'] ?></th>
+                                <?php endforeach; ?>
+                                <th width="10"><input type="checkbox" class="checkall" /></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach($data as $word) : ?>
+                                <tr>
+                                    <td><a href="<?php echo $this->url('cms/languagescms', array('action' => 'edit-keyword')) ?>?word=<?php echo $word['keyword'] ?>"><?php echo $word['keyword'] ?></a></td>
+                                    <?php foreach($languages as $lang) : ?>
+                                        <td><?php echo isset($word[$lang['languages_id']]) ? $word[$lang['languages_id']] : '' ?></td>
+                                    <?php endforeach; ?>
+                                    <td><input type="checkbox" name="cid[]" value="<?php echo $word['keyword'] ?>"/></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Từ khóa</th>
+                                <?php foreach($languages as $lang) : ?>
+                                    <th><?php echo $lang['languages_name'] ?></th>
+                                <?php endforeach; ?>
+                                <th width="10"><input type="checkbox" class="checkall" /></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <?php echo $paging ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-condensed">
+                    <tr>
+                        <td>
+                            <a href="<?php echo $this->url('cms/languagescms', array('action' => 'add-keyword')) ?>"
+                               class="btn btn-primary">Thêm từ khóa mới</a>
+                            <button class="btn btn-danger" type="button"
+                                    onclick="doSubmit(this.form, '<?php echo $this->url('cms/languagescms', array('action' => 'delete-keyword')) ?>')">
+                                Xóa từ khóa
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</section><!-- /.content -->

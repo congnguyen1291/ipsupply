@@ -1,0 +1,157 @@
+<script id="tmplFillterSort" data-place="tmplFillterSort" type="text/x-jQuery-tmpl">
+<div>
+    <?php echo $this->translate('txt_sap_xep_theo') ?>
+    <div class="form-inline form-viewpro" data-form="category" >
+        <div class="form-group">
+            <select class="form-control sort-by-script neo-trigger-filter" name="sort" data-input="sort" >
+                {{each coz.model.fillter.sort.getOptions() }}
+                <option value="${coz.model.fillter.sort.getValue($value)}" {{if coz.model.fillter.sort.isSelected($value) }}selected="selected"{{/if}} >
+                    ${coz.model.fillter.sort.getText($value)}
+                </option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tmplFillterFeature" data-place="tmplFillterFeature" type="text/x-jQuery-tmpl">
+<div>
+    <div class="bar-fillter clearfix" >
+        
+        <div class="fillter-item clearfix {{if coz.model.fillter.price.isClose() }}closed{{/if}}" data-place="itemFillter" data-id="price" >
+            <div class="header-item-fillter clearfix" data-place="itemHeaderFillter" data-id="price" >
+                <a class="fillter-toogle" href="javascript:void(0);" data-btn="toggleFillter" data-id="price" rel="nofollow" >
+                    <?php echo $this->translate('txt_loc_theo_gia') ?>
+                    <span class="fillter-direct" >
+                        {{if coz.model.fillter.price.isClose() }}
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        {{else}}
+                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                        {{/if}}
+                    </span>
+                </a>
+            </div>
+            <div class="body-item-fillter clearfix" data-place="itemBodyFillter" data-id="price" >
+                <div class="clearfix wrap-ranger-price" >
+                    <input type="text" data-neo="ionRangeSlider"  data-min="${coz.model.fillter.price.getMin()}" data-max="${coz.model.fillter.price.getMax()}" data-grid="true" value="${coz.model.fillter.price.getVal()}" name="price" data-input="price" />
+                </div>
+                <div class="price-from-to" >
+                    ${language.translate('txt_gia_tu')} : 
+                    <span class="txt-ranger-from" data-place="valueRangerFrom" >${coz.fomatCurrency(coz.model.fillter.price.getFrom())}</span> - 
+                    <span class="txt-ranger-to"  data-place="valueRangerTo" >${coz.fomatCurrency(coz.model.fillter.price.getTo())}</span>
+                </div>
+            </div>
+        </div>
+
+        {{if coz.feature.hasFeature() }}
+            {{each coz.feature.getRoot() }}
+                {{if coz.feature.hasChild(coz.feature.getID($value)) }}
+                <div class="fillter-item clearfix {{if coz.feature.isClose($value) }}closed{{/if}}" data-place="itemFillter" data-id="${coz.feature.getID($value)}" >
+                    <div class="header-item-fillter clearfix" data-place="itemHeaderFillter" data-id="${coz.feature.getID($value)}" >
+                        <a class="fillter-toogle" href="javascript:void(0);" data-btn="toggleFillter" data-id="${coz.feature.getID($value)}" rel="nofollow" >
+                            ${coz.feature.getName($value)}
+                            <span class="fillter-direct" >
+                                {{if coz.feature.isClose($value) }}
+                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                {{else}}
+                                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                {{/if}}
+                            </span>
+                        </a>
+                    </div>
+                    <div class="body-item-fillter clearfix" data-place="itemBodyFillter" data-id="${coz.feature.getID($value)}" >
+                        <div class="list-fillter-check clearfix" >
+                            {{each coz.feature.getChild(coz.feature.getID($value)) }}
+                            <div class="coz-item-check {{if coz.feature.isChecked($value) }}checked{{/if}}" data-id="${coz.feature.getID($value)}" >
+                                <div class="coz-check-box" >
+                                    <span></span>
+                                    <input type="checkbox" name="feature[]" value="${coz.feature.getName($value)}" id="filler-${coz.feature.getID($value)}" {{if coz.feature.isChecked($value) }}checked="checked"{{/if}} style="display: none" data-id="${coz.feature.getID($value)}" data-input="feature" >
+                                </div>
+                                <div class="coz-lable-check" >
+                                    <span class="coz-label-check-inner">
+                                        ${coz.feature.getName($value)}
+                                    </span>
+                                    <span class="coz-sum-check" >(${coz.feature.getNum($value)})</span>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+            {{/each}}
+        {{/if}}
+    </div>
+</div>
+</script>
+
+<div class="wrap-breadcrumbs clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <span class="bc-dr" >
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </span>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <span itemprop="item name" >
+                            <?php echo $this->translate('txt_tat_ca_san_pham'); ?>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="co-main clearfix" >
+    <div class="container">
+        <div class="row">
+
+            <section class="col-lg-9 col-lg-push-3" >
+                <div class="box-product" >
+                    <div class="box-pheading" >
+                        <h1 class="title-box" >
+                            <?php echo $this->translate('txt_tat_ca_san_pham'); ?>
+                        </h1>
+                        <div class="description-box" >
+                            <?php echo $this->translate('txt_des_tat_ca_san_pham'); ?>
+                        </div>
+                    </div>
+                    <div class="box-pbody" id="PjaxProductCategory" data-pjax-container="ProductCategory" >
+                        <?php echo $this->partial('application/categories/list-product', array('rows' => $rows, 'paging' => $paging, 'total' => $total ) ); ?>
+                    </div>
+                </div>
+            </section>
+
+            <section class="col-lg-3 col-lg-pull-9" >
+
+                <?php echo $this->partial('app/categories-left', array('categories' => $categories) ); ?>
+
+                <div class="fillter-feature clearfix" >
+                    <div class="tmpl-fillter-feature clearfix" data-place="fillterFeature" ></div>
+                </div>
+
+                <div class="dh-banner" >
+                    <div class="inner-dh-banner" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" >
+                            <img src="/styles/dataimages/banner.jpg" alt="" class="img-fluid" >
+                        </a>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+</div>

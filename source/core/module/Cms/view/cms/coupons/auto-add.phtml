@@ -1,0 +1,114 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Mã khuyến mãi :: Thêm mới
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/coupons') ?>">Mã khuyến mãi</a></li>
+        <li class="active">Thêm mã mới</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form action="<?php echo $this->url('cms/coupons', array('action' => 'auto-add')) ?>" method="post">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+                    <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="total_code">Số lượng mã</label>
+                        <input class="numberInput form-control" type="text" name="total_code" id="total_code"/>
+                    </div>
+
+                    <div class="row" >
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label for="start_date">Ngày bắt đầu</label>
+                                <input class="date-time-input form-control" type="text" name="start_date" id="start_date" value="<?php echo date('Y-m-d H:i:s') ?>" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label for="expire_date">Ngày hết hạn</label>
+                                <input class="date-time-input form-control" type="text" name="expire_date" id="expire_date" value="<?php echo date('Y-m-d H:i:s') ?>" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" >
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label for="min_price_use">Giá nhỏ nhất để có thể sử dụng:</label>
+                                <input class="moneyInput form-control" type="text" name="min_price_use" id="min_price_use"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="form-group">
+                                <label for="max_price_use">Giá lớn nhất để được phép sử dụng:</label>
+                                <input class="moneyInput form-control" type="text" name="max_price_use" id="max_price_use"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coupon_price">Giá trị bằng mã khuyến mãi:</label>
+                        <input class="moneyInput form-control" type="text" name="coupon_price" id="coupon_price"/>
+                    </div>
+                    
+                    <div class="form-group">
+<!--                        <label for="coupon_percent">Giá trị bằng %(nếu áp dụng):</label>-->
+                        <input class="numberInput form-control" type="hidden" name="coupon_percent" id="coupon_percent"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coupons_type">
+                            <input name="coupons_type" type="hidden" value="0"/>
+                            <input type="checkbox" name="coupons_type" id="coupons_type" value="1"/>
+                            Dùng nhiều lần
+                        </label>
+                    </div>
+
+                    <div class="form-group" id="wrap-coupons-max-use" >
+                        <div class="row" >
+                            <label for="coupons_max_use" class="col-sm-2" >
+                                Số lần dùng tối đa
+                            </label>
+                            <div class="col-sm-2" >
+                                <input class="numberInput form-control" type="text" name="coupons_max_use" id="coupons_max_use"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="is_published">
+                            <input name="is_published" type="hidden" value="0"/>
+                            <input type="checkbox" name="is_published" id="is_published" value="1"/>
+                            Kích hoạt
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+                    <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</section>

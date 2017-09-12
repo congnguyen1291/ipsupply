@@ -1,0 +1,78 @@
+<?php if( !empty($transports) ){ ?>
+<p class="coz-note-payment" >
+    <?php echo $this->translate('txt_chon_kieu_van_chuyen_payment'); ?>
+</p>
+<div class="form-element-payment" >
+    <div class="row" >
+        <div class="col-sm-12" >
+            <?php foreach ($transports as $key => $transport) { ?>
+            <div class="ui-radio-payment" >
+                <label class="coz-ui-radio clearfix" >
+                    <input type="radio" value="<?php echo $key; ?>" name="trans[transport_type]" <?php echo $transport_type==$key ? 'checked' : '' ?>  data-input="trans[transport_type]" >
+                    <?php echo $transport; ?>
+                </label>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<p class="coz-note-payment" >
+    <?php echo $this->translate('txt_des_hinh_thuc_van_chuyen_payment'); ?>
+</p>
+<?php if( !$no_shipping ){ ?>
+    <?php if( !$is_free ){ ?>
+    <div class="form-element-payment" >
+        <div class="row" >
+            <div class="col-sm-12" >
+                <?php foreach ($shipping as $key=>$ship){ ?>
+                <div class="ui-radio-payment" >
+                    <label class="coz-ui-radio clearfix" >
+                        <input type="radio" value="<?php echo $ship['shipping_id'] ?>" name="trans[shipping_id]" <?php echo ( (empty($choose) && $key == $choose ) 
+                                        || (!empty($choose) & $ship['shipping_id']==$choose)) ? 'checked' : '' ?>  data-input="trans[shipping_id]" >
+                        <?php echo $ship['shipping_title'] ?>
+                        <?php 
+                        $shipping_value = 0;
+                        if($transport_type == 0 ){
+                            $shipping_value =  (!empty($ship['shipping_fixed_value']) ? $ship['shipping_fixed_value'] : $ship['shipping_value']);
+                        }else{
+                            $shipping_value =  (!empty($ship['shipping_fast_fixed_value']) ? $ship['shipping_fast_fixed_value'] : $ship['shipping_fast_value']);
+                        } ?>
+                        <span class="coz-price-radio" >
+                            <?php echo $this->Currency()->fomatCurrency($shipping_value, 'txt_mien_phi_ship') ?>
+                        </span>
+                    </label>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <?php }else{ ?>
+        <div class="form-element-payment" >
+            <div class="row" >
+                <div class="col-sm-12" >
+                    <div class="ui-radio-payment" >
+                        <label class="coz-ui-radio clearfix" >
+                            <?php if( !empty($free_shipping) ){ ?>
+                                <input type="radio" value="<?php echo $free_shipping['shipping_id'] ?>" name="trans[shipping_id]" checked="checked" data-input="trans[shipping_id]"  >
+                                <?php echo $this->translate('txt_shipping_free'); ?>
+                                (<?php echo $free_shipping['shipping_title'] ?>)
+                            <?php }else{ ?>
+                                <input type="radio" value="0" name="trans[shipping_id]" checked="checked" data-input="trans[shipping_id]"  >
+                                <?php echo $this->translate('txt_shipping_free'); ?>
+                            <?php } ?>
+                            <span class="coz-price-radio" >
+                                <?php echo $this->Currency()->fomatCurrency(0, 'txt_mien_phi_ship') ?>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+<?php }else{ ?>
+    <p class="coz-note-payment" >
+        <?php echo $this->translate('txt_shipping_available'); ?>
+    </p>
+<?php } ?>

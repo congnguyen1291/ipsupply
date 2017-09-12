@@ -1,0 +1,506 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Website :: Thông tin
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/website') ?>">Website</a></li>
+        <li class="active">Thông tin</li>
+    </ol>
+</section>
+<script type="text/javascript">
+    var website = <?php echo json_encode($mywebsite); ?>;
+</script>
+<?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/website', array('action' => 'edit', 'id' => $id)));
+    $form->setAttribute('id', 'form-website');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('website_id'));
+?>
+
+<div class="container-fluid-md">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Thông tin website</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="control-label strong" for="Name">Tên website</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('website_name')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="Name">Logo</label>
+                <div class="controls" >
+                    <div class="row wrap-logo-website" >
+                        <?php if(!empty($mywebsite->logo)){ ?>
+                            <div class="col-sm-4">
+                                <div class="holder-img">
+                                    <img src="<?php echo $mywebsite->logo; ?>" class="img-responsive">
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <button type="button" class="btn btn-link btn-upload-logo-website">Logo website</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="MetaTitle">Tiêu đề trang chủ</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('seo_title')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="MetaTitle">Keyword trang chủ</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('seo_keywords')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="MetaDescription">Mô tả trang chủ</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('seo_description')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="javascript">Javascript</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('javascript')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="javascript">Css</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('css')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label strong" for="Email">Email quản trị</label>
+                            <div class="controls">
+                                <?php echo $this->formRow($form->get('website_email_admin')); ?>
+                                <p class="text-muted">Email được sử dụng cho COZ liên lạc với bạn</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label strong" for="CustomerEmail">Email gửi thông báo</label>
+                            <div class="controls">
+                                <?php echo $this->formRow($form->get('website_email_customer')); ?>
+                                <p class="text-muted">Email này được sử dụng để gửi thông báo đến các khách hàng của bạn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label strong" for="version_cart">
+                            Phiên bản cart
+                        </label>
+                        <div class="controls">
+                            <?php echo $this->formRow($form->get('version_cart')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label strong" for="type_crop_image">
+                            Kiểu cắt hình
+                        </label>
+                        <div class="controls">
+                            <?php echo $this->formRow($form->get('type_crop_image')); ?>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label strong" for="is_multilanguage">Đa ngôn ngữ</label>
+                            <input type="hidden" value="0" name="is_multilanguage" >
+                            <input type="checkbox" value="1" name="is_multilanguage" <?php echo (!empty($mywebsite['is_multilanguage']) && $mywebsite['is_multilanguage'] == 1) ? 'checked="checked"' : '' ?> >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12" >
+                <div class="form-group">
+                    <label class="control-label strong" for="confirm_location">
+                        Hiện popup hỏi vị trí của bạn 
+                    </label>
+                    <?php echo $this->formRow($form->get('confirm_location')); ?>
+                </div>
+            </div>
+                    
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Thông tin liên hệ</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="control-label strong" for="TradeName">Tên kinh doanh</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('website_name_business')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="PhoneNumber">Điện thoại</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('website_phone')); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label strong" for="Address">Địa chỉ</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('website_address')); ?>
+                </div>
+            </div>
+            <div class="form-group " >
+                <div class="row" >
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label strong" for="CountryCode">Quốc gia</label>
+                            <?php echo $this->formRow($form->get('website_contries')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label strong" for="Province">Chỉ bán hàng trong nước</label>
+                            <?php echo $this->formRow($form->get('is_local')); ?>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label strong" for="CountryCode">Giao hàng</label>
+                            <?php echo $this->formRow($form->get('type_buy')); ?>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label strong" for="Province">Giá trị để hóa đơn tính ship</label>
+                            <?php echo $this->formRow($form->get('ship')); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Tiêu chuẩn &amp; định dạng</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="control-label strong" for="Timezone">Múi giờ</label>
+                    <div class="controls">
+                        <?php echo $this->formRow($form->get('website_timezone')); ?>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="control-label strong" for="Currency">Tiền tệ</label> <a href="javascript:void(0)" >thay đổi định dạng </a>
+                    <div class="controls">
+                        <?php echo $this->formRow($form->get('website_currency')); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-9">
+                    <label class="control-label strong">Định dạng mã đơn hàng</label> <br>
+                    <span class="text-muted">Đơn hàng mặc định bắt đầu là #1001, bạn có thể thay đổi tiền tố hoặc hậu tố giống như "BN1001" hoặc "1001-AD"</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label strong" for="OrderPrefix">Tiền tố</label>
+                        <div class="controls">
+                            <?php echo $this->formRow($form->get('website_order_code_prefix')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label strong" for="OrderSuffix">Hậu tố</label>
+                        <div class="controls">
+                            <?php echo $this->formRow($form->get('website_order_code_suffix')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <span class="text-muted">Mã đơn hàng sẽ được áp dụng là: </span><span class="example-order-code">#1001, #1002</span>
+                </div>
+            </div>                
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Google Analytics</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <?php echo $this->formRow($form->get('website_ga_code')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Social</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row" >
+                <div class="col-sm-6" >
+                    <div class="form-group">
+                        <label class="control-label strong" for="facebook_id">
+                            App Facebook id
+                        </label>
+                        <div class="controls">
+                            <?php echo $this->formRow($form->get('facebook_id')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" >
+                    <div class="form-group">
+                        <label class="control-label strong" for="google_client_id">
+                            Google Client id
+                        </label>
+                        <div class="controls">
+                            <?php echo $this->formRow($form->get('google_client_id')); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="col-sm-3" >
+                    <div class="form-group">
+                        <label class="control-label strong" for="has_login_facebook">
+                            Login facebook
+                        </label>
+                        <?php echo $this->formRow($form->get('has_login_facebook')); ?>
+                    </div>
+                </div>
+
+                <div class="col-sm-3" >
+                    <div class="form-group">
+                        <label class="control-label strong" for="has_login_google">
+                            Login google
+                        </label>
+                        <?php echo $this->formRow($form->get('has_login_google')); ?>
+                    </div>
+                </div>
+
+                <div class="col-sm-3" >
+                    <div class="form-group">
+                        <label class="control-label strong" for="has_login_twister">
+                            Login Twister
+                        </label>
+                        <?php echo $this->formRow($form->get('has_login_twister')); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','facebook', 'index')){ ?>
+    <div class="panel panel-default" id="config-websites-fbapp" >
+        <div class="panel-heading">
+            <h4 class="panel-title">Quản lý fanpage Facebook</h4>
+        </div>
+        <div class="panel-body" >
+            <div class="row" >
+
+                <div class="col-sm-12 text-center"  id="not-oauth-fbapp" >
+                    <p>
+                        Bạn chưa chứng thực app facebook <br />
+                        vui lòng nhấn link ở dưới để cập nhật
+                    </p>
+                    <a href="/cms/facebook" >
+                        OAuth facebook
+                    </a>
+                </div>
+
+                <div class="col-sm-12 config-websites-fbapp" id="oauth-fbapp"  style="display: none"  >
+                    <div class="row" >
+                        <div class="col-sm-6" >
+                            <div class="form-group" >
+                                <label class="control-label strong" for="fb_page_id">
+                                    Fanpage
+                                </label>
+                                <div class="controls">
+                                    <select name="fb_page_id" id="fb_page_id" class="form-control fb_page_id" id="fb_page_id" ></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" id="wrap-fb_page_tab" style="display: none;" >
+                            <div class="form-group">
+                                <label class="control-label strong" for="fb_page_tab">
+                                    Tab page
+                                </label>
+                                <div class="controls">
+                                    <select name="fb_page_tab" id="fb_page_tab" class="form-control fb_page_tab" >
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Trỏ domain (ngăn cách nhau bằng dấu ,)</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <?php echo $this->formRow($form->get('website_domain_refer')); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Ranger slider</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row" >
+                <div class="col-sm-6" >
+                    <label class="control-label strong" for="website_min_value_slider">
+                        Giá từ
+                    </label>
+                    <div class="controls">
+                        <?php echo $this->formRow($form->get('website_min_value_slider')); ?>
+                    </div>
+                </div>
+                <div class="col-sm-6" >
+                    <label class="control-label strong" for="website_max_value_slider">
+                        Giá đến
+                    </label>
+                    <div class="controls">
+                        <?php echo $this->formRow($form->get('website_max_value_slider')); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Fanpage</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="control-label strong" for="url_twister">url twitter</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_twister')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_google_plus">url google plus</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_google_plus')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_facebook">url facebook</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_facebook')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_pinterest">url pinterest</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_pinterest')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_houzz">url houzz</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_houzz')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_instagram">url instagram</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_instagram')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_rss">url rss</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_rss')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label strong" for="url_youtube">url youtube</label>
+                <div class="controls">
+                    <?php echo $this->formRow($form->get('url_youtube')); ?>
+                </div>
+            </div>
+
+            <?php if(count($modules)>0){ ?>
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Phân quyền theo module</h3>
+                </div>
+                <div class="box-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul class="list-group">
+                            <?php foreach($modules as $module) : ?>
+                                <li class="list-group-item">
+                                    <span style="display:inline-block;width:500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap"><?php echo $module['module_name'] ?></span>
+                                    <input type="checkbox" name="modules[]" <?php echo in_array($module['module_id'],$module_access) ? 'checked' : '' ?>  value="<?php echo $module['module_id'] ?>"/>
+                                </li>
+                            <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <button class="btn btn-primary">Lưu lại</button>
+                <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+            </div>
+        </div>
+    </div>
+        
+
+</div>
+<?php echo $this->form()->closeTag(); ?>

@@ -1,0 +1,86 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a href="<?php echo $this->url('cms/user_level') ?>">Loại thành viên</a></li>
+                <li class="active">Cập nhật</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Loại thành viên :: Cập nhật
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/user_level', array('action' => 'edit', 'id' => $id)));
+        $form->setAttribute('id', 'form-user-level');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('users_level_id'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+
+                <div class="form-group">
+                    <label for="users_level_name">Tên</label>
+                    <?php echo $this->formRow($form->get('users_level_name')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="users_level_decrease">Mức giảm</label>
+                    <div class="input-group">
+                        <?php echo $this->formRow($form->get('users_level_decrease')); ?>
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthday">Tổng tiền nhỏ nhất</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <?php echo $this->formRow($form->get('min_buy')); ?>
+                        <span class="input-group-addon">.00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="users_level_longdescription">Mô tả</label>
+            <?php echo $this->formRow($form->get('users_level_longdescription')); ?>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Cập nhật loại thành viên
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

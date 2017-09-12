@@ -1,0 +1,29 @@
+
+<div class="dropdown-menu dropdown-filter product-dropdown dropdown arrow-style single-dropdown">
+    <div class="arrow"></div>
+    <div class="product-result">
+        <input placeholder="Tìm kiếm sản phẩm" type="text" class="query-blog single-query" />
+    </div>
+    <div class="single-suggest-result clear-ul">
+        <?php if(!empty($categories)){ ?>
+        <ul class="padding-left padding-right">
+            <?php foreach ($categories as $key => $categorie) { ?>
+            <li data-id="<?php echo $categorie['categories_articles_id']; ?>" data-title="<?php echo $categorie['categories_articles_title']; ?>" class="blog-select clearfix single-suggest-select">
+                <a class="pull-left" href="javascript:void(0);" >
+                    <?php echo $categorie['categories_articles_title']; ?>
+                </a>
+            </li>
+            <?php } ?>
+        </ul>
+        <?php } ?>
+        <?php $number_page = $total/$intPageSize; ?>
+        <div class="padding-top dropdown-paginate pull-right text-right col-sm-12 padding-bottom">
+            <a class="btn-prev btn-page btn btn-default disabled" href="javascript:void(0)">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+            <a class="btn-next btn-page btn btn-default " href="javascript:void(0)">
+                <i class="fa fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

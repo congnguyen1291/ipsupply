@@ -1,0 +1,33 @@
+<?php
+
+//function getHtmlFeature($data, $checked, $parentid = 0)
+//{
+//    $html = '';
+//    foreach ($data as $row) {
+//        if ($row['parent_id'] == $parentid) {
+//            if ($row['children'] > 0) {
+//
+//                if ($row['is_value'] == 0) {
+//                    $html .= '<div class="panel panel-default panel-checkbox-' . $row['feature_id'] . '">';
+//                    $html .= '<div class="panel-heading"><label><input type="checkbox" name="featureid[]" class="parentcheck" rel="' . $row['feature_id'] . '" value="' . $row['feature_id'] . '"' . (in_array($row['feature_id'], $checked) ? ' checked ' : '') . ' /> ' . $row['feature_title'] . '</label></div>';
+//                    $html .= '<div class="panel-body">';
+//                    $html .= '<div class="row">
+//                            <div style="padding:10px;">';
+//                    $html .= getHtmlFeature($data, $checked, $row['feature_id']);
+//                    $html .= "</div></div></div></div>";
+//                } else {
+//                    $html .= '<label><input type="checkbox" name="featureid[]" class="childcheck" rel="' . $row['parent_id'] . '" value="' . $row['feature_id'] . '"' . (in_array($row['feature_id'], $checked) ? ' checked ' : '') . ' />' . $row['feature_title'] . '</label>: <input type="text" name="feature_val[' . $row['feature_id'] . ']" id=""/>';
+//                }
+//            } else {
+//                if ($row['is_value'] == 0) {
+//                    $html .= '<div class="col-xs-6"><label><input type="checkbox" name="featureid[]" class="childcheck" rel="' . $row['parent_id'] . '" value="' . $row['feature_id'] . '"' . (in_array($row['feature_id'], $checked) ? ' checked ' : '') . ' />  ' . $row['feature_title'] . '</label></div>';
+//                } else {
+//                    $html .= '<div class="col-xs-6"><label><input type="checkbox" name="featureid[]" class="childcheck" rel="' . $row['parent_id'] . '" value="' . $row['feature_id'] . '"' . (in_array($row['feature_id'], $checked) ? ' checked ' : '') . ' />' . $row['feature_title'] . '</label>: <input type="text" name="feature_val[' . $row['feature_id'] . ']" id=""/></div>';
+//                }
+//            }
+//        }
+//    }
+//    return $html;
+//}
+
+//echo getHtmlFeature($features, $checked, 0);

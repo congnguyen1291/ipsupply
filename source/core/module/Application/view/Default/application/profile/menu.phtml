@@ -1,0 +1,116 @@
+<div class="coz-card hovercard">
+    <div class="coz-cardheader" <?php echo !empty($this->User()->getCover()) ? 'style="background: url('.$this->Images()->getUrlImage($this->User()->getCover(), '', 135).')"' : '' ?> ></div>
+    <div class="coz-card-avatar" >
+    	<span class="coz-inner-card-avatar" >
+	    	<a href="javascript:void(0);" class="btn-edit-avatar" >
+	    		<span class="coz-icon-edit-avatar" >
+	    			<i class="fa fa-pencil" aria-hidden="true"></i>
+	    		</span>
+	    		<input type="file" name="fileuplad" class="mask-file-edit-avatar" data-input="editAvatarProfile" >
+	    	</a>
+	        <img alt="<?php echo $this->User()->getFullName(); ?>" src="<?php echo $this->Images()->getUrlImage($this->User()->getAvatar(), 100, 100); ?>" data-place="avatarProfile" >
+        </span>
+    </div>
+    <div class="coz-card-info">
+        <div class="coz-card-title">
+            <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" >
+            	<?php echo $this->User()->getFullName(); ?>
+            </a>
+        </div>
+        <div class="coz-card-desc">
+        	<?php echo $this->User()->getAddress(); ?>
+        </div>
+        <div class="coz-card-desc"><?php echo $this->User()->getUserName(); ?></div>
+        <div class="coz-card-desc">
+        	<?php echo $point; ?>
+        	<?php echo $this->translate('txt_point'); ?>
+        </div>
+    </div>
+    <div class="coz-card-bottom" >
+        <a class="btn coz-card-btn btn-primary btn-twitter btn-sm" href="<?php echo $this->User()->getUrlTwitter(); ?>" >
+            <i class="fa fa-twitter"></i>
+        </a>
+        <a class="btn coz-card-btn btn-danger btn-sm" rel="publisher"
+           href="<?php echo $this->User()->getUrlGooglePlus(); ?>" >
+            <i class="fa fa-google-plus"></i>
+        </a>
+        <a class="btn coz-card-btn btn-primary btn-sm" rel="publisher"
+           href="<?php echo $this->User()->getUrlFacebook(); ?>" >
+            <i class="fa fa-facebook"></i>
+        </a>
+    </div>
+</div>
+
+<div class="coz-profile-sidebar">
+
+	<!-- SIDEBAR MENU -->
+	<div class="coz-profile-usermenu">
+		<ul class="nav">
+			<li <?php echo $active == 'index' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_overflow') ?>" >
+					<i class="fa fa-tachometer" aria-hidden="true" ></i>
+					<?php echo $this->translate('txt_profile_overflow') ?> 
+				</a>
+			</li>
+
+			<li <?php echo $active == 'edit' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/edit" title="<?php echo $this->translate('txt_account_settings') ?>" >
+					<i class="fa fa-info" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_account_settings') ?> 
+				</a>
+			</li>
+
+			<li <?php echo $active == 'history' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/history" title="<?php echo $this->translate('txt_profile_history') ?>" >
+					<i class="fa fa-history" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_history') ?>
+				</a>
+			</li>
+
+			<li <?php echo $active == 'payment' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/payment" title="<?php echo $this->translate('txt_profile_payment') ?>" >
+					<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_payment') ?>
+				</a>
+			</li>
+
+			<li <?php echo $active == 'comments' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/comments" title="<?php echo $this->translate('txt_profile_comments') ?>" >
+					<i class="fa fa-comments" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_comments') ?>
+				</a>
+			</li>
+
+			<?php if( $this->User()->isMerchant() ){ ?>
+			<li <?php echo $active == 'assign' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/assign" title="<?php echo $this->translate('txt_profile_assign') ?>" >
+					<i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_assign') ?>
+				</a>
+			</li>
+			<li <?php echo $active == 'industry' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/industry" title="<?php echo $this->translate('txt_profile_industry') ?>" >
+					<i class="fa fa-industry" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_industry') ?>
+				</a>
+			</li>
+			<?php } ?>
+
+			<?php if( $this->User()->isAffiliate() ){ ?>
+			<li <?php echo $active == 'statistic' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/statistic" title="<?php echo $this->translate('txt_profile_statistic') ?>" >
+					<i class="fa fa-industry" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_statistic') ?>
+				</a>
+			</li>
+			<li <?php echo $active == 'tracking' ? 'class="active"' : '' ?> >
+				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/tracking" title="<?php echo $this->translate('txt_profile_tracking') ?>" >
+					<i class="fa fa-link" aria-hidden="true"></i>
+					<?php echo $this->translate('txt_profile_tracking') ?>
+				</a>
+			</li>
+			<?php } ?>
+		</ul>
+	</div>
+	<!-- END MENU -->
+</div>

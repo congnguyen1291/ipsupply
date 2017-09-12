@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+</head>
+<body class="skin-blue">
+
+<div class="wrapper row-offcanvas row-offcanvas-left">
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="left-side sidebar-offcanvas">
+
+</aside>
+
+<!-- Right side column. Contains the navbar and content of the page -->
+<aside class="right-side">
+    <?php echo $this->content ?>
+</aside><!-- /.right-side -->
+</div><!-- ./wrapper -->
+<!-- add new calendar event modal -->
+<script type="text/javascript">
+    var baseUrl = '<?php echo $this->basePath() ?>';
+    var cmsUrl = '<?php echo $this->basePath('cms'); ?>';
+</script>
+
+</body>
+</html>

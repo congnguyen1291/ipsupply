@@ -1,0 +1,123 @@
+<script type="text/javascript" >
+    var branch = '';
+</script>
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a href="<?php echo $this->url('cms/branches') ?>">Chi nhánh</a></li>
+                <li class="active">Thêm mới</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Chi nhánh :: Thêm mới
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/branches', array('action' => 'add')));
+        $form->setAttribute('id', 'form-branches');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('branches_id'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="form-group">
+                    <label for="branches_title">Tên</label>
+                    <?php echo $this->formRow($form->get('branches_title')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <?php echo $this->formRow($form->get('website')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số DT</label>
+                    <?php echo $this->formRow($form->get('phone')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <?php echo $this->formRow($form->get('email')); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+            <?php echo $this->formRow($form->get('description')); ?>
+        </div>
+        
+        <?php $countries = $this->Contries()->getContryForWebsite(); ?>
+        <div class="row address-branch" >
+            <div class="col-sm-12" >
+                <div class="form-group" >
+                    <h3>Thông tin vị trí</h3>
+                </div>
+            </div>
+            <div class="col-sm-6" >
+                <?php if( !empty($countries) ){ ?>
+                <div class="form-group" >
+                    <label for="country_id">Đất nước</label>
+                    <select name="country_id" class="form-control input-sm" id="country_id" >
+                        <option value="" >
+                            <?php echo $this->translate('chon_country');?>
+                        </option>
+                        <?php foreach ($countries as $country){ ?>
+                        <option value="<?php echo $country['id'] ?>" >
+                            <?php echo $country['title'] ?>
+                        </option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <?php } ?>
+                <div class="warp-address-payment" neo-place="addressPayment" ></div>
+            </div>
+            <div class="col-sm-6" >
+                <div class="form-group" >
+                    <div id="profile_map_canvas" data-neo="profileMap" data-latitude="" data-longitude="" ></div>
+                    <input type="hidden" value="" name="longitude"  >
+                    <input type="hidden" value="" name="latitude" >
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_default">
+                <?php echo $this->formRow($form->get('is_default')); ?>
+                Trụ sở chính
+            </label>
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Thêm mới chi nhánh
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

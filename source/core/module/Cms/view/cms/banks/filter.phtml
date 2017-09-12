@@ -1,0 +1,21 @@
+<?php foreach ($data as $row) : ?>
+	<tr>
+		<td style="text-align: center"><?php echo $row['banks_id'] ?></td>
+		<td>
+			<a href="<?php echo $this->url('cms/banks', array('action' => 'edit', 'id' => $row['banks_id'])) ?>"><?php echo $row['banks_title'] ?></a>
+		</td>
+		<td>
+			<?php echo $row['percent_interest_rate'] ?>%
+		</td>
+		<td>
+			<?php echo $row['percent_must_pay'] ?>%
+		</td>
+		<td>
+			<?php echo $row['total_month'] ?> tháng
+		</td>
+		<td>
+			<input type="checkbox" name="cid[]"
+				   value="<?php echo $row['banks_config_id'] ?>"/>
+		</td>
+	</tr>
+<?php endforeach; ?>

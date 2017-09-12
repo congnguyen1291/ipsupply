@@ -1,0 +1,128 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Sản phẩm :: Quản lý review
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/product') ?>">Sản phẩm</a></li>
+        <li class="active">Review :: <?php echo $product->products_title ?></li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+<div class="row">
+<form action="<?php echo $this->url('cms/product', array('action' => 'review-management', 'id' => $id)) ?>" method="post">
+    <div class="col-xs-12">
+        <table class="table table-condensed">
+            <tr>
+                <td>
+                    <button class="btn btn-primary" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'review-management', 'id' => $id)) ?>')">
+                        Hiển thị
+                    </button>
+                    <button class="btn btn-primary" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'review-management', 'id' => $id)) ?>')">
+                        Ẩn
+                    </button>
+                    <button class="btn btn-danger" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'delete-review', 'id' => $id)) ?>')">
+                        Xóa review
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Sản phẩm :: <?php echo $product->products_title ?></h3>
+            </div>
+            <div class="box-body table-responsive">
+                <div class="pull-right">
+                    <ul class="pagination">
+                        <?php echo $paging ?>
+                    </ul>
+                </div>
+                <table class="table table-bordered table-hover table-data-bind">
+                    <thead>
+                    <tr>
+                        <th width="100">ID</th>
+                        <th>Nội dung</th>
+                        <th style="width:100px">Rating</th>
+                        <th style="width: 150px">Người tạo</th>
+                        <th style="width: 170px">Ngày tạo</th>
+                        <th width="10"><input type="checkbox" class="checkall"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($reviews as $row) : ?>
+                        <tr>
+                            <td><?php echo $row['comments_id'] ?></td>
+                            <td><?php echo strip_tags($row['comments_content']) ?></td>
+                            <td>
+                                <?php $rate = $row['comments_rating'] ?>
+                                <?php for($i = 1; $i <= 5; $i++) : ?>
+                                <?php if($i <= $rate): ?>
+                                    <i class="fa fa-star"></i>
+                                <?php else: ?>
+                                    <i class="fa fa-star-o"></i>
+                                <?php endif; ?>
+                                <?php endfor; ?>
+                            </td>
+                            <td>
+                                <?php echo $row['full_name'] ?>
+                            </td>
+                            <td><?php echo date('d/m/Y H:i:s',strtotime($row['comments_datecrerate'])) ?></td>
+                            <td>
+                                <input type="checkbox" name="cid[]"
+                                       value="<?php echo $row['comments_id'] ?>"/>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th width="100">ID</th>
+                        <th>Nội dung</th>
+                        <th style="width:100">Rating</th>
+                        <th>Người tạo</th>
+                        <th>Ngày tạo</th>
+                        <th width="10"><input type="checkbox" class="checkall"/></th>
+                    </tr>
+                    </tfoot>
+                </table>
+
+                <div class="pull-right">
+                    <ul class="pagination">
+                        <?php echo $paging ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <table class="table table-condensed">
+            <tr>
+                <td>
+                    <button class="btn btn-primary" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'review-management', 'id' => $id)) ?>')">
+                        Hiển thị
+                    </button>
+                    <button class="btn btn-primary" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'review-management', 'id' => $id)) ?>')">
+                        Ẩn
+                    </button>
+                    <button class="btn btn-danger" type="button"
+                            onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'delete-review', 'id' => $id)) ?>')">
+                        Xóa review
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+</div>
+
+</section><!-- /.content -->

@@ -1,0 +1,130 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li class="active">Hoặt động</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Hoặt động :: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/user', array('action' => 'log')).'?id='.$id ?>" method="post" class="clearfix" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-12" >
+                    <div class="text-right" >
+                        <?php if( !empty($logs) ){ ?>
+                        <a href="<?php echo $this->url('cms/user', array('action' => 'deleteLog')).'?id='.$id ?>"  data-confirm="Bạn có muốn xoá ?" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xoá hoặt động" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <?php if( !empty($logs) ){ ?>
+        <div class="table-responsive" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="col-lim" >id</th>
+                        <th colspan="2" >Tên</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($logs as $row) { ?>
+                    <tr>
+                        <td class="col-lim" >
+                            <?php echo $row['log_id'] ?>
+                        </td>
+                        <td colspan="3" >
+                            <?php echo $row['step_name'] ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-lim text-right" >
+                            <span class="el-level-right" >
+                                <i class="fa fa-level-up" aria-hidden="true"></i>
+                            </span>
+                        </td>
+                        <td colspan="3" >
+                            Nội dung
+                        </td>
+                    </tr>
+
+                    <?php 
+                    $data = array();
+                    try{
+                        $data = json_decode($row['step_content'], true);
+                    } catch (Exception $e){
+                        $data = array();
+                    } ?>
+
+                    <?php if( !empty($data) && is_array($data) && !empty($data['error']) ){
+                    ?>
+                    <tr>
+                        <td class="col-lim text-right" ></td>
+                        <td class="col-lim text-right" >
+                            <span class="el-level-right" >
+                                <i class="fa fa-level-up" aria-hidden="true"></i>
+                            </span>
+                        </td>
+                        <td colspan="2" >
+                            <div class="alert alert-warning" >
+                                <?php echo $data['error']; ?>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if( !empty($data) && is_array($data) && !empty($data['datas']) ){
+                        foreach ($data['datas'] as $k => $d ) {
+                    ?>
+                    <tr>
+                        <td class="col-lim text-right" ></td>
+                        <td class="col-lim text-right" >
+                            <span class="el-level-right" >
+                                <i class="fa fa-level-up" aria-hidden="true"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <?php echo $this->translate('txt_'.$k); ?>
+                        </td>
+                        <td>
+                            <?php echo $d; ?>
+                        </td>
+                    </tr>
+                    <?php }
+                    } ?>
+
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có hoặt động nào
+        </p>
+        <?php } ?>
+    </form>
+</section>

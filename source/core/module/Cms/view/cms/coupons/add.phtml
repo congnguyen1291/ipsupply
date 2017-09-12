@@ -1,0 +1,121 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/coupons') ?>">
+                        Mã khuyến mãi
+                    </a>
+                </li>
+                <li class="active"> 
+                    Thêm mã mới
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Khuyến mãi :: Thêm mới
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/coupons', array('action' => 'add')));
+        $form->setAttribute('id', 'form-coupons');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('coupons_id'));
+        echo $this->formHidden($form->get('coupon_percent'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="form-group">
+                    <label for="coupons_code" >Mã khuyến mãi</label>
+                    <?php echo $this->formRow($form->get('coupons_code')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="coupon_price">Giá trị</label>
+                    <?php echo $this->formRow($form->get('coupon_price')); ?>
+                </div>
+
+                <div class="row" >
+                    <div class="col-xs-6" >
+                        <div class="form-group">
+                            <label for="start_date">Ngày bắt đầu</label>
+                            <?php echo $this->formRow($form->get('start_date')); ?>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6" >
+                        <div class="form-group">
+                            <label for="expire_date">Ngày hết hạn</label>
+                            <?php echo $this->formRow($form->get('expire_date')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min_price_use">
+                        Điều kiện giá trị đơn hàng có thể dùng mã
+                    </label>
+                    <div class="row" >
+                        <div class="col-xs-6" >
+                            <?php echo $this->formRow($form->get('min_price_use')); ?>
+                        </div>
+                        <div class="col-xs-6" >
+                            <?php echo $this->formRow($form->get('max_price_use')); ?>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <label for="coupons_type">
+                <?php echo $this->formRow($form->get('coupons_type')); ?>
+                Dùng nhiều lần
+            </label>
+            <label for="ordering" id="wrap-coupons-max-use" style="margin-left: 20px"  >
+                Số lần dùng tối đa
+                <?php echo $this->formRow($form->get('coupons_max_use')); ?>
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <label for="is_published">
+                <?php echo $this->formRow($form->get('is_published')); ?>
+                Kích hoạt
+            </label>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Thêm mới mã khuyến mại
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

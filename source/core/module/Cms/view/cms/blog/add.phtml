@@ -1,0 +1,42 @@
+<?php
+
+$title = 'Add new Blog';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form->setAttribute('action', $this->url('cms/blog', array('action' => 'add')));
+$form->setAttribute('id', 'form-blogs');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+    <div class="form-group">
+        <label for="name">Title</label>
+        <?php
+        echo $this->formRow($form->get('title'));
+        ?>
+    </div>
+    <div class="form-group">
+        <label for="name">Category Parent</label>
+        <?php
+        echo $this->formRow($form->get('catid'));
+        ?>
+    </div>
+    <div class="form-group">
+        <label for="name">Content</label>
+        <?php
+        echo $this->formRow($form->get('content'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php
+        echo $this->formSubmit($form->get('submit'));
+        echo $this->formSubmit($form->get('cancel'));
+        ?>
+    </div>
+<?php
+echo $this->form()->closeTag();
+?>

@@ -1,0 +1,70 @@
+<?php 
+$categoriesRoot = $this->CategoriesArticles()->getRoot($categories);
+if( !empty($categoriesRoot) ){ ?>
+<aside class="box-aside nav-category" >
+    <div class="box-heading" >
+        <h2 class="title-box">
+            <?php echo $this->translate('txt_danh_muc_blogs') ?>      
+        </h2>
+    </div>
+    <div class="box-content clearfix" >
+        <div class="clearfix" >
+            <nav class="nav-category collapse navbar-toggleable-md" id="collapseNavCategory" itemscope itemtype="http://schema.org/SiteNavigationElement" >
+                <ul class="nav navbar-pills">
+                    <?php 
+                    foreach ($categoriesRoot as $key01 => $category01) { 
+                        $childrens = $this->CategoriesArticles()->getChildrens($categories, $this->CategoriesArticles()->getId($category01));
+                    ?>
+                    <li class="nav-item ">
+                        <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category01); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category01); ?>" class="nav-link"  data-pjax="true" data-container="Main"  itemprop="url" >
+                            <span itemprop="name" >
+                                <?php echo $this->CategoriesArticles()->getTitle($category01); ?>
+                            </span>
+                            <?php if( !empty($childrens) ){ ?>
+                            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                            <?php } ?>
+                        </a>
+                        <?php if( !empty($childrens) ){ ?>
+                        <ul class="dropdown-menu">
+                            <?php foreach ($childrens as $key02 => $category02){ 
+                                $childrens02 = $this->CategoriesArticles()->getChildrens($categories, $this->CategoriesArticles()->getId($category02));
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category02); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                    <span itemprop="name" >
+                                        <?php echo $this->CategoriesArticles()->getTitle($category02); ?>
+                                    </span>
+                                    <?php if( !empty($childrens02) ){ ?>
+                                    <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+                                    <?php } ?>
+                                </a>
+
+                                <?php if( !empty($childrens02) ){ ?>
+                                <ul class="dropdown-menu">
+                                    <?php foreach ($childrens02 as $key02 => $category03){ ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category03); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category03); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                                            <span itemprop="name" >
+                                                <?php echo $this->CategoriesArticles()->getTitle($category03); ?>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <?php } ?>
+                                    
+                                </ul>
+                                <?php } ?>
+
+                            </li>
+                            <?php } ?>
+
+                        </ul>
+                        <?php } ?>
+
+                    </li>
+                    <?php } ?>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+<?php } ?>

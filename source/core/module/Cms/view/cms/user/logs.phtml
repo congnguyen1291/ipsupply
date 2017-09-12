@@ -1,0 +1,82 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li class="active">Danh sách hoặt động</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Hoặt động :: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/user', array('action' => 'logs', 'id' => $id)) ?>" method="post" class="clearfix" >
+        <?php if( !empty($logs) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="col-lim" >Sesion</th>
+                        <th>Hoặt động</th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($logs as $row) { ?>
+                    <tr>
+                        <td class="col-lim" >
+                            <?php echo $row['session_id'] ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->url('cms/user', array('action' => 'log')).'?id='.$row['session_id'] ?>" data-toggle="tooltip" data-placement="top" title="xem chi tiết hoặt động" >
+                                <?php echo $row['step'] ?>
+                            </a>
+                        </td>
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/user', array('action' => 'deleteLog')).'?id='.$row['session_id'] ?>" data-toggle="tooltip" data-placement="top" title="Xoá hoặt động"  data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['session_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có hoặt động nào
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

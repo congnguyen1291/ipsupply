@@ -1,0 +1,49 @@
+<?php foreach ($products as $row) : ?>
+	<tr>
+		<td><?php echo $row['products_code'] ?></td>
+		<td>
+			<a href="<?php echo $this->url('cms/product', array('action' => 'edit', 'id' => $row['products_id'])) ?>"><?php echo $row['products_title'] ?></a>
+		</td>
+		<td style="text-align: center">
+			<a href="<?php echo $this->url('cms/product', array('action' => 'addarticle', 'id' => $row['products_id'])) ?>" data-toggle='tooltip' title='Có <?php echo $row['total_articles'] ?> bài viết cho sản phẩm này' data-original-title='Có <?php echo $row['total_articles'] ?> bài viết cho sản phẩm này'><?php echo $row['total_articles'] ?></a>
+		</td>
+		<td style="text-align: center">
+			<?php if($row['is_available'] == 1) : ?>
+				<?php $href = $this->url('cms/product', array('action' => 'singlenotavailable', 'id' => $row['products_id'])) ?>
+			<?php else: ?>
+				<?php $href = $this->url('cms/product', array('action' => 'singleavailable', 'id' => $row['products_id'])) ?>
+			<?php endif; ?>
+			<?php echo $row['is_available'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Còn hàng' data-original-title='Còn hàng'><i class='fa fa-circle'></i></a>" : "<a href='{$href}' data-toggle='tooltip' title='Hết hàng' data-original-title='Hết hàng'><i class='fa fa-circle-o'></i></a>" ?>
+		</td>
+		<td style="text-align: center">
+			<?php if($row['is_goingon'] == 1) : ?>
+				<?php $href = $this->url('cms/product', array('action' => 'singlenotgoingon', 'id' => $row['products_id'])) ?>
+			<?php else: ?>
+				<?php $href = $this->url('cms/product', array('action' => 'singlegoingon', 'id' => $row['products_id'])) ?>
+			<?php endif; ?>
+			<?php echo $row['is_goingon'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Hàng sắp về' data-original-title='Hàng sắp về'><i class='fa fa-circle'></i></a>" : "<a href='{$href}'><i class='fa fa-circle-o'></i></a>" ?>
+		</td>
+		<td style="text-align: center">
+			<input type="text" style="width: 50px;text-align: center"
+				   name="order[<?php echo $row['products_id'] ?>]"
+				   value="<?php echo $row['ordering'] ?>" class="numberInput"/>
+		</td>
+		<td><?php echo date('d/m/Y', strtotime($row['date_create'])) ?></td>
+		<td style="text-align: center"><a href="<?php echo $this->url('cms/product', array('action' => 'copy', 'id' => $row['products_id'])) ?>" onclick="return confirm('Bạn chắc chưa?')">Copy</a> </td>
+		<td style="text-align: center">
+			<?php if($row['is_published'] == 1) : ?>
+				<?php $href = $this->url('cms/product', array('action' => 'singleunpublish', 'id' => $row['products_id'])) ?>
+			<?php else: ?>
+				<?php $href = $this->url('cms/product', array('action' => 'singlepublish', 'id' => $row['products_id'])) ?>
+			<?php endif; ?>
+			<?php echo $row['is_published'] == 1 ? "<a href='{$href}' data-toggle='tooltip' title='Đang hiển thị' data-original-title='Đang hiển thị'><i class='fa fa-circle'></i></a>" : "<a href='{$href}' data-toggle='tooltip' title='Bị ẩn' data-original-title='Bị ẩn'><i class='fa fa-circle-o'></i></a>" ?>
+		</td>
+		<td style="text-align: center">
+			<?php echo $row['is_delete'] == 1 ? 'Đã xóa' : '-' ?>
+		</td>
+		<td>
+			<input type="checkbox" name="cid[]"
+				   value="<?php echo $row['products_id'] ?>"/>
+		</td>
+	</tr>
+<?php endforeach; ?>

@@ -1,0 +1,27 @@
+<?php if(!empty($rows)){ ?>
+    <div class="list-mini-produxt clearfix" >
+        <div class="row" >
+            <?php foreach ($rows as $key => $p) { ?>
+            <div class="col-md-4  col-sm-6 col-xs-6">
+                <?php   echo $this->partial('app/item-product', array('product' => $p) ); ?>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+
+    <?php if( !empty($paging) ){ ?>
+    <div class="co-paging" >
+        <div class="pull-xs-right">
+            <nav class="clearfix">
+                <?php echo $paging; ?>                  
+            </nav>
+        </div>
+    </div>
+    <?php } ?>
+<?php }else{ ?>
+    <div class="clearfix" >
+        <p class="empty-data" >
+            <?php echo $this->translate('txt_dang_cap_nhat') ?>
+        </p>
+    </div>
+<?php } ?>

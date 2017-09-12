@@ -1,0 +1,76 @@
+<?php if( !empty($article) ){ ?>
+    <?php if( empty($notSchema) ){ ?>
+    <article class="blog-item clearfix" itemprop="itemListElement" itemscope itemtype="http://schema.org/NewsArticle" >
+        <meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="<?php echo $this->Articles()->getUrl($article); ?>" />
+        <meta content='<?php echo $this->Articles()->getUsersFullname($article); ?>' itemprop='author' />
+        <meta content='<?php echo $this->Articles()->getDateCreate($article); ?>' itemprop='datePublished dateModified' />
+
+        <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+            <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                <meta itemprop="url" content="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 240); ?>"/>
+            </div>
+            <meta itemprop="name" content="<?php echo $this->Websites()->getName(); ?>">
+        </div>
+
+        <div itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),240, 126); ?>" >
+            <meta itemprop="width" content="240">
+            <meta itemprop="height" content="126">
+        </div>
+
+        <div class="row" >
+            <div class="col-sm-5" >
+                <div class="blog-item-thumbnail" >
+                    <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" >
+                        <img class="img-fluid" src="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),870); ?>" alt="<?php echo $this->Articles()->getTitle($article); ?>" >
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-7" >
+                <div class="box_article">
+                    <h4 class="blog-item-name"  itemprop='headline' >
+                        <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main"  itemprop='url' >
+                            <span  itemprop='name' >
+                                <?php echo $this->Articles()->getTitle($article); ?>
+                            </span>
+                        </a>
+                    </h4>
+                    <p class="blog-item-summary" itemprop='description'  >
+                        <?php echo $this->Articles()->getDescription($article); ?>       
+                    </p>
+                    <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>" class="btn btn-style"  data-pjax="true" data-container="Main" >
+                        <?php echo $this->translate('txt_doc_them') ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+    <?php }else{ ?>
+    <article class="blog-item clearfix" >
+        <div class="row" >
+            <div class="col-sm-5" >
+                <div class="blog-item-thumbnail" >
+                    <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" >
+                        <img class="img-fluid" src="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),870); ?>" alt="<?php echo $this->Articles()->getTitle($article); ?>" >
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-7" >
+                <div class="box_article">
+                    <h4 class="blog-item-name" >
+                        <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" >
+                            <?php echo $this->Articles()->getTitle($article); ?>
+                        </a>
+                    </h4>
+                    <p class="blog-item-summary" >
+                        <?php echo $this->Articles()->getDescription($article); ?>       
+                    </p>
+                    <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>" class="btn btn-style"  data-pjax="true" data-container="Main" >
+                        <?php echo $this->translate('txt_doc_them') ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+    <?php } ?>
+<?php } ?>

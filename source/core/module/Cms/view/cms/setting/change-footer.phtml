@@ -1,0 +1,254 @@
+<script type="text/javascript">
+    var folder = "<?php echo 'folder'.date('YmdGis') ?>";
+    var uploadfor = 'articles';
+</script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Cấu hình
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/setting') ?>">Cấu hình hệ thống</a></li>
+		<li class="active">Chỉnh sửa footer</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Chỉnh sửa footer</h3>
+                </div>
+                <div class="box-body">
+                    <form action="" method="post">
+						<input type="hidden" value="<?php echo 'folder'.date('YmdGis') ?>" name="folder" />
+                        <table class="table">
+                            <tr>
+                                <td valign="middle">Bài viết</td>
+                            </tr>
+							<tr>
+								<td><button class="btn btn-primary">Lưu cấu hình</button> <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Trở về</button></td>
+							</tr>
+							<tr>
+                                <td>
+									<div class="box-edit-footer nicescroll-div" style="" >
+										<div class="part-nice" style="padding: 100px 0" >
+											<!----------------------------------------->
+										
+											<div class="footer" >
+												<div class="content-box" >
+
+													<div class="footer-b cl-box" >
+														<div class="item-footer" >
+															<div class="ct-item" >
+																<div class="title" >
+																	HỖ TRỢ KHÁCH HÀNG
+																</div>
+																<div class="ctda help-trafic" >
+																	<a href="javascript:;" data-box="help-trafic" class="btn--edit" style="position: absolute;top: 0;right: 10px" >
+																		<i class="fa fa-pencil-square-o"></i>
+																	</a>
+																	<div class="data-html" >
+																		<?php echo (isset($config['help']) ? $config['help'] : '');?>
+																	</div>
+																	<div class="code-area" data-name="help"  >
+																		<textarea class="my-code-area" name="help" rows="4" style="width: 100%" ><?php echo (isset($config['help']) ? $config['help'] : '');?></textarea>
+																	</div>
+																</div>
+															</div>
+														</div>
+
+														<div class="item-footer" >
+															<div class="ct-item" >
+																<div class="title" >
+																	ABOUT US
+																</div>
+																<div class="ctda about-company" >
+																	<a href="javascript:;" data-box="about-company" class="btn--edit" style="position: absolute;top: 0;right: 10px" >
+																		<i class="fa fa-pencil-square-o"></i>
+																	</a>
+																	<div class="data-html" >
+																		<?php echo (isset($config['aboutus']) ? $config['aboutus'] : '');?>
+																	</div>
+																	<div class="code-area" data-name="about"  >
+																		<textarea class="my-code-area" name="about" rows="4" style="width: 100%" ><?php echo (isset($config['aboutus']) ? $config['aboutus'] : '');?></textarea>
+																	</div>
+																</div>
+															</div>
+														</div>
+
+														<div class="item-footer" >
+															<div class="ct-item" >
+																<div class="title" >
+																	KẾT NỐI VỚI CHÚNG TÔI
+																</div>
+																<div class="ctda" >
+																	<a href="javascript:;" ><i class="icon i-face" ></i> Facebook</a>
+																	<a href="javascript:;" ><i class="icon i-twister" ></i> Twitter</a>
+																	<a href="javascript:;" ><i class="icon i-goog" ></i> Google+</a>
+																	<a href="javascript:;" ><i class="icon i-instagram" ></i> Instagram</a>
+																	<a href="javascript:;" ><i class="icon i-you" ></i> Youtube</a>
+																</div>
+															</div>
+														</div>
+
+														<div class="item-footer" >
+															<div class="ct-item" >
+																<div class="title" >
+																	THANH TOÁN
+																</div>
+																<div class="ctda payment-company" >
+																	<a href="javascript:;" data-box="payment-company" class="btn--edit" style="position: absolute;top: 0;right: 10px" >
+																		<i class="fa fa-pencil-square-o"></i>
+																	</a>
+																	<div class="data-html" >
+																		<?php echo (isset($config['payment']) ? $config['payment'] : '');?>
+																	</div>
+																	<div class="code-area" data-name="payment"  >
+																		<textarea class="my-code-area" name="payment" rows="4" style="width: 100%" ><?php echo (isset($config['payment']) ? $config['payment'] : '');?></textarea>
+																	</div>																	
+																</div>
+																<div class="title" >
+																	DỊCH VỤ VẬN CHUYỂN
+																</div>
+																<div class="ctda transportation-service" >
+																	<a href="javascript:;" data-box="transportation-service" class="btn--edit" style="position: absolute;top: 0;right: 10px" >
+																		<i class="fa fa-pencil-square-o"></i>
+																	</a>
+																	<div class="data-html" >
+																		<?php echo (isset($config['transportation']) ? $config['transportation'] : '');?>
+																	</a>
+																	</div>
+																	<div class="code-area" data-name="transportation"  >
+																		<textarea class="my-code-area" name="transportation" rows="4" style="width: 100%" ><?php echo (isset($config['transportation']) ? $config['transportation'] : '');?></textarea>
+																	</div>																	
+																</div>
+															</div>
+														</div>
+
+														<div class="item-footer last" >
+															<div class="ct-item" >
+																<div class="title" >
+																	Đăng kí nhận KHUYẾN mãi
+																</div>
+																<div class="ctda" >
+																	<div action="#" class="form-regis-deal" >
+																		<div class="ct-form-regis-deal" >
+																			<div class="inpt-rde" >
+																				<div class="ct-inpt-rde" >
+																					<input  type="text" class="txt-rgde" placeholder="Your email"  />
+																				</div>
+																			</div>
+																			<div class="btn-sent-deal" >
+																				<input type="button" value="Gửi" class="btn-de"  />
+																			</div>
+																		</div>
+																	 </div>
+																</div>
+																<div class="title" >
+																	<i class="icon i-connect-mobile" ></i>MUA SẮM DI ĐỘNG
+																</div>
+																<div class="ctda" >
+																	<a href="javascript:;" >
+																		<img src="<?php echo $this->basePath() ?>/styles/dataimages/app-store.png" width="120" height="35" />
+																	</a>
+																	<a href="javascript:;" >
+																		<img src="<?php echo $this->basePath() ?>/styles/dataimages/i-google-app.png" width="120" height="36" />
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+													<div class="permition-company cl-box" >
+														<div class="lien" style="position:relative" >
+															<a href="javascript:;" data-box="lien" class="btn--edit" style="position: absolute;top: 0;left: -20px" >
+																<i class="fa fa-pencil-square-o"></i>
+															</a>
+															<div class="data-html" >
+																<?php echo (isset($config['lien']) ? $config['lien'] : '');?>
+															</div>
+															<div class="code-area" data-name="lien" >
+																<textarea class="my-code-area" name="lien" rows="4" style="width: 100%" ><?php echo (isset($config['lien']) ? $config['lien'] : '');?></textarea>
+															</div>
+														</div>
+														<div class="imglien" >
+															<div>Chứng nhận SGD TMĐT</div>
+															<img src="<?php echo $this->basePath()?>/styles/dataimages/img-lien.png"  />
+														</div>
+													</div>
+													
+													<div class="list-link-mk" >
+														<a href="javascript:;" data-box="list-link-mk" class="btn--edit" style="position: absolute;top: 0;left: -20px" >
+															<i class="fa fa-pencil-square-o"></i>
+														</a>
+														<div class="data-html" >
+															<?php echo (isset($config['linkmk']) ? $config['linkmk'] : '');?>
+														</div>
+														<div class="code-area" data-name="linkmk" >
+															<textarea class="my-code-area" name="linkmk" rows="4" style="width: 100%" ><?php echo (isset($config['linkmk']) ? $config['linkmk'] : '');?></textarea>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+											<!-------------------------->
+										</div>
+									</div>
+								</td>
+                            </tr>
+                            <tr>
+                                <td><button class="btn btn-primary">Lưu cấu hình</button> <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Trở về</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+		
+    </div>
+</section>
+
+<div class="pop-regisemali-pro" >
+	<div class="ct-pop-regisemali-pro" >
+		<div class="hdh_" >
+			Sửa nội dung
+			<a href="javascript:;" class="icon i-close" onclick="" ></a>
+		</div>
+		<h2 class="title" >
+			các bạn ghi nội dung và link của nó (có thể rỗng)
+		</h2>
+		<div class="ct-form-mh_" >
+			<div class="form-regis-deal" >
+				<div class="item-fmhs cl-box" >
+					<div class="lb-hfp" >
+						<span>url image : </span>
+					</div>
+					<div class="l-hfp" >
+						<div class="input-vns" >
+							<input type="text" name="name" class="txt-in preview-img"  value="">
+						</div>
+					</div>
+				</div>
+				<div class="item-fmhs cl-box" >
+					<a href="javascript:;" class="upload-html5" >Upload images</a>
+					<div class="list-image" >
+					
+					</div>
+				</div>
+				<div class="item-fmhs cl-box " >
+					<div class="ae-code">
+						<textarea class="my-code-area" name="help" rows="4" style="width: 100%" ></textarea>
+					</div>			
+				</div>
+				<div class="item-fmhs cl-box " >	
+					<a href="javascript:;" class="btn-sentcm ok" >OK</a> 
+					<a href="javascript:;" class="btn-sentcm cancel" >Cancel</a> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

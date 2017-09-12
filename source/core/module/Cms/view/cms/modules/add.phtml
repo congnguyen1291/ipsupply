@@ -1,0 +1,117 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Module :: Thêm mới
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/modules') ?>">Module</a></li>
+        <li class="active">Thêm mới</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/modules', array('action' => 'add')));
+        $form->setAttribute('id', 'form-modules');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('module_id'));
+        ?>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <button class="btn btn-primary">Lưu lại</button>
+                    <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="module_name">Tên Module</label>
+                        <?php echo $this->formRow($form->get('module_name')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="module_description">Mô tả</label>
+                        <?php echo $this->formRow($form->get('module_description')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">price</label>
+                        <?php echo $this->formRow($form->get('price')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_default">
+                            <?php echo $this->formRow($form->get('is_default')); ?>
+                            default
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <?php if(count($permissions)>0){ ?>
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Phân quyền theo module</h3>
+                </div>
+                <div class="box-body">
+                    <?php foreach($permissions as $key => $permits) : ?>
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><?php echo strtoupper($key) ?></div>
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                <?php foreach($permits as $permit) : ?>
+                                    <li class="list-group-item">
+                                        <span style="display:inline-block;width:500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap"><?php echo $permit['permissions_name'] ?></span>
+                                        <input type="checkbox" name="permits[]" value="<?php echo $permit['permissions_id'] ?>"/>
+                                    </li>
+                                <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php } ?>
+
+            <?php if(count($api)>0){ ?>
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Phân quyền theo api</h3>
+                </div>
+                <div class="box-body">
+                    <?php foreach($api as $key => $list_apis) : ?>
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><?php echo strtoupper($key) ?></div>
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                <?php foreach($list_apis as $item_a) : ?>
+                                    <li class="list-group-item">
+                                        <span style="display:inline-block;width:500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap"><?php echo $item_a['api_function'] ?></span>
+                                        <input type="checkbox" name="apis[]" value="<?php echo $item_a['api_id'] ?>"/>
+                                    </li>
+                                <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php } ?>
+
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <button class="btn btn-primary">Lưu lại</button>
+                <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

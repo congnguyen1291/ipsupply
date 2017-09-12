@@ -1,0 +1,177 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="active">
+                    Shipping
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Shipping :: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/shipping', array('action' => 'index')) ?>" method="get" role="form" data-form="searchAjax" >
+                <div class="coz-search-bar clearfix" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                            </div>
+                            <div class="col-xs-5 col-coz-search" >
+                                <select name="type" class="form-control" >
+                                    <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo tên
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/shipping') ?>" method="post" class="clearfix" id="form-list-shipping" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-6" ></div>
+                <div class="col-sm-6" >
+                    <div class="text-right" >
+                        <a href="<?php echo $this->url('cms/shipping', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm shipping" >
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                        <?php if( !empty($shippings) ){ ?>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/shipping', array('action' => 'publish')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện shipping" >
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/shipping', array('action' => 'unpublish')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn shipping" >
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/shipping', array('action' => 'autoOrder')) ?>')" data-toggle="tooltip" data-placement="top" title="Cập nhật thứ tự" >
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/shipping', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá shipping" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-box" id="error-box" ></div>
+
+        <?php if( !empty($shippings) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" ></th>
+                        <th class="text-center col-lim" >ID</th>
+                        <th>Tên</th>
+                        <th class="col-lim" >
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </th>
+                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="container-shipping-sort" >
+                    <?php foreach ($shippings as $key=>$row ) { ?>
+                    <tr>
+                        <td class="text-center col-lim drag-handle" >
+                            <i class="fa fa-arrows"></i>
+                        </td>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['shipping_id'] ?>
+                            <input name="ordering[<?php echo $row['shipping_id'] ?>]" class="ordering" type="hidden" value="<?php echo $row['ordering'] ?>" >
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->url('cms/shipping', array('action' => 'edit', 'id' => $row['shipping_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa bài viết" >
+                                <?php echo $row['shipping_title'] ?>
+                            </a>
+                        </td>
+                        <td class="col-lim text-right html-ordering" >
+                            <?php echo $row['ordering'] ?>
+                        </td>
+                        <td class="col-lim" >
+                            <?php if( !empty($row['is_published']) ){ ?>
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                </span>
+                            <?php }else{ ?>
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                    <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                                </span>
+                            <?php } ?>
+                        </td>
+                        <td class="text-right col-lim" >
+                            <a href="<?php echo $this->url('cms/shipping', array('action' => 'edit', 'id' => $row['shipping_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa shipping" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="<?php echo $this->url('cms/shipping', array('action' => 'delete', 'id' => $row['shipping_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá shipping"  data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+
+                            <?php if( !empty($row['is_published']) ){ ?>
+                            <a href="<?php echo $this->url('cms/shipping', array('action' => 'unpublish', 'id' => $row['shipping_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn shipping" >
+                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                            </a>
+                            <?php }else{ ?>
+                            <a href="<?php echo $this->url('cms/shipping', array('action' => 'publish', 'id' => $row['shipping_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện shipping" >
+                                <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                            </a>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['shipping_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có shipping
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

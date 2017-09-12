@@ -1,0 +1,47 @@
+
+<div class="dropdown-menu dropdown-filter product-dropdown dropdown arrow-style single-dropdown">
+    <div class="arrow"></div>
+    <div class="product-result" >
+        <input placeholder="Tìm kiếm sản phẩm" type="text" class="query-product single-query" bind-event-keyup="suggest()" />
+    </div>
+    <div class="single-suggest-result clear-ul">
+        <?php if(!empty($products)){ ?>
+        <ul class="padding-left padding-right">
+            <?php foreach ($products as $key => $product) { ?>
+            <li data-id="<?php echo $product['products_id']; ?>" data-title="<?php echo $product['products_title']; ?>" class="product-select clearfix single-suggest-select">
+                <a class="pull-left" href="javascript:void(0);" >
+                    <?php echo $product['products_title']; ?>
+                </a>
+            </li>
+            <?php } ?>
+        </ul>
+        <?php }else{ ?>
+        <p class="empty" >Không có dữ liệu</p>
+        <?php } ?>
+        
+        <?php if( !empty($paginator->toHtml()) ){ ?>
+        <div class="padding-top dropdown-paginate pull-right text-right col-sm-12 padding-bottom">
+            <?php if ($paginator->getPrevUrl()){ ?>
+                <a class="btn-prev btn-page btn btn-default btn-sm" href="javascript:void(0);" onclick="<?php echo $paginator->getPrevUrl(); ?>" data-products_title="<?php echo $products_title; ?>" >
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+            <?php }else{ ?>
+                <a class="btn-prev btn-page btn btn-default disabled btn-sm" href="javascript:void(0);" >
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+            <?php } ?>
+
+            <?php if ($paginator->getNextUrl()){ ?>
+                <a class="btn-next btn-page btn btn-default btn-sm" href="javascript:void(0);" onclick="<?php echo $paginator->getNextUrl(); ?>" data-products_title="<?php echo $products_title; ?>" >
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            <?php }else{ ?>
+                <a class="btn-next btn-page btn btn-default disabled btn-sm" href="javascript:void(0);" >
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            <?php } ?>
+        </div>
+        <?php } ?>
+
+    </div>
+</div>

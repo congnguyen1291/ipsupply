@@ -1,0 +1,84 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/banners') ?>">
+                        Vị trí
+                    </a>
+                </li>
+                <li class="active">Cập nhật</li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Vị trí :: Thêm mới
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="content" >
+    <div class="clearfix">
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('cms/BannerPosition', array('action' => 'add')));
+        $form->setAttribute('id', 'form-banner-positions');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('position_id'));
+        ?>
+        <div class="row" >
+            <div class="col-sm-6 col-xs-6" >
+                <div class="form-group">
+                    <label for="position_name">Tên vị trí</label>
+                    <?php echo $this->formRow($form->get('position_name')); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="position_alias">Alias</label>
+                    <?php echo $this->formRow($form->get('position_alias')); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <div class="result-list-img clearfix" >
+                <div class="list-img-upload clearfix" >
+                </div>
+                <div class="img-prevew-upload btn-upload btn-upload-banner-position" >
+                    <a href="javascript:void(0)" class="action-upload" >
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                    <a href="javascript:void(0)" class="img-responsive"  >
+                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <button class="btn btn-primary btn-sm">
+                Thêm mới vị trí
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                Quay lại
+            </button>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</section>

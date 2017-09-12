@@ -1,0 +1,272 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="active">
+                    Kho <?php echo !empty($category) ? 'trong danh mục <i>'.$category->categories_title.'</i>' : '' ?>
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Kho <?php echo !empty($category) ? 'trong danh mục <i>'.$category->categories_title.'</i>' : '' ?>:: Quản lý
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/product', array('action' => 'index')) ?>" method="get" role="form" data-form="searchAjax" >
+                <div class="coz-search-bar clearfix" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                            </div>
+                            <div class="col-xs-5 col-coz-search" >
+                                <select name="type" class="form-control" >
+                                    <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo tên
+                                    </option>
+                                    <option value="1" <?php echo $type == 1 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo model
+                                    </option>
+                                    <option value="2" <?php echo $type == 2 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo price
+                                    </option>
+                                    <option value="3" <?php echo $type == 3 ? 'selected="selected"' : '' ?> >
+                                        Kiểu tìm kiếm : theo số lượng
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/product') ?>" method="post" class="clearfix" id="form-list-product" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-6" ></div>
+                <div class="col-sm-6" >
+                    <div class="text-right" >
+                        <a href="<?php echo $this->url('cms/product', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm sản phẩm" >
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                        <?php if( !empty($products) ){ ?>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'publish')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện sản phẩm" >
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'unpublish')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn sản phẩm" >
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'updateorder')) ?>')" data-toggle="tooltip" data-placement="top" title="Cập nhật thứ tự" >
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'autoOrder')) ?>')" data-toggle="tooltip" data-placement="top" title="Tự động cập nhật thứ tự" >
+                            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/product', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá sản phẩm" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-box" id="error-box" ></div>
+
+        <?php if( !empty($products) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" ></th>
+                        <th class="text-center col-lim" >ID</th>
+                        <th class="col-lim" >Hình</th>
+                        <th>Tên</th>
+                        <th class="col-lim" >Model</th>
+                        <th class="col-lim text-right" >Sale/Price</th>
+                        <th class="col-lim text-right" >Số lượng</th>
+                        <th class="col-lim" >
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </th>
+                        <th class="col-lim text-right" >Trạng <br /> thái</th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="container-product-sort" >
+                    <?php foreach ($products as $key=>$row ) { ?>
+                    <tr>
+                        <td class="text-center col-lim drag-handle" >
+                            <i class="fa fa-arrows"></i>
+                        </td>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['products_id'] ?>
+                            <input name="ordering[<?php echo $row['products_id'] ?>]" class="ordering" type="hidden" value="<?php echo $row['ordering'] ?>" >
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'edit', 'id' => $row['products_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa sản phẩm" >
+                                <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($row),100); ?>" class="img-reponsive" width="100" >
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'edit', 'id' => $row['products_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa sản phẩm" >
+                                <?php 
+                                    if( !empty($row['has_language']) )
+                                        echo $this->Products()->getName($row);
+                                    else
+                                        echo '<i class="coz-color-disable" >'.$this->Products()->getName($row).'</i><i class="coz-color-important" data-toggle="tooltip" data-placement="top" title="Bạn vui lòng cập nhật sản phẩm này, nó đang trống cho ngôn ngữ hiện tại" > Warning ,Empty !</a>';
+                                ?>
+                            </a>
+                        </td>
+                        <td class="col-lim" >
+                            <?php echo $row['products_code'] ?>
+                        </td>
+                        <td class="col-lim text-right" >
+                            <?php echo $this->Products()->getPriceSale($row) ?>/<?php echo $this->Products()->getPrice($row) ?>
+                        </td>
+                        <td class="col-lim text-right" >
+                            <?php echo $this->Products()->getQuantity($row) ?>
+                        </td>
+                        <td class="col-lim text-right html-ordering" >
+                            <?php echo $row['ordering'] ?>
+                        </td>
+                        <td class="col-lim" >
+                            <?php if ($this->Products()->getToBuy($row)){ ?>
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Sản phẩm có thể mua trực tuyến" >
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                </span>
+                            <?php }else{ ?>
+                                <span class="coz-color-important" data-toggle="tooltip" data-placement="top" title="Sản phẩm chỉ có thể mua bằng đăng kí qua email (có quản lý kho và số lượng sản phẩm nhỏ hơn 0
+            hoặc đã xóa hoặc chưa hiển thị hoặc giá bán nhỏ hơn 0 hoặc hàng sắp về)" >
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                </span>
+                            <?php } ?>
+
+                            <?php if( !empty($row['is_published']) ){ ?>
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                </span>
+                            <?php }else{ ?>
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                    <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                                </span>
+                            <?php } ?>
+                        </td>
+                        <td class="text-right col-lim" >
+                            <?php if( empty($languages) ){ ?>
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'edit', 'id' => $row['products_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa sản phẩm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <?php }else{ ?>
+                            <span class="inline-box" >
+                                <a href="<?php echo $this->url('cms/product', array('action' => 'edit', 'id' => $row['products_id'])) ?>" title="Sửa sản phẩm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                                <span class="dropdown-menu dropdown-langs" >
+                                <?php foreach( $languages as $lang ){ ?>
+                                    <span class="dropdown-item" >
+                                         <a href='<?php echo $this->url('cms/product', array('action' => 'edit', 'id' => $row['products_id'])) ?>?language=<?php echo $lang["languages_id"] ?>' >
+                                            <span>
+                                                <?php echo $lang["languages_name"] ?>
+                                            </span>
+                                        </a>
+                                    </span>
+                                <?php } ?>
+                                </span>
+                            </span>
+                            <?php } ?>
+
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'copy', 'id' => $row['products_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Copy sản phẩm"  data-confirm="Bạn có muốn nhân đôi sản phẩm này ?" >
+                                <i class="fa fa-files-o" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="javascript:void(0);" data-btn="postToFacebook" data-id="<?php echo $row['products_id']; ?>" data-toggle="tooltip" data-placement="top" title="Post lên facebook" >
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+
+                            <div class="box-verticle clearfix" >
+                                <?php if( $key > 0){ ?>
+                                <a href="javascript:void(0);" class="item-box-verticle" data-id="<?php echo $row['products_id'] ?>" data-btn="upOrder" data-idup="<?php echo $products[$key-1]['products_id'] ?>" data-toggle="tooltip" data-placement="top" title="Lên trên một sản phẩm" >
+                                    <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                </a>
+                                <?php }else{ ?>
+                                <a href="javascript:void(0);" class="item-box-verticle" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Lên trên một sản phẩm" >
+                                    <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                </a>
+                                <?php } ?>
+
+                                <?php if( $key < count($products)-1){ ?>
+                                <a href="javascript:void(0);" class="item-box-verticle" data-id="<?php echo $row['products_id'] ?>" data-btn="downOrder" data-iddown="<?php echo $products[$key+1]['products_id'] ?>" data-toggle="tooltip" data-placement="top" title="Xuống dưới một sản phẩm" >
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <?php }else{ ?>
+                                <a href="javascript:void(0);" class="item-box-verticle" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Xuống dưới một sản phẩm" >
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <?php } ?>
+                            </div>
+
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'delete', 'id' => $row['products_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá sản phẩm"  data-confirm="Bạn có muốn xoá ?" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+
+                            <?php if( !empty($row['is_published']) ){ ?>
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'unpublish', 'id' => $row['products_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn sản phẩm" >
+                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                            </a>
+                            <?php }else{ ?>
+                            <a href="<?php echo $this->url('cms/product', array('action' => 'unpublish', 'id' => $row['products_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện sản phẩm" >
+                                <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                            </a>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['products_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            Chưa có sản phẩm
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

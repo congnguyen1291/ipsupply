@@ -1,0 +1,613 @@
+<?php
+$list_bcum = $this->Categories()->getAllParentsOfCategory($this->Products()->getCategoriesId($product), true);
+$productsNew = $this->Products()->getNewProduct(0,9);
+$productsHot = $this->Products()->getHotProduct(0,9);
+$productsBestseller = $this->Products()->getProductBestseller(0, 8);
+$productsSale = $this->Products()->getSaleProduct(0, 9);
+$productsBuyMost = $this->Products()->getProductBuyMost(0, 9);
+$item_cum = array();
+?>
+<div class="wrap-breadcrumbs" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <span class="bc-dr" >
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </span>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category" title="<?php echo $this->translate('txt_tat_ca_san_pham'); ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_tat_ca_san_pham'); ?>
+                        </a>
+                        <span class="bc-dr" >
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                    <?php 
+					$pbc = 2;
+					if(!empty($list_bcum)){ 
+                        for($i = count($list_bcum)-1;$i>=0;$i-- ){
+                            $item_cum = $list_bcum[$i];
+                            $pbc ++;
+                    ?>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Categories()->getCategoriesUrl($item_cum); ?>" title="<?php echo $this->Categories()->getTitle($item_cum); ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->Categories()->getTitle($item_cum); ?>
+                        </a>
+                        <span class="bc-dr" >
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </span>
+                        <meta itemprop="position" content="<?php echo $pbc ?>" />
+                    </li>
+                    <?php }
+                    } ?>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <span itemprop="item name" >
+                            <?php echo $this->Products()->getTitle($product); ?>
+                        </span>
+                        <meta itemprop="position" content="<?php echo ($pbc+1) ?>" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="co-main clearfix" >
+    <div class="container">
+        <div class="row">
+
+            <section class="col-lg-9 col-lg-push-3" >
+                
+                <div class="detail-product clearfix" data-controller="product" data-id="<?php echo $this->Products()->getProductsId($product) ?>" >
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <div class="top-detail clearfix" >
+                                <div class="row" >
+                                	<?php $images = $this->Images()->getImages($this->Products()->getProductsId($product)); 
+										if ( !empty($images) ){ ?>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="slider-detail clearfix" >
+                                            <div id="owlSm" class="owl-carousel owl-theme slideshow" data-neo="owlCarousel" data-own-name="owlDetailSlider" data-wow-delay="0.2s" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}}' data-model="imageOwl" >
+    						                    <?php foreach ($images as $image){ ?>
+    						                    <div class="item" >
+    						                        <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($image), 471); ?>" alt="<?php echo $this->Products()->getName($product) ?>" itemprop="image" class="img-fluid" />
+    						                    </div>
+    						                    <?php } ?>
+    						                </div>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                    
+                                    <div class="col-xs-12  col-md-6 col-sm-12 col-lg-6" >
+                                        <div class="details-product clearfix" >
+                                            <meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="<?php echo $this->Products()->getLink($product) ?>" />
+                                            <meta itemprop="productID" content="<?php echo $this->Products()->getProductsId($product); ?>" />
+                                            <h1 class="product-name" itemprop="name" >
+                                                <?php echo $this->Products()->getTitle($product) ?>
+                                            </h1>
+
+                                            <?php if( !empty($this->Products()->getCode($product)) ){ ?>
+                                            <div class="product-code" >
+                                                <?php echo $this->translate('txt_ma_san_pham'); ?> : 
+                                                <?php echo $this->Products()->getCode($product) ?>
+                                            </div>
+                                            <?php } ?>
+
+                                            <div class="form-product clearfix">
+                                                <form enctype="multipart/form-data" id="add-to-cart-form" action="/cart/addToCart" method="post" class="form-inline" data-form="addToCart" >
+                                                    <input type="hidden" value="<?php echo $this->Products()->getProductsId($product) ?>" name="products_id" data-input="products_id" >
+
+                                                    <?php if( !empty($extensions) ){ ?>
+													<div class="coz-list-extensions" >
+														<h2 class="title-h2-extensions" >
+															<?php echo $this->translate('txt_danh_sach_san_pham_dinh_kem'); ?>
+														</h2>
+														<div class="coz-extensions" >
+															<div class="owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductThumb" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="5000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":1},"678":{"items":2}}'  data-navtextleft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navtextright='<i class="fa fa-chevron-right" aria-hidden="true"></i>' >
+																<?php foreach ($extensions as $index => $extension) { ?>
+																<div class="coz-item-ex" >
+																	<div class="clearfix" >
+																		<div class="coz-extensions-img" >
+																			<img src="<?php echo $this->Images()->getUrlImage($this->Extension()->getImage($extension), 50, 50); ?>" >
+																		</div>
+																		<div class="coz-extensions-text">
+																			<div class="coz-extensions-title">
+																				<?php echo $this->Extension()->getName($extension); ?>
+																			</div>
+																			<div class="coz-extensions-message">
+																				<div class="coz-extensions-price"  >
+																					<?php echo $this->Currency()->fomatCurrency($this->Extension()->getPrice($extension)); ?>
+																				</div>
+																				<?php if($this->Extension()->getIsAlways($extension)){ ?>
+																				<div class="coz-extensions-status" >
+																					<i class="fa fa-check" aria-hidden="true"></i> <?php echo $this->translate('txt_luon_dinh_kem_san_pham'); ?>
+																				</div>
+																				<?php }else{ ?>
+																				<div class="coz-extensions-status" >
+																					<div class="clearfix" data-place="noExtension" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-id="<?php echo $this->Extension()->getId($extension); ?>" >
+																						<i class="fa fa-plus" aria-hidden="true"></i>
+																						<a href="javascript:void(0);" data-btn="appExtension" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-id="<?php echo $this->Extension()->getId($extension); ?>" rel="nofollow" >
+																							<?php echo $this->translate('txt_dinh_kem_san_pham'); ?>
+																						</a>
+																					</div>
+																					<div class="clearfix" data-place="hasExtension" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-id="<?php echo $this->Extension()->getId($extension); ?>" style="display: none" >
+																						<i class="fa fa-minus" aria-hidden="true"></i>
+																						<a href="javascript:void(0);" data-btn="cancelExtension" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-id="<?php echo $this->Extension()->getId($extension); ?>" >
+																							<?php echo $this->translate('txt_bo_dinh_kem_san_pham'); ?>
+																						</a>
+																					</div>
+																				</div>
+																				<input type="checkbox" style="display: none" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-extention_id = "<?php echo $this->Extension()->getId($extension); ?>" value="<?php echo $this->Extension()->getId($extension); ?>" class="extention-<?php echo $this->Extension()->getId($extension); ?>" name="extention[]" data-input="extention"  data-model="extention" >
+																				<?php } ?>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<?php } ?>
+															</div>
+														</div>
+													</div>
+													<?php } ?>
+
+													<?php if( count($types)>1 ){ ?>
+                                                    <div class="product-type" >
+                                                        <ul class="list-product-type clearfix" >
+                                                        	<?php foreach ($types as $key => $type) { ?>
+                                                            <li>
+                                                                <label class="target-product-type clearfix" >
+                                                                    <input type="radio" name="product_type" data-input="product_type" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-model="type" value="<?php echo $type['products_type_id'] ?>" <?php echo $type['products_type_id'] == $this->Products()->getProductTypeId($product) ? 'checked' : ''; ?> data-images='[{"image":"<?php echo $this->Images()->getUrlImage($type['thumb_image'], 471); ?>", "thumb":"<?php echo $this->Images()->getUrlImage($type['thumb_image'], 150); ?>"}]' >
+                                                                    <span class="name-product-type" >
+                                                                        <?php echo $type['type_name'] ?>
+                                                                    </span>
+                                                                    <span class="price-product-type" >
+                                                                        <?php echo $this->Currency()->fomatCurrency($type['price_sale']) ?>
+                                                                    </span>
+                                                                </label>
+                                                            </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </div>
+                                                    <?php }else if( !empty($this->Products()->getProductTypeId($product)) ){ ?>
+													<input type="hidden" name="product_type" value="<?php echo $this->Products()->getProductTypeId($product) ?>"  data-input="product_type" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" data-model="type" />
+													<?php } ?>
+
+													<?php 
+													if( $this->Products()->IsAvailablePrice($product) ){
+														$price = $this->Products()->getPrice($product);
+														$price_sale = $this->Products()->getPriceSale($product);
+													?>
+													<div class="product-price" id="price-preview" itemprop="offers" itemscope itemtype="http://schema.org/Offer" >
+														<meta itemprop="priceCurrency" content="<?php echo $this->Currency()->getCurrencySymbol() ?>" />
+														<span class="neo-value-price-update price-sale" data-model="priceSale" itemprop="price" content="<?php echo $price_sale; ?>"  >
+															<?php echo $this->Currency()->fomatCurrency($price_sale) ?>
+														</span>
+														<?php if($price > $price_sale){ ?>
+														<span class="priceroot" >
+															<?php echo $this->translate('price_root') ?>
+														</span>
+														<del  data-model="price" >
+															<?php echo $this->Currency()->fomatCurrency($price) ?>
+														</del>
+														<?php } ?>
+														<link itemprop="availability" href="http://schema.org/InStock" />
+													</div>
+													<?php }else{ ?>
+													<div class="product-price" id="price-preview">
+														<span class="neo-value-price-update" itemprop="price" content="<?php echo $this->Products()->stringWhenNotAvailablePrice(); ?>" >
+															<?php echo $this->Products()->stringWhenNotAvailablePrice(); ?>
+														</span>
+													</div>
+													<?php } ?>
+
+                                                    <div class="product-status">
+                                                        <div class="row" >
+                                                            <div class="col-xs-5" >
+                                                                <span class="label-product-status" >
+                                                                    <?php echo $this->translate('txt_tinh_trang_hang'); ?>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-xs-7" >
+                                                                <span class="name-product-status" >
+                                                                    <?php echo $this->Products()->getStringAvailability($product); ?>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <?php if ( $this->Products()->getToBuy($product) ){ ?>
+                                                    <div class="product-quantity">
+                                                        <div class="row" >
+                                                            <div class="col-xs-5" >
+                                                                <span class="label-product-quantity" >
+                                                                    <?php echo $this->translate('txt_so_luong'); ?>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-xs-7" >
+                                                                <input type="number" class="input-product-quantity" value="1" maxlength="12" name="quantity" data-role="neojq" data-ntype="quantity" data-input="quantity" data-model="quantity" data-products_id="<?php echo $this->Products()->getProductsId($product) ?>" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="product-action" >
+                                                        <button type="submit" class="btn btn-add-cart" title="<?php echo $this->translate('txt_mua_ngay') ?>" >
+				    										<span>
+									                            <?php echo $this->translate('txt_mua_ngay') ?>
+									                        </span>
+				    									</button>
+				    									<a href="<?php echo $this->Products()->getAddToCartProductsUrl($product) ?>" class="btn btn-add-cart btn-y" data-neo="ajax" data-role="form" >
+									                        <?php echo $this->translate('txt_add_to_cart') ?>
+									                    </a>
+                                                    </div>
+                                                    <?php }else{ ?>
+                                                    <div class="product-action" >
+	                                                    <a href="<?php echo $this->Products()->getBuyProductsByEmailUrl($product) ?>" class="btn btn-add-cart" data-neo="popup" rel="nofollow" >
+															<span>
+																<?php echo $this->translate('txt_register_email') ?>
+															</span>
+														</a>
+													</div>
+                                                    <?php } ?>
+
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="product-quotes" >
+                                <h2 class="title-quotes" >
+                                    <?php echo $this->translate('txt_title_quotes') ?>
+                                </h2>
+                                <div class="content-quotes" >
+                                    <?php echo $this->translate('txt_description_quotes') ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <!-- Nav tabs -->
+                            <div class="clearfix" >
+                                <ul class="nav nav-inline nav-tab-detail clearfix" role="tablist">
+
+                                    <?php 
+									$active = '';
+									if( !empty($this->Products()->getProductsMore($product)) ){
+										$active = 'products_more';
+									?>
+									<li class="nav-item" >
+										<a class="nav-link active" data-toggle="tab" href="#products_more" role="tab" rel="nofollow" >
+											<?php echo $this->translate('thong_tin_san_pham') ?>
+										</a>
+									</li>
+									<?php } ?> 
+
+									<?php if( !empty($this->Products()->getProductsLongdescription($product)) ){
+										if(empty($active)){
+											$active = 'products_longdescription';
+										}
+									?>
+									<li class="nav-item" >
+										<a class="nav-link <?php echo $active == 'products_longdescription' ? 'active' : '' ?>" data-toggle="tab" href="#products_longdescription" role="tab" rel="nofollow" >
+											<?php echo $this->translate('cau_hinh_chi_tiet') ?>
+										</a>
+									</li>
+									<?php } ?>
+
+									<?php if( !empty($this->Products()->getYoutubeVideo($product)) ){ 
+										if(empty($active)){
+											$active = 'youtube_video';
+										}
+									?>
+									<li class="nav-item" >
+										<a class="nav-link <?php echo $active == 'youtube_video' ? 'active' : '' ?>" data-toggle="tab" href="#youtube_video" role="tab" rel="nofollow" >
+											<?php echo $this->translate('xem_video') ?>
+										</a>
+									</li>
+									<?php } ?>
+
+									<li class="nav-item" >
+										<a class="nav-link <?php echo $active == '' ? 'active' : '' ?>" data-toggle="tab" href="#comment" role="tab" rel="nofollow" >
+											<?php echo $this->translate('txt_comment_fb') ?>
+										</a>
+									</li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="tab-content tab-content-detail clearfix" >
+
+                                <?php if( !empty($this->Products()->getProductsMore($product)) ){ ?>
+								<div class="tab-pane fade in <?php echo $active == 'products_more' ? 'active' : '' ?>" id="products_more" role="tabpanel" itemprop="review" itemscope itemtype="http://schema.org/Review" >
+									<div class="clearfix" itemprop="description" >
+										<?php echo $this->Products()->getProductsMore($product) ?>
+									</div>
+								</div>
+								<?php } ?>
+
+								<?php if(!empty($this->Products()->getProductsLongdescription($product))){ ?>
+								<div class="tab-pane fade in <?php echo $active == 'products_longdescription' ? 'active' : '' ?>" id="products_longdescription" role="tabpanel" itemprop="review" itemscope itemtype="http://schema.org/Review" >
+									<div class="clearfix" itemprop="description" >
+										<?php echo $this->Products()->getProductsLongdescription($product) ?>
+									</div>
+								</div>
+								<?php } ?>
+
+								<?php if( !empty($this->Products()->getYoutubeVideo($product)) ){ ?>
+								<div class="tab-pane fade in <?php echo $active == 'youtube_video' ? 'active' : '' ?>" id="youtube_video" role="tabpanel" itemprop="review" itemscope itemtype="http://schema.org/Review" >
+									<div class="container-fluid product-description-wrapper  border-tab-detail" itemprop="video" itemscope itemtype="http://schema.org/VideoObject" >
+										<link itemprop="url" href="//www.youtube.com/embed/<?php echo $this->Products()->getYoutubeVideo($product) ?>?autoplay=0" >
+										<iframe class="mfp-iframe iframe-video" src="//www.youtube.com/embed/<?php echo $this->Products()->getYoutubeVideo($product) ?>?autoplay=0" frameborder="0" allowfullscreen ></iframe>
+									</div>
+								</div>
+								<?php } ?>
+
+								<div class="tab-pane fade in <?php echo $active == '' ? 'active' : '' ?>" id="comment" role="tabpanel" >
+									<div class="fb-comments" data-width="100%" ></div>
+								</div>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <?php 
+				$limit = 8;
+				$price_volatility = 20000000;// gia bien dong trong khoang 20tr
+				$price_min = $product->price_sale - $price_volatility > 0 ? $product->price_sale - $price_volatility : 0;
+				$price_max = $product->price_sale + $price_volatility;
+				$product_near_price = $this->Products()->getProductNearPrice($product->categories_id, $product->products_id, $product->price_sale, $price_min, $price_max, 0, 8);
+				if(!empty($product_near_price)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_near_price_this_product') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductNearPrice" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductNearPrice" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductNearPrice" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($product_near_price as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php 
+				$product_recommends = $this->Products()->getRecommendProductById($product->products_id, 0, 8);
+				if(!empty($product_recommends)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_product_recommends') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductRecommends" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductRecommends" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductRecommends" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($product_recommends as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php if(!empty($productsHot)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_san_pham_hot') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductHot" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductHot" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductHot" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($productsHot as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php if(!empty($productsNew)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_san_pham_moi') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductHot" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductHot" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductHot" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($productsNew as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php if(!empty($productsSale)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_san_pham_giam_gia') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductSale" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductSale" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductSale" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($productsSale as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php if(!empty($productsBuyMost)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_san_pham_mua_nhieu') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductBuyMost" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductBuyMost" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductBuyMost" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($productsBuyMost as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php if(!empty($productsBestseller)) { ?>
+                <div class="group-product" >
+                    <div class="group-heading clearfix" >
+                        <h2 itemprop="name" class="title-box  pull-xs-left" >
+                            <?php echo $this->translate('txt_san_pham_ban_chay') ?>
+                        </h2>
+                        <div class="pull-xs-right" >
+                            <div class="navi-owl clearfix" >
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlProductBestseller" rel="nofollow" >
+                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlProductBestseller" rel="nofollow" >
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body" >
+                        <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductBestseller" data-margin="40" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":3}}' >
+                        
+                            <?php foreach ($productsBestseller as $key => $p) { ?>                
+	                        <div class="item" >
+	                            <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+	                        </div>
+	                        <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+            </section>
+
+            <section class="col-lg-3 col-lg-pull-9" >
+
+                <?php echo $this->partial('app/categories-left', array('categories' => $categories, 'category' => $item_cum)); ?>
+
+                <div class="dh-banner" >
+                    <div class="inner-dh-banner" >
+                        <a href="" >
+                            <img src="/styles/dataimages/banner.jpg" alt="" class="img-fluid" >
+                        </a>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+</div>

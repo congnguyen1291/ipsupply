@@ -1,0 +1,189 @@
+<div class="coz-wrap-auth clearfix" >
+    <div class="container" >
+        <div class="wrap-cart-page clearfix" >
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="ui-h1-payment" >
+                        <?php echo $this->translate('txt_gio_hang_cua_ban') ?>
+                    </h1>
+                </div>
+                <?php 
+                $carts = $this->Cart()->getCart();
+                if( !empty($carts) ){ ?>
+                <div class="col-lg-12" >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="coz-wrap-cart-form-auth" >
+                                <div class="table-responsive">
+                                    <table class="coz-table-cart" >
+                                        <thead>
+                                            <tr>
+                                                <th><?php echo $this->translate('txt_anh_san_pham'); ?></th>
+                                                <th><?php echo $this->translate('txt_ten_san_pham'); ?></th>
+                                                <th><?php echo $this->translate('txt_don_gia'); ?></th>
+                                                <th><?php echo $this->translate('txt_so_luong'); ?></th>
+                                                <th><?php echo $this->translate('txt_thanh_tien'); ?></th>
+                                                <th><?php echo $this->translate('txt_xoa'); ?></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                            foreach ($carts as $id => $product) {
+                                                foreach ($product['product_type'] as $product_type_id => $p) {
+                                            ?>
+                                            <tr>
+                                                <td>
+
+                                                    <a class="img-product-cart" href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" >
+                                                        <img src="<?php echo $this->Images()->getUrlImage($product['thumb'], 84, 84); ?>" alt="<?php echo $this->Products()->getTitle($p) ?>" >
+                                                    </a>
+                                                    
+                                                </td>
+                                                <td>
+                                                    <h2>
+                                                        <a class="name-product-cart" href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" >
+                                                            <?php echo $this->Products()->getName($p) ?>
+                                                        </a>
+                                                        <?php if(   !empty($this->Products()->getExtension($p)) 
+                                                                    || !empty($this->Products()->getExtensionRequire($p)) ){ ?>
+                                                            <a href="<?php echo $this->Products()->getCartExtentionUrl($p) ?>" data-neo="popup" data-id="<?php echo $this->Products()->getProductsId($p) ?>" data-type="<?php echo $this->Products()->getProductTypeId($p) ?>" >
+                                                                <?php echo $this->translate('txt_view_extention_product_on_cart'); ?>
+                                                            </a>
+                                                        <?php } ?>           
+                                                    </h2>
+                                                    
+                                                </td>
+                                                <td>
+                                                    <span class="product-price">
+                                                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($p)) ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <input type="number" title="<?php echo $this->translate('txt_so_luong'); ?>" class="inp-number" value="<?php echo $this->Cart()->getProductsQuantity($p) ?>" name="quantity[<?php echo $this->Products()->getProductsId($p) ?>][<?php echo $this->Products()->getProductTypeId($p) ?>]" min="1" >
+                                                </td>
+                                                <td>
+                                                    <span class="product-price">
+                                                        <?php echo $this->Currency()->fomatCurrency($this->Cart()->getProductsPriceTotal($p)) ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a class="button remove-item" title="<?php echo $this->translate('txt_xoa'); ?>" href="<?php echo $this->Cart()->getUrlDel($p) ?>" data-neo="ajax" rel="nofollow" >
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <?php }
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7" >
+                            <div class="coz-form-auth-cart" >
+                                <form accept-charset='UTF-8' accept-charset='UTF-8' action='<?php echo $this->url('sign-in', array('action' => 'login')) ?><?php echo $this->redirect != '' ? "?redirect={$this->redirect}" : "" ?>' id='cartauthform' method='post' data-form="cartAuth" >
+                                    <h2 class="coz-title-payment" >
+                                        <?php echo $this->translate('txt_auth_login') ?>
+                                    </h2>
+                                    <p class="coz-note-payment" >
+                                        <?php echo $this->translate('txt_des_auth_login') ?>
+                                    </p>
+                                    <div class="form-element-payment" >
+                                        <div class="row">
+                                            <div class="col-sm-6" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <label class="ui-lb-payment" >
+                                                            Email*
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-12" >
+                                                        <div class="ui-input-payment" >
+                                                            <input type="email" value="" name="email" spellcheck="false" class="input-payment" aria-invalid="true" placeholder="<?php echo $this->translate('txt_email_auth_cart') ?>" data-input="email" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6" >
+                                                <div class="row" >
+                                                    <div class="col-sm-12" >
+                                                        <label class="ui-lb-payment" >
+                                                            Password*
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-12" >
+                                                        <div class="ui-input-payment" >
+                                                            <input type="password" value="" name="password" spellcheck="false" class="input-payment" aria-invalid="true" placeholder="<?php echo $this->translate('txt_password_auth_cart') ?>" data-input="password" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12" >
+                                            <button class="coz-btn coz-btn-active" type="submit" >
+                                                <?php echo $this->translate('txt_dang_nhap_auth_cart')?>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2" ></div>
+
+                        <div class="col-md-3" >
+                            <div class="coz-new-user-auth" >
+                                <div>
+                                    <h2 class="coz-title-payment" >
+                                        <?php echo $this->translate('txt_new_user_auth_cart') ?>
+                                    </h2>
+
+                                    <p class="coz-note-payment" >
+                                        <?php echo $this->translate('txt_des_new_user_auth_cart') ?>
+                                    </p>
+
+                                    <div class="form-element-payment" >
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/cart/payment?type=fast-buy" title="<?php echo $this->translate('mua_hang_khong_dang_ki') ?>" class="coz-btn coz-btn-block" rel="nofollow" >
+                                                    <?php echo $this->translate('mua_hang_khong_dang_ki') ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-element-payment" >
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in/register?redirect=<?php echo urlencode('/cart/auth') ?>" title="<?php echo $this->translate('txt_dang_ki_mua_hang') ?>" class="coz-btn coz-btn-active coz-btn-block" rel="nofollow" >
+                                                    <?php echo $this->translate('txt_dang_ki_mua_hang') ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php }else{ ?>
+                        <div class="col-sm-12" >
+                            <p class="cart-empty">
+                                <?php echo $this->translate('txt_chua_co_san_pham_trong_cart') ?>
+                            </p>
+                        </div>
+                        <?php } ?>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

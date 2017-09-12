@@ -1,0 +1,671 @@
+<?php   
+    $children = $this->viewModel()->getCurrent()->getChildren();
+    $view_val = $children[0];
+    $languages = $view_val->languages;
+    $languages_id = $view_val->languages_id;
+?>
+<a href="javascript:void(0);" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+</a>
+<div class="box-save-w" >
+    <div class="clearfix in-box-save-w" >
+        <div class="user-panel" >
+            <div class="image">
+                <img src="http://coz.vn/styles/images/logo_admin.png" class="img-reponsive" alt="User Image" />
+            </div>
+            <div class="info">
+                <div class="clearfix" >
+                    <p>
+                        Chào bạn, <?php echo $_SESSION['CMSMEMBER']['full_name'] ?>
+                    </p>
+                </div>
+                <div class="clearfix lang-status" >
+                    <div class="row" >
+                        <div class="col-sm-5" >
+                            <a href="#" class="user-status" >
+                                <i class="fa fa-circle"></i> 
+                                Online
+                            </a>
+                        </div>
+                        <div class="col-sm-7" >
+                            <select id="coz-language-global" class="form-control input-sm">
+                                <?php foreach ($languages as $key => $language) { ?>
+                                <option value="<?php echo $language['languages_id'] ?>" <?php echo ($language['languages_id']==$languages_id) ? 'selected="selected"' : '' ?> >
+                                    <?php echo $language['languages_name'] ?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="/cms" method="get" class="sidebar-form" >
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search..."/>
+        		<span class="input-group-btn">
+        			<button type='submit' name='seach' id='search-btn' class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+        		</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<ul class="sidebar-menu" data-widget="tree" >
+    <li class="<?php echo $view_val->current=='dashboard' ? 'active' : '' ?>">
+        <a href="<?php echo $this->url('cms') ?>">
+            <img class="coz-ico-menu" src="/admincp/icon/dashboard.svg" > 
+            <span>
+                Dashboard
+            </span>
+        </a>
+    </li>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','category', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='category' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/danh-muc-san-pham.svg" >
+            <span>
+                Danh mục sản phẩm
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/category') ?>" >
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','category', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/category', array('action' => 'add')) ?>" >
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if($this->CMSCommon()->hasPermission('cms','category', 'managebanner')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/category', array('action' => 'manageBanner')) ?>" >
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý banner
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','product', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='product' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/san-pham.svg" >
+            <span>
+                Sản phẩm
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/product') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','product', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/product', array('action' => 'add')) ?>" >
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if($this->CMSCommon()->hasPermission('cms','questionanswer', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/fqa', array('action' => 'index')) ?>" >
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý hỏi đáp
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','stock', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='stock' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/stock.svg" >
+            <span>
+                Kho
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/stock') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','feature', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='feature' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/dac-tinh-san-pham.svg" >
+            <span>
+                Đặc tính sản phẩm
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/feature') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','feature', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/feature', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','coupons', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='coupons' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/ma-giam-gia.svg" >
+            <span>
+                Mã giảm giá
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/coupons') ?>">
+                    <i class="fa fa-angle-double-right"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','coupons', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/coupons', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','manufacturers', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='manufacturers' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/xuat-xu.svg" >
+            <span>
+                Nhà sản xuất (<i>Xuất xứ</i>)
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/manufacturers') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','manufacturers', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/manufacturers', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','merchant', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='merchant' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/dai-ly.svg" >
+            <span>
+                Đại lý (<i>merchant</i>)
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/merchant') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','merchant', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/merchant', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','banners', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='banners' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/banner.svg" >
+            <span>
+                Banner
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/banners') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','banners', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/banners', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm banner
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','groups', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='group' ? 'active' : '' ?>" >
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/quan-li-nhom-quyen.svg" >
+            <span>Quản lý nhóm quyền</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/group') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','groups', 'admin')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/group', array('action' => 'admin')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Danh sách admin
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if($this->CMSCommon()->hasPermission('cms','groups', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/group', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm nhóm mới
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if($this->CMSCommon()->hasPermission('cms','permission', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/permission') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý quyền
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if($this->CMSCommon()->hasPermission('cms','permission', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/permission', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm quyền mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','payment', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='payment' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/thanh-toan.svg" >
+            <span>Thanh toán</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/payment') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','category', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/payment', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm phương thức mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','invoice', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='invoice' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/invoice.svg" >
+            <span>
+                Hóa đơn<?php echo $view_val->new_invoice ? ('<strong class="number-invoi-new" >('.$view_val->new_invoice.' mới)</strong>') : '' ?>
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/invoice') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','invoice', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/invoice', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm hóa đơn
+                </a>
+            </li>
+            <?php endif; ?>
+            <li>
+                <a href="<?php echo $this->url('cms/invoice', array('action' => 'report')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Doanh số
+                </a>
+            </li>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <li class="treeview <?php echo $view_val->current=='assign' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/assign.svg" >
+            <span>
+                Assign
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/assign') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('cms/assign', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm assign
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','categoryarticles', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='carticles' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/danh-muc-bai-viet.svg" >
+            <span>Danh mục bài viết</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/carticles') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','articles', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/carticles', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','articles', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='articles' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/bai-viet.svg" >
+            <span>Bài viết</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/articles') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý bài viết
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','articles', 'index')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/articles', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm bài viết mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','user', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='user' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/khach-hang.svg" >
+            <span>Khách hàng</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/user') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('cms/user', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm khách hàng mới
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('cms/user_level') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Loại khách hàng
+                </a>
+            </li>
+        </ul>
+    </li>
+    <?php endif; ?>
+	
+    <?php if($this->CMSCommon()->hasPermission('cms','shipping', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='shipping' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/van-chuyen.svg" >
+            <span>Vận chuyển</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/shipping') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','shipping', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/group_regions', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm mới
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','branches', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='branches' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/chi-nhanh.svg" >
+            <span>Chi nhánh</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/branches') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','branches', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/branches', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm chi nhánh
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','menus', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='menus' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/menu.svg" >
+            <span>Menus</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/menus') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý menus
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','menus', 'add')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/menus', array('action' => 'add')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thêm menus 
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+    <?php endif; ?>
+
+    <?php if($this->CMSCommon()->hasPermission('cms','website', 'index')): ?>
+    <li class="treeview <?php echo $view_val->current=='website' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/website.svg" >
+            <span>Websites</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="<?php echo $this->url('cms/website') ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Thông tin website
+                </a>
+            </li>
+        </ul>
+    </li>
+    <?php endif; ?>
+    
+    <li class="treeview <?php echo $view_val->current=='language' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/language.svg" >
+            <span>Ngôn ngữ</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu" >
+            <li>
+                <a href="<?php echo $this->url('cms/language', array('action' => 'index')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý ngôn ngữ
+                </a>
+            </li>
+            <?php if($this->CMSCommon()->hasPermission('cms','language', 'manage-keywords')): ?>
+            <li>
+                <a href="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý từ khóa
+                </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </li>
+
+    <li class="treeview <?php echo $view_val->current=='trash' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/trash.svg" >
+            <span>Trash</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu" >
+            <li>
+                <a href="<?php echo $this->url('cms/trash', array('action' => 'index')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="treeview <?php echo $view_val->current=='developer' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/developer.svg" >
+            <span>Cho nhà phát triển</span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu" >
+            <li>
+                <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'index')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Quản lý vị trí banner
+                </a>
+            </li>
+        </ul>
+    </li>
+    
+</ul>

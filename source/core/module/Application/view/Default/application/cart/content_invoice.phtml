@@ -1,0 +1,326 @@
+<table style="width:100%">
+    <tr>
+        <th colspan="2" style="font-size:18px;padding:5px 0px">
+            <?php echo $this->translate('hoa_don_ban_hang');?>
+        </th>
+    </tr>
+    <tr>
+        <td style="width:30%" >
+            <?php echo $this->translate('khach_hang');?>
+        </td>
+        <td>
+            <strong><?php echo $data['full_name'] ?></strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->translate('so_dien_thoai');?>
+        </td>
+        <td>
+            <strong><?php echo $data['phone'] ?></strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->translate('txt_email');?>
+        </td>
+        <td>
+            <strong><?php echo $data['email'] ?></strong>
+        </td>
+    </tr>
+
+    <tr>
+        <td><?php echo $this->translate('dia_chi');?> </td>
+        <td>
+            <strong>
+                <?php echo $this->Invoice()->getAddress($data); ?>
+            </strong>
+        </td>
+    </tr>
+
+    <?php if(isset($dataorder['xuathoadon'])) : ?>
+    <tr>
+        <td colspan="2">
+            <?php echo $this->translate('thong_tin_xuat_hoa_don');?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->translate('ten_cong_ty');?>
+        </td>
+        <td>
+            <strong><?php echo $dataorder['company_name'] ?></strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->translate('ma_so_thue');?>
+        </td>
+        <td>
+            <strong><?php echo $dataorder['company_tax_code'] ?></strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php echo $this->translate('dia_chi');?>
+        </td>
+        <td>
+            <strong><?php echo $dataorder['company_address'] ?></strong>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <tr >
+        <td colspan="2" style="text-align: center;padding: 20px 0 0 0;font-size: 18px;font-weight: bold;" align="center" >
+            <b><?php echo $this->translate('dien_giai');?></b>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="padding:10px 0px" >
+            <p>
+                <?php echo $this->translate('danh_sach_san_pham');?>
+            </p>
+            <table style="width: 100%;border-collapse: collapse;border: 1px solid #f5f5f5;" border="1" >
+                <tr>
+                    <th style="width:10px;padding: 10px;">
+                        #
+                    </th>
+                    <th style="width:10px;padding: 10px;white-space: nowrap;" >
+                        <?php echo $this->translate('ma_hang');?>
+                    </th>
+                    <th colspan="6" style="padding: 10px;" >
+                        <?php echo $this->translate('ten_hang'); ?>
+                    </th>
+                    <th style="width:10px;padding: 10px;text-align: right;" colspan="2" >
+                        <?php echo $this->translate('don_gia');?>
+                    </th>
+                    <th style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;" >
+                        <?php echo $this->translate('so_luong');?>
+                    </th>
+                    <th style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;">
+                        <?php echo $this->translate('thanh_tien');?>
+                    </th>
+                    <th style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;">
+                        <?php echo $this->translate('txt_tong_tien');?>
+                    </th>
+                </tr>
+                <?php 
+                $index = 1;
+                $total_products = 0;
+                foreach ($datacart as $key => $products) {
+                    if($key == 'coupon'  || $key == 'shipping'  ) continue; 
+                    foreach($products['product_type'] as $product_type_id => $row){
+                        $total_products += $row['price_total'];
+                        $extentions = array_merge($row['extensions'], $row['extensions_require']);
+                ?>
+                <tr>
+                    <td style="padding: 10px;" <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?>  >
+                        <?php echo $index++ ?>
+                    </td>
+
+                    <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> style="padding: 10px;white-space: nowrap;" >
+                        <?php echo $products['code'] ?>
+                    </td>
+
+                    <td colspan="6" style="padding: 10px;" >
+                        <?php echo $products['title'] ?>
+                    </td>
+
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" <?php echo empty($row['extensions_require']) ? 'colspan="2"' : '' ?> >
+                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSaleSimple($row)) ?>
+                    </td>
+
+                    <?php if( !empty($row['extensions_require']) ){ ?>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)) ?>
+                    </td>
+                    <?php } ?>
+
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+                        <?php echo $this->Cart()->getProductsQuantity($row) ?>
+                    </td>
+
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
+                        <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)*$this->Cart()->getProductsQuantity($row)) ?>
+                    </td>
+
+                    <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
+                        <?php echo $this->Currency()->fomatCurrency($row['price_total']) ?>
+                    </td>
+
+                </tr>
+
+                <?php
+                $k_ex = 0; 
+                if( !empty($row['extensions_require']) ){
+                    foreach ($row['extensions_require'] as $k_ => $ext) {
+                        $quality = $ext['quantity'];
+                ?>
+                <tr>
+                    <?php if($k_ex == 0){ ?>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" rowspan="<?php echo count($extentions); ?>" style="padding: 10px" >
+                        <?php echo $this->translate('txt_sp_dinh_kem');?>
+                    </td>
+                    <?php } ?>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" >
+                        <?php echo ($k_ex+1); ?>
+                    </td>
+                    <td style="padding: 10px;" colspan="2" >
+                        <?php echo $ext['ext_name'] ?>
+                    </td>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
+                        <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
+                    </td>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;"><?php echo $quality; ?></td>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
+                        <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
+                    </td>
+                </tr>
+                <?php $k_ex++; 
+                    }
+                } ?>
+
+                <?php 
+                if( !empty($row['extensions']) ){
+                    foreach ($row['extensions'] as $k_ => $ext) {
+                        $quality = $ext['quantity'];
+                ?>
+                <tr>
+                    <td style="text-align:center;padding: 10px;" >
+                        <?php echo ($k_ex+1); ?>
+                    </td>
+                    <td style="padding: 10px;" colspan="5" >
+                        <?php echo $ext['ext_name'] ?>
+                    </td>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
+                        <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
+                    </td>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;" ><?php echo $quality; ?></td>
+                    <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
+                        <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
+                    </td>
+                </tr>
+                <?php $k_ex++; 
+                    }
+                } ?>
+
+                <?php }
+                } ?>
+
+                <tr>
+                    <td colspan="12" style="text-align:right;padding: 10px;" >
+                        <strong><?php echo $this->translate('txt_tong_phu');?></strong>
+                    </td>
+                    <td style="padding: 10px;text-align: right;color: #e10000;" >
+                        <strong><?php echo $this->Currency()->fomatCurrency($total_orig) ?></strong>
+                    </td>
+                </tr>
+
+                <?php if ( !empty($cart['coupon']) ) { ?>
+                <tr>
+                    <td colspan="12" style="text-align:right;padding: 10px;" >
+                        <strong><?php echo $this->translate('txt_gia_tri_giam_gia'); ?></strong>
+                    </td>
+                    <td style="padding: 10px;text-align: right;color: #e10000;" >
+                        <strong>
+                            <?php echo $this->Currency()->fomatCurrency($cart['coupon']['coupon_price']) ?>
+                        </strong>
+                    </td>
+                </tr>
+                <?php } ?>
+
+                <tr>
+                    <td colspan="12" style="text-align:right;padding: 10px;" >
+                        <strong><?php echo $this->translate('txt_phi_van_chuyen'); ?></strong>
+                    </td>
+                    <td style="padding: 10px;text-align: right;color: #e10000;" >
+                        <strong>
+                            <?php echo $this->Currency()->fomatCurrency($fee, 'txt_mien_phi_ship') ?>
+                        </strong>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="12" style="text-align:right;padding: 10px;" >
+                        <strong><?php echo $this->translate('tong_cong'); ?></strong>
+                    </td>
+                    <td style="padding: 10px;text-align: right;color: #e10000;" >
+                        <strong>
+                            <?php echo $this->Currency()->fomatCurrency($total + $fee) ?>
+                        </strong>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="12" style="text-align:right;padding: 10px;" >
+                        <strong><?php echo $this->translate('tong_cong_tax'); ?></strong>
+                    </td>
+                    <td style="padding: 10px;text-align: right;color: #e10000;" >
+                        <strong>
+                            <?php echo $this->Currency()->fomatCurrency($total_tax + $fee) ?>
+                        </strong>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="padding:10px 0px" >
+            <p>
+                <?php echo $this->translate('txt_thong_tin_van_chuyen'); ?>
+            </p>
+            <table style="width: 100%;border-collapse: collapse;border: 1px solid #f5f5f5;" border="1" >
+                <tr>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" >
+                        <?php echo $this->translate('khach_hang');?>
+                    </td>
+                    <td style="padding: 10px;" >
+                        <strong><?php echo $data['ships_full_name'] ?></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" >
+                        <?php echo $this->translate('so_dien_thoai');?>
+                    </td>
+                    <td style="padding: 10px;" >
+                        <strong></strong><?php echo $data['ships_phone'] ?></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" >
+                        <?php echo $this->translate('txt_email');?>
+                    </td>
+                    <td style="padding: 10px;" >
+                        <strong><?php echo $data['ships_email'] ?></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" >
+                        <?php echo $this->translate('txt_dia_chi');?>
+                    </td>
+                    <td style="padding: 10px;" >
+                        <strong>
+                            <?php echo $this->Invoice()->getAddress($data, 1); ?>
+                        </strong>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px;width: 10px;white-space: nowrap;" >
+                        <?php echo $this->translate('txt_kieu_van_chuyen');?> 
+                    </td>
+                    <td style="padding: 10px;" >
+                        <strong>
+                            <?php echo ( $transport_type == 0 ? $this->translate('txt_shipping_normal') : $this->translate('txt_shipping_fast')); ?>
+                        </strong>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+
+</table>

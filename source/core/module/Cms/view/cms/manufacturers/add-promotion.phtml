@@ -1,0 +1,117 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Khuyến mãi :: Thêm mới
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a href="<?php echo $this->url('cms/manufacturers', array('action' => 'manage-promotion')) ?>">Khuyến mãi hãng sản xuất</a></li>
+        <li class="active">Thêm mới</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <form method="post" action="" id="form-promotion" >
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <button class="btn btn-primary">Lưu lại</button>
+                        <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                    </div>
+                </div>
+            </div>
+            <?php if(isset($_SESSION['error_message'])){ ?>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <ul>
+                            <li style="color:red"><?php echo $_SESSION['error_message'] ?></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <?php unset($_SESSION['error_message']) ?>
+            <?php } ?>
+            <div class="col-xs-8">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="manufacturers_id">Hãng sản xuất</label>
+                            <select name="data[manufacturers_id]" id="manufacturers_id" class="multichoice form-control">
+                            <?php if($this->manus && count($manus)) { ?>
+                                <?php foreach($manus as $manu) { ?>
+                                    <option value="<?php echo $manu['manufacturers_id'] ?>" <?php echo $this->data && $data['manufacturers_id'] == $manu['manufacturers_id'] ? 'selected' : '' ?>><?php echo $manu['manufacturers_name'] ?></option>
+                                <?php } ?>
+                            <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Tiêu đề</label>
+                            <input class="form-control" type="text" name="data[title]" id="title" value="<?php echo $this->data ? $data['title'] : '' ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Mô tả</label>
+                            <textarea name="data[description]" id="description" cols="30" rows="10" class="form-control ckeditor"><?php echo $this->data ? $data['description'] : '' ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="seo_keywords">SEO Keywords</label>
+                            <input class="form-control" type="text" name="data[seo_keywords]" id="seo_keywords" value="<?php echo $this->data ? $data['seo_keywords'] : '' ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="seo_description">SEO Description</label>
+                            <textarea class="form-control" name="data[seo_description]" id="seo_description" cols="30"
+                                      rows="10"><?php echo $this->data ? $data['seo_description'] : '' ?></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="min_price" style="display: block">Mức giá thấp nhất</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" name="data[min_price]" id="min_price" class="form-control moneyInput" value="<?php echo $this->data ? $data['min_price'] : '' ?>" />
+                                <span class="input-group-addon">.00</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_start">Ngày bắt đầu</label>
+                            <input class="form-control date-input" type="text" name="data[date_start]" id="date_start" value="<?php echo $this->data ? $data['date_start'] : date('Y-m-d') ?>"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_end">Ngày kết thúc</label>
+                            <input class="form-control date-input" type="text" name="data[date_end]" id="date_end" value="<?php echo $this->data ? $data['date_end'] : date('Y-m-d') ?>"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="categories">Danh mục khuyến mãi</label>
+                            <select name="cats[]" id="categories" class="multichoice form-control" multiple>
+                                <?php foreach($cats as $cat) : ?>
+                                    <option value="<?php echo $cat['categories_id'] ?>" <?php echo $this->data && in_array($cat['categories_id'], $data['cats']) ? 'selected' : '' ?>><?php echo $cat['treename'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_published">
+                                <input type="hidden" name="data[is_published]" value="0"/>
+                                <input type="checkbox" name="data[is_published]" id="is_published" value="1" <?php echo $this->data && $data['is_published'] ? 'checked' : '' ?>/>
+                                Kích hoạt</label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <button class="btn btn-primary">Lưu lại</button>
+                        <button type="button" class="btn btn-danger" onclick="javascript:history.back(-1);">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

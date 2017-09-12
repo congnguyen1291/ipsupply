@@ -1,0 +1,157 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#parent_id").select2().on("change", function(e) {
+            var val = $(this).val();
+        });
+        $("#feature_type").select2().on("change", function(e) {
+            var val = $(this).val();
+            if( val == 0 ){
+                $('.box-color-patten').hide();
+            }else{
+                $('.box-color-patten').show();
+            }
+        });
+        $("#is_value").select2().on("change", function(e) {
+            var val = $(this).val();
+            if( val == 0 ){
+                $('.box-color-patten .is_color').show();
+                $('.box-color-patten .is_pattern').hide();
+            }else{
+                $('.box-color-patten .is_color').hide();
+                $('.box-color-patten .is_pattern').show();
+            }
+        });
+        $("#feature_type").trigger('change');
+        $("#is_value").trigger('change');
+    });
+</script>
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>" >
+                        <i class="fa fa-dashboard"></i> 
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/category') ?>" >
+                        Đặc tính
+                    </a>
+                </li>
+                <li class="active">
+                    Cập nhật đặc tính
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                Đặc tính :: Cập nhật
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-6 pull-rigth" >
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content clearfix" >
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('cms/feature', array('action' => 'edit', 'id' => $id)));
+    $form->setAttribute('enctype', 'multipart/form-data');
+    $form->setAttribute('id', 'form-feature');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('feature_id'));
+    echo $this->formHidden($form->get('feature_alias'));
+    ?>
+    <div class="row" >
+        <div class="col-xs-6">
+            <div class="form-group" >
+                <label for="feature_id" >
+                    Đặc tính cha
+                </label>
+                <?php echo $this->formRow($form->get('parent_id')); ?>
+            </div>
+
+            <div class="form-group">
+                <label for="feature_title">
+                    Tên đặc tính
+                </label>
+                <?php echo $this->formRow($form->get('feature_title')); ?>
+            </div>
+
+            <div class="form-group">
+                <label for="feature_type">
+                    Loại đặc tính
+                </label>
+                <?php echo $this->formRow($form->get('feature_type')); ?>
+            </div>
+
+            <div class="box-color-patten" >
+                <div class="form-group">
+                    <label for="is_value">
+                        Loại màu sắc
+                    </label>
+                    <?php echo $this->formRow($form->get('is_value')); ?>
+                </div>
+
+                <div class="form-group is_color" >
+                    <label for="feature_color" >
+                        Màu sắc
+                    </label>
+                    <?php echo $this->formRow($form->get('feature_color')); ?>
+                </div>
+
+                <div class="form-group is_pattern" >
+                    <div class="form-group" >
+                        <div class="result-list-img clearfix" >
+                            <div class="list-img-upload clearfix" ></div>
+                            <div class="img-prevew-upload btn-upload btn-upload-feature" >
+                                <a href="javascript:void(0)" class="action-upload" >
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="img-responsive"  >
+                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" >
+        <label for="ordering">
+            Vị trí
+            <?php echo $this->formRow($form->get('ordering')); ?>
+        </label>
+        <label for="is_published">
+            <?php echo $this->formRow($form->get('is_published')); ?>
+            Hiển thị
+        </label>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary btn-sm" >
+            Cập nhật đặc tính
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+            Quay lại
+        </button>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

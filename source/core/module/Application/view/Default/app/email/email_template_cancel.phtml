@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+</head>
+
+<body>
+<table width="726" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td valign="top"><table width="650" border="0" align="center" cellpadding="0" cellspacing="0">
+            </table></td>
+    </tr>
+    <tr>
+        <td align="center" valign="top"><table width="650" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tbody>
+
+                <tr>
+                    <td valign="top" bgcolor="#ffffff"><table width="650" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                            <tr>
+                                <td valign="top" width="220"><a href="" title="Maxliving" target="_blank"><img src="/styles/images/logo.png" alt="Thien Thien Tan" width="264" height="50" border="0" /></a></td>
+                                <td valign="top" width="430">&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table></td>
+                </tr>
+                </tbody>
+            </table></td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" bgcolor="#00a859"><table width="650" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+                    <td align="center" valign="middle">Mày tính bản</td>
+                    <td align="center" valign="middle">Điện thoại</td>
+                    <td align="center" valign="middle">Máy tính xách tay</td>
+                    <td align="center" valign="middle">Máy bàn</td>
+                    <td align="right" valign="middle">Linh kiện</td>
+                </tr>
+                </tbody>
+            </table></td>
+    </tr>
+    <tr>
+        <td valign="top"><table width="726" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+                    <td valign="top" width="38">&nbsp;</td>
+                    <td valign="top" width="650"><table width="650" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                            <tr>
+                                <td align="center" valign="top" bgcolor="#ffffff"><table width="630" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                        <tr>
+                                            <td valign="top" bgcolor="#ffffff"><table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td valign="top"><em>Đây là email tự động, quý khách vui lòng không trả lời vào email này!</em></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td valign="top">
+                                                            <?php
+                                                            $html = $this->translate('welcome_and_thanks_cancel');
+                                                            $html = str_replace('{FULL_NAME}',$invoice->full_name, $html);
+                                                            $html = str_replace('{CODE}',$invoice->invoice_title, $html);
+                                                            echo $html;
+                                                            ?>
+                                                            <!--
+                                                            <p>Kính chào Quý khách<strong><?php echo $invoice->full_name ?></strong>,</p>
+                                                            <p>Thiên Thiên Tân xin chân thành cảm ơn sự ủng hộ của quý khách đến hàng hóa và dịch vụ của chúng tôi.</p>
+                                                            <p>thienthientan.vn rất tiếc thông báo rằng đơn hàng <strong><?php echo $invoice->invoice_title ?></strong> của quý khách đã tự động hủy trên hệ thống của chúng tôi vì một trong 3 lý do sau:</p>
+                                                            <ol>
+                                                                <li>Theo yêu cầu từ quý khách; hoặc</li>
+                                                                <li>Thông tin cung cấp không đáp ứng được quy trình xác nhận đơn hàng.</li>
+                                                                <li>thienthientan.vn không thể liên lạc được với quý khách theo thông tin ghi trên đơn hàng.</li>
+                                                            </ol>
+                                                            <p>Nếu quý khách vẫn có nhu cầu đối với các sản phẩm bên dưới, xin vui lòng đặt hàng lại và cung cấp đầy đủ, chính xác thông tin giao nhận hàng.</p>
+                                                            <p>Sau đây là chi tiết các sản phẩm trong đơn hàng:</p>
+                                                            <p align="right">&nbsp;</p></td>
+                                                            -->
+                                                    </tr>
+                                                    <tr>
+                                                        <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="5">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td>Sản phẩm</td>
+                                                                    <td>Mã sản phẩm</td>
+                                                                    <td>Số Lượng</td>
+                                                                </tr><?php foreach ($cart as $id => $product) { ?>
+                                                                    <?php if ($id == 'coupon') {
+                                                                        continue;
+                                                                    } ?>
+                                                                    <tr>
+                                                                        <td valign="top"><?php echo $product['title'] ?></td>
+                                                                        <td valign="top"><?php echo $product['code'] ?></td>
+                                                                        <td valign="top"><?php echo $product['quantity'] ?></td>
+                                                                    </tr>
+                                                                <?php } ?>
+                                                                </tbody>
+                                                            </table></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" bgcolor="#ffffff">
+
+                                                <?php echo $this->translate('thanks_for_buy') ?>
+                                              
+                                                </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="top"><table width="602" cellspacing="0" cellpadding="0" border="0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td width="301" valign="middle" align="right">Kết nối với chúng tôi</td>
+                                                        <td width="301" valign="top"><a rel="nofollow" title="Facebook" href="" target="_blank"><img height="24" border="0" alt="Facebook" src="" /></a>
+                                                    </tbody>
+                                                </table></td>
+                                        </tr>
+                                        </tbody>
+                                    </table></td>
+                            </tr>
+                            <tr>
+                                <td valign="top"><table width="650" border="0" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                        <tr>
+                                            <td valign="top" width="10"><img src="https://ci6.googleusercontent.com/proxy/UbxkzUPwOofVOxQG5pR-FfeKRMfEjC4hPQLjk6CbXxN98JxzemZjmzjSllExCpMMhj4nJWQRO7JAPWSkekfe0j3PSWShEmR6A_ro8gdmcuJyikDXaZw4PKLCv8rYFbqNddszNt0_yMMrerCv=s0-d-e1-ft#http://hcm.Thien Thien Tanvn.com/static/newsletter/templates/html/images/corner-left-bottom.png" width="10" height="10" alt="" /></td>
+                                            <td valign="top" width="630" bgcolor="#ffffff"><img src="https://ci5.googleusercontent.com/proxy/fspSPDmttrLfusdhX-3CY6ZOrJeuTIBsvI6wE-z_NqronRuITnOZLurdR1x1EaGs2omTwWDwYCmZVH3ZI6-FafDa_fEKpFuYPynH6mKQEBgn6TZ0rzBVMiclYrzjmco=s0-d-e1-ft#http://hcm.Thien Thien Tanvn.com/static/newsletter/templates/html/images/blank.gif" width="1" height="1" alt="" /></td>
+                                            <td valign="top" width="10"><img src="https://ci3.googleusercontent.com/proxy/97B606yA8hv0yYZ_kVVlhR-4IERWg2qNbdZ17YoUuQbKBxrR4mjajUQEqVdn1TkGjCSCQKU4rHMwVfuew4I9nUIpnxPjL_2GUM9KFzgi9CkC4maaTP5POMi7ZZwbjdTaumK_l7bFPfpdd_IQ=s0-d-e1-ft#http://hcm.Thien Thien Tanvn.com/static/newsletter/templates/html/images/cornet-right-botom.png" width="10" height="10" alt="" /></td>
+                                        </tr>
+                                        </tbody>
+                                    </table></td>
+                            </tr>
+                            <tr>
+                                <td valign="top"><img src="" width="1" height="10" alt="" /></td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    <td valign="top" width="38">&nbsp;</td>
+                </tr>
+                </tbody>
+            </table></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
