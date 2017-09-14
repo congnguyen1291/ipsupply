@@ -1,0 +1,12 @@
+<?php if( !empty($sliders) ){ ?>
+<div class="slider" >
+    <div id="slide_home" class="owl-carousel owl-theme slideshow" data-neo="owlCarousel" data-own-name="owlTopSlider" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}}' >
+        <?php foreach ($sliders as $index => $banner) {
+        ?>
+        <div class="item-tween" >
+            <?php echo $this->Banners()->getHtml( $banner ); ?>
+        </div>
+        <?php } ?>
+    </div>
+</div>
+<?php } ?>
