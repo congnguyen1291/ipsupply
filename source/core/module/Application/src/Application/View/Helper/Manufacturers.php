@@ -39,5 +39,14 @@ class Manufacturers extends App
         }
         return '';
     }
+
+    public function getId($manu)
+    {
+        if( !empty($manu) 
+            && !empty($manu['manufacturers_id']) ){
+            return $manu['manufacturers_id'];
+        }
+        return 0;
+    }
 	
 }

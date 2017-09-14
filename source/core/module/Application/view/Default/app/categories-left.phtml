@@ -1,5 +1,4 @@
 <?php
-$title = $this->translate('txt_su_kien_tang_hoa');
 if( empty($category) 
     ||  (!empty($category) && empty($this->Categories()->getChildrens($categories, $this->Categories()->getId($category)))) ){
     $categoriesRoot = $this->Categories()->getRoot($categories);
@@ -8,70 +7,54 @@ if( empty($category)
     $title = $this->Categories()->getTitle($category);
 }
 if( !empty($categoriesRoot) ){ ?>
-<aside class="box-aside nav-category" >
-    <div class="box-heading" >
-        <h2 class="title-box">
-            <?php echo $title; ?>       
-        </h2>
-    </div>
-    <div class="box-content clearfix" >
-        <div class="clearfix scrollbar scrollbar-dynamic" data-place="scrollbar" >
-            <nav class="nav-category collapse navbar-toggleable-md" id="collapseNavCategory" itemscope itemtype="http://schema.org/SiteNavigationElement" >
-                <ul class="nav navbar-pills">
-                    <?php 
-                    foreach ($categoriesRoot as $key01 => $category01) { 
-                        $childrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
-                    ?>
-                    <li class="nav-item ">
-                        <a href="<?php echo $this->Categories()->getCategoriesUrl($category01); ?>" title="<?php echo $this->Categories()->getTitle($category01); ?>" class="nav-link"  data-pjax="true" data-container="Main"  itemprop="url" >
-                            <span itemprop="name" >
-                                <?php echo $this->Categories()->getTitle($category01); ?>
+<ul class="nav-category clearfix" >
+    <?php 
+    foreach ($categoriesRoot as $key01 => $category01) { 
+        $childrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
+    ?>
+    <li class="nav-item" >
+        <a href="<?php echo $this->Categories()->getCategoriesUrl($category01); ?>" title="<?php echo $this->Categories()->getTitle($category01); ?>" class="nav-link"  data-pjax="true" data-container="Main"  itemprop="url" >
+            <span class="txt-inner" >
+                <?php echo $this->Categories()->getTitle($category01); ?>
+            </span>
+            <span class="number-in" >10</span>
+        </a>
+        <?php if( !empty($childrens) ){ ?>
+        <ul class="dropdown-menu">
+            <?php foreach ($childrens as $key02 => $category02){ 
+                $childrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
+            ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category02); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                    <span class="txt-inner" >
+                        <?php echo $this->Categories()->getTitle($category02); ?>
+                    </span>
+                    <span class="number-in" >10</span>
+                </a>
+
+                <?php if( !empty($childrens02) ){ ?>
+                <ul class="dropdown-menu">
+                    <?php foreach ($childrens02 as $key02 => $category03){ ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category03); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
+                            <span class="txt-inner" >
+                                <?php echo $this->Categories()->getTitle($category02); ?>
                             </span>
-                            <?php if( !empty($childrens) ){ ?>
-                            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
-                            <?php } ?>
+                            <span class="number-in" >10</span>
                         </a>
-                        <?php if( !empty($childrens) ){ ?>
-                        <ul class="dropdown-menu">
-                            <?php foreach ($childrens as $key02 => $category02){ 
-                                $childrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
-                            ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category02); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
-                                    <span itemprop="name" >
-                                        <?php echo $this->Categories()->getTitle($category02); ?>
-                                    </span>
-                                    <?php if( !empty($childrens02) ){ ?>
-                                    <i class="fa fa-angle-right" data-toggle="dropdown"></i>
-                                    <?php } ?>
-                                </a>
-
-                                <?php if( !empty($childrens02) ){ ?>
-                                <ul class="dropdown-menu">
-                                    <?php foreach ($childrens02 as $key02 => $category03){ ?>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="<?php echo $this->Categories()->getCategoriesUrl($category03); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
-                                            <span itemprop="name" >
-                                                <?php echo $this->Categories()->getTitle($category02); ?>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <?php } ?>
-                                    
-                                </ul>
-                                <?php } ?>
-
-                            </li>
-                            <?php } ?>
-
-                        </ul>
-                        <?php } ?>
-
                     </li>
                     <?php } ?>
+                    
                 </ul>
-            </nav>
-        </div>
-    </div>
-</aside>
+                <?php } ?>
+
+            </li>
+            <?php } ?>
+
+        </ul>
+        <?php } ?>
+
+    </li>
+    <?php } ?>
+</ul>
 <?php } ?>

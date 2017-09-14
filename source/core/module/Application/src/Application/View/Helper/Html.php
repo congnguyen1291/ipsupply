@@ -190,5 +190,17 @@ class Html extends App
         $objTruncateHTML = new TruncateHTML($html);
         return $objTruncateHTML;
     }
+
+    public function mapMacroTranslate($txt, $maps = array()) {
+        $str = '';
+        if( !empty($txt) ){
+            $translator = $this->getTranslator ();
+            $str = $translator->translate($txt);
+            foreach ($maps as $key => $map) {
+                $str = str_replace($key, $map, $str);
+            }
+        }
+        return $str; 
+    }
 	
 }

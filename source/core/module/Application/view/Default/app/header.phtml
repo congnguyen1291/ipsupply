@@ -7,20 +7,17 @@ $languages = $datas->languages;
 $language = $datas->language;
 $categories = $datas->categories;
 $menus = $datas->menus;
+$subMenu = $this->Menus()->getMenuWithAlias('SUB_MENU_TOP');
 $menu = $this->Menus()->getMenuWithAlias('MENU_TOP');
+$subMenuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($subMenu));
 $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu));
 $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
 ?>
 <script id="tmplCartMini" data-place="productCartTemplate" type="text/x-jQuery-tmpl">
     <div>
-        <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="link-lb-summary" rel="nofollow" >
-            <span class="inner-nav-top" >
-                <i class="ic i-cart" ></i>
-                <?php echo $this->translate('txt_gio_hang') ?>
-                <span class="num-cart" >
-                    ${carts.getNumberProductInCart()}
-                </span>
-            </span>
+        <a href="javascript:void(0);" class="round-cart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" rel="nofollow" >
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <span>${carts.getNumberProductInCart()}</span>
         </a>
         <div class="dropdown-menu" >
             {{if carts.getNumberProductInCart() > 0 }}
@@ -98,220 +95,223 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
             <div class="clearfix text-xs-right" >
                 <div class="end-bar clearfix" >
                     <a href="" title="" class="nav-link nav-link-blue" >
-                        Request A Quote
+                        <?php echo $this->translate('txt_request_a_quote') ?>
                     </a>
                 </div>
                 <div class="user-bar clearfix" >
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <a href="" title="" class="nav-link" >
-                        Login
+                    <?php if( !$this->User()->hasLogin() ){ ?>
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" title="<?php echo $this->translate('txt_login') ?>" class="nav-link" >
+                        <?php echo $this->translate('txt_login') ?>
                     </a>/
-                    <a href="" title="" class="nav-link" >
-                        Register
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" title="<?php echo $this->translate('txt_sign_up') ?>" class="nav-link" >
+                        <?php echo $this->translate('txt_sign_up') ?>
                     </a>
+                    <?php }else{ ?>
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_profile') ?>" class="nav-link" >
+                        <?php echo $this->translate('txt_xin_chao_ban') ?>
+                        <?php echo $this->User()->getFullName() ?>
+                    </a>/
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/logout" title="<?php echo $this->translate('txt_logout') ?>" class="nav-link" >
+                        <?php echo $this->translate('txt_logout') ?>
+                    </a>
+                    <?php } ?>
                 </div>
+                <?php if( !empty($subMenuRoot) ){ ?>
                 <div class="sub-navi clearfix" >
-                    <a href="" title="" class="nav-link" >
-                        About Us
+                    <?php foreach ($subMenuRoot as $key01 => $menu01) { ?>
+                    <a href="<?php echo $this->Menus()->getLinkForMenu($menu01); ?>" title="<?php echo $this->Menus()->getName($menu01); ?>" class="nav-link" >
+                        <?php echo $this->Menus()->getName($menu01); ?>
                     </a>
-                    <a href="" title="" class="nav-link" >
-                        Your Order
-                    </a>
-                    <a href="" title="" class="nav-link" >
-                        Sell Your Cisco
-                    </a>
-                    <a href="" title="" class="nav-link" >
-                        Contact Us
-                    </a>
+                    <?php } ?>
                 </div>
+                <?php } ?>
             </div>
         </div>
         <div class="bottom-header clearfix" >
             <div class="row" >
                 <div class="col-sm-4" >
-                    <a href="" title="" class="logo-navi" >
-                        <img src="images/logo.png" alt="" class="img-fluid" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>" class="logo-navi" >
+                        <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 250); ?>" alt="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
                     </a>
                 </div>
                 <div class="col-sm-8" >
                     <div class="wrap-cotrol clearfix text-xs-right" >
                         <div class="search-bar" >
-                            <form class="clearfix" >
-                                <input type="" name="" class="input-search" >
-                                <button class="btn-search" >
+                            <form action="<?php echo $this->Websites()->getUrlPrefixLang() ?>/search" class="clearfix" method="GET" >
+                                <input type="text" name="keyword" class="input-search" placeholder="<?php echo $this->translate('txt_search_holder') ?>" >
+                                <button type="submit" class="btn-search" >
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </button>
                             </form>
                         </div>
                         <a href="" title="" class="link-call-me" >
-                            Call <i class="icon i-phone" ></i> 02 8061 6886
+                            <?php echo $this->Html()->mapMacroTranslate('txt_hotline_header', array('{ICON}'=> '<i class="icon i-phone" ></i>') ); ?>
                         </a>
-                        <div class="cart-mini" >
-                            <a href="" class="round-cart" >
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span>02</span>
-                            </a>
+                        <div class="cart-mini" data-place="cartMini" >
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <?php if( !empty($menuRoot) ){ ?>
     <div class="navi-top" >
         <div class="container" >
             <nav class="nav-main collapse navbar-toggleable-md" id="exCollapsingNavbar2" >
                 <ul class="nav navbar-nav clearfix">
-                    <li class="nav-item active" >
-                        <a href="" class="nav-link" title="Trang chủ" >
+                    <?php 
+                    foreach ($menuRoot as $key01 => $menu01) { 
+                        $childrens = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu01));
+                        $categoriesRoot = $this->Categories()->getRoot($categories);
+                        $categoriesArticlesRoot = $this->CategoriesArticles()->getRoot($categoryArticles);
+                    ?>
+                    <li class="nav-item <?php echo $this->Menus()->getClassStatusActive($menu01); ?>" >
+                        <a href="<?php echo $this->Menus()->getLinkForMenu($menu01); ?>" class="nav-link" title="<?php echo str_replace('"', '\'', $this->Menus()->getName($menu01)); ?>" data-pjax="true" data-container="Main" itemprop='url' >
                             <span class="inner-text" >
-                                <i class="fa fa-home" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Cisco Equipment
-                            </span>
+                                <?php echo $this->Menus()->getName($menu01); ?>
+                            </span> 
+                            <?php 
+                            if( $this->Menus()->hasChildrens($menus, $menu01, $categories, $categoryArticles) ){ ?>
                             <span class="direct-drop" >
                                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
                             </span>
+                            <?php } ?>
                         </a>
+                        <?php 
+                        if( !empty($childrens) 
+                            && !$this->Menus()->isCollection($menu01)
+                            && !$this->Menus()->isBlog($menu01) ){ ?>
                         <ul class="dropdown-menu" >
+                            <?php foreach ($childrens as $key02 => $menu02){ ?>
                             <li>
-                                <a href="" title="Trang chủ" >
+                                <a  href="<?php echo $this->Menus()->getLinkForMenu($menu02); ?>" title="<?php echo str_replace('"', '\'', $this->Menus()->getName($menu02)); ?>" data-pjax="true" data-container="Main" itemprop='url' >
                                     <span class="inner-text" >
-                                        Cisco Equipment
-                                    </span>
-                                    <span class="direct-drop" >
-                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                                    </span>
+                                        <?php echo $this->Menus()->getName($menu02); ?>
+                                    </span>                     
                                 </a>
                             </li>
-                            <li>
-                                <a href="" title="Trang chủ" >
-                                    <span class="inner-text" >
-                                        Cisco Equipment
-                                    </span>
-                                    <span class="direct-drop" >
-                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" title="Trang chủ" >
-                                    <span class="inner-text" >
-                                        Cisco Equipment
-                                    </span>
-                                    <span class="direct-drop" >
-                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" title="Trang chủ" >
-                                    <span class="inner-text" >
-                                        Cisco Equipment
-                                    </span>
-                                    <span class="direct-drop" >
-                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" title="Trang chủ" >
-                                    <span class="inner-text" >
-                                        Cisco Equipment
-                                    </span>
-                                    <span class="direct-drop" >
-                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                                    </span>
-                                </a>
-                            </li>
+                            <?php } ?>
                         </ul>
+                        <?php }else if($this->Menus()->isCollection($menu01) 
+                            && !empty($categoriesRoot)){ ?>
+                        <ul class="dropdown-menu" >
+                            <?php 
+                            foreach ($categoriesRoot as $key01 => $category01) { 
+                                $categoriesChildrens = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category01));
+                            ?>
+                            <li>
+                                <a  href="<?php echo $this->Categories()->getCategoriesUrl($category01); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                    <span class="inner-text" >
+                                        <?php echo $this->Categories()->getTitle($category01); ?> 
+                                    </span>
+                                    <?php if( !empty($categoriesChildrens) ){ ?>
+                                    <span class="direct-drop" >
+                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                    </span> 
+                                    <?php } ?>                   
+                                </a>
+                                <?php if( !empty($categoriesChildrens) ){ ?>
+                                <ul class="dropdown-menu" >
+                                    <?php 
+                                    foreach ($categoriesChildrens as $key02 => $category02){ 
+                                        $categoriesChildrens02 = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category02));
+                                    ?>
+                                    <li>
+                                        <a href="<?php echo $this->Categories()->getCategoriesUrl($category02); ?>" title="<?php echo $this->Categories()->getTitle($category02); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                            <?php echo $this->Categories()->getTitle($category02); ?>
+                                            <?php if( !empty($categoriesChildrens02) ){ ?>
+                                            <span class="direct-drop" >
+                                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                            </span> 
+                                            <?php } ?> 
+                                        </a>
+                                        <?php if( !empty($categoriesChildrens02) ){ ?>
+                                        <ul class="dropdown-menu">
+                                            <?php foreach ($categoriesChildrens02 as $key03 => $category03){ ?>
+                                            <li>
+                                                <a href="<?php echo $this->Categories()->getCategoriesUrl($category03); ?>" title="<?php echo $this->Categories()->getTitle($category03); ?>" >
+                                                    <span class="inner-text" >
+                                                        <?php echo $this->Categories()->getTitle($category03); ?>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <?php } ?>
+                                        </ul>
+                                        <?php } ?>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                                <?php } ?>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                        <?php }else if( $this->Menus()->isBlog($menu01) 
+                            && !empty($categoriesArticlesRoot) ){ ?>
+                        <ul class="dropdown-menu" >
+                            
+                            <?php 
+                            foreach ($categoriesArticlesRoot as $key01 => $category01) { 
+                                $categoriesArticlesChildrens = $this->CategoriesArticles()->getChildrens($categoryArticles, $this->CategoriesArticles()->getId($category01));
+                            ?>
+                            <li>
+                                <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category01); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category01); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                    <span class="inner-text" >
+                                        <?php echo $this->CategoriesArticles()->getTitle($category01); ?>
+                                    </span>
+                                    <?php if( !empty($categoriesArticlesChildrens) ){ ?>
+                                    <span class="direct-drop" >
+                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                    </span> 
+                                    <?php } ?>
+                                </a>
+                                <?php if( !empty($categoriesArticlesChildrens) ){ ?>
+                                <ul class="dropdown-menu" >
+                                    <?php 
+                                    foreach ($categoriesArticlesChildrens as $key02 => $category02){ 
+                                        $categoriesArticlesChildrens02 = $this->CategoriesArticles()->getChildrens($categoryArticles, $this->CategoriesArticles()->getId($category02));
+                                    ?>
+                                    <li>
+                                        <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category02); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category02); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                            <span class="inner-text" >
+                                                <?php echo $this->CategoriesArticles()->getTitle($category02); ?>
+                                            </span>
+                                            <?php if( !empty($categoriesArticlesChildrens02) ){ ?>
+                                            <span class="direct-drop" >
+                                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                            </span> 
+                                            <?php } ?>
+                                        </a>
+                                        <?php if( !empty($categoriesArticlesChildrens02) ){ ?>
+                                        <ul class="dropdown-menu">
+                                            <?php foreach ($categoriesArticlesChildrens02 as $key03 => $category03){ ?>
+                                            <li>
+                                                <a  href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category03); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category03); ?>" data-pjax="true" data-container="Main" itemprop='url' >
+                                                    <span class="inner-text" >
+                                                        <?php echo $this->CategoriesArticles()->getTitle($category03); ?>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <?php } ?>
+                                        </ul>
+                                        <?php } ?>
+
+                                    </li>
+                                    <?php } ?>
+
+                                </ul>
+                                <?php } ?>
+
+                            </li>
+                            <?php } ?>
+
+                        </ul>
+                        <?php } ?>
                     </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Cisco Accessories
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Servers
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>  
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Ethernet
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Fiber
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Racks & Cabinets
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li> 
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Power
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                Packs & Bundles
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a href="" class="nav-link" title="Trang chủ" >
-                            <span class="inner-text" >
-                                CK Outlet
-                            </span>
-                            <span class="direct-drop" >
-                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>            
+                    <?php } ?>           
                 </ul>
             </nav>
         </div>
     </div>
+    <?php } ?>
 </div>

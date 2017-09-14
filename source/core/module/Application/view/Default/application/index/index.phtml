@@ -1,572 +1,162 @@
 <?php
-$menu = $this->Menus()->getMenuWithAlias('MENU_MIDDLE_A');
-$menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu));
-$categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
+$num = 3;
+$productHots = $this->Products()->getHotProduct(0, 6);
+if( empty($productHots) ){
+    $num -= 1;
+}
+$productNews = $this->Products()->getNewProduct(0, 6);
+if( empty($productNews) ){
+    $num -= 1;
+}
+$productDeals = $this->Products()->getDealProduct(0, 6);
+if( empty($productDeals) ){
+    $num -= 1;
+}
 $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
 ?>
 <h1 class="hidden-xs-up" ><?php echo $this->translate('txt_h1_product') ?></h1>
-<div class="slider" >
-    <div class="" >
-        <img src="/styles/dataimages/bn.png" class="img-fluid" >
-    </div>
-</div>
+<?php echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
 
+<?php if( !empty($num) ){ ?>
 <div class="case-product" >
     <div class="container" >
         <div class="row text-xs-center" >
             <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1 col-sm-12" >
                 <ul class="nav nav-inline tcase-product row" role="tablist">
-                    <li class="nav-item col-xs-4" >
+                    <?php if( !empty($productHots) ){ ?>
+                    <li class="nav-item col-xs-<?php echo 12/$num ?>" >
                         <a class="nav-link active" data-toggle="tab" href="#featured_products" role="tab">
-                            Featured Products                             
+                            <?php echo $this->translate('txt_featured_products') ?>                             
                         </a>
                     </li>
-                    <li class="nav-item col-xs-4">
+                    <?php } ?>
+
+                    <?php if( !empty($productNews) ){ ?>
+                    <li class="nav-item col-xs-<?php echo 12/$num ?>">
                         <a class="nav-link" data-toggle="tab" href="#new_arrivals" role="tab">
-                            New Arrivals                            
+                            <?php echo $this->translate('txt_new_arrivals') ?>                            
                         </a>
                     </li>
-                    <li class="nav-item col-xs-4">
+                    <?php } ?>
+
+                    <?php if( !empty($productDeals) ){ ?>
+                    <li class="nav-item col-xs-<?php echo 12/$num ?>">
                         <a class="nav-link" data-toggle="tab" href="#hot_deals" role="tab">
-                            Hot Deals                        
+                            <?php echo $this->translate('txt_hot_deals') ?>                        
                         </a>
                     </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
         <div class="tab-content" >
+            <?php if( !empty($productHots) ){ ?>
             <div class="tab-pane fade in active" role="tabpanel" id="featured_products" >
                 <div class="list-product col-padd-empty" >
-                    <div class="row" >
-                        
-                        <div class="col-lg-4 col-md-4 col-sm-6" >
-                            <div class="product-sm" >
-                                <div class="thumb-product" >
-                                    <a href="" title="" >
-                                        <img src="/styles/dataimages/p-sm.jpg" class="img-fluid" >
-                                    </a>
-                                    <div class="action-sm-product" >
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="info-product text-xs-center" >
-                                    <div class="rating-product" >
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="code-product" >
-                                        CODE: Cisco877W-RF
-                                    </div>
-                                    <h2 class="name-product" >
-                                        <a href="" title="" >
-                                            CISCO877W Refurbished housing
-                                        </a>
-                                    </h2>
-                                    <div class="price-product" >
-                                        <span class="price-sale">
-                                            New $520
-                                        </span>
-                                        <span class="price-refurbished">
-                                            Refurbished $220
-                                        </span>
-                                    </div>
-                                    <div class="action-product" >
-                                        <button type="button" class="btn btn-style" >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                </div>
+                    <div class="row" data-place="lsProducts" >
+                        <?php foreach ($productHots as $key => $p) { ?>
+                            <div class="col-lg-4 col-md-4 col-sm-6" >
+                                <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
                             </div>
-                        </div>
-
-                        <div class="col-sm-12 hidden-sm-up" >
-                            <div class="line-grid" ></div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6" >
-                            <div class="product-sm" >
-                                <div class="thumb-product" >
-                                    <a href="" title="" >
-                                        <img src="/styles/dataimages/p-sm.jpg" class="img-fluid" >
-                                    </a>
-                                    <div class="action-sm-product" >
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="info-product text-xs-center" >
-                                    <div class="rating-product" >
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="code-product" >
-                                        CODE: Cisco877W-RF
-                                    </div>
-                                    <h2 class="name-product" >
-                                        <a href="" title="" >
-                                            CISCO877W Refurbished housing
-                                        </a>
-                                    </h2>
-                                    <div class="price-product" >
-                                        <span class="price-sale">
-                                            New $520
-                                        </span>
-                                        <span class="price-refurbished">
-                                            Refurbished $220
-                                        </span>
-                                    </div>
-                                    <div class="action-product" >
-                                        <button type="button" class="btn btn-style" >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                </div>
+                            <?php if( $key%3 == 0 ){ ?>
+                            <div class="col-sm-12 hidden-sm-up" >
+                                <div class="line-grid" ></div>
                             </div>
-                        </div>
-
-                        <div class="col-sm-12 hidden-md-up" >
-                            <div class="line-grid" ></div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6" >
-                            <div class="product-sm" >
-                                <div class="thumb-product" >
-                                    <a href="" title="" >
-                                        <img src="/styles/dataimages/p-sm.jpg" class="img-fluid" >
-                                    </a>
-                                    <div class="action-sm-product" >
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="info-product text-xs-center" >
-                                    <div class="rating-product" >
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="code-product" >
-                                        CODE: Cisco877W-RF
-                                    </div>
-                                    <h2 class="name-product" >
-                                        <a href="" title="" >
-                                            CISCO877W Refurbished housing
-                                        </a>
-                                    </h2>
-                                    <div class="price-product" >
-                                        <span class="price-sale">
-                                            New $520
-                                        </span>
-                                        <span class="price-refurbished">
-                                            Refurbished $220
-                                        </span>
-                                    </div>
-                                    <div class="action-product" >
-                                        <button type="button" class="btn btn-style" >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                </div>
+                            <?php }else if( $key%3 == 1 ){ ?>
+                            <div class="col-sm-12 hidden-md-up" >
+                                <div class="line-grid" ></div>
                             </div>
-                        </div>
-
-                        <div class="col-sm-12 hidden-sm-down" >
-                            <div class="line-grid" ></div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6" >
-                            <div class="product-sm" >
-                                <div class="thumb-product" >
-                                    <a href="" title="" >
-                                        <img src="/styles/dataimages/p-sm.jpg" class="img-fluid" >
-                                    </a>
-                                    <div class="action-sm-product" >
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="info-product text-xs-center" >
-                                    <div class="rating-product" >
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="code-product" >
-                                        CODE: Cisco877W-RF
-                                    </div>
-                                    <h2 class="name-product" >
-                                        <a href="" title="" >
-                                            CISCO877W Refurbished housing
-                                        </a>
-                                    </h2>
-                                    <div class="price-product" >
-                                        <span class="price-sale">
-                                            New $520
-                                        </span>
-                                        <span class="price-refurbished">
-                                            Refurbished $220
-                                        </span>
-                                    </div>
-                                    <div class="action-product" >
-                                        <button type="button" class="btn btn-style" >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                </div>
+                            <?php }else if( $key%3 == 2 ){ ?>
+                            <div class="col-sm-12 hidden-sm-down" >
+                                <div class="line-grid" ></div>
                             </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6" >
-                            <div class="product-sm" >
-                                <div class="thumb-product" >
-                                    <a href="" title="" >
-                                        <img src="/styles/dataimages/p-sm.jpg" class="img-fluid" >
-                                    </a>
-                                    <div class="action-sm-product" >
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="info-product text-xs-center" >
-                                    <div class="rating-product" >
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="code-product" >
-                                        CODE: Cisco877W-RF
-                                    </div>
-                                    <h2 class="name-product" >
-                                        <a href="" title="" >
-                                            CISCO877W Refurbished housing
-                                        </a>
-                                    </h2>
-                                    <div class="price-product" >
-                                        <span class="price-sale">
-                                            New $520
-                                        </span>
-                                        <span class="price-refurbished">
-                                            Refurbished $220
-                                        </span>
-                                    </div>
-                                    <div class="action-product" >
-                                        <button type="button" class="btn btn-style" >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6" >
-                            <div class="product-sm" >
-                                <div class="thumb-product" >
-                                    <a href="" title="" >
-                                        <img src="/styles/dataimages/p-sm.jpg" class="img-fluid" >
-                                    </a>
-                                    <div class="action-sm-product" >
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="" title="" class="btn-sm-ico" >
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="info-product text-xs-center" >
-                                    <div class="rating-product" >
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="code-product" >
-                                        CODE: Cisco877W-RF
-                                    </div>
-                                    <h2 class="name-product" >
-                                        <a href="" title="" >
-                                            CISCO877W Refurbished housing
-                                        </a>
-                                    </h2>
-                                    <div class="price-product" >
-                                        <span class="price-sale">
-                                            New $520
-                                        </span>
-                                        <span class="price-refurbished">
-                                            Refurbished $220
-                                        </span>
-                                    </div>
-                                    <div class="action-product" >
-                                        <button type="button" class="btn btn-style" >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
+
                 <div class="text-xs-center" >
-                    <a href="" title="" class="btn btn-style" >
-                        View All
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/hots" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style" data-btn="ajackProducts" data-page="0" data-page_size="6" >
+                        <?php echo $this->translate('txt_view_all') ?>
                     </a>
                 </div>
             </div>
+            <?php } ?>
 
-            <div class="tab-pane fade in" role="tabpanel" id="new_arrivals" >
-                new_arrivals
-            </div>
-
-            <div class="tab-pane fade in" role="tabpanel" id="hot_deals" >
-                hot_deals
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="case-quote" >
-    <div class="case-inner-quote" >
-        <div class="container" >
-            <div class="row" >
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="row" >
-                        <div class="col-sm-7" >
-                            <div class="info-quote" >
-                                <h2 class="title-quote" >About IP Supply</h2>
-                                <div class="description-quote" >
-                                    IP Supply is a network hardware reseller founded in 2010 and based in Lidcombe, NSW. Trading in more than 80 countries, we have a strong profile on the markets for new and refurbished
-                                    network equipments.
-                                </div>
-
-                                <div class="rating-quote" >
-                                    <span class="inline-rtq" >
-                                        <img src="/styles/dataimages/ebay.png" width="90" >
-                                    </span>
-                                    <span class="inline-rtq" >
-                                        Review: 
-                                        <span class="star-rtq" >
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                            <i class="fa fa-star-o" aria-hidden="true"></i>
-                                        </span>
-                                    </span>
-                                    <span class="inline-rtq" >
-                                        4.8/5
-                                    </span>
-                                </div>
-
-                                <div class="more-quote" >
-                                    <a class="btn btn-style-a" title="" >
-                                        Discover More
-                                    </a>
-                                </div>
+            <?php if( !empty($productNews) ){ ?>
+            <div class="tab-pane fade in active" role="tabpanel" id="new_arrivals" >
+                <div class="list-product col-padd-empty" >
+                    <div class="row" data-place="lsProducts" >
+                        <?php foreach ($productNews as $key => $p) { ?>
+                            <div class="col-lg-4 col-md-4 col-sm-6" >
+                                <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
                             </div>
-                        </div>
-                        <div class="col-sm-5" >
-                            <div class="form-quote" >
-                                <div class="header-from-quote" >
-                                    <h2 class="title-from-quote" >
-                                        Get a Free Quote
-                                    </h2>
-                                    <p class="small-from-quote" >
-                                        Complete the form below to get your free quote.
-                                    </p>
-                                </div>
-                                <div class="clearfix main-form-quote" >
-                                    <div class="form-group" >
-                                        <input type="text" name="" class="form-control" placeholder="Name" >
-                                    </div>
-                                    <div class="form-group" >
-                                        <input type="text" name="" class="form-control" placeholder="Email" >
-                                    </div>
-                                    <div class="form-group" >
-                                        <input type="text" name="" class="form-control" placeholder="Phone" >
-                                    </div>
-                                    <div class="form-group" >
-                                        <select name="type" class="form-control" >
-                                            <option value="" >
-                                                Product Requested
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group" >
-                                        <textarea name="" class="form-control" placeholder="Message" ></textarea>
-                                    </div>
-                                    <div class="form-group text-xs-center" >
-                                        <button class="btn btn-block btn-style-b" >
-                                            Request A Quote
-                                        </button>
-                                    </div>
-                                </div>
+                            <?php if( $key%3 == 0 ){ ?>
+                            <div class="col-sm-12 hidden-sm-up" >
+                                <div class="line-grid" ></div>
                             </div>
-                        </div>
+                            <?php }else if( $key%3 == 1 ){ ?>
+                            <div class="col-sm-12 hidden-md-up" >
+                                <div class="line-grid" ></div>
+                            </div>
+                            <?php }else if( $key%3 == 2 ){ ?>
+                            <div class="col-sm-12 hidden-sm-down" >
+                                <div class="line-grid" ></div>
+                            </div>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="case-top-feature" >
-    <div class="container" >
-        <h2 class="title-feature" >
-            Why Buy from <span class="color-blue" >IP Supply</span>
-        </h2>
-        <div class="list-feature" >
-            <div class="row" >
-                <div class="col-sm-1" ></div>
-                <div class="col-sm-2" >
-                    <div class="item-feature old" >
-                        <div class="thumb-feature" >
-                            <i class="fa fa-usd" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="name-feature" >
-                            100% Wholesale <br />
-                            Price
-                        </h3>
-                    </div>
-                </div>
-                <div class="col-sm-2" >
-                    <div class="item-feature even" >
-                        <div class="thumb-feature" >
-                            <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="name-feature" >
-                            100% Quality <br />
-                            Assurance
-                        </h3>
-                    </div>
-                </div>
-                <div class="col-sm-2" >
-                    <div class="item-feature old" >
-                        <div class="thumb-feature" >
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="name-feature" >
-                            24X7 Free <br /> Support
-                        </h3>
-                    </div>
-                </div>
-                <div class="col-sm-2" >
-                    <div class="item-feature even" >
-                        <div class="thumb-feature" >
-                            <i class="fa fa-refresh" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="name-feature" >
-                            100% Money <br /> Back Guarantee
-                        </h3>
-                    </div>
-                </div>
-                <div class="col-sm-2" >
-                    <div class="item-feature old" >
-                        <div class="thumb-feature" >
-                            <i class="fa fa-credit-card" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="name-feature" >
-                            Easy and Flexible <br /> payment
-                        </h3>
-                    </div>
+                <div class="text-xs-center" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/news" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style" data-btn="ajackProducts" data-page="0" data-page_size="6" >
+                        <?php echo $this->translate('txt_view_all') ?>
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <?php } ?>
 
-<div class="case-supplier" >
-    <div class="container" >
-        <h3 class="title-supplier" >
-            Largest Equipment Selection
-        </h3>
-        <p class="text-xs-center">
-            Thousands of popular and hard-to-find equipment in inventory ready to ship
-        </p>
-        <div class="row" >
-            <div class="col-sm-8 col-sm-offset-2" >
-                <div class="list-supplier" >
-                    <div class="item-supplier" >
-                        <a href="" title="" >
-                            <img src="/styles/dataimages/cisco.png" class="img-fluid" >
-                        </a>
+            <?php if( !empty($productDeals) ){ ?>
+            <div class="tab-pane fade in active" role="tabpanel" id="hot_deals" >
+                <div class="list-product col-padd-empty" >
+                    <div class="row" data-place="lsProducts" >
+                        <?php foreach ($productDeals as $key => $p) { ?>
+                            <div class="col-lg-4 col-md-4 col-sm-6" >
+                                <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
+                            </div>
+                            <?php if( $key%3 == 0 ){ ?>
+                            <div class="col-sm-12 hidden-sm-up" >
+                                <div class="line-grid" ></div>
+                            </div>
+                            <?php }else if( $key%3 == 1 ){ ?>
+                            <div class="col-sm-12 hidden-md-up" >
+                                <div class="line-grid" ></div>
+                            </div>
+                            <?php }else if( $key%3 == 2 ){ ?>
+                            <div class="col-sm-12 hidden-sm-down" >
+                                <div class="line-grid" ></div>
+                            </div>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
+                <div class="text-xs-center" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/deals" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style" data-btn="ajackProducts" data-page="0" data-page_size="6" >
+                        <?php echo $this->translate('txt_view_all') ?>
+                    </a>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+            <?php } ?>
 
-<div class="case-upgrate" >
-    <div class="container" >
-        <div class="row" >
-            <div class="col-sm-10 col-sm-offset-1" >
-                <div class="row" >
-                    <div class="col-sm-7" >
-                        <h2 class="title-upgrate" >Save Up to 95% on Cisco</h2>
-                        <div>Same day Shipment for most items one year end user warranty</div>
-                    </div>
-                    <div class="col-sm-5 text-xs-right" >
-                        <a class="btn btn-style-a" title="" >
-                            Shop Cisco Products
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+<?php } ?>
+
+<?php echo $this->partial('app/case-quote', array() ); ?>
+
+<?php echo $this->partial('app/case-feature', array() ); ?>
+
+<?php echo $this->partial('app/case-supplier', array() ); ?>
+
+<?php echo $this->partial('app/case-upgrate', array() ); ?>

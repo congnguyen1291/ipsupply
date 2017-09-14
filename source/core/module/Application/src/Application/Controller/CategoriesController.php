@@ -37,6 +37,7 @@ class CategoriesController extends FrontEndController
         $feature = $this->params()->fromQuery('feature', '');
         $price = $this->params()->fromQuery('price', '');
         $rating = $this->params()->fromQuery('rating', '');
+        $view = $this->params()->fromQuery('view', 0);
 
         $is_pjax = $this->params()->fromHeader('X-PJAX', '');
         $partial = $this->params()->fromQuery('partial', '');
@@ -50,7 +51,9 @@ class CategoriesController extends FrontEndController
         $params['filter'] = $filter;
         $params['feature'] = $feature;
         $params['price'] = $price;
-        $params['rating'] = $rating;
+        if( !empty($rating) ){
+            $params['rating'] = $rating;
+        }
         $params['page'] = $page;
         $params['page_size'] = $page_size;
 
@@ -68,6 +71,8 @@ class CategoriesController extends FrontEndController
         $this->data_view['manus'] = $manus;
         $this->data_view['filter'] = $filter;
         $this->data_view['sort'] = $sort;
+        $this->data_view['view'] = $view;
+        $this->data_view['rating'] = $rating;
         $this->data_view['page_size'] = $page_size;
         $this->data_view['page'] = $page;
         $this->data_view['feature'] = $feature;
@@ -123,6 +128,7 @@ class CategoriesController extends FrontEndController
         $feature = $this->params()->fromQuery('feature', '');
         $price = $this->params()->fromQuery('price', '');
         $rating = $this->params()->fromQuery('rating', '');
+        $view = $this->params()->fromQuery('view', 0);
         $id = $this->params()->fromRoute('id', 0);
 
         $is_pjax = $this->params()->fromHeader('X-PJAX', '');
@@ -137,7 +143,9 @@ class CategoriesController extends FrontEndController
         $params['filter'] = $filter;
         $params['feature'] = $feature;
         $params['price'] = $price;
-        $params['rating'] = $rating;
+        if( $rating == 0 || !empty($rating) ){
+            $params['rating'] = $rating;
+        }
         $params['page'] = $page;
         $params['page_size'] = $page_size;
 
@@ -160,6 +168,8 @@ class CategoriesController extends FrontEndController
         $this->data_view['manus'] = $manus;
         $this->data_view['filter'] = $filter;
         $this->data_view['sort'] = $sort;
+        $this->data_view['view'] = $view;
+        $this->data_view['rating'] = $rating;
         $this->data_view['page_size'] = $page_size;
         $this->data_view['page'] = $page;
         $this->data_view['feature'] = $feature;
@@ -233,6 +243,7 @@ class CategoriesController extends FrontEndController
             $feature = $this->params()->fromQuery('feature', '');
             $price = $this->params()->fromQuery('price', '');
             $rating = $this->params()->fromQuery('rating', '');
+            $view = $this->params()->fromQuery('view', 0);
 
             $is_pjax = $this->params()->fromHeader('X-PJAX', '');
             $partial = $this->params()->fromQuery('partial', '');
@@ -248,7 +259,9 @@ class CategoriesController extends FrontEndController
             $params['filter'] = $filter;
             $params['feature'] = $feature;
             $params['price'] = $price;
-            $params['rating'] = $rating;
+            if( !empty($rating) ){
+                $params['rating'] = $rating;
+            }
             $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/'.$categories->categories_alias.'-'.$categories->categories_id.'s.html');
             $params['categories_id'] = $id;
             $this->addParamsPageInfo($params);
@@ -270,6 +283,8 @@ class CategoriesController extends FrontEndController
             $this->data_view['manus'] = $manus;
             $this->data_view['filter'] = $filter;
             $this->data_view['sort'] = $sort;
+            $this->data_view['view'] = $view;
+            $this->data_view['rating'] = $rating;
             $this->data_view['page_size'] = $page_size;
             $this->data_view['page'] = $page;
             $this->data_view['feature'] = $feature;

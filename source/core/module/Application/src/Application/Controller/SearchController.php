@@ -45,10 +45,14 @@ class SearchController extends FrontEndController {
             $params['page_size'] = $page_size;
             $params['manus'] = $manus;
             $params['sort'] = $sort;
+            $this->data_view['view'] = $view;
+            $this->data_view['rating'] = $rating;
             $params['filter'] = $filter;
             $params['feature'] = $feature;
             $params['price'] = $price;
-            $params['rating'] = $rating;
+            if( !empty($rating) ){
+                $params['rating'] = $rating;
+            }
             $params['keyword'] = $keyword;
             $params['cities'] = $cities;
             $params['categories_id'] = $categories_id;
@@ -74,6 +78,8 @@ class SearchController extends FrontEndController {
             $this->data_view['manus'] = $manus;
             $this->data_view['filter'] = $filter;
             $this->data_view['sort'] = $sort;
+            $this->data_view['view'] = $view;
+            $this->data_view['rating'] = $rating;
             $this->data_view['page_size'] = $page_size;
             $this->data_view['page'] = $page;
             $this->data_view['feature'] = $feature;
@@ -152,7 +158,9 @@ class SearchController extends FrontEndController {
             $params['filter'] = $filter;
             $params['feature'] = $feature;
             $params['price'] = $price;
-            $params['rating'] = $rating;
+            if( !empty($rating) ){
+                $params['rating'] = $rating;
+            }
             $params['tag'] = $tag;
 
             $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/tags'.$tag );

@@ -403,6 +403,15 @@ class Products extends App
         }
     }
 
+    public function getTypeName($product)
+    {
+        if( empty($product['products_type_id']) ){
+            return '';
+        }else{
+            return $product['type_name'];
+        }
+    }
+
     public function getToBuy( $product = array() ){
         if( !empty($product) ){
             $price_sale = $this->getPriceSale($product);

@@ -20,91 +20,122 @@ $menu_two = $this->Menus()->getMenuWithAlias('MENU_FOOTER_02');
                         <div class="col-sm-3" >
                             <div class="col-footer" >
                                 <h2 class="title-footer" >
-                                    Need Help?
+                                    <?php echo $this->translate('txt_need_help'); ?>
                                 </h2>
                                 <div class="info-footer" >
                                     <div class="sub-col-footer" >
-                                        <div class="title-ms-footer" >Call: +61 2 8061 6886</div>
-                                        <div>E.: sales@ipsupply.com.au</div>
+                                        <div class="title-ms-footer" >
+                                            <?php echo $this->translate('txt_contact_phone'); ?>
+                                        </div>
+                                        <div>
+                                            <?php echo $this->translate('txt_contact_email'); ?>
+                                        </div>
                                     </div>
                                     <div class="sub-col-footer" >
-                                        <div class="title-ms-footer" >IP Supply Pty Ltd</div>
-                                        <div>Unit 16 / 4A Bachell Ave
-                                        Lidcombe, NSW 2141
-                                        Australia</div>
+                                        <div class="title-ms-footer" >
+                                            <?php echo $this->translate('txt_contact_name'); ?>
+                                        </div>
+                                        <div>
+                                            <?php echo $this->translate('txt_contact_address'); ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <?php 
+                        $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_one));
+                        if( !empty($menuRoot)   ){ ?>
                         <div class="col-sm-3" >
                             <div class="col-footer" >
                                 <h2 class="title-footer" >
-                                    Shopping
+                                    <?php echo $this->Menus()->getName($menu_one); ?>
                                 </h2>
                                 <div class="info-footer" >
-                                    <a href="" title="" class="footer-link" >Router</a>
-                                    <a href="" title="" class="footer-link" >Switches</a>
-                                    <a href="" title="" class="footer-link" >Firewalls Security</a>
-                                    <a href="" title="" class="footer-link" >IP Phones VOIP</a>
-                                    <a href="" title="" class="footer-link" >Wireless AP</a>
-                                    <a href="" title="" class="footer-link" >Modules & Cards</a>
-                                    <a href="" title="" class="footer-link" >Accessories</a>
-                                    <a href="" title="" class="footer-link" >Memory</a>
+                                    <?php 
+                                    foreach ($menuRoot as $key => $value) {
+                                        if( !$this->Menus()->isDescription($value) ){ ?>
+                                        <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" class="footer-link" >    
+                                            <span>
+                                                <?php echo $this->Menus()->getName($value); ?> 
+                                            </span>
+                                        </a>
+                                        <?php }else{ ?>
+                                        <div class="footer-link" >
+                                            <?php echo $this->Menus()->getDescription($value); ?>
+                                        </div>
+                                        <?php }
+                                    } ?>
                                 </div>
                             </div>
                         </div>
+                        <?php } ?>
+
+                        <?php 
+                        $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_two));
+                        if( !empty($menuRoot)   ){ ?>
+                        <div class="col-sm-3" >
+                            <div class="col-footer" >
+                                <h2 class="title-footer" >
+                                    <?php echo $this->Menus()->getName($menu_two); ?>
+                                </h2>
+                                <div class="info-footer" >
+                                    <?php 
+                                    foreach ($menuRoot as $key => $value) {
+                                        if( !$this->Menus()->isDescription($value) ){ ?>
+                                        <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" class="footer-link" >    
+                                            <span>
+                                                <?php echo $this->Menus()->getName($value); ?> 
+                                            </span>
+                                        </a>
+                                        <?php }else{ ?>
+                                        <div class="footer-link" >
+                                            <?php echo $this->Menus()->getDescription($value); ?>
+                                        </div>
+                                        <?php }
+                                    } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
 
                         <div class="col-sm-3" >
                             <div class="col-footer" >
                                 <h2 class="title-footer" >
-                                    Help & Support
-                                </h2>
-                                <div class="info-footer" >
-                                    <a href="" title="" class="footer-link" >About IP Supply</a>
-                                    <a href="" title="" class="footer-link" >Contact Us</a>
-                                    <a href="" title="" class="footer-link" >Request a Quote</a>
-                                    <a href="" title="" class="footer-link" >Sell your Cisco</a>
-                                    <a href="" title="" class="footer-link" >About your order</a>
-                                    <a href="" title="" class="footer-link" >Wishlist</a>
-                                    <a href="" title="" class="footer-link" >Compare list</a>
-                                    <a href="" title="" class="footer-link" >Sitemap</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3" >
-                            <div class="col-footer" >
-                                <h2 class="title-footer" >
-                                    Newsletter
+                                    <?php echo $this->translate('txt_newsletter') ?>
                                 </h2>
                                 <div class="info-footer" >
                                     <div class="sub-col-footer" >
-                                        Sign Up our Newslatter to get the latest offer in your inbox.
+                                        <?php echo $this->translate('txt_des_newsletter') ?>
                                     </div>
 
                                     <div class="sub-col-footer" >
                                         <div class="letter-form" >
-                                            <input type="text" name="" placeholder="Your Email..." >
-                                            <button>
-                                                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                                            </button>
+                                            <form id="newsletterform" class="mini-iform-newleter" >
+                                                <input type="text" name="email" class="email" id="newsletter" placeholder="<?php echo $this->translate('txt_placeholder_your_email') ?>" >
+                                                <button class="neo-sent-newsletter" >
+                                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 
                                     <div class="sub-col-footer" >
-                                        <a href="" class="link-social" >
+                                        <?php if( !empty($this->Websites()->getUrlFacebook()) ){ ?>
+                                        <a href="<?php echo $this->Websites()->getUrlFacebook() ?>" title="Facebook" rel="nofollow" class="link-social" >
                                             <i class="fa fa-facebook" aria-hidden="true"></i>
                                         </a>
-                                        <a href="" class="link-social" >
+                                        <?php } ?>
+                                        <?php if( !empty($this->Websites()->getUrlTwister()) ){ ?>
+                                        <a href="<?php echo $this->Websites()->getUrlTwister() ?>" title="Twister" rel="nofollow" class="link-social" >
                                             <i class="fa fa-twitter" aria-hidden="true"></i>
                                         </a>
-                                        <a href="" class="link-social" >
+                                        <?php } ?>
+                                        <?php if( !empty($this->Websites()->getUrlGooglePlus()) ){ ?>
+                                        <a href="<?php echo $this->Websites()->getUrlGooglePlus() ?>" title="GooglePlus" rel="nofollow" class="link-social" >
                                             <i class="fa fa-google-plus" aria-hidden="true"></i>
                                         </a>
-                                        <a href="" class="link-social" >
-                                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                                        </a>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +148,7 @@ $menu_two = $this->Menus()->getMenuWithAlias('MENU_FOOTER_02');
                     <div class="row" >
                         <div class="col-sm-9" >
                             <div class="copy-right" >
-                                © 2017 IP Supply Pty Ltd. All Rights Reserved.
+                                <?php echo $this->translate('txt_copyright_company') ?>
                             </div>
                         </div>
                         <div class="col-sm-3" >
