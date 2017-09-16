@@ -231,6 +231,7 @@ class ArticlesTable extends AppTable
                 'is_static' => $data->is_static,
                 'tags' => $data->tags,
             );
+            $articles_id = (int)$data->articles_id;
             if(!empty($row['tags'])){
                 $tags_id = array();
                 $tags = explode(',', $row['tags']);
@@ -250,7 +251,7 @@ class ArticlesTable extends AppTable
                 $row['tags'] = '';
             }
             
-            if ($articles_id == 0) {
+            if ( empty($articles_id) ) {
                 $updateOrdering = "UPDATE `articles` SET `ordering` = `ordering`+1 WHERE `website_id` = '{$this->getWebsiteId()}' ";
                 $adapter->query($updateOrdering,$adapter::QUERY_MODE_EXECUTE);
 

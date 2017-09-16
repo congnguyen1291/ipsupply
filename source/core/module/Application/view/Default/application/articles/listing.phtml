@@ -1,7 +1,8 @@
 <?php
-$categoryArticles = $this->Articles()->getAllCategoriesArticlesSort();
 $news = $this->Articles()->getTopArticles(0, 5);
-$list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($this->CategoriesArticles()->getId($category), false);
+$categoryArticles = $this->Articles()->getAllCategoriesArticlesSort();
+$list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($category['categories_articles_id'], false);
+$banner01 = $this->Banners()->getBannerWithPositionAlias('HOOK_BANNER_ARTICLE_01');
 ?>
 <div class="wrap-breadcrumbs clearfix" >
     <div class="container" >
@@ -18,41 +19,28 @@ $list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($this->Categor
                         </span>
                         <meta itemprop="position" content="1" />
                     </li>
-                    <li itemprop="itemListElement" itemscope
-      itemtype="http://schema.org/ListItem" >
-                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/articles" data-pjax="true" data-container="Main" itemprop="item name" >
-                            <?php echo $this->translate('txt_news') ?>
+                    <li>
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/articles" title="<?php echo $this->translate('txt_news'); ?>" target="_self">
+                            <?php echo $this->translate('txt_news'); ?>
                         </a>
-                        <span class="bc-dr" >
-                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </span>
-                        <meta itemprop="position" content="2" />
                     </li>
-
-                    <?php 
-                    $pbc = 2;
-                    if(!empty($list_bcum)){ 
+                    <?php if(!empty($list_bcum)){ 
                         for($i = count($list_bcum)-1;$i>=0;$i-- ){
                             $item_cum = $list_bcum[$i];
-                            $pbc ++;
                     ?>
-                    <li itemprop="itemListElement" itemtype="http://schema.org/ListItem" >
-                        <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($item_cum); ?>" title='<?php echo $this->CategoriesArticles()->getTitle($item_cum); ?>' data-pjax="true" data-container="Main" itemprop="item name" >
+                    <li>
+                        <a href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($item_cum); ?>" target="_self">
                             <?php echo $this->CategoriesArticles()->getTitle($item_cum); ?>
                         </a>
-                        <span class="bc-dr" >
-                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </span>
-                        <meta itemprop="position" content="<?php echo $pbc ?>" />
                     </li>
                     <?php }
                     } ?>
-
-                    <li itemprop="itemListElement" itemtype="http://schema.org/ListItem" >
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
                         <span itemprop="item name" >
                             <?php echo $this->CategoriesArticles()->getTitle($category); ?>
                         </span>
-                        <meta itemprop="position" content="<?php echo ($pbc+1) ?>" />
+                        <meta itemprop="position" content="2" />
                     </li>
                 </ul>
             </div>
@@ -60,92 +48,67 @@ $list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($this->Categor
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        
-        <section class="left-content col-lg-3 hidden-xs-up">
-            <?php   echo $this->partial('app/categories-articles-left', array('categories' => $categoryArticles) ); ?>
-        </section>
-
-        <section class="right-content col-lg-9 col-lg-push-3">
-
-            <div class="box-heading" style="display: none;" >
-                <meta itemprop="url" content="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category); ?>" />
-                <h1 class="title-head" itemprop="name" >
-                    <?php echo $this->CategoriesArticles()->getTitle($category); ?>
-                </h1>
-            </div>
+<div id="blog-template" class="blog-template" >
+    <div class="container">
+        <div class="row">
             
-            <section class="list-blogs blog-main clearfix" >
-                <?php if( !empty($articles) ){ ?>
-                <div class="row" itemscope itemtype="http://schema.org/ItemList" >
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12"> 
+                <?php if(!empty($articles)){ ?>
+                <div class="blog-list-articles lists-articles pd5" id="list-articles">
                     <?php foreach ($articles as $index => $article) { ?>
-                    <div class="col-lg-12">
-                        <?php   echo $this->partial('app/item-lg-articles', array('article' => $article) ); ?>
-                    </div>
-                    <?php } ?>
-
-                    <?php if(!empty($paging)){ ?>
-                    <div class="col-xs-12 text-xs-right">
-                        <nav>
-                            <?php echo $paging; ?>
-                        </nav>
+                    <div class="clearfix">
+                        <?php echo $this->partial('app/item-articles', array('article' => $article) ); ?>
                     </div>
                     <?php } ?>
                 </div>
+
+                <?php if(!empty($paging)){ ?>
+                <div class="clearfix" >
+                    <nav class="pull-xs-right" >
+                        <ul class="pagination pagination-sm clearfix" >
+                            <?php echo $paging; ?>
+                        </ul>
+                    </nav>
+                </div>
+                <?php } ?>
+
                 <?php }else{ ?>
                     <p><?php echo $this->translate('txt_dang_cap_nhat') ?></p>
                 <?php } ?>
-            </section>
-            
-        </section>
-        
-        
-        
-        <section class="left-content col-lg-3 col-lg-pull-9">
-            <?php   echo $this->partial('app/categories-articles-left', array('categories' => $categoryArticles) ); ?>
-
-            <?php if(!empty($news)){ ?>
-            <div class="box-mini-owl clearfix" >
-                <div class="heading clearfix">
-                    <h2 class="title-head pull-xs-left">
-                        <a href="javascript:void(0);" title="<?php echo $this->translate('txt_news'); ?>" rel="nofollow" >
-                            <?php echo $this->translate('txt_news'); ?>
-                        </a>
-                    </h2>
-                    <div class="pull-right">
-                        <div class="navi-owl clearfix">
-                            <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlNews" rel="nofollow" >
-                                <i class="fa fa-angle-left" aria-hidden="true"></i>
-                            </a>
-                            <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlNews" rel="nofollow" >
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-list-blogs" >
-                    <div class="owl-news owl-carousel owl-theme"  data-neo="owlCarousel" data-own-name="owlNews" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":1}}' data-responsive='{"0":{"items":1}}' data-navtextleft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navtextright='<i class="fa fa-chevron-right" aria-hidden="true"></i>' >
-                        <?php for ($i=0; $i < count($news)/4; $i++) { ?>
-                        <div class="item row">      
-                            <?php for ($j=$i*4; $j < count($news) && $j < $i*4 + 4; $j++) {
-                                $new = $news[$j];
-                            ?>
-                            <article class="col-xs-12 col-sm-12 col-md-6 col-lg-12">
-                                <?php   echo $this->partial('app/item-sm-articles', array('article' => $new , 'notSchema' => TRUE) ); ?>
-                            </article>
-                            <?php } ?>
-
-                        </div>
-                        <?php } ?>
-                    
-                    </div>
-                </div>
             </div>
-            <?php } ?>
             
-        </section>
-        
-        
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pd5">
+                <div class="general-box" >
+                    <h2 class="title-general" >
+                        <?php echo $this->translate('txt_category_article'); ?>
+                    </h2>
+                    <div class="ds-general clearfix" >
+                        <?php echo $this->partial('app/categories-articles-left', array('categories' => $categoryArticles) ); ?>
+                    </div>
+                </div>
+
+                <?php if(!empty($news)){ ?>
+                <div class="general-box" >
+                    <h2 class="title-general" >
+                        <?php echo $this->translate('txt_bai_viet_moi_nhat'); ?>
+                    </h2>
+                    <div class="ds-general clearfix" >
+                        <div class="blog-list-articles" >
+                            <?php foreach ($news as $k => $new) { ?>
+                            <div class="clearfix">
+                                <?php echo $this->partial('app/item-sm-articles', array('article' => $new) ); ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php echo $this->partial('app/contact-sm', array() ); ?>
+                
+            </div>
+    
+
+        </div>
     </div>
 </div>

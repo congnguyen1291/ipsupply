@@ -68,8 +68,14 @@ class CategoryArticlesController extends BackEndController{
         $form = new CategoryArticlesForm();
         $form->get('submit')->setValue('Lưu lại');
         $cats = $this->getModelTable('CategoryArticlesTable')->fetchAll();
+        $opCategories = $this->multiLevelData(TRUE, $cats, 'categories_articles_id', 'parent_id', 'categories_articles_title');
+        if( empty($opCategories) ){
+            $opCategories = array(
+                    0 => 'ROOT'
+                );
+        }
         $form->get('parent_id')->setOptions(array(
-            'options' => $this->multiLevelData(TRUE, $cats, 'categories_articles_id', 'parent_id', 'categories_articles_title')
+            'options' => $opCategories
         ));
         if( !empty($parent_id) ){
             $form->get('parent_id')->setValue( $parent_id );

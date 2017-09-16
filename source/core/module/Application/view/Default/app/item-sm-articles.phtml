@@ -1,49 +1,26 @@
 <?php if( !empty($article) ){ ?>
-    <?php if( empty($notSchema) ){ ?>
-    <article class="blog-item blog-item-list" itemprop="itemListElement" itemscope itemtype="http://schema.org/NewsArticle" >
-        <meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="<?php echo $this->Articles()->getUrl($article); ?>" />
-        <meta content='<?php echo $this->Articles()->getUsersFullname($article); ?>' itemprop='author' />
-        <meta content='<?php echo $this->Articles()->getDateCreate($article); ?>' itemprop='datePublished dateModified' />
-        <meta content='<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),80); ?>' itemprop='image' />
-
-        <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-            <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-                <meta itemprop="url" content="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 240); ?>"/>
+<div class="item-sm-blog">
+    <div class="row" >
+        <div class="col-sm-5" >
+            <div class="blog-item-image">
+                <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>" data-pjax="true" data-container="Main" >
+                    <img src="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),81); ?>" alt="<?php echo $this->Articles()->getTitle($article); ?>" class="img-fluid" >
+                </a>
             </div>
-            <meta itemprop="name" content="<?php echo $this->Websites()->getName(); ?>">
         </div>
-
-        <div class="blog-item-thumbnail" >
-            <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" >
-                <img class="img-fluid" src="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),80); ?>" alt="<?php echo $this->Articles()->getTitle($article); ?>" >
-            </a>
+        <div class="col-sm-7" >
+            <div class="blog-item-title">                               
+                <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>" data-pjax="true" data-container="Main" >
+                    <h2>
+                        <?php echo $this->Articles()->getTitle($article); ?>
+                    </h2>
+                </a>                        
+                <p>
+                    <?php echo $this->translate('txt_dang') ?>  
+                    <?php echo $this->Common()->timeAgo($this->Articles()->getDateCreate($article)); ?>
+                </p>                            
+            </div>
         </div>
-        <h3 class="blog-item-name" itemprop='headline' >
-            <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" itemprop='url'  >
-                <span  itemprop='name' >
-                    <?php echo $this->Articles()->getTitle($article); ?>
-                </span>
-            </a>
-        </h3>
-        <div class="postby">
-            <?php echo $this->Articles()->getDateCreate($article); ?>
-        </div>
-    </article>
-    <?php }else{ ?>
-    <article class="blog-item blog-item-list" >
-        <div class="blog-item-thumbnail" >
-            <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" >
-                <img class="img-fluid" src="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),80); ?>" alt="<?php echo $this->Articles()->getTitle($article); ?>" >
-            </a>
-        </div>
-        <h3 class="blog-item-name" >
-            <a href="<?php echo $this->Articles()->getUrl($article); ?>" title="<?php echo $this->Articles()->getTitle($article); ?>"  data-pjax="true" data-container="Main" >
-                <?php echo $this->Articles()->getTitle($article); ?>
-            </a>
-        </h3>
-        <div class="postby">
-            <?php echo $this->Articles()->getDateCreate($article); ?>
-        </div>
-    </article>
-    <?php } ?>
+    </div>
+</div>
 <?php } ?>

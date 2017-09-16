@@ -4,7 +4,6 @@ if( empty($category)
     $categoriesRoot = $this->Categories()->getRoot($categories);
 }else{
     $categoriesRoot = $this->Categories()->getChildrens($categories, $this->Categories()->getId($category));
-    $title = $this->Categories()->getTitle($category);
 }
 if( !empty($categoriesRoot) ){ ?>
 <ul class="nav-category clearfix" >

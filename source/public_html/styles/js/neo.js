@@ -8952,6 +8952,43 @@ coz.common = {
             window.location.href = baseUrl + '/logout';
         });
 
+        $(document).on('click', '[data-btn="anythingContact"]', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            anythingContact = $(this).parents('[data-form="anythingContact"]').eq(0);
+            var emptyBoxes = $('[data-required="true"]', anythingContact).filter(function() { return $(this).val() == ""; });
+            if( emptyBoxes.length <=0 ){
+                var formdata = anythingContact.serialize();
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: coz.baseUrl+'/contact/anything',
+                    data: formdata,
+                    cache: false,
+                    success: function(data)
+                    {
+                        if(data.constructor === String){
+                            data = $.parseJSON(data);
+                        }
+                        coz.toast(data.msg);
+                        anythingContact.find('input, select').val('');
+                        if( data.flag == true || data.flag == 'true'){
+                            if( (data.has_payment == true || data.has_payment == 'true')
+                                && data.payments.length > 0 ){
+                                coz.showPopupPayment( data.id, 'contact');
+                            }
+                        }
+                    },
+                    error: function(e)
+                    {
+                        console.log(e);
+                    }
+                });
+            }else{
+                coz.toast(language.translate('txt_chua_dien_day_du_thong_tin'));
+            }
+        });
+
         $(document).on('click', '[data-btn="acceptAssign"]', function(e){
             e.preventDefault();
             id = $(this).data('id');

@@ -21,7 +21,7 @@ use Ubench\Ubench;
 
 class FrontEndController extends AbstractActionController {
     protected $langMap = array(
-            'vi' => array(
+            'au' => array(
                     'name' => 'vi_VN',
                     'id' => 1
                 ),
@@ -30,7 +30,7 @@ class FrontEndController extends AbstractActionController {
                     'id' => 2
                 )
         );
-    protected $prefixUlrLang = 'vi';
+    protected $prefixUlrLang = 'au';
     protected $languages = array();
     protected $categories = array();
     protected $country_code = '';
@@ -135,7 +135,10 @@ class FrontEndController extends AbstractActionController {
         $this->addJS("//cdn.coz.vn/html5shiv/html5shiv.min.js");
         $this->addJS("//cdn.coz.vn/jquery-migrate/jquery-migrate-1.2.0.min.js");
         $this->addJS("//cdn.coz.vn/owl-carousel/owl.carousel.min.js");
+        $this->addJS("//cdn.coz.vn/elevatezoom/3.0.8/jquery.elevateZoom-3.0.8.min.js");
         $this->addJS("//cdn.coz.vn/ion.rangeSlider/2.1.4/js/ion.rangeSlider.min.js");
+
+
         $this->addJS("//cdn.coz.vn/magnific-popup/js/jquery.magnific-popup.min.js");
         //$this->addJS("//cdn.coz.vn/jQuery.Marquee/jquery.marquee.min.js");
         //$this->addJS("//cdn.coz.vn/jquery.scrollbar/jquery.scrollbar.js");
@@ -161,6 +164,8 @@ class FrontEndController extends AbstractActionController {
         if( in_array($full_module, array('APPLICATION_PROFILE_INDUSTRY', 'APPLICATION_PROFILE_EDIT' )) ) {
             $this->addJS('//cdn.coz.vn/datepicker/dist/datepicker.min.js');
         }
+        $this->addJS($this->baseUrl.'/styles/js/script.js');
+        //$this->addJS($this->baseUrl.'/styles/js/design.js');
         $this->addJS($this->baseUrl.'/styles/js/neo.js');
         $this->addJS($this->baseUrl.'/styles/js/statistical.js');
         if( isset($_SESSION['CMSMEMBER']) ){
@@ -171,8 +176,6 @@ class FrontEndController extends AbstractActionController {
                 $this->addJS($this->baseUrl.'/styles/js/translate.js');
             }
         }
-        $this->addJS($this->baseUrl.'/styles/js/script.js');
-		//$this->addJS($this->baseUrl.'/styles/js/design.js');
 
         $this->addCSS('//fonts.googleapis.com/css?family=Roboto');
         $this->addCSS('//cdn.coz.vn/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css');
@@ -572,7 +575,7 @@ class FrontEndController extends AbstractActionController {
         if( $this->current_module  == 'application' 
             && !$request->isPost() && empty($isAJAX) && empty($is_pjax) ){
             if( in_array('router_vi' , $rayRN) || in_array('router_en', $rayRN) ){
-                $prefixUlrLang = 'vi';
+                $prefixUlrLang = 'au';
                 if( in_array('router_en' , $rayRN) ){
                     $prefixUlrLang = 'en';
                 }
@@ -583,7 +586,7 @@ class FrontEndController extends AbstractActionController {
                     unset($_SESSION['lang']);
                 }
             }else{
-                $prefixUlrLang = 'vi';
+                $prefixUlrLang = 'au';
                 if( !empty($_SESSION['prefixUlrLang']) ){
                     $prefixUlrLang = $_SESSION['prefixUlrLang'];
                 }
@@ -988,7 +991,7 @@ class FrontEndController extends AbstractActionController {
     }
 
     public function getPrefixLang() {
-        $lng = 'vi';
+        $lng = 'au';
         if( !empty($_SESSION['prefixUlrLang']) ){
             $lng = $_SESSION['prefixUlrLang'];
         }
@@ -996,7 +999,7 @@ class FrontEndController extends AbstractActionController {
     }
 
     public function getUrlPrefixLang() {
-        $lng = '/vi';
+        $lng = '/au';
         if( !empty($_SESSION['prefixUlrLang']) ){
             $lng = '/'.$_SESSION['prefixUlrLang'];
         }

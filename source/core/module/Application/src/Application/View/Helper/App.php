@@ -185,7 +185,7 @@ class App extends AbstractHelper implements ServiceLocatorAwareInterface
     }
 
     public function getPrefixLang() {
-        $lng = 'vi';
+        $lng = 'au';
         if( !empty($_SESSION['prefixUlrLang']) ){
             $lng = $_SESSION['prefixUlrLang'];
         }
@@ -193,7 +193,7 @@ class App extends AbstractHelper implements ServiceLocatorAwareInterface
     }
 
     public function getUrlPrefixLang() {
-        $lng = '/vi';
+        $lng = '/au';
         if( !empty($_SESSION['prefixUlrLang']) ){
             $lng = '/'.$_SESSION['prefixUlrLang'];
         }

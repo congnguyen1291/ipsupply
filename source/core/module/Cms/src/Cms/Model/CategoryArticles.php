@@ -83,6 +83,14 @@ class CategoryArticles implements InputFilterAwareInterface{
                 ),
             ));
             $inputFilter->add(array(
+                'name' => 'is_technical_category',
+                'required' => FALSE,
+            ));
+            $inputFilter->add(array(
+                'name' => 'is_faq',
+                'required' => FALSE,
+            ));
+            $inputFilter->add(array(
                 'name' => 'categories_articles_title',
                 'required' => TRUE,
                 'filters' => array(

@@ -121,6 +121,8 @@ use Application\Model\Commission;
 use Application\Model\CommissionTable;
 use Application\Model\Traffic;
 use Application\Model\TrafficTable;
+use Application\Model\AnythingContact;
+use Application\Model\AnythingContactTable;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -1226,6 +1228,18 @@ class Module {
 		                    $resultSetPrototype = new ResultSet();
 		                    $resultSetPrototype->setArrayObjectPrototype(new Traffic());
 		                    return new TableGateway('traffic', $dbAdapter, null, $resultSetPrototype);
+		                },
+
+		                'Application\Model\AnythingContactTable' => function ($sm) {
+		                    $tableGateway = $sm->get('AnythingContactTableGateway');
+		                    $table = new AnythingContactTable($tableGateway);
+		                    return $table;
+		                },
+		                'AnythingContactTableGateway' => function ($sm) {
+		                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+		                    $resultSetPrototype = new ResultSet();
+		                    $resultSetPrototype->setArrayObjectPrototype(new AnythingContact());
+		                    return new TableGateway('website_contact', $dbAdapter, null, $resultSetPrototype);
 		                },
 						
 				) 

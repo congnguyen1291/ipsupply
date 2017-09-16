@@ -454,6 +454,48 @@ class ProductsTable extends AppTable{
         return $results;
     }
 
+    public function getTotalNewProduct()
+    {
+        $cache = $this->getServiceLocator()->get('cache');
+        $key = md5($this->getNamspaceCached().':ProductsTable:getTotalNewProduct()');
+        $results = $cache->getItem($key);
+        if(!$results) {
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select = $sql->select()->columns(array('total' => new Expression("COUNT(DISTINCT products.products_id)")));
+            $select->from('products');
+            $select->join('products_translate', 'products_translate.products_id=products.products_id',array('products_title','products_alias','products_description','products_longdescription_2','products_longdescription','bao_hanh', 'products_more', 'seo_keywords', 'seo_description', 'seo_title', 'promotion_description', 'promotion1_description', 'promotion2_description', 'promotion3_description', 'tags', 'language'));
+            $select->join('products_type',new Expression('`products_type`.`products_id`=`products`.`products_id` AND `products_type`.`is_default` = 1'),array('products_type_id','t_price' => 'price', 't_price_sale'=>'price_sale', 't_quantity' => 'quantity', 't_is_available'=>'is_available', 't_thumb_image'=>'thumb_image'), 'left');
+            $select->join('products_type_translate', new Expression("products_type_translate.products_type_id=products_type.products_type_id AND products_type_translate.language={$this->getLanguagesId()}" ), array('type_name', 'language'),'left');
+            $select->where(array(
+                'products.is_published' => 1,
+                'products.is_delete' => 0,
+                'products.is_new' => 1,
+                'products.website_id'=>$this->getWebsiteId(),
+                'products_translate.language'=>$this->getLanguagesId()
+            ));
+
+            if( $this->hasLocation() ){
+                $select->where( " products.products_id NOT IN (".$this->getStringQueryNotInLocation().") " ) ;
+            }
+            
+            try{
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $result = $results->toArray();
+                $results = 0;
+                if ( !empty($result) ) {
+                    $results = $result[0]['total'];
+                }
+                $cache->setITem($key, $results);
+            }catch(\Exception $ex){
+                $results = array();
+            }
+        }
+        return $results;
+    }
+
     public function getNewProductInCategory($cate_id, $offset=0, $limit = 5)
     {
         $cache = $this->getServiceLocator()->get('cache');
@@ -550,6 +592,49 @@ class ProductsTable extends AppTable{
         return $results;
     }
 
+    public function getTotalDealProduct()
+    {
+        $cache = $this->getServiceLocator()->get('cache');
+        $key = md5($this->getNamspaceCached().':ProductsTable:getTotalDealProduct()');
+        $results = $cache->getItem($key);
+        if(!$results) {
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select = $sql->select()->columns(array('total' => new Expression("COUNT(DISTINCT products.products_id)")));
+            $select->from('products');
+            $select->join('products_translate', 'products_translate.products_id=products.products_id',array('products_title','products_alias','products_description','products_longdescription_2','products_longdescription','bao_hanh', 'products_more', 'seo_keywords', 'seo_description', 'seo_title', 'promotion_description', 'promotion1_description', 'promotion2_description', 'promotion3_description', 'tags', 'language'));
+            $select->join('products_type',new Expression('`products_type`.`products_id`=`products`.`products_id` AND `products_type`.`is_default` = 1'),array('products_type_id','t_price' => 'price', 't_price_sale'=>'price_sale', 't_quantity' => 'quantity', 't_is_available'=>'is_available', 't_thumb_image'=>'thumb_image'), 'left');
+            $select->join('products_type_translate', new Expression("products_type_translate.products_type_id=products_type.products_type_id AND products_type_translate.language={$this->getLanguagesId()}" ), array('type_name', 'language'),'left');
+            $select->where(array(
+                'products.is_published' => 1,
+                'products.is_delete' => 0,
+                'products.website_id'=>$this->getWebsiteId(),
+                'products_translate.language'=>$this->getLanguagesId()
+            ));
+
+            if( $this->hasLocation() ){
+                $select->where( " products.products_id NOT IN (".$this->getStringQueryNotInLocation().") " ) ;
+            }
+
+            $select->where("products.promotion <>''");
+            
+            try{
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $result = $results->toArray();
+                $results = 0;
+                if ( !empty($result) ) {
+                    $results = $result[0]['total'];
+                }
+                $cache->setITem($key, $results);
+            }catch(\Exception $ex){
+                $results = array();
+            }
+        }
+        return $results;
+    }
+
     public function getSaleProduct($offset = 0,$limit=5)
     {
         $cache = $this->getServiceLocator()->get('cache');
@@ -621,15 +706,60 @@ class ProductsTable extends AppTable{
 
             $select->group('products.products_id');
             $select->order('products.ordering ASC');
-            if(!empty($limit)){
-                $select->limit($limit);
-                $select->offset($offset);
+            if( !empty($limit) ){
+                $page_size= $limit;
+                $page = (((int)$offset > 1) ? ((int)$offset - 1) * $page_size : 0);
+                $select->offset($page);
+                $select->limit($page_size);
             }
             try{
                 $selectString = $sql->getSqlStringForSqlObject($select);
                 $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
                 $results = $results->toArray();
                 $cache->setItem($key, $results);
+            }catch(\Exception $ex){
+                $results = array();
+            }
+        }
+        return $results;
+    }
+
+    public function getTotalHotProduct()
+    {
+        $cache = $this->getServiceLocator()->get('cache');
+        $key = md5($this->getNamspaceCached().':ProductsTable:getTotalHotProduct()');
+        $results = $cache->getItem($key);
+        if(!$results) {
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select = $sql->select()->columns(array('total' => new Expression("COUNT(DISTINCT products.products_id)")));
+            $select->from('products');
+            $select->join('products_translate', 'products_translate.products_id=products.products_id',array('products_title','products_alias','products_description','products_longdescription_2','products_longdescription','bao_hanh', 'products_more', 'seo_keywords', 'seo_description', 'seo_title', 'promotion_description', 'promotion1_description', 'promotion2_description', 'promotion3_description', 'tags', 'language'));
+            $select->join('products_type',new Expression('`products_type`.`products_id`=`products`.`products_id` AND `products_type`.`is_default` = 1'),array('products_type_id','t_price' => 'price', 't_price_sale'=>'price_sale', 't_quantity' => 'quantity', 't_is_available'=>'is_available', 't_thumb_image'=>'thumb_image'), 'left');
+            $select->join('products_type_translate', new Expression("products_type_translate.products_type_id=products_type.products_type_id AND products_type_translate.language={$this->getLanguagesId()}" ), array('type_name', 'language'),'left');
+            $select->join('comments','comments.comments_product=products.products_id',array('total_review' => new Expression('count(comments_id)')),'left');
+            $select->where(array(
+                'products.is_published' => 1,
+                'products.is_delete' => 0,
+                'products.is_hot' => 1,
+                'products.website_id'=>$this->getWebsiteId(),
+                'products_translate.language'=>$this->getLanguagesId()
+            ));
+
+            if( $this->hasLocation() ){
+                $select->where( " products.products_id NOT IN (".$this->getStringQueryNotInLocation().") " ) ;
+            }
+            
+            try{
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $result = $results->toArray();
+                $results = 0;
+                if ( !empty($result) ) {
+                    $results = $result[0]['total'];
+                }
+                $cache->setITem($key, $results);
             }catch(\Exception $ex){
                 $results = array();
             }

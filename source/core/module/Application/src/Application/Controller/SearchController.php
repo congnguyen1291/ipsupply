@@ -20,13 +20,14 @@ class SearchController extends FrontEndController {
             $renderer->headMeta()->appendName('keywords', $this->website['seo_keywords']);
             $helper = $this->getServiceLocator()->get('viewhelpermanager')->get('Common');
 
-            $page_size = $this->params()->fromQuery('page_size', 24);
-            $page = $this->params()->fromQuery('page', 0);
+            $page_size = $this->params()->fromQuery('page_size', 18);
+            $page = $this->params()->fromQuery('page', 1);
             $sort = $this->params()->fromQuery('sort', 'new');
             $filter = $this->params()->fromQuery('filter', '');
             $manus = $this->params()->fromQuery('manus', '');
             $feature = $this->params()->fromQuery('feature', '');
             $rating = $this->params()->fromQuery('rating', '');
+            $view = $this->params()->fromQuery('view', 0);
             $keyword = $this->params()->fromQuery('keyword', '');
 
             $cities = $this->params()->fromQuery('cities', '');
@@ -45,8 +46,6 @@ class SearchController extends FrontEndController {
             $params['page_size'] = $page_size;
             $params['manus'] = $manus;
             $params['sort'] = $sort;
-            $this->data_view['view'] = $view;
-            $this->data_view['rating'] = $rating;
             $params['filter'] = $filter;
             $params['feature'] = $feature;
             $params['price'] = $price;
@@ -134,7 +133,7 @@ class SearchController extends FrontEndController {
             $helper = $this->getServiceLocator()->get('viewhelpermanager')->get('Common');
 
             
-            $page_size = $this->params()->fromQuery('page_size', 24);
+            $page_size = $this->params()->fromQuery('page_size', 18);
             $page = $this->params()->fromQuery('page', 0);
             $sort = $this->params()->fromQuery('sort', 'new');
             $filter = $this->params()->fromQuery('filter', '');
@@ -142,6 +141,7 @@ class SearchController extends FrontEndController {
             $feature = $this->params()->fromQuery('feature', '');
             $price = $this->params()->fromQuery('price', '');
             $rating = $this->params()->fromQuery('rating', '');
+            $view = $this->params()->fromQuery('view', 0);
             $tag = $this->params()->fromRoute('tag', '');
             
             $is_pjax = $this->params()->fromHeader('X-PJAX', '');
@@ -178,6 +178,8 @@ class SearchController extends FrontEndController {
             $this->data_view['manus'] = $manus;
             $this->data_view['filter'] = $filter;
             $this->data_view['sort'] = $sort;
+            $this->data_view['view'] = $view;
+            $this->data_view['rating'] = $rating;
             $this->data_view['page_size'] = $page_size;
             $this->data_view['page'] = $page;
             $this->data_view['feature'] = $feature;

@@ -19,7 +19,7 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             <span>${carts.getNumberProductInCart()}</span>
         </a>
-        <div class="dropdown-menu" >
+        <div class="dropdown-menu coz-dropdown-menu" >
             {{if carts.getNumberProductInCart() > 0 }}
             <div class="top-cart-content arrow_box" >
                 <div class="dropdown-label" >
@@ -99,26 +99,64 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                     </a>
                 </div>
                 <div class="user-bar clearfix" >
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <?php if( !$this->User()->hasLogin() ){ ?>
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" title="<?php echo $this->translate('txt_login') ?>" class="nav-link" >
-                        <?php echo $this->translate('txt_login') ?>
-                    </a>/
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" title="<?php echo $this->translate('txt_sign_up') ?>" class="nav-link" >
-                        <?php echo $this->translate('txt_sign_up') ?>
-                    </a>
-                    <?php }else{ ?>
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_profile') ?>" class="nav-link" >
-                        <?php echo $this->translate('txt_xin_chao_ban') ?>
-                        <?php echo $this->User()->getFullName() ?>
-                    </a>/
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/logout" title="<?php echo $this->translate('txt_logout') ?>" class="nav-link" >
-                        <?php echo $this->translate('txt_logout') ?>
-                    </a>
-                    <?php } ?>
+                    <span class="hidden-sm-down" >
+                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        <?php if( !$this->User()->hasLogin() ){ ?>
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" title="<?php echo $this->translate('txt_login') ?>" class="nav-link" >
+                            <?php echo $this->translate('txt_login') ?>
+                        </a>/
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" title="<?php echo $this->translate('txt_sign_up') ?>" class="nav-link" >
+                            <?php echo $this->translate('txt_sign_up') ?>
+                        </a>
+                        <?php }else{ ?>
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_profile') ?>" class="nav-link" >
+                            <?php echo $this->translate('txt_xin_chao_ban') ?>
+                            <?php echo $this->User()->getFullName() ?>
+                        </a>/
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/logout" title="<?php echo $this->translate('txt_logout') ?>" class="nav-link" >
+                            <?php echo $this->translate('txt_logout') ?>
+                        </a>
+                        <?php } ?>
+                    </span>
+                    <span class="hidden-md-up user-bar-mm" >
+                        <a href="javascript:void(0);" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" rel="nofollow" >
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu coz-dropdown-menu" >
+                            <div class="top-cart-content arrow_box" >
+                                <div class="dropdown-label" >
+                                    Chao ban
+                                </div>
+                                <?php if( !$this->User()->hasLogin() ){ ?>
+                                <div class="dropdown-item" >
+                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" title="<?php echo $this->translate('txt_login') ?>" class="nav-link" >
+                                        <?php echo $this->translate('txt_login') ?>
+                                    </a>
+                                </div>
+                                <div class="dropdown-item" >
+                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" title="<?php echo $this->translate('txt_sign_up') ?>" class="nav-link" >
+                                        <?php echo $this->translate('txt_sign_up') ?>
+                                    </a>
+                                </div>
+                                <?php }else{ ?>
+                                <div class="dropdown-item" >
+                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_profile') ?>" class="nav-link" >
+                                        <?php echo $this->translate('txt_xin_chao_ban') ?>
+                                        <?php echo $this->User()->getFullName() ?>
+                                    </a>
+                                </div>
+                                <div class="dropdown-item" >
+                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/logout" title="<?php echo $this->translate('txt_logout') ?>" class="nav-link" >
+                                        <?php echo $this->translate('txt_logout') ?>
+                                    </a>
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </span>
                 </div>
                 <?php if( !empty($subMenuRoot) ){ ?>
-                <div class="sub-navi clearfix" >
+                <div class="sub-navi clearfix hidden-sm-down" >
                     <?php foreach ($subMenuRoot as $key01 => $menu01) { ?>
                     <a href="<?php echo $this->Menus()->getLinkForMenu($menu01); ?>" title="<?php echo $this->Menus()->getName($menu01); ?>" class="nav-link" >
                         <?php echo $this->Menus()->getName($menu01); ?>
@@ -130,14 +168,14 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
         </div>
         <div class="bottom-header clearfix" >
             <div class="row" >
-                <div class="col-sm-4" >
+                <div class="col-lg-4 col-md-3 col-sm-7 col-xs-7" >
                     <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>" class="logo-navi" >
                         <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 250); ?>" alt="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
                     </a>
                 </div>
-                <div class="col-sm-8" >
+                <div class="col-lg-8 col-md-9 col-sm-5 col-xs-5" >
                     <div class="wrap-cotrol clearfix text-xs-right" >
-                        <div class="search-bar" >
+                        <div class="search-bar hidden-sm-down" >
                             <form action="<?php echo $this->Websites()->getUrlPrefixLang() ?>/search" class="clearfix" method="GET" >
                                 <input type="text" name="keyword" class="input-search" placeholder="<?php echo $this->translate('txt_search_holder') ?>" >
                                 <button type="submit" class="btn-search" >
@@ -145,11 +183,15 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                                 </button>
                             </form>
                         </div>
-                        <a href="" title="" class="link-call-me" >
+                        <a href="" title="" class="link-call-me hidden-sm-down" >
                             <?php echo $this->Html()->mapMacroTranslate('txt_hotline_header', array('{ICON}'=> '<i class="icon i-phone" ></i>') ); ?>
                         </a>
-                        <div class="cart-mini" data-place="cartMini" >
-                        </div>
+                        <div class="cart-mini" data-place="cartMini" ></div>
+                        <a class="btn-togle-mm hidden-md-up" href="javascript:void(0);" data-toggle="collapse" data-target="#main-navigation" rel="nofollow">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -158,7 +200,7 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
     <?php if( !empty($menuRoot) ){ ?>
     <div class="navi-top" >
         <div class="container" >
-            <nav class="nav-main collapse navbar-toggleable-md" id="exCollapsingNavbar2" >
+            <nav class="nav-main collapse navbar-toggleable-md" id="main-navigation" >
                 <ul class="nav navbar-nav clearfix">
                     <?php 
                     foreach ($menuRoot as $key01 => $menu01) { 
@@ -314,4 +356,16 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
         </div>
     </div>
     <?php } ?>
+    <div class="hidden-md-up search-bar-mm" >
+        <div class="container" >
+            <div class="search-bar" >
+                <form action="<?php echo $this->Websites()->getUrlPrefixLang() ?>/search" class="clearfix" method="GET" >
+                    <input type="text" name="keyword" class="input-search" placeholder="<?php echo $this->translate('txt_search_holder') ?>" >
+                    <button type="submit" class="btn-search" >
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

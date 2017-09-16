@@ -1,131 +1,151 @@
 <?php 
-	$branches = $this->Branches()->getAllBranches();
+    $branches = $this->Branches()->getAllBranches();
     $bran = $this->Branches()->getMainBranches();
 ?>
 <script type="text/javascript" >
     var latitude = <?php echo $this->Branches()->getLatitude($bran); ?>;
     var longitude = <?php echo $this->Branches()->getLongitude($bran); ?>;
 </script>
-<section class="bread-crumb">
-	<div class="container">
-		<div class="bg-breadcrumbs" >
-			<div class="row">
-				<div class="col-xs-12">
-					<ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
-						<li class="home" itemprop="itemListElement" itemscope
-      itemtype="http://schema.org/ListItem" >
-	                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
-	                        	<?php echo $this->translate('txt_trang_chu') ?>
-	                        </a>
-	                        <span>
-		                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-		                    </span>
-		                    <meta itemprop="position" content="1" />
-	                    </li>
-	                    <li itemprop="itemListElement" itemscope
-      itemtype="http://schema.org/ListItem" >
-      						<span itemprop="item name" >
-      							<?php echo $this->translate('ttl_lien_he')?>
-      						</span>
-      						<meta itemprop="position" content="2" />
-      					</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
 
-<div class="container" >
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="clearfix" itemscope itemtype="http://schema.org/Place" >
-				<div class="box-maps" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates" >
-					<div id="map_canvas" class="text-center" data-neo="mapContact" data-latitude="<?php echo $this->Branches()->getLatitude($bran); ?>" data-longitude="<?php echo $this->Branches()->getLongitude($bran); ?>" ></div>
-					<meta itemprop="latitude" content="40.75" />
-    				<meta itemprop="longitude" content="73.98" />
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-12" >
-			<div class="wrap-contact clearfix" >
-				<div class="row" >
-					<div class="col-lg-6">
-						<div class="page-login">
-							<div id="login">
-								<h1 class="title-head" itemprop="name" >
-									<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="/contact" />
-									<a href="javascript:void(0);" title="<?php echo $this->translate('ttl_lien_he')?>" rel="nofollow" ><?php echo $this->translate('ttl_lien_he')?></a>
-								</h1>
-								<form accept-charset='UTF-8' action='/contact' id='contactform' method='post' data-form="contact" >
-									<div class="form-signup clearfix">
-										<fieldset class="form-group">
-											<label><?php echo $this->translate('ttl_ho_va_ten')?> <span>*</span></label>
-											<input type="text" name="fullname" class="form-control  form-control-lg fullname" id="fullname" data-input="fullname" >
-										</fieldset>
-										<fieldset class="form-group">
-											<label><?php echo $this->translate('ttl_dia_chi_email')?> <span>*</span></label>
-											<input type="email" name="email"  id="email" class="form-control form-control-lg email" data-input="email" >
-										</fieldset>
-										<fieldset class="form-group">
-			                                <label><?php echo $this->translate('ttl_so_dien_thoai')?> <span>*</span></label>
-			                                <input type="tel" name="phone" id="phone" class="form-control phone" data-input="phone" >
-			                            </fieldset>
-			                            <fieldset class="form-group">
-			                                <label><?php echo $this->translate('ttl_tieu_de')?> <span>*</span></label>
-			                                <input type="text" name="title" id="title" class="form-control title" data-input="title" >
-			                            </fieldset>
-			                            <fieldset class="form-group">
-			                                <label><?php echo $this->translate('ttl_noi_dung')?> <span>*</span></label>
-			                                <textarea name="content" id="content" class="form-control form-control-lg content" rows="6" data-input="content" ></textarea>
-			                            </fieldset>
-										<div class="pull-xs-left" style="margin-top:20px;">
-											<button tyle="summit" class="btn btn-lg btn-style btn-style-active">
-												<?php echo $this->translate('send')?>
-											</button>
-										</div> 
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
+<div class="wrap-breadcrumbs clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <span itemprop="item name" >
+                            <?php echo $this->translate('txt_lien_he') ?>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-					<div class="col-lg-6" >
-						<div class="widget-item info-contact" itemtype='https://schema.org/Organization' >
-							<meta content='<?php echo $baseUrl.'/contact'; ?>' itemprop='url' />
-							<div class="logo text-xs-left" >
-								<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>"  data-pjax="true" data-container="Main" itemscope='itemscope' itemtype='https://schema.org/ImageObject' >
-									<meta content='<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 131); ?>' itemprop='url' />
-									<img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 131, ''); ?>" alt="<?php echo $this->translate('title_site') ?>" title="<?php echo $this->translate('title_site') ?>" width="130" >
-								</a>
-							</div>
-							<p>
-								<?php echo $this->translate('ttl_des_contact')?>
-							</p>
-							<?php if(!empty($branches)){
-			                foreach ($branches as $index => $branche) { ?>
-							<!-- End .widget-title -->
-							<ul class="widget-menu" itemscope='itemscope' >
-								<li itemprop='address' >
-									<i class="fa fa-map-marker color-x" aria-hidden="true"></i> 
-									<p><?php echo $branche['address'] ?></p>
-								</li>
-								<li itemprop='telephone' >
-									<i class="fa fa-phone color-x" aria-hidden="true"></i> 
-									<p>Hotline: <?php echo $branche['phone'] ?></p>
-								</li>
-								<li itemprop='email' >
-									<i class="fa fa-envelope-o" aria-hidden="true"></i> 
-									<a href="#" rel="nofollow" > <?php echo $branche['email'] ?></a>
-								</li>
-							</ul>
-							<!-- End .widget-menu -->
-							<?php }
-			                } ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
+<div class="container">
+    <div class="row">                
+        <div class="col-sm-12">
+            <h1 class="title-contact" >
+                <?php echo $this->translate('txt_lien_he') ?>
+            </h1>
+            <div id="google_map_div_0">
+                <div class="clearfix map-canvas" >
+                    <div id="map_canvas" class="text-center" data-neo="mapContact" data-latitude="<?php echo $this->Branches()->getLatitude($bran); ?>" data-longitude="<?php echo $this->Branches()->getLongitude($bran); ?>" ></div>
+                </div>
+            </div>
+
+            <div class="info-contact" >
+                <div class="row" >
+
+                    <div class="col-md-3" >
+                        <div class="item-info-contact" >
+                            <div class="iinner-info-contact" >
+                                <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), '', 43); ?>" alt="<?php echo $this->translate('title_site') ?>" title="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" >
+                        <div class="item-info-contact" >
+                            <div class="iinner-info-contact" >
+                                <?php echo $this->translate('txt_dia_chi_contact') ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" >
+                        <div class="item-info-contact" >
+                            <div class="iinner-info-contact" >
+                                <div>
+                                    <?php echo $this->translate('txt_email_contact') ?>
+                                </div>
+                                <div>
+                                    <?php echo $this->translate('txt_hotline_contact') ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" >
+                        <div class="item-info-contact" >
+                            <div class="iinner-info-contact" >
+                                <div>
+                                    <?php echo $this->translate('txt_worktime_contact') ?>
+                                </div>
+                                <div>
+                                    <?php echo $this->translate('txt_worktime_speacial_contact') ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+
+            <form accept-charset='UTF-8' action='/contact' id='contact' method='post' class="form-horizontal form-contact-page" data-form="contact" >
+                <h3 class="title-form-contact" >
+                    <?php echo $this->translate('txt_thong_tin_cua_ban') ?>
+                </h3>
+                <div class="form-group required">
+                    <div class="row" >
+                        <label class="col-md-2  col-sm-3 control-label" for="fullname">
+                            <?php echo $this->translate('txt_ho_va_ten') ?>
+                        </label>
+                        <div class="col-md-10 col-sm-9">
+                            <input type="text" name="fullname" value="" id="ifullname" class="form-control fullname" data-input="fullname" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group required">
+                    <div class="row" >
+                        <label class="col-md-2  col-sm-3 control-label" for="email">
+                            <?php echo $this->translate('txt_dia_chi_email') ?>
+                        </label>
+                        <div class="col-md-10 col-sm-9">
+                            <input type="text" name="email" value="" id="email" class="form-control email" data-input="email" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group required">
+                    <div class="row" >
+                        <label class="col-md-2  col-sm-3 control-label" for="title">
+                            <?php echo $this->translate('txt_tieu_de') ?>
+                        </label>
+                        <div class="col-md-10 col-sm-9">
+                            <input type="text" name="title" value="" id="title" class="form-control title" data-input="title" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group required">
+                    <div class="row" >
+                        <label class="col-md-2  col-sm-3 control-label" for="content">
+                            <?php echo $this->translate('txt_noi_dung') ?>
+                        </label>
+                        <div class="col-md-10 col-sm-9">
+                            <textarea name="content" rows="10" id="content" class="form-control content" data-input="content" ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group clearfix" >
+                    <div class="pull-right">
+                        <input class="btn btn-style" type="submit" value="<?php echo $this->translate('gui_tin_nhan'); ?>" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

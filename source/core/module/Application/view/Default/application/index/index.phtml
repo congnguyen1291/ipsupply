@@ -1,4 +1,5 @@
 <?php
+//txt_id_aboutus
 $num = 3;
 $productHots = $this->Products()->getHotProduct(0, 6);
 if( empty($productHots) ){
@@ -20,7 +21,7 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
 <?php if( !empty($num) ){ ?>
 <div class="case-product" >
     <div class="container" >
-        <div class="row text-xs-center" >
+        <div class="row text-xs-center hidden-sm-down" >
             <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1 col-sm-12" >
                 <ul class="nav nav-inline tcase-product row" role="tablist">
                     <?php if( !empty($productHots) ){ ?>
@@ -52,8 +53,17 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
         <div class="tab-content" >
             <?php if( !empty($productHots) ){ ?>
             <div class="tab-pane fade in active" role="tabpanel" id="featured_products" >
+                <div class="hidden-md-up" >
+                    <ul class="nav nav-inline tcase-product tcase-product-mm" >
+                        <li class="nav-item" >
+                            <a class="nav-link text-xs-center" href="#featured_products" >
+                                <?php echo $this->translate('txt_featured_products') ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="list-product col-padd-empty" >
-                    <div class="row" data-place="lsProducts" >
+                    <div class="row lsProductsHots" >
                         <?php foreach ($productHots as $key => $p) { ?>
                             <div class="col-lg-4 col-md-4 col-sm-6" >
                                 <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
@@ -76,7 +86,7 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
                 </div>
 
                 <div class="text-xs-center" >
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/hots" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style" data-btn="ajackProducts" data-page="0" data-page_size="6" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/hots" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style btn-view-more-ajax" data-btn="ajackProducts" data-page="1" data-page_size="6" data-el=".lsProductsHots" >
                         <?php echo $this->translate('txt_view_all') ?>
                     </a>
                 </div>
@@ -84,9 +94,18 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
             <?php } ?>
 
             <?php if( !empty($productNews) ){ ?>
-            <div class="tab-pane fade in active" role="tabpanel" id="new_arrivals" >
+            <div class="tab-pane fade in <?php echo empty($productHots) ? 'active' : '' ?>" role="tabpanel" id="new_arrivals" >
+                <div class="hidden-md-up" >
+                    <ul class="nav nav-inline tcase-product tcase-product-mm" >
+                        <li class="nav-item" >
+                            <a class="nav-link text-xs-center" href="#new_arrivals" >
+                                <?php echo $this->translate('txt_new_arrivals') ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="list-product col-padd-empty" >
-                    <div class="row" data-place="lsProducts" >
+                    <div class="row lsProductsNews" data-place="lsProducts" >
                         <?php foreach ($productNews as $key => $p) { ?>
                             <div class="col-lg-4 col-md-4 col-sm-6" >
                                 <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
@@ -109,7 +128,7 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
                 </div>
 
                 <div class="text-xs-center" >
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/news" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style" data-btn="ajackProducts" data-page="0" data-page_size="6" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/news" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style btn-view-more-ajax" data-btn="ajackProducts" data-page="1" data-page_size="6" data-el=".lsProductsNews" >
                         <?php echo $this->translate('txt_view_all') ?>
                     </a>
                 </div>
@@ -117,9 +136,18 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
             <?php } ?>
 
             <?php if( !empty($productDeals) ){ ?>
-            <div class="tab-pane fade in active" role="tabpanel" id="hot_deals" >
+            <div class="tab-pane fade in <?php echo (empty($productHots) && empty($productNews)) ? 'active' : '' ?>" role="tabpanel" id="hot_deals" >
+                <div class="hidden-md-up" >
+                    <ul class="nav nav-inline tcase-product tcase-product-mm" >
+                        <li class="nav-item" >
+                            <a class="nav-link text-xs-center" href="#hot_deals" >
+                                <?php echo $this->translate('txt_hot_deals') ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="list-product col-padd-empty" >
-                    <div class="row" data-place="lsProducts" >
+                    <div class="row lsProductsDeals" data-place="lsProducts" >
                         <?php foreach ($productDeals as $key => $p) { ?>
                             <div class="col-lg-4 col-md-4 col-sm-6" >
                                 <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
@@ -141,7 +169,7 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
                     </div>
                 </div>
                 <div class="text-xs-center" >
-                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/deals" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style" data-btn="ajackProducts" data-page="0" data-page_size="6" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/category/deals" title="<?php echo $this->translate('txt_view_all') ?>" class="btn btn-style btn-view-more-ajax" data-btn="ajackProducts" data-page="1" data-page_size="6" data-el=".lsProductsDeals" >
                         <?php echo $this->translate('txt_view_all') ?>
                     </a>
                 </div>

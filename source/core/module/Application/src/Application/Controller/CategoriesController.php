@@ -29,8 +29,8 @@ class CategoriesController extends FrontEndController
         $helper = $this->getServiceLocator()->get('viewhelpermanager')->get('Common');
 
         
-        $page_size = $this->params()->fromQuery('page_size', 24);
-        $page = $this->params()->fromQuery('page', 0);
+        $page_size = $this->params()->fromQuery('page_size', 18);
+        $page = $this->params()->fromQuery('page', 1);
         $sort = $this->params()->fromQuery('sort', 'new');
         $filter = $this->params()->fromQuery('filter', '');
         $manus = $this->params()->fromQuery('manus', '');
@@ -120,8 +120,8 @@ class CategoriesController extends FrontEndController
         $helper = $this->getServiceLocator()->get('viewhelpermanager')->get('Common');
 
         
-        $page_size = $this->params()->fromQuery('page_size', 24);
-        $page = $this->params()->fromQuery('page', 0);
+        $page_size = $this->params()->fromQuery('page_size', 18);
+        $page = $this->params()->fromQuery('page', 1);
         $sort = $this->params()->fromQuery('sort', 'new');
         $filter = $this->params()->fromQuery('filter', '');
         $manus = $this->params()->fromQuery('manus', '');
@@ -217,7 +217,7 @@ class CategoriesController extends FrontEndController
             $helper = $this->getServiceLocator()->get('viewhelpermanager')->get('Common');
             $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
 			
-			$page = $this->params()->fromQuery('page', 0);
+			$page = $this->params()->fromQuery('page', 1);
 			$pageadd = '';
 			if(!empty($page) or $page>=2){
 				$pageadd=" ".$translator->translate('page')." ".$page;
@@ -235,7 +235,7 @@ class CategoriesController extends FrontEndController
                 $renderer->headMeta()->appendName('description', $categories->seo_description);
             }
 
-            $page_size = $this->params()->fromQuery('page_size', 24);
+            $page_size = $this->params()->fromQuery('page_size', 18);
             $page = $this->params()->fromQuery('page', 0);
             $sort = $this->params()->fromQuery('sort', 'new');
             $filter = $this->params()->fromQuery('filter', '');
@@ -325,4 +325,111 @@ class CategoriesController extends FrontEndController
 
         return $this->redirect()->toRoute($this->getUrlRouterLang().'home');
     }
+
+
+    public function hotsAction()
+    {
+        $page_size = $this->params()->fromQuery('page_size', 6);
+        $page = $this->params()->fromQuery('page', 1);
+ 
+        $rows = $this->getModelTable('ProductsTable')->getHotProduct($page, $page_size);
+        $total = $this->getModelTable('ProductsTable')->getTotalHotProduct();
+
+        $link = $this->baseUrl .$this->getUrlPrefixLang().'/category/hots?page=(:num)';
+        $paginator = new Paginator($total, $page_size, $page, $link);
+
+        $this->data_view['page'] = $page;
+        $this->data_view['total'] = $total;
+        $this->data_view['paging'] = $paginator->toHtml();
+        $this->data_view['paginator'] = $paginator;
+        $this->data_view['rows'] = $rows;
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+        $viewModel->setTemplate("application/categories/hots");
+        $viewModel->setVariables($this->data_view);
+        $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+        $html = $viewRender->render($viewModel);
+        $item = array(
+                'total' => $total,
+                'page_size' => $page_size,
+                'page' => $page,
+                'pages' => $paginator->getPages(),
+                'rows' => $rows,
+                'paging' => $paginator->toHtml(),
+                'html' => $html
+            );
+        echo json_encode($item);
+        die();
+    }
+
+    public function newsAction()
+    {
+        $page_size = $this->params()->fromQuery('page_size', 6);
+        $page = $this->params()->fromQuery('page', 1);
+ 
+        $rows = $this->getModelTable('ProductsTable')->getNewProduct($page, $page_size);
+        $total = $this->getModelTable('ProductsTable')->getTotalNewProduct();
+
+        $link = $this->baseUrl .$this->getUrlPrefixLang().'/category/hots?page=(:num)';
+        $paginator = new Paginator($total, $page_size, $page, $link);
+
+        $this->data_view['page'] = $page;
+        $this->data_view['total'] = $total;
+        $this->data_view['paging'] = $paginator->toHtml();
+        $this->data_view['paginator'] = $paginator;
+        $this->data_view['rows'] = $rows;
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+        $viewModel->setTemplate("application/categories/hots");
+        $viewModel->setVariables($this->data_view);
+        $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+        $html = $viewRender->render($viewModel);
+        $item = array(
+                'total' => $total,
+                'page_size' => $page_size,
+                'page' => $page,
+                'pages' => $paginator->getPages(),
+                'rows' => $rows,
+                'paging' => $paginator->toHtml(),
+                'html' => $html
+            );
+        echo json_encode($item);
+        die();
+    }
+
+    public function dealsAction()
+    {
+        $page_size = $this->params()->fromQuery('page_size', 6);
+        $page = $this->params()->fromQuery('page', 1);
+ 
+        $rows = $this->getModelTable('ProductsTable')->getDealProduct($page, $page_size);
+        $total = $this->getModelTable('ProductsTable')->getTotalDealProduct();
+
+        $link = $this->baseUrl .$this->getUrlPrefixLang().'/category/hots?page=(:num)';
+        $paginator = new Paginator($total, $page_size, $page, $link);
+
+        $this->data_view['page'] = $page;
+        $this->data_view['total'] = $total;
+        $this->data_view['paging'] = $paginator->toHtml();
+        $this->data_view['paginator'] = $paginator;
+        $this->data_view['rows'] = $rows;
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+        $viewModel->setTemplate("application/categories/hots");
+        $viewModel->setVariables($this->data_view);
+        $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+        $html = $viewRender->render($viewModel);
+        $item = array(
+                'total' => $total,
+                'page_size' => $page_size,
+                'page' => $page,
+                'pages' => $paginator->getPages(),
+                'rows' => $rows,
+                'paging' => $paginator->toHtml(),
+                'html' => $html
+            );
+        echo json_encode($item);
+        die();
+    }
+
 }

@@ -1,28 +1,31 @@
 <div class="general-box" >
     <h2 class="title-general" >
-        Can't find the <br />
-        Product you want?
+        <?php echo $this->translate('txt_contact_product_you_want'); ?>
     </h2>
     <div class="ds-general clearfix" >
         <div class="sub-general clearfix contact-sm" >
-            <h4 class="sub-title-general" >Let us know!</h4>
-            <div class="form-group" >
-                <input type="text" name="" class="form-control" placeholder="Name" >
-            </div>
-            <div class="form-group" >
-                <input type="text" name="" class="form-control" placeholder="Email" >
-            </div>
-            <div class="form-group" >
-                <input type="text" name="" class="form-control" placeholder="Phone" >
-            </div>
-            <div class="form-group" >
-                <textarea name="" class="form-control" placeholder="Item I'm looking for" ></textarea>
-            </div>
-            <div class="form-group" >
-                <button class="btn btn-style-c btn-style-sm" >
-                    Submit
-                </button>
-            </div>
+            <form class="form-horizontal" data-form="anythingContact" >
+                <h4 class="sub-title-general" >
+                    <?php echo $this->translate('txt_let_us_know'); ?>
+                </h4>
+                <div class="form-group" >
+                    <input type="text" name="fullname" class="form-control" placeholder="<?php echo $this->translate('txt_contact_name'); ?>" data-required="true" >
+                </div>
+                <div class="form-group" >
+                    <input type="text" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_contact_email'); ?>" data-required="true" >
+                </div>
+                <div class="form-group" >
+                    <input type="text" name="telephone" class="form-control" placeholder="<?php echo $this->translate('txt_contact_phone'); ?>" data-required="true" >
+                </div>
+                <div class="form-group" >
+                    <textarea name="description" class="form-control" placeholder="<?php echo $this->translate('txt_item_i_looking_for'); ?>" data-required="true" ></textarea>
+                </div>
+                <div class="form-group" >
+                    <button type="button" class="btn btn-style-c btn-style-sm" data-btn="anythingContact" >
+                        <?php echo $this->translate('txt_contact_submit'); ?>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

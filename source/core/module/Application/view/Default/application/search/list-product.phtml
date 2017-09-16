@@ -1,27 +1,95 @@
 <?php if(!empty($rows)){ ?>
-    <div class="list-mini-produxt clearfix" >
-        <div class="row" >
-            <?php foreach ($rows as $key => $p) { ?>
-            <div class="col-md-4  col-sm-6 col-xs-6">
-                <?php   echo $this->partial('app/item-product', array('product' => $p) ); ?>
+<div class="bar-filter" >
+    <div class="row" >
+        <div class="col-sm-7 hidden-sm-down" >
+            <span class="num-of-result" >
+                <?php echo $this->Html()->mapMacroTranslate('txt_showing_of', array('{SUBTOTAL}'=> count($rows), '{TOTAL}'=> $total)); ?>
+            </span>
+        </div>
+        <div class="col-md-5 col-sm-12 text-md-right text-xs-center" >
+            <select class="select-filter neo-trigger-filter" name="sort" data-input="sort" >
+                <?php echo $this->Html()->getHtmlOptionTagSortFilter(); ?>
+            </select>
+
+            <a href="javascript:void(0);" title="" class="switche-view <?php echo empty($view) ? 'active' : ''  ?> hidden-sm-down" data-btn="switchView" data-value="0" >
+                <i class="fa fa-th-large" aria-hidden="true"></i>
+                <input type="radio" name="view" value="0" <?php echo empty($view) ? 'checked="checked"' : ''  ?> style="display: none" data-input="view" >
+            </a>
+            <a href="javascript:void(0);" title="" class="switche-view <?php echo !empty($view) ? 'active' : ''  ?> hidden-sm-down" data-btn="switchView"  data-value="1" >
+                <i class="fa fa-th-list" aria-hidden="true"></i>
+                <input type="radio" name="view" value="1" <?php echo !empty($view) ? 'checked="checked"' : ''  ?> style="display: none" data-input="view" >
+            </a>
+        </div>
+    </div>
+</div>
+
+<?php if( !empty($categories) ){ ?>
+<div class="general-box hidden-md-up" >
+    <h2 class="title-general clearfix" >
+        <div class="pull-xs-left" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2" aria-expanded="false" >
+            <?php echo $this->translate('txt_category'); ?>
+        </div>
+        <div class="pull-xs-right" >
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </div>
+    </h2>
+    <div class="navbar-toggleable-sm collapse" id="exCollapsingNavbar2" >
+        <div class="ds-general clearfix" >
+            <div class="sub-general clearfix" >
+                <?php echo $this->partial('app/categories-left', array('categories' => $categories) ); ?>
             </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<div class="list-product col-padd-empty" >
+    <div class="row" >
+        <?php foreach ($rows as $key => $p) { ?>
+            <div class="col-lg-4 col-md-4 col-sm-6" >
+                <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
+            </div>
+            <?php if( $key%3 == 0 ){ ?>
+            <div class="col-sm-12 hidden-sm-up" >
+                <div class="line-grid" ></div>
+            </div>
+            <?php }else if( $key%3 == 1 ){ ?>
+            <div class="col-sm-12 hidden-md-up" >
+                <div class="line-grid" ></div>
+            </div>
+            <?php }else if( $key%3 == 2 ){ ?>
+            <div class="col-sm-12 hidden-sm-down" >
+                <div class="line-grid" ></div>
+            </div>
+            <?php } ?>
+        <?php } ?>
+    </div>
+</div>
+
+<div class="bar-filter" >
+    <div class="row" >
+        <div class="col-sm-7 hidden-sm-down" >
+            <span class="num-of-result" >
+                <?php echo $this->Html()->mapMacroTranslate('txt_showing_of', array('{SUBTOTAL}'=> count($rows), '{TOTAL}'=> $total)); ?>
+            </span>
+        </div>
+        <div class="col-md-5 col-sm-12 text-md-right text-xs-center" >
+            <?php if( !empty($paging) ){ ?>
+                <div class="co-paging" >
+                    <div class="pull-xs-right">
+                        <nav class="clearfix">
+                            <?php echo $paging; ?>                  
+                        </nav>
+                    </div>
+                </div>
             <?php } ?>
         </div>
     </div>
-
-    <?php if( !empty($paging) ){ ?>
-    <div class="co-paging" >
-        <div class="pull-xs-right">
-            <nav class="clearfix">
-                <?php echo $paging; ?>                  
-            </nav>
-        </div>
-    </div>
-    <?php } ?>
+</div>
 <?php }else{ ?>
-    <div class="clearfix" >
-        <p class="empty-data" >
-            <?php echo $this->translate('txt_dang_cap_nhat') ?>
-        </p>
-    </div>
+<div class="clearfix" >
+    <p class="empty-data" >
+        <?php echo $this->translate('txt_dang_cap_nhat') ?>
+    </p>
+</div>
 <?php } ?>

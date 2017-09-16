@@ -8,15 +8,18 @@
  */
 
 namespace Application\Controller;
+
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
-use Application\Form\ContactForm;
-use Application\Model\Contact;
 use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Part as MimePart;
 use Zend\View\Model\ViewModel;
+
+use Application\Model\Contact;
+use Application\Form\ContactForm;
+use Application\Model\AnythingContact;
 
 class ContactController extends FrontEndController
 {
@@ -149,6 +152,7 @@ class ContactController extends FrontEndController
    
 	
     public function commentAction(){
+        $translator = $this->getServiceLocator()->get('translator');
     	$form = new ContactForm();
     	$request = $this->getRequest ();
     	if ($request->isPost ()) {
@@ -236,6 +240,68 @@ class ContactController extends FrontEndController
             'languages' => $this->languages,
             'current_language' => $this->current_language,
         ), $this->data_view);
+    }
+
+    public function anythingAction(){
+        $translator = $this->getServiceLocator()->get('translator');
+        $item = array( 'flag' => FALSE, 'msg' => $translator->translate('txt_not_found'));
+        $form = new ContactForm();
+        $request = $this->getRequest ();
+        if ($request->isPost ()) {
+            $email = $request->getPost ('email', '');
+            $first_name = $request->getPost ('first_name', '');
+            $middle_name = $request->getPost ('middle_name', '');
+            $last_name = $request->getPost ('last_name', '');
+            $fullname = $request->getPost ('fullname', '');
+            if( !empty($email) && (!empty($fullname) || ( !empty($first_name) && !empty($last_name))) ){
+                $contact = new AnythingContact();
+                $data = $request->getPost ();
+                $contact->exchangeArray ( $data );
+                $contact->website_id = $this->website->website_id;
+                $contact->fullname = $first_name.' '.$middle_name.' '.$last_name;
+                if ( $this->getModelTable ( 'AnythingContactTable' )->saveAnythingContact ( $contact ) ) {
+                    $html = "<table><tr><td> ".$translator->translate('chao')." admin , {$contact->fullname} ".$translator->translate('vua_gui_mot_lien_he')." :</td></tr>
+                    <tr><td>{$contact->description}</td></tr><tr><td> ".$translator->translate('so_dien_thoai')." : {$contact->telephone}</td></tr><tr><td>Email: {$contact->email}</td></tr></table>";
+        
+                    $html = new MimePart($html);
+                    $html->type = "text/html";
+        
+                    $body = new MimeMessage();
+                    $body->setParts(array($html));
+        
+        
+                    $message = new Message();
+                    $message->addTo(EMAIL_ADMIN_RECEIVE)
+                    ->addFrom($contact->email)
+                    ->setSubject($translator->translate('thong_tin_lien_he'))
+                    ->setBody($body)
+                    ->setEncoding("UTF-8");
+        
+                            // Setup SMTP transport using LOGIN authentication
+                            $transport = new SmtpTransport();
+                    $options   = new SmtpOptions(array(
+                    'name'              => HOST_MAIL,
+                    'host'              => HOST_MAIL,
+                    //'connection_class'  => 'login',
+                    'connection_config' => array(
+                                    'username' => USERNAME_HOST_MAIL,
+                                    'password' => PASSWORD_HOST_MAIL,
+                            ),
+                    ));
+                    
+                    $transport->setOptions($options);
+                    $transport->send($message);
+                    $item = array( 'flag' => TRUE, 'msg' => $translator->translate('txt_contact_success'));
+                }else{
+                    $item = array( 'flag' => FALSE, 'msg' => $translator->translate('txt_co_mot_loi'));
+                }
+            }else{
+                $item = array( 'flag' => FALSE, 'msg' => $translator->translate('txt_chua_dien_day_du_thong_tin'));
+            }
+        }
+                            
+        echo json_encode($item);
+        die();
     }
 
     public function sendmailAction(){

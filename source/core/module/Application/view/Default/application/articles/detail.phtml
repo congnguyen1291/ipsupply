@@ -1,7 +1,7 @@
 <?php
-$categoryArticles = $this->Articles()->getAllCategoriesArticlesSort();
 $news = $this->Articles()->getTopArticles(0, 5);
-$list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($this->Articles()->getCategoriesId($article), true);
+$categoryArticles = $this->Articles()->getAllCategoriesArticlesSort();
+$list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($article->categories_articles_id, true);
 ?>
 <div class="wrap-breadcrumbs clearfix" >
     <div class="container" >
@@ -20,18 +20,18 @@ $list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($this->Article
                     </li>
                     <li itemprop="itemListElement" itemscope
       itemtype="http://schema.org/ListItem"  >
-						<a href='<?php echo $this->Websites()->getUrlPrefixLang() ?>/articles' data-pjax="true" data-container="Main" itemprop="item name" >
-							<?php echo $this->translate('txt_news'); ?>
-						</a>
-						<span class="bc-dr" >
+                        <a href='<?php echo $this->Websites()->getUrlPrefixLang() ?>/articles' data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_news'); ?>
+                        </a>
+                        <span class="bc-dr" >
                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                         </span>
                         <meta itemprop="position" content="2" />
-					</li>
+                    </li>
 
-					<?php 
-					$pbc = 2;
-					if(!empty($list_bcum)){ 
+                    <?php 
+                    $pbc = 2;
+                    if(!empty($list_bcum)){ 
                         for($i = count($list_bcum)-1;$i>=0;$i-- ){
                             $item_cum = $list_bcum[$i];
                             $pbc ++;
@@ -48,111 +48,64 @@ $list_bcum = $this->CategoriesArticles()->getAllParentsOfCategory($this->Article
                     <?php }
                     } ?>
 
-					<li itemprop="itemListElement" itemtype="http://schema.org/ListItem"  >
-							<span itemprop="item name" >
-							<?php echo $this->Articles()->getTitle($article) ?>
-						</span>
-						<meta itemprop="position" content="<?php echo ($pbc+1) ?>" />
-					</li>
+                    <li itemprop="itemListElement" itemtype="http://schema.org/ListItem"  >
+                            <span itemprop="item name" >
+                            <?php echo $this->Articles()->getTitle($article) ?>
+                        </span>
+                        <meta itemprop="position" content="<?php echo ($pbc+1) ?>" />
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-	<div class="row">
-		
-		<section class="left-content col-lg-3 hidden-xs-up">
-			<?php   echo $this->partial('app/categories-articles-left', array('categories' => $categoryArticles) ); ?>
-		</section>
-
-		<section class="right-content col-lg-9 col-lg-push-3">
-
-			<section class="article-main" itemscope itemtype="http://schema.org/NewsArticle"  >
-				<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="<?php echo $this->Articles()->getUrl($article) ?>" />
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="article-details" >
-							<meta content='<?php echo $this->Articles()->getUsersFullname($article); ?>' itemprop='author' />
-						    <meta content='<?php echo $this->Articles()->getDateCreate($article); ?>' itemprop='datePublished dateModified' />
-
-						    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-						        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-						            <meta itemprop="url" content="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 240); ?>"/>
-						        </div>
-						        <meta itemprop="name" content="<?php echo $this->Websites()->getName(); ?>">
-						    </div>
-
-						    <div itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject">
-						        <meta itemprop="url" content="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($article),240, 126); ?>" >
-						        <meta itemprop="width" content="240">
-						        <meta itemprop="height" content="126">
-						    </div>
-
-							<h1 class="article-title" itemprop='headline' >
-								<a href="<?php echo $this->Articles()->getUrl($article) ?>" title="<?php echo $this->Articles()->getTitle($article) ?>" itemprop="url" >
-									<span itemprop="url" >
-										<?php echo $this->Articles()->getTitle($article) ?>
-									</span>
-								</a>
-							</h1>
-							<div class="article-content" itemprop='description' >
-								<?php echo $this->Articles()->getContent($article) ?>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</section>
-		
-		
-		
-		<section class="left-content col-lg-3 col-lg-pull-9">
-
-			<?php   echo $this->partial('app/categories-articles-left', array('categories' => $categoryArticles) ); ?>
-
-            <?php if(!empty($news)){ ?>
-        	<div class="box-mini-owl clearfix" >
-                <div class="heading clearfix">
-                    <h2 class="title-head pull-xs-left">
-                        <a href="javascript:void(0);" title="<?php echo $this->translate('txt_news'); ?>" rel="nofollow" >
-                            <?php echo $this->translate('txt_news'); ?>
-                        </a>
-                    </h2>
-                    <div class="pull-right">
-                        <div class="navi-owl clearfix">
-                            <a href="javascript:void(0);" data-neo="navOwl" data-direct="prev" data-target="owlNews" rel="nofollow" >
-                                <i class="fa fa-angle-left" aria-hidden="true"></i>
-                            </a>
-                            <a href="javascript:void(0);" data-neo="navOwl" data-direct="next" data-target="owlNews" rel="nofollow" >
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-list-blogs" >
-                    <div class="owl-news owl-carousel owl-theme"  data-neo="owlCarousel" data-own-name="owlNews" data-dots="false" data-loop="false" data-nav = "false" data-margin = "0" data-autoplayTimeout="1000" data-autoplayHoverPause = "true" data-responsive='{"0":{"items":1}}' data-responsive='{"0":{"items":1}}' data-navtextleft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navtextright='<i class="fa fa-chevron-right" aria-hidden="true"></i>' >
-                        <?php for ($i=0; $i < count($news)/4; $i++) { ?>
-                        <div class="item row">      
-                            <?php for ($j=$i*4; $j < count($news) && $j < $i*4 + 4; $j++) {
-                                $new = $news[$j];
-                            ?>
-                            <article class="col-xs-12 col-sm-12 col-md-6 col-lg-12">
-                                <?php   echo $this->partial('app/item-sm-articles', array('article' => $new , 'notSchema' => TRUE) ); ?>
-                            </article>
-                            <?php } ?>
-
-                        </div>
-                        <?php } ?>
-                    
-                    </div>
+<div id="blog-template" class="blog-template" >
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12"> 
+                <h1>
+                    <?php echo $this->Articles()->getTitle($article) ?>
+                </h1>
+                <div class="info-description-article clearfix" >
+                    <?php echo $this->Articles()->getContent($article) ?>
                 </div>
             </div>
-            <?php } ?>
 
-		</section>
-		
-		
-	</div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pd5">
+                <div class="general-box" >
+                    <h2 class="title-general" >
+                        <?php echo $this->translate('txt_category_article'); ?>
+                    </h2>
+                    <div class="ds-general clearfix" >
+                        <?php echo $this->partial('app/categories-articles-left', array('categories' => $categoryArticles) ); ?>
+                    </div>
+                </div>
+
+                <?php if(!empty($news)){ ?>
+                <div class="general-box" >
+                    <h2 class="title-general" >
+                        <?php echo $this->translate('txt_bai_viet_moi_nhat'); ?>
+                    </h2>
+                    <div class="ds-general clearfix" >
+                        <div class="blog-list-articles" >
+                            <?php foreach ($news as $k => $new) { ?>
+                            <div class="clearfix">
+                                <?php echo $this->partial('app/item-sm-articles', array('article' => $new) ); ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php echo $this->partial('app/contact-sm', array() ); ?>
+                
+            </div>
+    
+
+        </div>
+    </div>
 </div>
+

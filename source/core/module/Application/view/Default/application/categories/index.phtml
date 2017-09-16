@@ -144,8 +144,23 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
     <div class="container" >
         <div class="row" >
 
-            <div class="col-sm-3" >
-                <div class="general-box" >
+            <div class="col-lg-9 col-md-8 col-lg-push-3 col-md-push-4 col-sm-push-0" >
+                <h1 class="title-listing" >
+                    <?php echo $this->translate('txt_tat_ca_san_pham'); ?>
+                </h1>
+
+                <div class="description-listing" >
+                    <?php echo $this->translate('txt_des_tat_ca_san_pham'); ?>
+                </div>
+
+                <div class="clearfix" data-pjax-container="ProductCategory" >
+                    <?php echo $this->partial('application/categories/list-product', array('rows' => $rows, 'paging' => $paging, 'total' => $total, 'categories' => $categories ) ); ?>
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-lg-pull-9 col-md-pull-8 col-sm-pull-0" >
+                <div class="general-box hidden-sm-down" >
                     <?php if( !empty($categories) ){ ?>
                     <h2 class="title-general" >
                         <?php echo $this->translate('txt_category'); ?>
@@ -178,19 +193,6 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
 
             </div>
 
-            <div class="col-sm-9" >
-                <h1 class="title-listing" >
-                    <?php echo $this->translate('txt_tat_ca_san_pham'); ?>
-                </h1>
-                <div class="description-listing" >
-                    <?php echo $this->translate('txt_des_tat_ca_san_pham'); ?>
-                </div>
-
-                <div class="clearfix" data-pjax-container="ProductCategory" >
-                    <?php echo $this->partial('application/categories/list-product', array('rows' => $rows, 'paging' => $paging, 'total' => $total ) ); ?>
-                </div>
-
-            </div>
         </div>
     </div>
 </div>

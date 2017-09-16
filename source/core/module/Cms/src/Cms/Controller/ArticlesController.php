@@ -137,9 +137,11 @@ class ArticlesController extends BackEndController{
         $form->get('submit')->setAttribute('value', 'Edit');
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $article = new Articles();
             $form->setInputFilter($article->getInputFilter());
             $form->setData($request->getPost());
             if ( $form->isValid() ) {
+                $article->exchangeArray($request->getPost());
                 $language = $request->getPost('language', '1');
                 $picture_id = $request->getPost('picture_id');
                 $article->language=$language;

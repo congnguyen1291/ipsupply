@@ -32,6 +32,36 @@ $router = array(
                     ),
                 ),
             ),
+            'hots' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route' => '/hots',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Categories',
+                        'action' => 'hots',
+                    ),
+                ),
+            ),
+            'news' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route' => '/news',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Categories',
+                        'action' => 'news',
+                    ),
+                ),
+            ),
+            'deals' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route' => '/deals',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Categories',
+                        'action' => 'deals',
+                    ),
+                ),
+            ),
         ),
     ),
     'categories' => array(
@@ -57,6 +87,36 @@ $router = array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Categories',
                         'action' => 'detail',
+                    ),
+                ),
+            ),
+            'hots' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route' => '/hots',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Categories',
+                        'action' => 'hots',
+                    ),
+                ),
+            ),
+            'news' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route' => '/news',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Categories',
+                        'action' => 'news',
+                    ),
+                ),
+            ),
+            'deals' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route' => '/deals',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Categories',
+                        'action' => 'deals',
                     ),
                 ),
             ),
@@ -1231,7 +1291,7 @@ $all_router = $router;
 $all_router['router_vi']  = array(
     'type' => 'Literal',
     'options' => array(
-        'route' => '/vi',
+        'route' => '/au',
         'defaults' => array(
             '__NAMESPACE__' => 'Application\Controller',
             'controller' => 'Index',

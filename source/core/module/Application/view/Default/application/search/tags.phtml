@@ -1,3 +1,7 @@
+<?php
+$manufacturers = $this->Manufacturers()->getManufacturers();
+$sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
+echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
 <script id="tmplFillterSort" data-place="tmplFillterSort" type="text/x-jQuery-tmpl">
 <div>
     <?php echo $this->translate('txt_sap_xep_theo') ?>
@@ -18,28 +22,35 @@
 <script id="tmplFillterFeature" data-place="tmplFillterFeature" type="text/x-jQuery-tmpl">
 <div>
     <div class="bar-fillter clearfix" >
-        
-        <div class="fillter-item clearfix {{if coz.model.fillter.price.isClose() }}closed{{/if}}" data-place="itemFillter" data-id="price" >
-            <div class="header-item-fillter clearfix" data-place="itemHeaderFillter" data-id="price" >
-                <a class="fillter-toogle" href="javascript:void(0);" data-btn="toggleFillter" data-id="price" rel="nofollow" >
-                    <?php echo $this->translate('txt_loc_theo_gia') ?>
-                    <span class="fillter-direct" >
-                        {{if coz.model.fillter.price.isClose() }}
-                        <i class="fa fa-angle-down" aria-hidden="true"></i>
-                        {{else}}
-                        <i class="fa fa-angle-up" aria-hidden="true"></i>
-                        {{/if}}
-                    </span>
-                </a>
+        <div class="sub-general clearfix" ></div>
+        <div class="sub-general clearfix" >
+            <h4 class="sub-title-general" >
+                <?php echo $this->translate('txt_loc_theo_gia') ?>
+            </h4>
+            <div class="clearfix wrap-ranger-price" >
+                <input type="text" data-neo="ionRangeSlider"  data-min="${coz.model.fillter.price.getMin()}" data-max="${coz.model.fillter.price.getMax()}" data-grid="true" value="${coz.model.fillter.price.getVal()}" name="price" data-input="price" />
             </div>
-            <div class="body-item-fillter clearfix" data-place="itemBodyFillter" data-id="price" >
-                <div class="clearfix wrap-ranger-price" >
-                    <input type="text" data-neo="ionRangeSlider"  data-min="${coz.model.fillter.price.getMin()}" data-max="${coz.model.fillter.price.getMax()}" data-grid="true" value="${coz.model.fillter.price.getVal()}" name="price" data-input="price" />
-                </div>
-                <div class="price-from-to" >
-                    ${language.translate('txt_gia_tu')} : 
-                    <span class="txt-ranger-from" data-place="valueRangerFrom" >${coz.fomatCurrency(coz.model.fillter.price.getFrom())}</span> - 
-                    <span class="txt-ranger-to"  data-place="valueRangerTo" >${coz.fomatCurrency(coz.model.fillter.price.getTo())}</span>
+            <div class="sm-price-bar" >
+                <div class="row" >
+                    <div class="col-sm-4" >
+                        <div class="form-group" >
+                            <input type="hidden" value="500" >
+                            <input type="text" name="" class="form-control form-control-sm" placeholder="Phone" data-place="valueRangerFrom" value="${coz.fomatCurrency(coz.model.fillter.price.getFrom())}" >
+                        </div>
+                    </div>
+                    <div class="col-sm-4" >
+                        <div class="form-group" >
+                            <input type="hidden" value="800" >
+                            <input type="text" name="" class="form-control form-control-sm" placeholder="Phone" data-place="valueRangerTo" value="${coz.fomatCurrency(coz.model.fillter.price.getTo())}" >
+                        </div>
+                    </div>
+                    <div class="col-sm-4" >
+                        <div class="form-group" >
+                            <button class="btn btn-block btn-style-b form-control-sm" >
+                                OK
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,41 +58,56 @@
         {{if coz.feature.hasFeature() }}
             {{each coz.feature.getRoot() }}
                 {{if coz.feature.hasChild(coz.feature.getID($value)) }}
-                <div class="fillter-item clearfix {{if coz.feature.isClose($value) }}closed{{/if}}" data-place="itemFillter" data-id="${coz.feature.getID($value)}" >
-                    <div class="header-item-fillter clearfix" data-place="itemHeaderFillter" data-id="${coz.feature.getID($value)}" >
-                        <a class="fillter-toogle" href="javascript:void(0);" data-btn="toggleFillter" data-id="${coz.feature.getID($value)}" rel="nofollow" >
-                            ${coz.feature.getName($value)}
-                            <span class="fillter-direct" >
-                                {{if coz.feature.isClose($value) }}
-                                <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                {{else}}
-                                <i class="fa fa-angle-up" aria-hidden="true"></i>
-                                {{/if}}
-                            </span>
-                        </a>
-                    </div>
-                    <div class="body-item-fillter clearfix" data-place="itemBodyFillter" data-id="${coz.feature.getID($value)}" >
-                        <div class="list-fillter-check clearfix" >
-                            {{each coz.feature.getChild(coz.feature.getID($value)) }}
-                            <div class="coz-item-check {{if coz.feature.isChecked($value) }}checked{{/if}}" data-id="${coz.feature.getID($value)}" >
-                                <div class="coz-check-box" >
-                                    <span></span>
-                                    <input type="checkbox" name="feature[]" value="${coz.feature.getName($value)}" id="filler-${coz.feature.getID($value)}" {{if coz.feature.isChecked($value) }}checked="checked"{{/if}} style="display: none" data-id="${coz.feature.getID($value)}" data-input="feature" >
-                                </div>
-                                <div class="coz-lable-check" >
-                                    <span class="coz-label-check-inner">
-                                        ${coz.feature.getName($value)}
-                                    </span>
-                                    <span class="coz-sum-check" >(${coz.feature.getNum($value)})</span>
-                                </div>
+                <div class="sub-general clearfix" >
+                    <h4 class="sub-title-general" >
+                        ${coz.feature.getName($value)}
+                    </h4>
+                    <div class="list-fillter-check clearfix" >
+                        {{each coz.feature.getChild(coz.feature.getID($value)) }}
+                        <div class="coz-item-check {{if coz.feature.isChecked($value) }}checked{{/if}}" data-id="${coz.feature.getID($value)}" >
+                            <div class="coz-check-box" >
+                                <span></span>
+                                <input type="checkbox" name="feature[]" value="${coz.feature.getName($value)}" id="filler-${coz.feature.getID($value)}" {{if coz.feature.isChecked($value) }}checked="checked"{{/if}} style="display: none" data-id="${coz.feature.getID($value)}" data-input="feature" >
                             </div>
-                            {{/each}}
+                            <div class="coz-lable-check" >
+                                <span class="coz-label-check-inner">
+                                    ${coz.feature.getName($value)}
+                                </span>
+                                <span class="coz-sum-check" >(${coz.feature.getNum($value)})</span>
+                            </div>
                         </div>
+                        {{/each}}
                     </div>
                 </div>
                 {{/if}}
             {{/each}}
         {{/if}}
+
+        <?php if( !empty($manufacturers) ){ ?>
+        <div class="sub-general clearfix" >
+            <h4 class="sub-title-general" >
+                <?php echo $this->translate('txt_manufacturers'); ?>
+            </h4>
+
+            <div class="form-group" >
+                <select name="manus[]" class="form-control" data-input="manus" >
+                    <option value="0" >
+                        <?php echo $this->translate('txt_select_your_brand'); ?>
+                    </option>
+                    <?php foreach ($manufacturers as $key => $manufacturer) { ?>
+                        <option value="<?php echo $this->Manufacturers()->getId($manufacturer) ?>" >
+                            <?php echo $this->Manufacturers()->getName($manufacturer) ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group" >
+                <button class="btn btn-style-c btn-style-sm" >
+                    <?php echo $this->translate('txt_search'); ?>
+                </button>
+            </div>
+        </div>
+        <?php } ?>
     </div>
 </div>
 </script>
@@ -125,41 +151,64 @@
     </div>
 </div>
 
-<div class="co-main clearfix" >
-    <div class="container">
-        <div class="row">
+<div class="_listings" >
+    <div class="container" >
+        <div class="row" >
 
-            <section class="col-lg-9 col-lg-push-3" >
-                <div class="box-product" >
-                    <div class="box-pheading" >
-                        <h1 class="title-box" >
-                            <?php echo $this->translate('txt_tags'); ?>: <b>(<?php echo $tag; ?>)</b>
-                        </h1>
-                    </div>
-                    <div class="box-pbody" id="PjaxProductCategory" data-pjax-container="ProductCategory" >
-                        <?php echo $this->partial('application/search/list-product', array('rows' => $rows, 'paging' => $paging, 'total' => $total ) ); ?>
-                    </div>
-                </div>
-            </section>
-
-            <section class="col-lg-3 col-lg-pull-9" >
-
-                <?php echo $this->partial('app/categories-left', array('categories' => $categories) ); ?>
-
-                <div class="fillter-feature clearfix" >
-                    <div class="tmpl-fillter-feature clearfix" data-place="fillterFeature" ></div>
+            <div class="col-lg-9 col-md-8 col-lg-push-3 col-md-push-4 col-sm-push-0" >
+                <h1 class="title-listing" >
+                    <?php echo $this->translate('txt_tags'); ?>: <b>(<?php echo $tag; ?>)</b>
+                </h1>
+                <div class="description-listing" >
+                    <?php echo $this->translate('txt_des_tags'); ?>
                 </div>
 
-                <div class="dh-banner" >
-                    <div class="inner-dh-banner" >
-                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" >
-                            <img src="/styles/dataimages/banner.jpg" alt="" class="img-fluid" >
+                <div class="clearfix" data-pjax-container="ProductCategory" >
+                    <?php echo $this->partial('application/categories/list-product', array('rows' => $rows, 'paging' => $paging, 'total' => $total, 'categories' => $categories ) ); ?>
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-lg-pull-9 col-md-pull-8 col-sm-pull-0" >
+                <div class="general-box hidden-sm-down" >
+                    <?php if( !empty($categories) ){ ?>
+                    <h2 class="title-general" >
+                        <?php echo $this->translate('txt_category'); ?>
+                        <a href="javascript:void(0);" title="<?php echo $this->translate('txt_close_category'); ?>" class="rm-general" >
+                            <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
+                    </h2>
+                    <?php }else{ ?>
+                    <h2 class="title-general" >
+                        <?php echo $this->translate('txt_filter'); ?>
+                        <a href="javascript:void(0);" title="<?php echo $this->translate('txt_close_filter'); ?>" class="rm-general" >
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                    </h2>
+                    <?php } ?>
+
+                    <div class="ds-general clearfix" >
+                        <div class="sub-general clearfix" >
+                            <?php echo $this->partial('app/categories-left', array('categories' => $categories) ); ?>
+                        </div>
+
+                        <div class="fillter-feature clearfix" >
+                            <div class="tmpl-fillter-feature clearfix" data-place="fillterFeature" ></div>
+                        </div>
+
                     </div>
                 </div>
 
-            </section>
+                <?php echo $this->partial('app/contact-sm', array() ); ?>
 
+            </div>
+            
         </div>
     </div>
 </div>
+
+<?php echo $this->partial('app/case-upgrate', array() ); ?>
+
+<?php echo $this->partial('app/case-feature', array() ); ?>
+
+<?php echo $this->partial('app/case-supplier', array() ); ?>
