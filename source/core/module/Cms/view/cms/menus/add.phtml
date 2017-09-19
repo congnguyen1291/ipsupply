@@ -101,7 +101,7 @@
                                 <td class="col-lim" >
                                     <input name="Links[<?php echo $key; ?>][Id]" type="hidden" value="<?php echo $menuc['menus_id'] ?>" class="hd-Links-Id" >
                                     <input name="Links[<?php echo $key; ?>][Position]" class="link-position hd-Links-Position" type="hidden" value="0">
-                                    <input name="Links[<?php echo $key; ?>][Title]" class="form-control  input-sm  smaller hd-Links-Title" placeholder="Nhập tên liên kết" value="<?php echo $this->translate($menuc['menus_name']) ?>" >
+                                    <input name="Links[<?php echo $key; ?>][Title]" class="form-control  input-sm  smaller hd-Links-Title" placeholder="Nhập tên liên kết" value="<?php echo htmlentities($this->translate($menuc['menus_name'])) ?>" >
                                 </td>
                                 <td>
                                     <div class="btn-group margin-sm-right">

@@ -57,70 +57,70 @@ class Menus extends App
                     $link = FOLDERWEB . $this->getUrlPrefixLang().'/articles/'.$this->toAlias($menu['menus_reference_name']).'-'.$menu['menus_reference_id'];
                     break;
                 case 'articleNew':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/articles/news';
                     break;
                 case 'articleNewInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/articles/news';
                     break;
                 case 'articleHot':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/articles/hots';
                     break;
                 case 'articleHotInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/articles/hots';
                     break;
                 case 'GoingOn':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/going-on';
                     break;
                 case 'GoingOnInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/going-on';
                     break;
                 case 'SignIn':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/sign-in';
                     break;
                 case 'SignUp':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/sign-up';
                     break;
                 case 'user':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/profile';
                     break;
                 case 'contact':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/contact';
                     break;
                 case 'error':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/error';
                     break;
                 case 'search':
                     $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
                     break;
                 case 'bestseller':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/bestseller';
                     break;
                 case 'BestsellerInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/bestseller';
                     break;
                 case 'BuyMost':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/buymost';
                     break;
                 case 'BuyMostInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/buymost';
                     break;
                 case 'Hot':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/hots';
                     break;
                 case 'HotInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/hots';
                     break;
                 case 'New':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/news';
                     break;
                 case 'NewInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/news';
                     break;
                 case 'Deal':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/deals';
                     break;
                 case 'DealInCategory':
-                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/search';
+                    $link = FOLDERWEB . $this->getUrlPrefixLang().'/category/deals';
                     break;
                 case 'http':
                     $link = $menu['menus_reference_url'];

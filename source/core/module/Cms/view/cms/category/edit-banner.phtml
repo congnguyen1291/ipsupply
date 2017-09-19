@@ -5,16 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_banner'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/category') ?>">
-                        Danh mục sản phẩm
+                        <?php echo $this->translate('txt_danh_muc_san_pham'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Cập nhật banner
+                    <?php echo $this->translate('txt_cap_nhat_banner'); ?>
                 </li>
             </ol>
         </div>
@@ -29,7 +29,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Danh mục :: Cập nhật banner
+                <?php echo $this->translate('txt_danh_muc_san_pham'); ?> ::
+                <?php echo $this->translate('txt_cap_nhat_banner'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-6 pull-rigth" >
@@ -45,7 +46,9 @@
         <div class="row" >
             <div class="col-xs-6" >
                 <div class="form-group">
-                    <label for="categories_id">Danh mục</label>
+                    <label for="categories_id">
+                        <?php echo $this->translate('txt_danh_muc'); ?>
+                    </label>
                     <select name="categories_id" id="categories_id" class="form-control input-sm">
                         <?php foreach($cats as $cat) : ?>
                             <option value="<?php echo $cat['categories_id'] ?>" <?php echo $banner->categories_id == $cat['categories_id'] ? 'selected' : '' ?> >
@@ -55,16 +58,22 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="categories_banners_title">Tiêu đề</label>
+                    <label for="categories_banners_title">
+                        <?php echo $this->translate('txt_tieu_de'); ?>
+                    </label>
                     <input class="form-control input-sm" type="text" name="categories_banners_title"
                            id="categories_banners_title" value="<?php echo $banner->categories_banners_title ?>" />
                 </div>
                 <div class="form-group">
-                    <label for="link">Link</label>
+                    <label for="link">
+                        <?php echo $this->translate('txt_link'); ?>
+                    </label>
                     <input class="form-control input-sm" type="text" name="link" id="link" value="<?php echo $banner->link ?>" />
                 </div>
-                <div class="form-group">
-                    <label for="box_num">Vị trí banner</label>
+                <div class="form-group" style="display: none;" >
+                    <label for="box_num">
+                        <?php echo $this->translate('txt_vi_tri_banner'); ?>
+                    </label>
                     <select name="box_num" class="form-control input-sm">
                         <option value="1" <?php echo $banner->box_num == 1 ? 'selected' : '' ?>>Home</option>
                         <option value="2" <?php echo $banner->box_num == 2 ? 'selected' : '' ?>>Category</option>
@@ -76,7 +85,7 @@
 
                 <div class="form-group" >
                     <label for="price">
-                        Giá(<em>sẽ hiển thị trên banner nếu có điền giá trị</em>)
+                        <?php echo $this->translate('txt_gia_tren_banner'); ?>
                     </label>
                     <div class="input-group">
                         <span class="input-group-addon">$</span>
@@ -112,39 +121,43 @@
 
         <div class="form-group" >
             <label for="categories_banners_description">
-                Mô tả(<em>sẽ hiển thị trên banner nếu có điền giá trị</em>)
+                <?php echo $this->translate('txt_mo_ta_tren_banner'); ?>
             </label>
             <textarea name="categories_banners_description" id="categories_banners_description" class="form-control input-sm" rows="4"><?php echo $banner->categories_banners_description ?></textarea>
         </div>
 
         <div class="form-group" >
             <label for="ordering">
-                Vị trí
+                <?php echo $this->translate('txt_vi_tri'); ?>
                 <input class="form-control input-sm numberInput input-ordering" id="ordering" name="ordering" value="<?php echo $banner->ordering ?>" />
             </label>
             <label for="is_published">
                 <input name="is_published" type="hidden" value="0"/>
                 <input class="form-control input-sm" type="checkbox" name="is_published" id="is_published" value="1" <?php echo $banner->is_published == 1 ? 'checked' : '' ?> />
-                Kích hoạt
+                <?php echo $this->translate('txt_kich_hoat'); ?>
             </label>
         </div>
         
         <div class="form-group">
             <button class="btn btn-primary input-sm" >
-                Thêm banner
+                <?php echo $this->translate('txt_cap_nhat_banner'); ?>
             </button>
             <button type="button" class="btn btn-danger  input-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
     </form>
 </section>
 <script type="template" id="code_template">
-    <label for="code">Mã</label>
+    <label for="code">
+        <?php echo $this->translate('txt_ma'); ?>
+    </label>
     <textarea class="form-control input-sm" id="code" name="code" cols="10" rows="10"></textarea>
 </script>
 <script type="template" id="file_template">
-    <label for="file">File</label>
+    <label for="file">
+    <?php echo $this->translate('txt_file'); ?>
+    </label>
     <input class="form-control input-sm" type="file" name="file" id="file"/>
 </script>
 <style type="text/css">

@@ -9,7 +9,9 @@
     <?php } ?>
 </ul>
 <?php }else{ ?>
-<p class="empty" >Không có dữ liệu</p>
+<p class="empty" >
+    <?php echo $this->translate('txt_khong_co_du_lieu'); ?>
+</p>
 <?php } ?>
 
 <?php if( !empty($paginator->toHtml()) ){ ?>

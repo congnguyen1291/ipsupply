@@ -63,7 +63,14 @@ class CategoriesArticlesTable extends AppTable {
             $sql = new Sql($adapter);
             $select = $sql->select();
             $select->columns(array('categories_articles_id','parent_id','is_published','is_delete',
-                                    'is_technical_category','date_create','date_update','ordering','is_faq','is_static'));
+                                    'is_technical_category','date_create','date_update','ordering','is_faq','is_static', 'number_article'=> new Expression('(SELECT COUNT(DISTINCT `articles`.`articles_id`) 
+                FROM `articles` WHERE `categories_articles`.`categories_articles_id` = `articles`.`categories_articles_id` OR  0 < (SELECT COUNT(*)
+                    FROM `categories_articles` AS `t1`
+                    LEFT JOIN `categories_articles` AS `t2` ON `t2`.`parent_id` = `t1`.`categories_articles_id`
+                    LEFT JOIN `categories_articles` AS `t3` ON `t3`.`parent_id` = `t2`.`categories_articles_id`
+                    LEFT JOIN `categories_articles` AS `t4` ON `t4`.`parent_id` = `t3`.`categories_articles_id`
+                    WHERE   `t1`.`parent_id` = `articles`.`categories_articles_id` 
+                            AND (`t1`.`is_published` = 1 OR `t2`.`is_published` = 1 OR `t3`.`is_published` = 1 OR `t4`.`is_published` = 1) AND (`t1`.`categories_articles_id` = `articles`.`categories_articles_id` OR `t2`.`categories_articles_id` = `articles`.`categories_articles_id` OR `t3`.`categories_articles_id` = `articles`.`categories_articles_id` OR `t4`.`categories_articles_id` = `articles`.`categories_articles_id` )))')));
             $select->from('categories_articles');
             $select->join('categories_articles_translate', 'categories_articles_translate.categories_articles_id=categories_articles.categories_articles_id',array('categories_articles_title','categories_articles_alias','seo_keywords','seo_description'));
             $select->where(array(

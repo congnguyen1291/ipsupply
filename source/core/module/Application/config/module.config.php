@@ -1305,6 +1305,23 @@ $all_router['router_vi']  = array(
     'may_terminate' => true,
     'child_routes' => $router
 );
+$all_router['router_au']  = array(
+    'type' => 'Literal',
+    'options' => array(
+        'route' => '/au',
+        'defaults' => array(
+            '__NAMESPACE__' => 'Application\Controller',
+            'controller' => 'Index',
+            'action' => 'index',
+        ),
+    ),
+    'defaults' => array(
+        'controller' => 'Application\Controller\Index',
+        'action' => 'index',
+    ),
+    'may_terminate' => true,
+    'child_routes' => $router
+);
 $all_router['router_en']  = array(
     'type' => 'Literal',
     'options' => array(

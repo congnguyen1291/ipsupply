@@ -54,7 +54,7 @@
 						<!--<![endif] -->
 					</object>
 				<?php else: ?>
-					Không biết định dạng
+					<?php echo $this->translate('txt_khong_biet_dinh_dang'); ?>
 				<?php endif; ?>
 			<?php else: ?>
 				<?php echo $row['code'] ?>
@@ -71,7 +71,9 @@
 			Box <?php echo $row['box_num'] ?>
 		</td>
 		<td>
-			<a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>">Cập nhật</a>
+			<a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>">
+				<?php echo $this->translate('txt_cap_nhat'); ?>
+			</a>
 		</td>
 		<td>
 			<input type="checkbox" name="cid[]"

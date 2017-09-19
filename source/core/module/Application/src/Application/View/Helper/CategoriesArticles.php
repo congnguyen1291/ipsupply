@@ -122,6 +122,14 @@ class CategoriesArticles extends App
         return '';
     }
 
+    public function getNumberArticle($categories){
+        if( !empty($categories) 
+            && !empty($categories['number_article']) ){
+            return $categories['number_article'];
+        }
+        return 0;
+    }
+
     public function getIcon($categories){
         if( !empty($categories) && !empty($categories['icon']) ){
             return $categories['icon'];

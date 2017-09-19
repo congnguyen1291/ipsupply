@@ -137,6 +137,7 @@ class FrontEndController extends AbstractActionController {
         $this->addJS("//cdn.coz.vn/owl-carousel/owl.carousel.min.js");
         $this->addJS("//cdn.coz.vn/elevatezoom/3.0.8/jquery.elevateZoom-3.0.8.min.js");
         $this->addJS("//cdn.coz.vn/ion.rangeSlider/2.1.4/js/ion.rangeSlider.min.js");
+        $this->addJS("//cdn.coz.vn/xdan-autocomplete/jquery.autocomplete.js");
 
 
         $this->addJS("//cdn.coz.vn/magnific-popup/js/jquery.magnific-popup.min.js");
@@ -184,8 +185,9 @@ class FrontEndController extends AbstractActionController {
         $this->addCSS('//cdn.coz.vn/owl-carousel/owl.theme.min.css');
         $this->addCSS('//cdn.coz.vn/ion.rangeSlider/2.1.4/css/ion.rangeSlider.css');
         $this->addCSS('//cdn.coz.vn/ion.rangeSlider/2.1.4/css/ion.rangeSlider.skinModern.css');
-        $this->addCSS('//cdn.coz.vn/flags/flags.min.css');
-        $this->addCSS('//cdn.coz.vn/jquery.scrollbar/jquery.scrollbar.css');
+        $this->addCSS('//cdn.coz.vn/xdan-autocomplete/jquery.autocomplete.css');
+        //$this->addCSS('//cdn.coz.vn/flags/flags.min.css');
+        //$this->addCSS('//cdn.coz.vn/jquery.scrollbar/jquery.scrollbar.css');
         $this->addCSS('//cdn.coz.vn/datepicker/dist/datepicker.min.css');
         $this->addCSS('//cdn.coz.vn/magnific-popup/css/magnific-popup.css');
         $this->addCSS('//cdn.coz.vn/select2/dist/css/select2.css');
@@ -574,7 +576,7 @@ class FrontEndController extends AbstractActionController {
         $request = $this->getRequest();
         if( $this->current_module  == 'application' 
             && !$request->isPost() && empty($isAJAX) && empty($is_pjax) ){
-            if( in_array('router_vi' , $rayRN) || in_array('router_en', $rayRN) ){
+            if( in_array('router_au' , $rayRN) || in_array('router_en', $rayRN) ){
                 $prefixUlrLang = 'au';
                 if( in_array('router_en' , $rayRN) ){
                     $prefixUlrLang = 'en';
@@ -1007,7 +1009,7 @@ class FrontEndController extends AbstractActionController {
     }
 
     public function getUrlRouterLang() {
-        $lng = 'router_vi/';
+        $lng = 'router_au/';
         if( !empty($_SESSION['prefixUlrLang']) ){
             $lng = 'router_'.$_SESSION['prefixUlrLang'].'/';
         }

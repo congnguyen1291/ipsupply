@@ -5,11 +5,11 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Vị trí banner
+                    <?php echo $this->translate('txt_vi_tri_banner'); ?>
                 </li>
             </ol>
         </div>
@@ -24,7 +24,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Vị trí banner :: Quản lý
+                <?php echo $this->translate('txt_vi_tri_banner'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -33,12 +34,13 @@
                     <div class="input-group">
                         <div class="row row-coz-search" >
                             <div class="col-xs-7 col-coz-search" >
-                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
                             </div>
                             <div class="col-xs-5 col-coz-search" >
                                 <select name="type" class="form-control" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo tên
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ten'); ?>
                                     </option>
                                 </select>
                             </div>
@@ -62,11 +64,11 @@
                 <div class="col-sm-6" ></div>
                 <div class="col-sm-6" >
                     <div class="text-right" >
-                        <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm vị trí" >
+                        <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_vi_tri'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($positions) ){ ?>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/BannerPosition', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá vị trí" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/BannerPosition', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_vi_tri'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -82,10 +84,18 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >ID</th>
-                        <th class="col-lim" >Hình</th>
-                        <th>Tên</th>
-                        <th class="col-lim" >Alias</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_hinh'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_alias'); ?>
+                        </th>
                         <th class="col-lim text-center" ></th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
@@ -103,7 +113,7 @@
                             <img src="<?php echo $this->Images()->getUrlImage($row['image_preview'],100); ?>" class="img-reponsive" >
                         </td>
                         <td>
-                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'edit', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa vị trí" >
+                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'edit', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_vi_tri'); ?>" >
                                 <?php echo $row['position_name']; ?>
                             </a>
                         </td>
@@ -111,18 +121,19 @@
                             <?php echo $row['position_alias'] ?>
                         </td>
                         <td class="col-lim" >
-                            Có <?php echo $row['total_banner'] ?> banner cho vị trí này
+                            <?php echo $row['total_banner'] ?> 
+                            <?php echo $this->translate('txt_banner_cho_vi_tri'); ?>
                         </td>
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'edit', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa vị trí" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'edit', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_vi_tri'); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/banners', array('action' => 'index')).'?position_id='.$row['position_id'] ?>" data-toggle="tooltip" data-placement="top" title="Xem banner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                            <a href="<?php echo $this->url('cms/banners', array('action' => 'index')).'?position_id='.$row['position_id'] ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_banner'); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                 <i class="fa fa-file-image-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'delete', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá vị trí" data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'delete', 'id' => $row['position_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_vi_tri'); ?>" data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -136,7 +147,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có vị trí
+            <?php echo $this->translate('txt_chua_co_vi_tri'); ?>
         </p>
         <?php } ?>
 

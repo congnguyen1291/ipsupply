@@ -1,3 +1,7 @@
+<?php 
+$aboutus_id = $this->translate('txt_id_aboutus');
+$aboutUs = $this->Articles()->getRow( $aboutus_id ); 
+?>
 <div class="case-quote" >
     <div class="case-inner-quote" >
         <div class="container" >
@@ -5,11 +9,13 @@
                 <div class="col-md-10 col-md-offset-1">
                     <div class="row" >
                         <div class="col-md-7 col-sm-12" >
+                            <?php if( !empty($aboutUs) ){ ?>
                             <div class="info-quote" >
-                                <h2 class="title-quote" >About IP Supply</h2>
+                                <h2 class="title-quote" >
+                                    <?php echo $this->Articles()->getTitle($aboutUs); ?>
+                                </h2>
                                 <div class="description-quote" >
-                                    IP Supply is a network hardware reseller founded in 2010 and based in Lidcombe, NSW. Trading in more than 80 countries, we have a strong profile on the markets for new and refurbished
-                                    network equipments.
+                                    <?php echo $this->Articles()->getDescription($aboutUs); ?>
                                 </div>
 
                                 <div class="rating-quote" >
@@ -17,26 +23,34 @@
                                         <img src="/styles/dataimages/ebay.png" width="90" >
                                     </span>
                                     <span class="inline-rtq" >
-                                        Review: 
+                                        <?php echo $this->translate('txt_review'); ?>
+                                        <?php $rating = $this->Articles()->getRating($aboutUs) ?>
                                         <span class="star-rtq" >
+                                            <?php for( $i=0; $i<$rating; $i++){ ?>
                                             <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <?php } ?>
+
+                                            <?php if( $rating != floor($rating) ){ ?>
                                             <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                            <?php } ?>
+
+                                            <?php for( $i=$rating; $i<5; $i++){ ?>
                                             <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            <?php } ?>
                                         </span>
                                     </span>
                                     <span class="inline-rtq" >
-                                        4.8/5
+                                        <?php echo $rating; ?>/5
                                     </span>
                                 </div>
 
                                 <div class="more-quote" >
-                                    <a class="btn btn-style-a" title="" >
-                                        Discover More
+                                    <a class="btn btn-style-a" href="<?php echo $this->Articles()->getUrl($aboutUs); ?>" title="<?php echo $this->Articles()->getTitle($aboutUs); ?>" data-pjax="true" data-container="Main" >
+                                        <?php echo $this->translate('txt_discover_more'); ?>
                                     </a>
                                 </div>
                             </div>
+                            <?php } ?>
                         </div>
                         <div class="col-md-5 col-sm-12" >
                             <div class="form-quote" >

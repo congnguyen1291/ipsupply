@@ -18,10 +18,10 @@
 		</td>
 		<td><?php echo date('d/m/Y', strtotime($cat['date_create'])) ?></td>
 		<td style="text-align: center">
-			<?php echo $cat['is_published'] == 1 ? 'Hiển thị' : '-' ?>
+			<?php echo $cat['is_published'] == 1 ? $this->translate('txt_hien_thi') : '-' ?>
 		</td>
 		<td style="text-align: center">
-			<?php echo $cat['is_delete'] == 1 ? 'Đã xóa' : '-' ?>
+			<?php echo $cat['is_delete'] == 1 ? $this->translate('txt_da_xoa') : '-' ?>
 		</td>
 		<td>
 			<input type="checkbox" name="cid[]"

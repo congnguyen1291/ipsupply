@@ -24,6 +24,39 @@ pjaxComplete = function(){
 	}
 };
 jQuery(document).ready(function(){
+	$(".search-bar .input-search").autocomplete({
+		source:[
+			{
+				url: baseUrl + "/product/find?keyword=%QUERY%",
+				type: "remote",
+				valueKey: "products_title",
+				titleKey: "products_title",
+				/*getTitle:function(item){
+				  	return item['products_title']
+				},
+				getValue:function(item){
+				  	return item['products_title']
+				},*/
+				render : function( item,source,pid,query ){
+					var value = item['products_title'],
+					title = item['products_title'];
+					img_ = '<img src="'+item['sm_image']+'" width="100" />';
+					return '<div '+(value==query?'class="active"':'')+
+					' data-value="'+
+					encodeURIComponent(value)+'" class="ipsm-sort" >'+
+						'<div class="psm-sort clearfix" >' + 
+							'<span class="psm-isort" >' + img_ + '</span>'+
+							'<span class="psm-nsort" >' + title + '</span>'+
+						'</div>'+
+					'</div>';
+				}
+			}
+		]
+	}).on('selected.xdsoft',function(e,datum){
+		if( typeof datum.link != 'undefined' && $.trim(datum.link).length > 0 ){
+			window.location.href = datum.link;
+		}
+	});
 	$(document).on('click', '[data-btn="downQuantity"]', function(){
 		elq = $(this).parents('[data-plugin="quantity"]').eq(0).find('input[name="quantity"]');
 		var qlt =  elq.val();
@@ -85,5 +118,37 @@ jQuery(document).ready(function(){
 	    $( '[data-toggle="tab"][href="' + href + '"]' ).trigger( 'click' );
 	});
 
+	$(document).on("click", ".back-to-top", function(){
+		jQuery(this).removeClass('display');
+		jQuery('html, body').animate({
+			scrollTop: 0			
+		}, 600);
+	});
+
+	$(document).on("click", ".btn-more-product-description", function(e) {
+		e.preventDefault();
+		$(this).hide();
+		$('.mini-product-description').hide();
+		$('.full-product-description').show();
+		$('.btn-mini-product-description').show();
+	});
+
+	$(document).on("click", ".btn-mini-product-description", function(e) {
+		e.preventDefault();
+		$(this).hide();
+		$('.mini-product-description').show();
+		$('.full-product-description').hide();
+		$('.btn-more-product-description').show();
+	});
+
 	pjaxComplete();
+});
+
+$(window).scroll(function(){
+	var top_ = $(this).scrollTop();
+	if( top_ > 10){
+		$('.back-to-top').show();
+	}else{
+		$('.back-to-top').hide();
+	}
 });

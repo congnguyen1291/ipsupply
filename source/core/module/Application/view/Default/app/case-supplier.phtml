@@ -1,3 +1,6 @@
+<?php $manufacturers = $this->Manufacturers()->getManufacturers();
+if( !empty($manufacturers) ){
+?>
 <div class="case-supplier" >
     <div class="container" >
         <h3 class="title-supplier" >
@@ -10,14 +13,17 @@
             <div class="row" >
                 <div class="col-xs-10 col-xs-offset-1" >
                     <div class="owl-carousel owl-theme slideshow owlSupplier" data-neo="owlCarousel" data-dots="true" data-loop="false" data-nav = "true" data-margin = "10" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-angle-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-angle-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":5}}' >
-                        <div class="item-supplier" >
-                            <a href="" title="" >
-                                <img src="/styles/dataimages/cisco.png" class="img-fluid" >
-                            </a>
-                        </div>
+                        <?php foreach ($manufacturers as $key => $manufacturer) { ?>
+                            <div class="item-supplier" >
+                                <a href="javascript:void(0);" title="<?php echo $this->Manufacturers()->getName($manufacturer) ?>" rel="nofolow" >
+                                    <img src="<?php echo $this->Images()->getUrlImage($this->Manufacturers()->getImage($manufacturer), 130); ?>" class="img-fluid" >
+                                </a>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<?php } ?>

@@ -6,9 +6,9 @@
 		</td>
 		<td>
 			<?php if($row['coupons_type'] == 0) : ?>
-				Dùng 1 lần
+				<?php echo $this->translate('txt_dung_1_lan'); ?>
 			<?php else: ?>
-				Dùng nhiều lần
+				<?php echo $this->translate('txt_dung_nhieu_lan'); ?>
 			<?php endif; ?>
 		</td>
 		<td><a href="<?php echo $this->url('cms/coupons', array('action' => 'show-logs', 'id' => $row['coupons_id'])) ?>"><?php echo $row['total'] ?> lần</a></td>

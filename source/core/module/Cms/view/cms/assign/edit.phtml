@@ -13,15 +13,17 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/assign') ?>">
-                        Assign
+                        <?php echo $this->translate('txt_assign'); ?>
                     </a>
                 </li>
-                <li class="active">Cập nhật</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_cap_nhat'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -34,7 +36,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Assign :: Cập nhật
+                <?php echo $this->translate('txt_assign'); ?> :: 
+                <?php echo $this->translate('txt_cap_nhat'); ?>
             </h1>
         </div>
     </div>
@@ -49,11 +52,15 @@
             <div class="note-map-assign" >
                 <span class="item-map-assign" >
                     <img src="http://dienhoa.coz.vn/styles/images/pred.png" >
-                    <span class="txt-map-assign" >Customer</span>
+                    <span class="txt-map-assign" >
+                        <?php echo $this->translate('txt_customer'); ?>
+                    </span>
                 </span>
                 <span class="item-map-assign" >
                     <img src="http://dienhoa.coz.vn/styles/images/pblue.png" >
-                    <span class="txt-map-assign" >Merchant</span>
+                    <span class="txt-map-assign" >
+                        <?php echo $this->translate('txt_merchant'); ?>
+                    </span>
                 </span>
             </div>
         </div>
@@ -66,9 +73,9 @@
                 <?php if( !empty($products) ){ ?>
                 <div class="form-group" >
                     <h6>
-                        Đơn hàng để assign
-                        <a href="javascript:void(0);" class="more-assign-cart" data-toggle="tooltip" data-placement="top" title="Xem chi tiết đơn hàng" >
-                            Xem chi tiết
+                        <?php echo $this->translate('txt_don_hang_de_assign'); ?>
+                        <a href="javascript:void(0);" class="more-assign-cart" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_chi_tiet_don_hang'); ?>" >
+                            <?php echo $this->translate('txt_xem_chi_tiet'); ?>
                         </a>
                     </h6>
                 </div>
@@ -77,13 +84,27 @@
                         <table class="table table-data-bind table-bordered" >
                             <thead>
                                 <tr>
-                                    <th class="text-left col-lim" >Mã</th>
-                                    <th class="text-center" width="100" >Hình</th>
-                                    <th colspan="5" >Sản phẩm</th>
-                                    <th class="text-right col-lim" colspan="2" >Đơn giá</th>
-                                    <th class="text-right col-lim" >Số lượng</th>
-                                    <th class="text-right col-lim" >Thành tiền</th>
-                                    <th class="text-right col-lim" >Tổng tiền</th>
+                                    <th class="text-left col-lim" >
+                                        <?php echo $this->translate('txt_ma'); ?>
+                                    </th>
+                                    <th class="text-center" width="100" >
+                                        <?php echo $this->translate('txt_hinh'); ?>
+                                    </th>
+                                    <th colspan="5" >
+                                        <?php echo $this->translate('txt_san_pham'); ?>
+                                    </th>
+                                    <th class="text-right col-lim" colspan="2" >
+                                        <?php echo $this->translate('txt_gia_cho_dai_ly_gia_goc'); ?>
+                                    </th>
+                                    <th class="text-right col-lim" >
+                                        <?php echo $this->translate('txt_so_luong'); ?>
+                                    </th>
+                                    <th class="text-right col-lim" >
+                                        <?php echo $this->translate('txt_thanh_tien'); ?>
+                                    </th>
+                                    <th class="text-right col-lim" >
+                                        <?php echo $this->translate('txt_tong_tien'); ?>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -196,7 +217,7 @@
                             } ?>
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Tạm tính
+                                        <?php echo $this->translate('txt_tam_tinh'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important" >
@@ -208,7 +229,7 @@
                                 <?php if ( !empty($coupon) ) { ?>
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Giảm giá
+                                        <?php echo $this->translate('txt_giam_gia'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important" >
@@ -220,11 +241,12 @@
 
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Phí vận chuyển
+                                        <?php echo $this->translate('txt_phi_van_chuyen'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important" >
-                                            <?php echo $this->Currency()->fomatCurrency($fee, 'txt_mien_phi_ship') ?>
+                                            <input type="text" name="shipping" class="form-control input-sm moneyInput" value="<?php echo $fee ?>" style="width: 100px;text-align: right;display: inline-block;border: 1px solid #f1f1f1;height: 30px;" >
+                                            <?php echo $this->Currency()->getCurrencySymbol() ?>
                                         </strong>
                                     </td>
                                 </tr>
@@ -232,7 +254,7 @@
                                 <?php if( $total < $total_tax ){ ?>
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Tổng cộng trước
+                                        <?php echo $this->translate('txt_tong_cong_truoc'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important"  >
@@ -242,7 +264,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Tiền thuế
+                                        <?php echo $this->translate('txt_tien_thue'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important"  >
@@ -252,7 +274,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Tổng sau thuế
+                                        <?php echo $this->translate('txt_tien_sau_thue'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important" >
@@ -263,7 +285,7 @@
                                 <?php }else{ ?>
                                 <tr>
                                     <td colspan="10" class="text-right" >
-                                        Tổng cộng
+                                        <?php echo $this->translate('txt_tong_cong'); ?>
                                     </td>
                                     <td colspan="2" class="text-right" >
                                         <strong class="coz-color-important"  >
@@ -283,18 +305,24 @@
                     <div class="col-sm-6" >
                         <input type="hidden" id="assign_id" >
                         <div class="form-group">
-                            <label for="assign_code" >Code</label>
-                            <input type="text" class="form-control input-sm" id="assign_code" placeholder="code" value="<?php echo $assign->assign_code ?>" name="assign_code" >
+                            <label for="assign_code" >
+                                <?php echo $this->translate('txt_code_assign'); ?>
+                            </label>
+                            <input type="text" class="form-control input-sm" id="assign_code" placeholder="<?php echo $this->translate('txt_code_assign'); ?>" value="<?php echo $assign->assign_code ?>" name="assign_code" >
                         </div>
                         <div class="form-group">
-                            <label for="assign_name">Name</label>
-                            <input type="text" class="form-control  input-sm" id="assign_name" name="assign_name" placeholder="name" value="<?php echo $assign->assign_name ?>" >
+                            <label for="assign_name">
+                                <?php echo $this->translate('txt_name_assign'); ?>
+                            </label>
+                            <input type="text" class="form-control  input-sm" id="assign_name" name="assign_name" placeholder="<?php echo $this->translate('txt_name_assign'); ?>" value="<?php echo $assign->assign_name ?>" >
                         </div>
                     </div>
                     <div class="col-sm-6" ></div>
                 </div>
 
-                <h5>List Merchant(<i>Lấy từ nhà cung cấp của sản phẩm</i>)</h5>
+                <h5>
+                    <?php echo $this->translate('txt_ds_merchant_from_products'); ?>
+                </h5>
                 <?php if( !empty($merchants) ){ ?>
                 <div class="form-group" >
                     <ul class="list-merchant-assign clearfix">
@@ -314,14 +342,17 @@
                 </div>
                 <?php }else{ ?>
                 <div class="form-group" >
-                    <p>Không có merchant cho đơn hàng này</p>
+                    <p>
+                        <?php echo $this->translate('txt_khong_co_merchant_cho_san_pham_nay'); ?>
+                    </p>
                 </div>
                 <?php } ?>
 
                 <?php if( !empty($merchantsOrther) ){ ?>
                 <div class="form-group" >
-                    <a href="javascript:void(0);" class="more-merchant-not-join" data-toggle="tooltip" data-placement="top" title="Xem thêm merchant không được liên kết" >
-                        Xem thêm merchant <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a href="javascript:void(0);" class="more-merchant-not-join" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_them_merchant_khong_dc_join'); ?>" >
+                        <?php echo $this->translate('txt_xem_them_merchant'); ?> 
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
                 </div>
                 <div class="form-group merchant-not-join" >
@@ -342,10 +373,10 @@
                     && ( $invoice->delivery = 'pending' || $invoice->delivery = 'processing' ) ){ ?>
                 <div class="form-group" >
                     <button class="btn btn-primary btn-sm">
-                        Cập nhật assign
+                        <?php echo $this->translate('txt_cap_nhat_assign'); ?>
                     </button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                        Quay lại
+                        <?php echo $this->translate('txt_quay_lai'); ?>
                     </button>
                 </div>
                 <?php } ?>

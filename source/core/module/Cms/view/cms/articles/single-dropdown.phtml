@@ -2,7 +2,7 @@
 <div class="dropdown-menu dropdown-filter product-dropdown dropdown arrow-style single-dropdown">
     <div class="arrow"></div>
     <div class="product-result">
-        <input placeholder="Tìm kiếm bài viết" type="text" class="query-article single-query" data-static="<?php echo $is_static ?>" bind-event-keyup="suggest()" />
+        <input placeholder="<?php echo $this->translate('txt_tim_kiem_bai_viet'); ?>" type="text" class="query-article single-query" data-static="<?php echo $is_static ?>" bind-event-keyup="suggest()" />
     </div>
     <div class="single-suggest-result clear-ul">
         <?php if(!empty($articles)){ ?>
@@ -16,7 +16,9 @@
             <?php } ?>
         </ul>
         <?php }else{ ?>
-        <p class="empty" >Không có dữ liệu</p>
+        <p class="empty" >
+            <?php echo $this->translate('txt_khong_co_du_lieu'); ?>
+        </p>
         <?php } ?>
         
         <?php if( !empty($paginator->toHtml()) ){ ?>

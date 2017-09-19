@@ -5,15 +5,17 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/permission') ?>">
-                        Nhóm người dùng
+                        <?php echo $this->translate('txt_nhom_nguoi_dung'); ?>
                     </a>
                 </li>
-                <li class="active">Thêm mới</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_them_moi'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -26,7 +28,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Nhóm người dùng :: Thêm mới
+                <?php echo $this->translate('txt_nhom_nguoi_dung'); ?> ::
+                <?php echo $this->translate('txt_them_moi'); ?>
             </h1>
         </div>
     </div>
@@ -46,14 +49,14 @@
             <div class="col-sm-6 col-xs-6" >
                 <div class="form-group">
                     <label for="groups_name" >
-                        Tên nhóm
+                        <?php echo $this->translate('txt_ten_nhom'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('groups_name')); ?>
                 </div>
 
                 <div class="form-group">
                     <label for="manufacturers_name" >
-                        Mô tả
+                        <?php echo $this->translate('txt_mo_ta_nhom'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('groups_description')); ?>
                 </div>
@@ -64,14 +67,14 @@
         <div class="form-group" >
             <label for="is_published">
                 <?php echo $this->formRow($form->get('is_published')); ?>
-                Kích hoạt
+                <?php echo $this->translate('txt_kich_hoat'); ?>
             </label>
         </div>
 
         <?php if( !empty($permissions) ){ ?>
         <div class="form-group" >
             <label for="box-group" >
-                Phân quyền
+                <?php echo $this->translate('txt_phan_quyen'); ?>
             </label>
             <?php foreach($permissions as $key => $permits) { ?>
             <div class="box-group" >
@@ -95,10 +98,10 @@
 
         <div class="form-group" >
             <button class="btn btn-primary btn-sm">
-                Thêm mới nhóm người dùng
+                <?php echo $this->translate('txt_them_moi_nhom_nguoi_dung'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

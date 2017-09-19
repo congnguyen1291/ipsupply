@@ -135,7 +135,7 @@ $item_cum = array();
                                             <i class="fa fa-star-o" aria-hidden="true"></i>
                                             <?php } ?>
                                         </span>
-                                        1 Review
+                                        1 <?php echo $this->translate('txt_review'); ?>
                                     </div>
 
                                     <div class="form-product clearfix">
@@ -262,7 +262,7 @@ $item_cum = array();
                                             <?php if ( $this->Products()->getToBuy($product) ){ ?>
                                             <div class="grid-boot-sm" >
                                                 <div class="row" >
-                                                    <div class="col-sm-3 col-xs-8 col-xs-offset-2" >
+                                                    <div class="col-sm-3 col-sm-offset-0 col-xs-8 col-xs-offset-2" >
                                                         <div class="plugin-quantity" data-plugin="quantity" >
                                                             <span class="quantity-down" data-btn="downQuantity" >
                                                                 <i class="fa fa-minus" aria-hidden="true"></i>

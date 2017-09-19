@@ -1199,5 +1199,28 @@ class ProductController extends FrontEndController
         return $result;
     }
 
+    public function findAction()
+    {
+        $productsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Products');
+        $imagesHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Images');
+        $keyword = $this->params()->fromQuery('keyword', '');
+        $params = array();
+        if( !empty($keyword) ){
+            $params['keyword'] = $keyword;
+        }
+        $rows = $this->getModelTable('ProductsTable')->getProductAll($params);
+        $result = array();
+        foreach ($rows as $key => $row) {
+            $img = $imagesHelper->getUrlImage($productsHelper->getImage($row), 100, 100);
+            $name = $productsHelper->getName($row);
+            $link = $productsHelper->getLink($row);
+            $row['sm_image'] =  $img;
+            $row['link'] =  $link;
+            $result[] = $row;
+        }
+        echo json_encode($result);
+        die();
+    }
+
 	
 }

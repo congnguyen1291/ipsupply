@@ -1,28 +1,47 @@
+<?php if( !empty($_SESSION['CMSMEMBER']) ){ ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-</head>
-<body class="skin-blue">
-
-<div class="wrapper row-offcanvas row-offcanvas-left">
-<!-- Left side column. contains the logo and sidebar -->
-<aside class="left-side sidebar-offcanvas">
-
-</aside>
-
-<!-- Right side column. Contains the navbar and content of the page -->
-<aside class="right-side">
-    <?php echo $this->content ?>
-</aside><!-- /.right-side -->
-</div><!-- ./wrapper -->
-<!-- add new calendar event modal -->
-<script type="text/javascript">
-    var baseUrl = '<?php echo $this->basePath() ?>';
-    var cmsUrl = '<?php echo $this->basePath('cms'); ?>';
-</script>
-
-</body>
+	<head>
+	    <meta charset="UTF-8">
+	    <title><?php echo $this->translate('txt_page_error'); ?></title>
+	    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+		<script type="text/javascript">
+		    var baseUrl = '<?php echo $this->basePath() ?>';
+		    var cmsUrl = '<?php echo $this->basePath('cms'); ?>';
+		</script>
+	</head>
+	<body class="skin-blue">
+		<div class="wrapper row-offcanvas row-offcanvas-left" >
+			<aside class="left-side sidebar-offcanvas"></aside>
+			<aside class="right-side">
+			    <?php echo $this->content ?>
+			</aside>
+		</div>
+	</body>
 </html>
+<?php }else{ ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            Detect problem
+        </title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    </head>
+    <body style="padding: 0;margin: 0">
+        <script type="text/javascript">
+            window.location.href = '<?php echo $this->basePath() ?>';
+        </script>
+        <div style="position: fixed;top: 0;left: 0;bottom: 0;right: 0;background: #FFF" >
+            <div style="display: table;width: 100%;height: 100%;vertical-align: middle;" >
+                <div style="display: table-cell;width: 100%;height: 100%;vertical-align: middle;" >
+                    <div style="width: 100%;text-align: center;padding: 10px;font-size: 12px;" >
+                        Processing...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<?php } ?>

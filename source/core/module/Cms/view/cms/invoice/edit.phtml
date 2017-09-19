@@ -5,15 +5,17 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/invoice') ?>">
-                        Hóa đơn
+                        <?php echo $this->translate('txt_hoa_don'); ?>
                     </a>
                 </li>
-                <li class="active">Chi tiết hóa đơn</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_chi_tiet_hoa_don'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -26,7 +28,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Hóa đơn :: Chi tiết hóa đơn
+                <?php echo $this->translate('txt_hoa_don'); ?> :: 
+                <?php echo $this->translate('txt_chi_tiet_hoa_don'); ?>
             </h1>
         </div>
     </div>
@@ -37,12 +40,14 @@
         <div class="row" >
             <div class="col-sm-4 col-xs-12" >
                 <div class="box-info-invoice" >
-                    <h5>Khách hàng</h5>
+                    <h5>
+                        <?php echo $this->translate('txt_khach_hang'); ?>
+                    </h5>
                     <div class="m-info-invoice" >
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Họ và tên
+                                    <?php echo $this->translate('txt_ho_va_ten'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $invoice->full_name ?></b>
@@ -53,7 +58,7 @@
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Số điện thoại
+                                    <?php echo $this->translate('txt_so_dien_thoai'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $invoice->phone ?></b>
@@ -64,7 +69,7 @@
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Email
+                                    <?php echo $this->translate('txt_email'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $invoice->email ?></b>
@@ -79,13 +84,13 @@
             <div class="col-sm-4 col-xs-12" >
                 <div class="box-info-invoice" >
                     <h5>
-                        Địa chỉ giao hàng
+                        <?php echo $this->translate('txt_dia_chi_giao_hang'); ?>
                     </h5>
                     <div class="m-info-invoice" >
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Họ và tên
+                                    <?php echo $this->translate('txt_ho_va_ten'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $invoice->ships_full_name ?></b>
@@ -96,7 +101,7 @@
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Số điện thoại
+                                    <?php echo $this->translate('txt_so_dien_thoai'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $invoice->ships_phone ?></b>
@@ -107,7 +112,7 @@
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Email
+                                    <?php echo $this->translate('txt_email'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $invoice->ships_email ?></b>
@@ -118,7 +123,7 @@
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-4" >
-                                    Địa chỉ
+                                    <?php echo $this->translate('txt_dia_chi'); ?>
                                 </div>
                                 <div class="col-xs-8" >
                                     <b><?php echo $this->Invoice()->getAddress($invoice, 1); ?></b>
@@ -132,7 +137,7 @@
             <div class="col-sm-4 col-xs-12" >
                 <div class="box-info-invoice" >
                     <h5>
-                        Thông tin thanh toán
+                        <?php echo $this->translate('txt_thong_tin_thanh_toan'); ?>
                     </h5>
                     <div class="m-info-invoice" >
                         <div class="form-group">
@@ -148,7 +153,7 @@
             <div class="row" >
                 <div class="col-sm-12" > 
                     <h5>
-                        Danh sách sản phẩm
+                        <?php echo $this->translate('txt_danh_sach_san_pham'); ?>
                     </h5>
                 </div>
             </div>
@@ -158,13 +163,27 @@
             <table class="table table-data-bind table-bordered" >
                 <thead>
                     <tr>
-                        <th class="text-left col-lim" >Mã</th>
-                        <th class="text-center" width="100" >Hình</th>
-                        <th colspan="5" >Sản phẩm</th>
-                        <th class="text-right col-lim" colspan="2" >Đơn giá</th>
-                        <th class="text-right col-lim" >Số lượng</th>
-                        <th class="text-right col-lim" >Thành tiền</th>
-                        <th class="text-right col-lim" >Tổng tiền</th>
+                        <th class="text-left col-lim" >
+                            <?php echo $this->translate('txt_ma'); ?>
+                        </th>
+                        <th class="text-center" width="100" >
+                            <?php echo $this->translate('txt_hinh'); ?>
+                        </th>
+                        <th colspan="5" >
+                            <?php echo $this->translate('txt_san_pham'); ?>
+                        </th>
+                        <th class="text-right col-lim" colspan="2" >
+                            <?php echo $this->translate('txt_don_gia'); ?>
+                        </th>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_so_luong'); ?>
+                        </th>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_thanh_tien'); ?>
+                        </th>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_tong_tien'); ?>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -276,7 +295,7 @@
                 } ?>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tạm tính
+                            <?php echo $this->translate('txt_tam_tinh'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important" >
@@ -288,7 +307,7 @@
                     <?php if ( !empty($coupon) ) { ?>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Giảm giá
+                            <?php echo $this->translate('txt_giam_gia'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important" >
@@ -300,7 +319,7 @@
 
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Phí vận chuyển
+                            <?php echo $this->translate('txt_phi_van_chuyen'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important" >
@@ -312,7 +331,7 @@
                     <?php if( $total < $total_tax ){ ?>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tổng cộng trước
+                            <?php echo $this->translate('txt_tong_cong_truoc'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important"  >
@@ -322,7 +341,7 @@
                     </tr>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tiền thuế
+                            <?php echo $this->translate('txt_tien_thue'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important"  >
@@ -332,7 +351,7 @@
                     </tr>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tổng sau thuế
+                            <?php echo $this->translate('txt_tien_sau_thue'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important" >
@@ -343,7 +362,7 @@
                     <?php }else{ ?>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tổng cộng
+                            <?php echo $this->translate('txt_tong_cong'); ?>
                         </td>
                         <td colspan="2" class="text-right" >
                             <strong class="coz-color-important"  >
@@ -357,436 +376,11 @@
             </table>
         </div>
 
-        <?php if(   !empty($assign) 
-                    && !empty($assign->merchant_name) 
-                    && in_array($assign->assign_status, array('accept', 'finish')) ){ ?>
-        <h4>
-            Đại lý thực hiện đơn hàng(<i><?php echo $assign->merchant_name ?></i>)
-        </h4>
-        <div class="row" >
-            <div class="col-sm-4 col-xs-12" >
-                <div class="box-info-invoice" >
-                    <h5>Người thực hiện</h5>
-                    <div class="m-info-invoice" >
-                        <?php if( !empty($user) ){ ?>
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Họ và tên
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $user->full_name ?></b>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Số điện thoại
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $user->phone ?></b>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Email
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $user->user_name ?></b>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Địa chỉ
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $this->Invoice()->getAddress($user); ?></b>
-                                </div>
-                            </div>
-                        </div>
-                        <?php }else{ ?>
-                        <div class="text-center" >
-                            <i class="fa fa-user-secret" aria-hidden="true"></i>
-                        </div>
-                        <?php } ?>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-sm-4 col-xs-12" >
-                <div class="box-info-invoice" >
-                    <h5>
-                        Địa chỉ giao hàng
-                    </h5>
-                    <div class="m-info-invoice" >
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Họ và tên
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $invoice->ships_full_name ?></b>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Số điện thoại
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $invoice->ships_phone ?></b>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Email
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $invoice->ships_email ?></b>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row" >
-                                <div class="col-xs-4" >
-                                    Địa chỉ
-                                </div>
-                                <div class="col-xs-8" >
-                                    <b><?php echo $this->Invoice()->getAddress($invoice, 1); ?></b>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-xs-12" >
-                <div class="box-info-invoice" >
-                    <h5>
-                        Thông tin thanh toán
-                    </h5>
-                    <div class="m-info-invoice" >
-                        <?php if( !empty($merchant) ){ ?>
-                        <div class="form-group">
-                            <b>Đại lý : <?php echo $merchant['merchant_name'] ?></b><br />
-                            <b>Địa chỉ : <?php echo $this->Invoice()->getAddress($merchant); ?></b>
-                        </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <?php }else{ ?>
-        <h4>
-            Chưa có đại lý nhận đơn hàng
-        </h4>
-        <?php } ?>
-
-        <?php if( !empty($assign_products) ) { ?>
         <div class="toolbar clearfix" >
             <div class="row" >
                 <div class="col-sm-12" > 
                     <h5>
-                        Danh sách sản phẩm assign
-                    </h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-data-bind table-bordered" >
-                <thead>
-                    <tr>
-                        <th class="text-left col-lim" >Mã</th>
-                        <th class="text-center" width="100" >Hình</th>
-                        <th colspan="5" >Sản phẩm</th>
-                        <th class="text-right col-lim" colspan="2" >Đơn giá</th>
-                        <th class="text-right col-lim" >Số lượng</th>
-                        <th class="text-right col-lim" >Thành tiền</th>
-                        <th class="text-right col-lim" >Tổng tiền</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php 
-                foreach($assign_products as $key => $product){
-                    foreach($product['product_type'] as $product_type_id => $row){
-                        $extentions = array_merge($row['extensions'], $row['extensions_require']);
-                ?>
-                    <tr>
-                        <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> class="text-left col-lim" >
-                            <?php echo $product['products_code'] ?>
-                        </td>
-
-                        <td>
-                            <a href="<?php echo $this->Products()->getLink($row); ?>" target="_blank">
-                                <img src="<?php echo $this->Images()->getUrlImage($this->Products()->getImage($row),100); ?>" class="img-reponsive" width="100" >
-                            </a>
-                        </td>
-
-                        <td colspan="5" >
-                            <a href="<?php echo $this->Products()->getLink($row); ?>" target="_blank">
-                                <?php echo $this->Products()->getName($row); ?>
-                            </a>
-                        </td>
-
-                        <td class="text-right col-lim" <?php echo empty($row['extensions_require']) ? 'colspan="2"' : '' ?> >
-                            <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSaleSimple($row)) ?>
-                        </td>
-
-                        <?php if( !empty($row['extensions_require']) ){ ?>
-                        <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
-                            <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)) ?>
-                        </td>
-                        <?php } ?>
-
-                        <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
-                            <?php echo $this->Cart()->getProductsQuantity($row) ?>
-                        </td>
-
-                        <td class="text-right col-lim" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
-                            <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)*$this->Cart()->getProductsQuantity($row)) ?>
-                        </td>
-                        <td class="text-right col-lim" <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> >
-                            <?php echo $this->Currency()->fomatCurrency($row['price_total']) ?>
-                            <input type='hidden' name='pdetail[<?php echo $product['products_id'] ?>][price_total]' value='<?php echo $row['price_total'] ?>' />
-                        </td>
-                    </tr>
-
-                    <?php 
-                    $k_ex = 0;
-                    if(!empty($row['extensions_require'])){
-                        foreach ($row['extensions_require'] as $k_ => $ext) {
-                            $quality = $ext['quantity'];
-                    ?>
-                    <tr>
-                        <?php if($k_ex == 0){ ?>
-                        <td rowspan="<?php echo count($extentions); ?>" class="col-lim text-center" >
-                            <?php echo $this->translate('txt_sp_dinh_kem');?>
-                        </td>
-                        <?php } ?>
-                        <td class="col-lim text-right">
-                            <?php echo ($k_ex+1); ?>
-                        </td>
-                        <td colspan="2" >
-                            <?php echo $ext['ext_name'] ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $quality; ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
-                        </td>
-                    </tr>
-                    <?php 
-                            $k_ex++;
-                        }
-                    } ?>
-
-                    <?php 
-                    if( !empty($row['extensions']) ){
-                        foreach ($row['extensions'] as $k_ => $ext) {
-                            $quality = $ext['quantity'];
-                    ?>
-                    <tr>
-                        <td class="col-lim" >
-                            <?php echo ($k_ex+1); ?>
-                        </td>
-                        <td colspan="5" >
-                            <?php echo $ext['ext_name'] ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $quality; ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
-                        </td>
-                    </tr>
-                    <?php $k_ex++; 
-                        }
-                    } ?>
-
-                <?php }
-                } ?>
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Tạm tính
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important" >
-                                <?php echo $this->Currency()->fomatCurrency($assign_total_orig) ?>
-                            </strong>
-                        </td>
-                    </tr>
-
-                    <?php if ( !empty($coupon) ) { ?>
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Giảm giá
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important" >
-                                <?php echo $this->Currency()->fomatCurrency($coupon['coupon_price']) ?>
-                            </strong>
-                        </td>
-                    </tr>
-                    <?php } ?>
-
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Phí vận chuyển
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important" >
-                                <?php echo $this->Currency()->fomatCurrency($assign->assign_shipping, 'txt_mien_phi_ship') ?>
-                            </strong>
-                        </td>
-                    </tr>
-
-                    <?php if( $total < $total_tax ){ ?>
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Tổng cộng trước
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important"  >
-                                <?php echo $this->Currency()->fomatCurrency($assign_total + $assign->assign_shipping) ?>
-                            </strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Tiền thuế
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important"  >
-                                <?php echo $this->Currency()->fomatCurrency(($assign_total_tax - $total)) ?>
-                            </strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Tổng sau thuế
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important" >
-                                <?php echo $this->Currency()->fomatCurrency($assign_total_tax + $assign->assign_shipping) ?>
-                            </strong>
-                        </td>
-                    </tr>
-                    <?php }else{ ?>
-                    <tr>
-                        <td colspan="10" class="text-right" >
-                            Tổng cộng
-                        </td>
-                        <td colspan="2" class="text-right" >
-                            <strong class="coz-color-important"  >
-                                <?php echo $this->Currency()->fomatCurrency($assign_total + $assign->assign_shipping) ?>
-                            </strong>
-                        </td>
-                    </tr>
-                    <?php } ?>
-
-                </tbody>
-            </table>
-        </div>
-        <?php } ?>
-
-        <?php if( !empty($merchants) ) { ?>
-        <div class="toolbar clearfix" >
-            <div class="row" >
-                <div class="col-sm-12" > 
-                    <h5>
-                        Danh sách đại lý đã assign 
-                        <a href="<?php echo $this->url('cms/assign', array('action' => 'edit', 'id'=> $invoice->assign_id)) ?>" data-toggle="tooltip" data-placement="top" title="Xem merchant" >
-                            Xem assign <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-        <div class="table-responsive" data-table="searchAjax" >
-            <table class="table table-data-bind table-no-border" >
-                <thead>
-                    <tr>
-                        <th>Tên</th>
-                        <th class="col-lim" >Địa chỉ</th>
-                        <th class="col-lim text-right" >Số ĐT</th>
-                        <th class="col-lim text-right" >Fax</th>
-                        <th class="col-lim text-right" >Email</th>
-                        <th class="col-lim text-right" >Trạng thái</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($merchants as $key=>$merchant ) { ?>
-                    <tr>
-                        <td>
-                            <?php echo $merchant['merchant_name'] ?>
-                        </td>
-                        <td class="col-lim" >
-                            <?php echo $merchant['address'] ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $merchant['merchant_phone'] ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $merchant['merchant_fax'] ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <?php echo $merchant['merchant_email'] ?>
-                        </td>
-                        <td class="col-lim text-right" >
-                            <span class="round-order-status round-order-<?php echo $merchant['assign_merchant_status'] ?>" >
-                                <?php echo $merchant['assign_merchant_status'] ?>
-                            </span>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-        <?php }else{ ?>
-        <div class="toolbar clearfix" >
-            <div class="row" >
-                <div class="col-sm-12" > 
-                    <h5 class="text-center" >
-                        Chưa có assign <br />
-                        Thêm assign 
-                        <a href="<?php echo $this->url('cms/assign', array('action' => 'add', 'id'=> $invoice->invoice_id)) ?>" data-toggle="tooltip" data-placement="top" title="Xem merchant" >
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                        </a> 
-                    </h5>
-                </div>
-            </div>
-        </div>
-        <?php } ?>
-
-        <div class="toolbar clearfix" >
-            <div class="row" >
-                <div class="col-sm-12" > 
-                    <h5>
-                        Thông tin hoá đơn
+                        <?php echo $this->translate('txt_thong_tin_hoa_don'); ?>
                     </h5>
                 </div>
             </div>
@@ -796,7 +390,7 @@
                 <tbody>
                     <tr>
                         <th class="col-lim" >
-                            Số hóa đơn
+                            <?php echo $this->translate('txt_so_hoa_don'); ?>
                         </th>
                         <td>
                             <b><?php echo $invoice->invoice_title ?></b>
@@ -804,7 +398,7 @@
                     </tr>
                     <tr>
                         <th class="col-lim" >
-                            Ngày đặt hàng
+                            <?php echo $this->translate('txt_ngay_dat_hang'); ?>
                         </th>
                         <td>
                             <b><?php echo $invoice->date_create ?></b>
@@ -812,7 +406,7 @@
                     </tr>
                     <tr>
                         <th class="col-lim" >
-                            Phương thức thanh toán
+                            <?php echo $this->translate('txt_phuong_thuc_thanh_toan'); ?>
                         </th>
                         <td>
                             <b><?php echo $invoice->payment_code ?></b>
@@ -820,7 +414,7 @@
                     </tr>
                     <tr>
                         <th class="col-lim" >
-                            Dấu tên với người nhận
+                            <?php echo $this->translate('txt_dau_ten_voi_nguoi_nhan'); ?>
                         </th>
                         <td>
                             <?php if( !empty($invoice->is_incognito) ){ ?>
@@ -836,7 +430,7 @@
                     </tr>
                     <tr>
                         <th class="col-lim" >
-                            Số đt người nhận
+                            <?php echo $this->translate('txt_so_dien_thoai_nguoi_nhan'); ?>
                         </th>
                         <td>
                             <b><?php echo $invoice->ships_phone ?></b>
@@ -844,7 +438,7 @@
                     </tr>
                     <tr>
                         <th class="col-lim" >
-                            Thông tin giao hàng
+                            <?php echo $this->translate('txt_thong_tin_giao_hang'); ?>
                         </th>
                         <td>
                             <b><?php echo $invoice->date_delivery ?></b>
@@ -852,7 +446,7 @@
                     </tr>
                     <tr>
                         <th class="col-lim" >
-                            Thông điệp
+                            <?php echo $this->translate('txt_thong_diep'); ?>
                         </th>
                         <td>
                             <b><?php echo $invoice->invoice_description ?></b>
@@ -868,7 +462,7 @@
             <div class="row" >
                 <div class="col-sm-12" > 
                     <h5>
-                        Lịch sử trạng thái đơn hàng
+                        <?php echo $this->translate('txt_lich_su_trang_thai_don_hang'); ?>
                     </h5>
                 </div>
             </div>
@@ -877,11 +471,21 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th  class="col-lim" >Date Added</th>
-                        <th class="col-lim  text-center" >Thông báo cho khách hàng</th>
-                        <th class="col-lim" >Trạng thái</th>
-                        <th >Ý kiến/Bình luận</th>
-                        <th class="col-lim" >Nhân Viên Cập Nhật</th>
+                        <th  class="col-lim" >
+                            <?php echo $this->translate('txt_ngay_add'); ?>
+                        </th>
+                        <th class="col-lim  text-center" >
+                            <?php echo $this->translate('txt_thong_bao_cho_khach_hang'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
+                        <th >
+                            <?php echo $this->translate('txt_y_kien_binh_luan'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_nhan_vien_cap_nhat'); ?>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -892,11 +496,11 @@
                         </td>
                         <td class="col-lim text-center" >
                             <?php if( !empty($log['has_feedback']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Có thông báo" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_co_thong_bao'); ?>" >
                                     <i class="fa fa-bell" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Không thông báo" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_khong_co_thong_bao'); ?>" >
                                     <i class="fa fa-bell" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
@@ -930,20 +534,20 @@
             <div class="col-sm-6" >
                 <div class="form-group" >
                     <label for="comment">
-                        Ý kiến/Bình luận
+                        <?php echo $this->translate('txt_y_kien_binh_luan'); ?>
                     </label>
                     <textarea class="form-control input-sm" name="comment" id="comment" ></textarea>
                 </div>
                 <div class="form-group" >
                     <label for="delivery">
-                        Status đơn hàng
+                        <?php echo $this->translate('txt_trang_thai_don_hang'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('delivery')); ?>
                 </div>
             </div>
         </div>
         <div class="form-group" >
-            Thông báo cho khách hàng : 
+            <?php echo $this->translate('txt_thong_bao_cho_khach_hang'); ?> : 
             [
                 <label>
                     <input type="radio" name="has_feedback" value="1" checked="checked" >
@@ -960,25 +564,26 @@
             ]
 
             <label>
-                Kèm lời bình : <input type="checkbox" name="has_comment" value="1" checked="checked" >
+                <?php echo $this->translate('txt_kem_loi_binh'); ?> : 
+                <input type="checkbox" name="has_comment" value="1" checked="checked" >
             </label>
         </div>
         <div class="form-group" >
             <button class="btn btn-primary btn-sm">
-                Cập nhật đơn hàng
+                <?php echo $this->translate('txt_cap_nhat_don_hang'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
         <?php echo $this->form()->closeTag(); ?>
         <div class="toolbar clearfix" >
             <div class="row" >
                 <div class="col-sm-12 text-right" > 
-                    <a href="javascript:void(0);" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="In hoá đơn"  >
+                    <a href="javascript:void(0);" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_in_hoa_don'); ?>"  >
                         <i class="fa fa-print" aria-hidden="true"></i>
                     </a>
-                    <a href="javascript:void(0);" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="In phản hồi"  >
+                    <a href="javascript:void(0);" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_in_phan_hoi'); ?>"  >
                         <i class="fa fa-address-card-o" aria-hidden="true"></i>
                     </a>
                 </div>

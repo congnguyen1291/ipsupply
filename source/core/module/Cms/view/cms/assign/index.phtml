@@ -5,10 +5,12 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
-                <li class="active">Assign</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_assign'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -22,7 +24,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Assign :: Quản lý
+                <?php echo $this->translate('txt_assign'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -31,18 +34,21 @@
                     <div class="input-group">
                         <div class="row row-coz-search" >
                             <div class="col-xs-7 col-coz-search" >
-                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
                             </div>
                             <div class="col-xs-5 col-coz-search" >
                                 <select name="type" class="form-control" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo tên assign
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ten_asign'); ?>
                                     </option>
                                     <option value="1" <?php echo $type == 1 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo mã assign
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ma_asign'); ?>
                                     </option>
                                     <option value="2" <?php echo $type == 2 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo mã hoá đơn
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ma_hoa_don'); ?>
                                     </option>
                                 </select>
                             </div>
@@ -67,12 +73,12 @@
                 <div class="col-sm-12" >
                     <div class="text-right" >
                         <a href="<?php echo $this->url('cms/assign', array('action' => 'add')) ?>"
-                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm assign" >
+                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_assign'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($assigns) ){ ?>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/assign', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá assign" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/assign', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_assign'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -86,13 +92,27 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >Id</th>
-                        <th class="col-lim" >Code</th>
-                        <th >Tên</th>
-                        <th class="col-lim" >Invoice</th>
-                        <th class="col-lim text-right"  >Giá assign</th>
-                        <th class="col-lim text-right"  >Giá gốc</th>
-                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_code_assign'); ?>
+                        </th>
+                        <th >
+                            <?php echo $this->translate('txt_name_assign'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_invoice'); ?>
+                        </th>
+                        <th class="col-lim text-right"  >
+                            <?php echo $this->translate('txt_gia_assign'); ?>
+                        </th>
+                        <th class="col-lim text-right"  >
+                            <?php echo $this->translate('txt_gia_goc'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -111,7 +131,7 @@
                         </td>
 
                         <td >
-                            <a href="<?php echo $this->url('cms/assign', array('action' => 'edit', 'id'=> $row['assign_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xem assign" >
+                            <a href="<?php echo $this->url('cms/assign', array('action' => 'edit', 'id'=> $row['assign_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_assign'); ?>" >
                                 <?php echo $row['assign_name'] ?>
                             </a>
                         </td>
@@ -134,7 +154,7 @@
 
                         <td class="col-lim text-right" >
                             <?php if( !empty($row['invoice_id']) ){ ?>
-                            <a href="<?php echo $this->url('cms/invoice', array('action' => 'edit', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xem hóa đơn" >
+                            <a href="<?php echo $this->url('cms/invoice', array('action' => 'edit', 'id' => $row['invoice_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_hoa_don'); ?>" >
                                 <i class="fa fa-link" aria-hidden="true"></i>
                             </a>
                             <?php } ?>
@@ -145,11 +165,11 @@
                         </td>
 
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/assign', array('action' => 'edit', 'id' => $row['assign_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xem assign" >
+                            <a href="<?php echo $this->url('cms/assign', array('action' => 'edit', 'id' => $row['assign_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_assign'); ?>" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/assign', array('action' => 'delete', 'id' => $row['assign_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá assign"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/assign', array('action' => 'delete', 'id' => $row['assign_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_assign'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
 
@@ -164,7 +184,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có assign
+            <?php echo $this->translate('txt_chua_co_assign'); ?>
         </p>
         <?php } ?>
 

@@ -2,7 +2,7 @@
 <div class="dropdown-menu dropdown-filter product-dropdown dropdown arrow-style single-dropdown">
     <div class="arrow"></div>
     <div class="product-result" style="display:none" >
-        <input placeholder="Tìm kiếm sản phẩm" type="text" class="query-blog single-query" />
+        <input placeholder="<?php echo $this->translate('txt_tim_kiem_san_pham'); ?>" type="text" class="query-blog single-query" />
     </div>
     <div class="single-suggest-result clear-ul">
         <?php if(!empty($categories)){ ?>
@@ -42,7 +42,7 @@
             <?php } ?>
         </ul>
         <?php }else{ ?>
-        <p class="empty" >Không có  dữ liệu</p>
+        <p class="empty" ><?php echo $this->translate('txt_khong_co_du_lieu'); ?></p>
         <?php } ?>
     </div>
 </div>

@@ -32,16 +32,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>" >
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/category') ?>" >
-                        Đặc tính
+                        <?php echo $this->translate('txt_dac_tinh'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Thêm mới đặc tính
+                    <?php echo $this->translate('txt_them_moi_dac_tinh'); ?>
                 </li>
             </ol>
         </div>
@@ -56,7 +56,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Đặc tính :: Thêm mới
+                <?php echo $this->translate('txt_dac_tinh'); ?> ::
+                <?php echo $this->translate('txt_them_moi_dac_tinh'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-6 pull-rigth" >
@@ -80,21 +81,21 @@
         <div class="col-xs-6">
             <div class="form-group" >
                 <label for="feature_id" >
-                    Đặc tính cha
+                    <?php echo $this->translate('txt_dac_tinh_cha'); ?>
                 </label>
                 <?php echo $this->formRow($form->get('parent_id')); ?>
             </div>
 
             <div class="form-group">
                 <label for="feature_title">
-                    Tên đặc tính
+                    <?php echo $this->translate('txt_ten_dac_tinh'); ?>
                 </label>
                 <?php echo $this->formRow($form->get('feature_title')); ?>
             </div>
 
             <div class="form-group">
                 <label for="feature_type">
-                    Loại đặc tính
+                    <?php echo $this->translate('txt_loai_dac_tinh'); ?>
                 </label>
                 <?php echo $this->formRow($form->get('feature_type')); ?>
             </div>
@@ -102,14 +103,14 @@
             <div class="box-color-patten" >
                 <div class="form-group">
                     <label for="is_value">
-                        Loại màu sắc
+                        <?php echo $this->translate('txt_loai_mau_sac'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('is_value')); ?>
                 </div>
 
                 <div class="form-group is_color" >
                     <label for="feature_color" >
-                        Màu sắc
+                        <?php echo $this->translate('txt_mau_sac'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('feature_color')); ?>
                 </div>
@@ -136,21 +137,21 @@
 
     <div class="form-group" >
         <label for="ordering">
-            Vị trí
+            <?php echo $this->translate('txt_vi_tri'); ?>
             <?php echo $this->formRow($form->get('ordering')); ?>
         </label>
         <label for="is_published">
             <?php echo $this->formRow($form->get('is_published')); ?>
-            Hiển thị
+            <?php echo $this->translate('txt_hien_thi'); ?>
         </label>
     </div>
 
     <div class="form-group">
         <button class="btn btn-primary btn-sm" >
-            Thêm mới đặc tính
+            <?php echo $this->translate('txt_them_moi_dac_tinh'); ?>
         </button>
         <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-            Quay lại
+            <?php echo $this->translate('txt_quay_lai'); ?>
         </button>
     </div>
     <?php echo $this->form()->closeTag(); ?>

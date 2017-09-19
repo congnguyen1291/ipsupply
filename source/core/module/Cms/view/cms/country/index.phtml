@@ -5,11 +5,11 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Country
+                    <?php echo $this->translate('txt_country'); ?>
                 </li>
             </ol>
         </div>
@@ -24,14 +24,15 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Country :: Quản lý
+                <?php echo $this->translate('txt_country'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
             <form action="<?php echo $this->url('cms/country', array('action' => 'filter')) ?>" method="post" class="filter_form" role="form" data-form="searchAjax" >
                 <div class="coz-search-bar clearfix" >
                     <div class="input-group">
-                        <input type="text" name="categories_title" class="form-control" placeholder="Search...">
+                        <input type="text" name="categories_title" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>">
                         <span class="input-group-btn">
                             <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>

@@ -183,7 +183,6 @@ class UserController extends BackEndController
                 }else{
                     $user->groups_id = 0;
                 }
-
                 $name = $first_name .' '. $last_name;
                 $user->full_name = $name;
                 $alias = $this->toAlias($name, '.');

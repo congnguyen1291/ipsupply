@@ -5,16 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/category') ?>">
-                        Danh mục sản phẩm
+                        <?php echo $this->translate('txt_danh_muc'); ?> 
                     </a>
                 </li>
                 <li class="active">
-                    Quản lý banner
+                    <?php echo $this->translate('txt_quan_ly_banner'); ?>
                 </li>
             </ol>
         </div>
@@ -29,14 +29,15 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Danh mục :: Quản lý banner
+                <?php echo $this->translate('txt_danh_muc'); ?> ::
+                <?php echo $this->translate('txt_quan_ly_banner'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
             <form action="<?php echo $this->url('cms/category', array('action' => 'filterBanner')) ?>" method="post" class="filter_form" role="form" data-form="searchAjax" >
                 <div class="coz-search-bar clearfix" >
                     <div class="input-group">
-                        <input type="text" name="categories_title" class="form-control" placeholder="Search...">
+                        <input type="text" name="categories_title" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>">
                         <span class="input-group-btn">
                             <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>
@@ -58,20 +59,20 @@
                 </div>
                 <div class="col-sm-6" >
                     <div class="text-right" >
-                        <a href="<?php echo $this->url('cms/category', array('action' => 'addBanner')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm banner" >
+                        <a href="<?php echo $this->url('cms/category', array('action' => 'addBanner')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_banner'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($banners) ){ ?>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'publishBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện banner" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'publishBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_banner'); ?>" >
                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'unpublishBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn banner" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'unpublishBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_banner'); ?>" >
                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'updateorderBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Cập nhật thứ tự" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'updateorderBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_cap_nhat_thu_tu'); ?>" >
                             <i class="fa fa-sort" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'deleteBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá banner" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/category', array('action' => 'deleteBanner')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_banner'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -85,10 +86,18 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >ID</th>
-                        <th>Tên</th>
-                        <th class="col-lim" >Vị trí</th>
-                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_vi_tri'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -103,7 +112,7 @@
                         </td>
                         <td>
                             <div class="clearfix" >
-                                <a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa banner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_banner'); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                     <?php echo $row['categories_banners_title'] ?>
                                 </a>
                             </div>
@@ -149,7 +158,7 @@
                                                 <!--<![endif] -->
                                             </object>
                                         <?php else: ?>
-                                            Không biết định dạng
+                                            <?php echo $this->translate('txt_khong_biet_dinh_dang'); ?>
                                         <?php endif; ?>
                                     <?php else: ?>
                                         <?php echo $row['code'] ?>
@@ -164,30 +173,30 @@
                             in <?php echo $row['categories_title'] ?>
 
                             <?php if( !empty($row['is_published']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
                         </td>
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa banner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'editBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_banner'); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/category', array('action' => 'deleteBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá banner"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'deleteBanner', 'id' => $row['categories_banners_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_banner'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
 
                             <?php if( !empty($row['is_published']) ){ ?>
-                            <a href="<?php echo $this->url('cms/category', array('action' => 'unpublishBanner', 'id' => $row['categories_banners_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn banner" >
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'unpublishBanner', 'id' => $row['categories_banners_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_banner'); ?>" >
                                 <i class="fa fa-toggle-on" aria-hidden="true"></i>
                             </a>
                             <?php }else{ ?>
-                            <a href="<?php echo $this->url('cms/category', array('action' => 'unpublishBanner', 'id' => $row['categories_banners_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện banner" >
+                            <a href="<?php echo $this->url('cms/category', array('action' => 'unpublishBanner', 'id' => $row['categories_banners_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_banner'); ?>" >
                                 <i class="fa fa-toggle-off" aria-hidden="true"></i>
                             </a>
                             <?php } ?>
@@ -202,7 +211,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có banner
+            <?php echo $this->translate('txt_chua_co_banner'); ?>
         </p>
         <?php } ?>
 

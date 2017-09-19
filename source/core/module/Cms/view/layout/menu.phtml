@@ -5,7 +5,9 @@
     $languages_id = $view_val->languages_id;
 ?>
 <a href="javascript:void(0);" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-    <span class="sr-only">Toggle navigation</span>
+    <span class="sr-only">
+        <?php echo $this->translate('txt_toggle_navigation'); ?>
+    </span>
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
@@ -19,7 +21,8 @@
             <div class="info">
                 <div class="clearfix" >
                     <p>
-                        Chào bạn, <?php echo $_SESSION['CMSMEMBER']['full_name'] ?>
+                        <?php echo $this->translate('txt_chao_bạn'); ?> 
+                        <?php echo $_SESSION['CMSMEMBER']['full_name'] ?>
                     </p>
                 </div>
                 <div class="clearfix lang-status" >
@@ -27,7 +30,7 @@
                         <div class="col-sm-5" >
                             <a href="#" class="user-status" >
                                 <i class="fa fa-circle"></i> 
-                                Online
+                                <?php echo $this->translate('txt_online'); ?>
                             </a>
                         </div>
                         <div class="col-sm-7" >
@@ -46,7 +49,7 @@
 
         <form action="/cms" method="get" class="sidebar-form" >
             <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search..."/>
+                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>"/>
         		<span class="input-group-btn">
         			<button type='submit' name='seach' id='search-btn' class="btn btn-flat">
                         <i class="fa fa-search"></i>
@@ -63,7 +66,7 @@
         <a href="<?php echo $this->url('cms') ?>">
             <img class="coz-ico-menu" src="/admincp/icon/dashboard.svg" > 
             <span>
-                Dashboard
+                <?php echo $this->translate('txt_dashboard'); ?>
             </span>
         </a>
     </li>
@@ -73,7 +76,7 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/danh-muc-san-pham.svg" >
             <span>
-                Danh mục sản phẩm
+                <?php echo $this->translate('txt_danh_muc_san_pham'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -81,14 +84,14 @@
             <li>
                 <a href="<?php echo $this->url('cms/category') ?>" >
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','category', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/category', array('action' => 'add')) ?>" >
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -96,7 +99,7 @@
             <li>
                 <a href="<?php echo $this->url('cms/category', array('action' => 'manageBanner')) ?>" >
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý banner
+                    <?php echo $this->translate('txt_quan_ly_banner'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -109,7 +112,7 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/san-pham.svg" >
             <span>
-                Sản phẩm
+                <?php echo $this->translate('txt_san_pham'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -117,14 +120,14 @@
             <li>
                 <a href="<?php echo $this->url('cms/product') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','product', 'index')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/product', array('action' => 'add')) ?>" >
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -132,7 +135,7 @@
             <li>
                 <a href="<?php echo $this->url('cms/fqa', array('action' => 'index')) ?>" >
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý hỏi đáp
+                    <?php echo $this->translate('txt_quan_ly_hoi_dap'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -145,7 +148,7 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/stock.svg" >
             <span>
-                Kho
+                <?php echo $this->translate('txt_quan_ly_kho'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -153,7 +156,7 @@
             <li>
                 <a href="<?php echo $this->url('cms/stock') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
         </ul>
@@ -165,7 +168,7 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/dac-tinh-san-pham.svg" >
             <span>
-                Đặc tính sản phẩm
+                <?php echo $this->translate('txt_dac_tinh_san_pham'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -173,14 +176,14 @@
             <li>
                 <a href="<?php echo $this->url('cms/feature') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','feature', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/feature', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -193,7 +196,7 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/ma-giam-gia.svg" >
             <span>
-                Mã giảm giá
+                <?php echo $this->translate('txt_ma_giam_gia'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -201,14 +204,14 @@
             <li>
                 <a href="<?php echo $this->url('cms/coupons') ?>">
                     <i class="fa fa-angle-double-right"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','coupons', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/coupons', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -221,7 +224,7 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/xuat-xu.svg" >
             <span>
-                Nhà sản xuất (<i>Xuất xứ</i>)
+                <?php echo $this->translate('txt_nha_xan_xuat'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -229,14 +232,14 @@
             <li>
                 <a href="<?php echo $this->url('cms/manufacturers') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','manufacturers', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/manufacturers', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -244,12 +247,12 @@
     </li>
     <?php endif; ?>
 
-    <?php if($this->CMSCommon()->hasPermission('cms','merchant', 'index')): ?>
+    <?php /*if($this->CMSCommon()->hasPermission('cms','merchant', 'index')): ?>
     <li class="treeview <?php echo $view_val->current=='merchant' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/dai-ly.svg" >
             <span>
-                Đại lý (<i>merchant</i>)
+                <?php echo $this->translate('txt_dai_ly'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -257,27 +260,27 @@
             <li>
                 <a href="<?php echo $this->url('cms/merchant') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','merchant', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/merchant', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
         </ul>
     </li>
-    <?php endif; ?>
+    <?php endif;*/ ?>
 
     <?php if($this->CMSCommon()->hasPermission('cms','banners', 'index')): ?>
     <li class="treeview <?php echo $view_val->current=='banners' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/banner.svg" >
             <span>
-                Banner
+                <?php echo $this->translate('txt_banner'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -285,14 +288,14 @@
             <li>
                 <a href="<?php echo $this->url('cms/banners') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','banners', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/banners', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm banner
+                    <?php echo $this->translate('txt_them_banner'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -304,21 +307,23 @@
     <li class="treeview <?php echo $view_val->current=='group' ? 'active' : '' ?>" >
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/quan-li-nhom-quyen.svg" >
-            <span>Quản lý nhóm quyền</span>
+            <span>
+                <?php echo $this->translate('txt_quan_ly_nhom_quyen'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/group') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','groups', 'admin')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/group', array('action' => 'admin')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Danh sách admin
+                    <?php echo $this->translate('txt_danh_sach_admin'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -326,7 +331,7 @@
             <li>
                 <a href="<?php echo $this->url('cms/group', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm nhóm mới
+                    <?php echo $this->translate('txt_them_nhom_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -334,7 +339,7 @@
             <li>
                 <a href="<?php echo $this->url('cms/permission') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý quyền
+                    <?php echo $this->translate('txt_quan_ly_quyen'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -342,7 +347,7 @@
             <li>
                 <a href="<?php echo $this->url('cms/permission', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm quyền mới
+                    <?php echo $this->translate('txt_them_quyen_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -354,21 +359,23 @@
     <li class="treeview <?php echo $view_val->current=='payment' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/thanh-toan.svg" >
-            <span>Thanh toán</span>
+            <span>
+                <?php echo $this->translate('txt_thanh_toan'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/payment') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','category', 'index')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/payment', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm phương thức mới
+                    <?php echo $this->translate('txt_them_phuong_thuc_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -381,7 +388,8 @@
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/invoice.svg" >
             <span>
-                Hóa đơn<?php echo $view_val->new_invoice ? ('<strong class="number-invoi-new" >('.$view_val->new_invoice.' mới)</strong>') : '' ?>
+                <?php echo $this->translate('txt_hoa_don'); ?>
+                <?php echo $view_val->new_invoice ? ('<strong class="number-invoi-new" >('.$view_val->new_invoice.' '.$this->translate('txt_moi').')</strong>') : '' ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -389,32 +397,25 @@
             <li>
                 <a href="<?php echo $this->url('cms/invoice') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
-            <?php if($this->CMSCommon()->hasPermission('cms','invoice', 'index')): ?>
-            <li>
-                <a href="<?php echo $this->url('cms/invoice', array('action' => 'add')) ?>">
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm hóa đơn
-                </a>
-            </li>
-            <?php endif; ?>
             <li>
                 <a href="<?php echo $this->url('cms/invoice', array('action' => 'report')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Doanh số
+                    <?php echo $this->translate('txt_doanh_so'); ?>
                 </a>
             </li>
         </ul>
     </li>
     <?php endif; ?>
 
+    <?php /* ?>
     <li class="treeview <?php echo $view_val->current=='assign' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/assign.svg" >
             <span>
-                Assign
+                <?php echo $this->translate('txt_assign'); ?>
             </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
@@ -422,37 +423,40 @@
             <li>
                 <a href="<?php echo $this->url('cms/assign') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('cms/assign', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm assign
+                    <?php echo $this->translate('txt_them_assign'); ?>
                 </a>
             </li>
         </ul>
     </li>
+    <?php */ ?>
 
     <?php if($this->CMSCommon()->hasPermission('cms','categoryarticles', 'index')): ?>
     <li class="treeview <?php echo $view_val->current=='carticles' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/danh-muc-bai-viet.svg" >
-            <span>Danh mục bài viết</span>
+            <span>
+                <?php echo $this->translate('txt_danh_muc_bai_viet'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/carticles') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','articles', 'index')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/carticles', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -464,21 +468,23 @@
     <li class="treeview <?php echo $view_val->current=='articles' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/bai-viet.svg" >
-            <span>Bài viết</span>
+            <span>
+                <?php echo $this->translate('txt_bai_viet'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/articles') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý bài viết
+                    <?php echo $this->translate('txt_quan_ly_bai_viet'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','articles', 'index')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/articles', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm bài viết mới
+                    <?php echo $this->translate('txt_them_bai_viet_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -490,26 +496,28 @@
     <li class="treeview <?php echo $view_val->current=='user' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/khach-hang.svg" >
-            <span>Khách hàng</span>
+            <span>
+                <?php echo $this->translate('txt_khach_hang'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/user') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('cms/user', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm khách hàng mới
+                    <?php echo $this->translate('txt_them_khach_hang_moi'); ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('cms/user_level') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Loại khách hàng
+                    <?php echo $this->translate('txt_loai_khach_hang'); ?>
                 </a>
             </li>
         </ul>
@@ -520,21 +528,23 @@
     <li class="treeview <?php echo $view_val->current=='shipping' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/van-chuyen.svg" >
-            <span>Vận chuyển</span>
+            <span>
+                <?php echo $this->translate('txt_van_chuyen'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/shipping') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','shipping', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/group_regions', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -546,21 +556,23 @@
     <li class="treeview <?php echo $view_val->current=='branches' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/chi-nhanh.svg" >
-            <span>Chi nhánh</span>
+            <span>
+                <?php echo $this->translate('txt_chi_nhanh'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/branches') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','branches', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/branches', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm chi nhánh
+                    <?php echo $this->translate('txt_them_chi_nhanh'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -572,21 +584,23 @@
     <li class="treeview <?php echo $view_val->current=='menus' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/menu.svg" >
-            <span>Menus</span>
+            <span>
+                <?php echo $this->translate('txt_menus'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/menus') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý menus
+                    <?php echo $this->translate('txt_quan_ly_menus'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','menus', 'add')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/menus', array('action' => 'add')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thêm menus 
+                    <?php echo $this->translate('txt_them_menus'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -598,14 +612,16 @@
     <li class="treeview <?php echo $view_val->current=='website' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/website.svg" >
-            <span>Websites</span>
+            <span>
+                <?php echo $this->translate('txt_websites'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu">
             <li>
                 <a href="<?php echo $this->url('cms/website') ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Thông tin website
+                    <?php echo $this->translate('txt_thong_tin_websites'); ?>
                 </a>
             </li>
         </ul>
@@ -615,21 +631,23 @@
     <li class="treeview <?php echo $view_val->current=='language' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/language.svg" >
-            <span>Ngôn ngữ</span>
+            <span>
+                <?php echo $this->translate('txt_ngon_ngu'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu" >
             <li>
                 <a href="<?php echo $this->url('cms/language', array('action' => 'index')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý ngôn ngữ
+                    <?php echo $this->translate('txt_quan_ly_ngon_ngu'); ?>
                 </a>
             </li>
             <?php if($this->CMSCommon()->hasPermission('cms','language', 'manage-keywords')): ?>
             <li>
                 <a href="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý từ khóa
+                    <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?>
                 </a>
             </li>
             <?php endif; ?>
@@ -639,14 +657,16 @@
     <li class="treeview <?php echo $view_val->current=='trash' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/trash.svg" >
-            <span>Trash</span>
+            <span>
+                <?php echo $this->translate('txt_trash'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu" >
             <li>
                 <a href="<?php echo $this->url('cms/trash', array('action' => 'index')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý
+                    <?php echo $this->translate('txt_quan_ly'); ?>
                 </a>
             </li>
         </ul>
@@ -655,14 +675,16 @@
     <li class="treeview <?php echo $view_val->current=='developer' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/developer.svg" >
-            <span>Cho nhà phát triển</span>
+            <span>
+                <?php echo $this->translate('txt_cho_nha_phat_trien'); ?>
+            </span>
             <i class="fa fa-angle-right pull-right"></i>
         </a>
         <ul class="treeview-menu" >
             <li>
                 <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'index')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Quản lý vị trí banner
+                    <?php echo $this->translate('txt_quan_ly_vi_tri_banner'); ?>
                 </a>
             </li>
         </ul>

@@ -1,8 +1,11 @@
+<?php if( !empty($_SESSION['CMSMEMBER']) ){ ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Administrator</title>
+        <title>
+            <?php echo $this->translate('txt_administrator'); ?>
+        </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img_/favicon.ico'))
             ->appendStylesheet('//cdn.coz.vn/bootstrap/3.3.6/css/bootstrap.min.css')
@@ -72,6 +75,7 @@
     </head>
     <body class="skin-blue" <?php if(isset($_SERVER['REQUEST_URI']) && ($_SERVER['REQUEST_URI']=='/cms/branches/add' || strpos($_SERVER['REQUEST_URI'], '/cms/branches/edit')!==FALSE)){
 		?>onunload="GUnload()"<?php }?> >
+
         <div class="wrapper row-offcanvas row-offcanvas-left" >
             <aside class="left-side sidebar-offcanvas">
                 <section class="sidebar">
@@ -85,3 +89,29 @@
         <script type="text/javascript" src="/admincp/js/common.js"></script>
     </body>
 </html>
+<?php }else{ ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            <?php echo $this->translate('txt_detect_problem'); ?>
+        </title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    </head>
+    <body style="padding: 0;margin: 0">
+        <script type="text/javascript">
+            window.location.href = '<?php echo $this->basePath() ?>';
+        </script>
+        <div style="position: fixed;top: 0;left: 0;bottom: 0;right: 0;background: #FFF" >
+            <div style="display: table;width: 100%;height: 100%;vertical-align: middle;" >
+                <div style="display: table-cell;width: 100%;height: 100%;vertical-align: middle;" >
+                    <div style="width: 100%;text-align: center;padding: 10px;font-size: 12px;" >
+                        Processing...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<?php } ?>

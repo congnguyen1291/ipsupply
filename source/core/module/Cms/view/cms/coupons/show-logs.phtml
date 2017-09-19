@@ -5,15 +5,17 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/coupons') ?>">
-                        Mã khuyến mãi
+                        <?php echo $this->translate('txt_ds_khuyen_mai'); ?>
                     </a>
                 </li>
-                <li class="active">Lịch sử sử dụng</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_lich_su_sd_khuyen_mai'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -27,7 +29,9 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Khuyến mãi :: Lịch sử sử dụng mã <i><?php echo $coupons->coupons_code ?></i>
+                <?php echo $this->translate('txt_ds_khuyen_mai'); ?> :: 
+                <?php echo $this->translate('txt_lich_su_sd_ma_khuyen_mai'); ?> 
+                <i><?php echo $coupons->coupons_code ?></i>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -44,11 +48,21 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >Id</th>
-                        <th>Đơn hàng</th>
-                        <th class="col-lim" >Ngày lập đơn hàng</th>
-                        <th class="col-lim" >Ngày sử dụng</th>
-                        <th class="col-lim" >Số tiền sử dụng</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->translate('txt_don_hang'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_ngay_lap_don_hang'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_ngay_su_dung'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_so_tien_su_dung'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                     </tr>
                 </thead>
@@ -86,7 +100,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có giao dịch
+            <?php echo $this->translate('txt_chua_co_giao_dich'); ?>
         </p>
         <?php } ?>
 

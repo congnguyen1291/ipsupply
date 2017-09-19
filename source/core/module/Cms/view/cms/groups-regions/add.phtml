@@ -5,16 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/group_regions') ?>" >
-                        Khu vực
+                        <?php echo $this->translate('txt_khu_vuc'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </li>
             </ol>
         </div>
@@ -29,7 +29,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Khu vực :: Thêm mới
+                <?php echo $this->translate('txt_khu_vuc'); ?> :: 
+                <?php echo $this->translate('txt_them_moi'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-6 pull-rigth" >
@@ -51,15 +52,14 @@
         <div class="col-sm-6 col-xs-12" >
             <div class="form-group">
                 <label for="group_regions_name" >
-                    Tên Khu vực
+                    <?php echo $this->translate('txt_ten_khu_vuc'); ?>
                 </label>
                 <?php echo $this->formRow($form->get('group_regions_name')); ?>
             </div>
         </div>
         <div class="col-sm-6 col-xs-12" >
             <p>
-                Khu vực sẽ được dùng để tạo <a href="/cms/shipping" >vận chuyển</a>.<br />
-                Hãy chọn những đất nước, thành phố mà bạn muốn
+                <?php echo $this->translate('txt_khu_vuc_se_duoc_dung_de_tao'); ?>
             </p>
         </div>
     </div>
@@ -67,7 +67,9 @@
     <?php $countries = $this->Contries()->getContryForWebsite(); ?>
     <?php if( !empty($countries) ){ ?>
     <div class="form-group">
-        <label for="list-coutries">Danh sách country</label>
+        <label for="list-coutries">
+            <?php echo $this->translate('txt_danh_sach_dat_nuoc'); ?>
+        </label>
         <div class="list-coutries clearfix" id="list-coutries" >
         <?php 
             foreach ($countries as $ctry){ 
@@ -98,16 +100,18 @@
     <?php } ?>
 
     <div class="form-group">
-        <label for="is_published">Hiển Thị</label>
+        <label for="is_published">
+            <?php echo $this->translate('txt_hien_thi'); ?>
+        </label>
         <?php echo $this->formRow($form->get('is_published')); ?>
     </div>
 
     <div class="form-group">
         <button class="btn btn-primary btn-sm" >
-            Thêm mới khu vực
+            <?php echo $this->translate('txt_them_moi_khu_vuc'); ?>
         </button>
         <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-            Quay lại
+            <?php echo $this->translate('txt_quay_lai'); ?>
         </button>
     </div>
     <?php echo $this->form()->closeTag(); ?>

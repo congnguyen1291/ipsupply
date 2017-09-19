@@ -93,8 +93,11 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
     <div class="container" >
         <div class="top-header" >
             <div class="clearfix text-xs-right" >
+                <a href="<?php echo $this->translate('txt_href_number_holine') ?>" title="<?php echo $this->translate('txt_hotline_header') ?>" class="link-call-me-mm hidden-md-up" >
+                    <i class="icon i-phone" ></i>
+                </a>
                 <div class="end-bar clearfix" >
-                    <a href="" title="" class="nav-link nav-link-blue" >
+                    <a href="<?php echo $this->translate('txt_href_number_holine') ?>" title="" class="nav-link nav-link-blue" >
                         <?php echo $this->translate('txt_request_a_quote') ?>
                     </a>
                 </div>
@@ -125,7 +128,7 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                         <div class="dropdown-menu coz-dropdown-menu" >
                             <div class="top-cart-content arrow_box" >
                                 <div class="dropdown-label" >
-                                    Chao ban
+                                    <?php echo $this->translate('txt_chao_ban') ?>
                                 </div>
                                 <?php if( !$this->User()->hasLogin() ){ ?>
                                 <div class="dropdown-item" >
@@ -183,7 +186,7 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                                 </button>
                             </form>
                         </div>
-                        <a href="" title="" class="link-call-me hidden-sm-down" >
+                        <a href="<?php echo $this->translate('txt_href_number_holine') ?>" title="<?php echo $this->translate('txt_hotline_header') ?>" class="link-call-me hidden-sm-down" >
                             <?php echo $this->Html()->mapMacroTranslate('txt_hotline_header', array('{ICON}'=> '<i class="icon i-phone" ></i>') ); ?>
                         </a>
                         <div class="cart-mini" data-place="cartMini" ></div>

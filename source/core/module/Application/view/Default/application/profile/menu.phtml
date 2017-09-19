@@ -80,36 +80,6 @@
 					<?php echo $this->translate('txt_profile_comments') ?>
 				</a>
 			</li>
-
-			<?php if( $this->User()->isMerchant() ){ ?>
-			<li <?php echo $active == 'assign' ? 'class="active"' : '' ?> >
-				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/assign" title="<?php echo $this->translate('txt_profile_assign') ?>" >
-					<i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
-					<?php echo $this->translate('txt_profile_assign') ?>
-				</a>
-			</li>
-			<li <?php echo $active == 'industry' ? 'class="active"' : '' ?> >
-				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/industry" title="<?php echo $this->translate('txt_profile_industry') ?>" >
-					<i class="fa fa-industry" aria-hidden="true"></i>
-					<?php echo $this->translate('txt_profile_industry') ?>
-				</a>
-			</li>
-			<?php } ?>
-
-			<?php if( $this->User()->isAffiliate() ){ ?>
-			<li <?php echo $active == 'statistic' ? 'class="active"' : '' ?> >
-				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/statistic" title="<?php echo $this->translate('txt_profile_statistic') ?>" >
-					<i class="fa fa-industry" aria-hidden="true"></i>
-					<?php echo $this->translate('txt_profile_statistic') ?>
-				</a>
-			</li>
-			<li <?php echo $active == 'tracking' ? 'class="active"' : '' ?> >
-				<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/tracking" title="<?php echo $this->translate('txt_profile_tracking') ?>" >
-					<i class="fa fa-link" aria-hidden="true"></i>
-					<?php echo $this->translate('txt_profile_tracking') ?>
-				</a>
-			</li>
-			<?php } ?>
 		</ul>
 	</div>
 	<!-- END MENU -->

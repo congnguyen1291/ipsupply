@@ -5,16 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>" >
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/category') ?>">
-                        Danh mục sản phẩm
+                        <?php echo $this->translate('txt_danh_muc'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Đặc tính
+                    <?php echo $this->translate('txt_dac_tinh'); ?>
                 </li>
             </ol>
         </div>
@@ -29,7 +29,9 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Đặc tính :: Cập nhật <i><?php echo $cat->categories_title ?></i>
+                <?php echo $this->translate('txt_dac_tinh'); ?> :: 
+                <?php echo $this->translate('txt_cap_nhat'); ?> 
+                <i><?php echo $cat->categories_title ?></i>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-6 pull-rigth" >
@@ -80,7 +82,10 @@
                                 } ?>
                                 <li>
                                     <div class="add-future-ajax" >
-                                        <h4>Thêm thuộc tính cho <b><?php echo $feature['feature_title']; ?></b></h4>
+                                        <h4>
+                                            <?php echo $this->translate('txt_thuoc_tinh_cho'); ?>
+                                            <b><?php echo $feature['feature_title']; ?></b>
+                                        </h4>
                                         <div class="row">
                                             <div class="col-xs-12 box box-primary" id="box-primary-form-1" data-row="1">
                                                 <div class="box-body">
@@ -153,13 +158,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-1">
-                                                        <label>Action
+                                                        <label>
+                                                            <?php echo $this->translate('txt_action'); ?>
                                                             <a href="javascript:void(0)" onclick="save_feature(<?php echo $key?>)"  title="save" class="btn glyphicon glyphicon-download-alt save_feature_<?php echo $key?>"></a>
 
                                                         </label>
                                                     </div>
                                                     <div class="form-group" style="display: none;">
-                                                        <input type="text" name="feature[<?php echo $key?>][feature_alias]" id="feature_alias_<?php echo $key?>" placeholder="Đường dẫn" class="form-control input-sm feature_alias" value="">
+                                                        <input type="text" name="feature[<?php echo $key?>][feature_alias]" id="feature_alias_<?php echo $key?>" placeholder="<?php echo $this->translate('txt_duong_dan'); ?>" class="form-control input-sm feature_alias" value="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,7 +180,9 @@
         </ul>
 
         <div class="add-future-ajax" >
-            <h3>Thêm thuộc tính</h3>
+            <h3>
+                <?php echo $this->translate('txt_them_thuoc_tinh'); ?>
+            </h3>
             <div class="row">
                 <div class="col-xs-12" id="box-primary-form-1" data-row="1">
                     <div class="row">
@@ -194,8 +202,12 @@
                                 <label for="feature_type"> <?php echo $this->translate("feature_type");?></label>
                                 <select name="feature[<?php echo count($features[0])?>][feature_type]" id="feature_type_<?php echo count($features[0])?>"
                                         data-row="<?php echo count($features[0])?>"  class="form-control input-sm  feature_type select-commom-feature">
-                                    <option value="1" selected="selected">Bình thường</option>
-                                    <option value="2" >Màu sắc</option>
+                                    <option value="1" selected="selected">
+                                        <?php echo $this->translate('txt_binh_thuong'); ?>
+                                    </option>
+                                    <option value="2" >
+                                        <?php echo $this->translate('txt_mau_sac'); ?>
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -207,8 +219,12 @@
                                     <?php echo $this->translate("Ban chon");?>
                                 </label>
                                 <select name="feature[<?php echo count($features[0])?>][is_value]" id="is_value_feature_<?php echo count($features[0])?>"  data-row="<?php echo count($features[0])?>"  class="form-control input-sm is_value_feature select-commom-feature">
-                                    <option value="3" selected="selected">Color</option>
-                                    <option value="4">Icon</option>
+                                    <option value="3" selected="selected">
+                                        <?php echo $this->translate('txt_color'); ?>
+                                    </option>
+                                    <option value="4">
+                                        <?php echo $this->translate('txt_icon'); ?>
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -244,7 +260,9 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <label>Action</label>
+                            <label>
+                                <?php echo $this->translate('txt_action'); ?>
+                            </label>
                             <a href="javascript:void(0)" onclick="save_feature_parent(<?php echo count($features[0])?>)"  title="save" class="btn glyphicon glyphicon-download-alt save_feature_<?php echo count($features[0])?>"></a>
                         </div>
                         <div class="form-group" style="display: none;">
@@ -257,10 +275,10 @@
 
         <div class="form-group" >
             <button class="btn btn-primary input-sm" >
-                Lưu đặc tính
+                <?php echo $this->translate('txt_luu_dac_tinh'); ?>
             </button>
             <a href="<?php echo $this->url('cms/category') ?>" class="btn btn-danger  input-sm" >
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </a>
         </div>
     </form>

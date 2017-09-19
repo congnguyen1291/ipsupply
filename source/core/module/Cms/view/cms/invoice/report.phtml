@@ -5,15 +5,17 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/invoice') ?>">
-                        Hóa đơn
+                        <?php echo $this->translate('txt_hoa_don'); ?>
                     </a>
                 </li>
-                <li class="active">Report</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_report'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -27,7 +29,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Hóa đơn :: Report
+                <?php echo $this->translate('txt_hoa_don'); ?> :: 
+                <?php echo $this->translate('txt_report'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -36,15 +39,17 @@
                     <div class="input-group">
                         <div class="row row-coz-search" >
                             <div class="col-xs-7 col-coz-search" >
-                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
                             </div>
                             <div class="col-xs-5 col-coz-search" >
                                 <select name="type" class="form-control" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo mã hoá đơn
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ma_hoa_don'); ?>
                                     </option>
                                     <option value="1" <?php echo $type == 1 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo tên khách hàng
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ten_khach_hang'); ?>
                                     </option>
                                 </select>
                             </div>
@@ -70,25 +75,51 @@
             <table class="table table-invoice-report table-bordered" >
                 <thead>
                     <tr>
-                        <th class="col-lim" >Mã Đơn Hàng</th>
-                        <th class="col-lim" >Ngày Đặt Hàng</th>
-                        <th class="col-lim" >Người Đặt hàng</th>
-                        <th class="col-lim" >Đại Lý </th>
-                        <th class="col-lim" >Loại Giao Dịch</th>
-                        <th class="col-lim" >Số Lượng</th>
-                        <th class="col-lim" >Giá Hoa</th>
-                        <th class="col-lim" >Giá Vận Chuyển</th>
-                        <th class="col-lim" >Tổng Tiền</th>
-                        <th class="col-lim" >Mức Hoa Hồng </th>
-                        <th class="col-lim" >Hoa Hồng Trả Đại Lý</th>
-                        <th class="col-lim" >Tổng Tiền Thu Chi</th>
-                        <th class="col-lim" >Lơi Nhuận</th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_ma_don_hang'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_ngay_dat_hang'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_nguoi_dat_hang'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_dai_ly_giao'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_loai_giao_dich'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_so_luong'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_gia_hoa'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_gia_van_chuyen'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_tong_tien'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_muc_hoa_hong'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_hoa_hong_tra_dai_ly'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_tong_tien_thu_chi'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_loi_nhuan'); ?>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($invoices as $key => $row) { ?>
                     <tr>
-                        <td rowspan="2" class="col-lim" valign="middle" >
+                        <td class="col-lim" valign="middle" >
                             <?php echo $row['invoice_id'] ?>            
                         </td>
                         <td class="col-lim" valign="middle" >
@@ -103,7 +134,7 @@
                         <td class="col-lim" valign="middle" >
                             Bán(+)            
                         </td>
-                        <td rowspan="2" class="col-lim text-right" valign="middle" >
+                        <td class="col-lim text-right" valign="middle" >
                             <?php echo $row['total_products'] ?>            
                         </td>
                         <td class="col-lim text-right" valign="middle" >
@@ -124,64 +155,14 @@
                         <td class="col-lim text-right" valign="middle" >
                             <?php echo $this->Currency()->fomatCurrency((($row['total'] + $row['shipping_fee'])-($row['total'] + $row['shipping_fee'])*($row['commission']/100))) ?>           
                         </td>
-                        <td rowspan="2" class="col-lim text-right" valign="middle" >
+                        <td class="col-lim text-right" valign="middle" >
                             <?php echo $this->Currency()->fomatCurrency( max(((($row['total'] + $row['shipping_fee'])-($row['total'] + $row['shipping_fee'])*($row['commission']/100)) - ($row['assign_total'] + $row['assign_shipping'])), 0) ) ?>            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-lim" valign="middle" >
-                            <?php echo $row['assign_date'] ?>           
-                        </td>
-                        <td class="col-lim" valign="middle" >
-                            <?php echo $row['assign_first_name'].' '.$row['assign_last_name'] ?>            
-                        </td>
-                        <td class="col-lim" valign="middle" >
-                            <?php
-                                $imerchant = array(
-                                    'address' => $row['merchant_address'],
-                                    'address01' => $row['merchant_address01'],
-                                    'zipcode' => $row['merchant_zipcode'],
-                                    'longitude' => $row['merchant_longitude'],
-                                    'latitude' => $row['merchant_latitude'],
-                                    'country_id' => $row['merchant_country_id'],
-                                    'city' => $row['merchant_city'],
-                                    'state' => $row['merchant_state'],
-                                    'suburb' => $row['merchant_suburb'],
-                                    'region' => $row['merchant_region'],
-                                    'province' => $row['merchant_province'],
-                                    'cities_id' => $row['merchant_cities_id'],
-                                    'districts_id' => $row['merchant_districts_id'],
-                                    'wards_id' => $row['merchant_wards_id'],
-                                );
-                            ?>
-                            <?php echo $this->Invoice()->getAddress($imerchant); ?>            
-                        </td>
-                        <td class="col-lim" valign="middle" >
-                            Mua(-)            
-                        </td>
-                        <td class="col-lim text-right" valign="middle" >
-                            <?php echo $this->Currency()->fomatCurrency($row['assign_total']) ?>           
-                        </td>
-                        <td class="col-lim text-right" valign="middle" >
-                            <?php echo $this->Currency()->fomatCurrency($row['assign_shipping']) ?>           
-                        </td>
-                        <td class="col-lim text-right" valign="middle" >
-                            <?php echo $this->Currency()->fomatCurrency($row['assign_total'] + $row['assign_shipping']) ?>           
-                        </td>
-                        <td class="col-lim text-right" valign="middle" >
-                            --
-                        </td>
-                        <td class="col-lim text-right" valign="middle" >
-                            --             
-                        </td>
-                        <td class="col-lim text-right" valign="middle" >
-                            -<?php echo $this->Currency()->fomatCurrency($row['assign_total'] + $row['assign_shipping']) ?>            
                         </td>
                     </tr>
                     <?php } ?>
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tổng doanh thu
+                            <?php echo $this->translate('txt_tong_doanh_thu'); ?>
                         </td>
                         <td colspan="3" class="text-right" >
                             <strong class="coz-color-important" >
@@ -192,7 +173,7 @@
 
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Tổng chi phí đặt đại lý
+                            <?php echo $this->translate('txt_tong_chi_phi_dat_dai_ly'); ?>
                         </td>
                         <td colspan="3" class="text-right" >
                             <strong class="coz-color-important" >
@@ -203,7 +184,7 @@
 
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Hoa hồng phải trả đại lý
+                            <?php echo $this->translate('txt_hoa_hong_tra_dai_ly'); ?>
                         </td>
                         <td colspan="3" class="text-right" >
                             <strong class="coz-color-important" >
@@ -214,7 +195,7 @@
 
                     <tr>
                         <td colspan="10" class="text-right" >
-                            Lợi Nhuận
+                            <?php echo $this->translate('txt_loi_nhuan'); ?>
                         </td>
                         <td colspan="3" class="text-right" >
                             <strong class="coz-color-important" >
@@ -227,7 +208,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có hóa đơn
+            <?php echo $this->translate('txt_chua_co_ho_don'); ?>
         </p>
         <?php } ?>
 

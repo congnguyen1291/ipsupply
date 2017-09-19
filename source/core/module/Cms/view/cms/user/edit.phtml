@@ -98,7 +98,7 @@
                                     Kiểu dùng xác định tài khoản này là supper admin, khi đó chủ tài khoản sẽ có toàn quyền trên trang
                                 </p>
                                 <label>
-                                    <input type="checkbox" name="is_administrator" <?php echo !empty($user->is_administrator) ? 'checked="checked"' : '' ?> >
+                                    <input type="checkbox" name="is_administrator" <?php echo !empty($user->is_administrator) ? 'checked="checked"' : '' ?> value="1" >
                                     Là administrator
                                 </label>
                             </div>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display: none;" >
                     <label for="merchant_id">Thuộc đại lý</label>
                     <?php echo $this->formRow($form->get('merchant_id')); ?>
                 </div>

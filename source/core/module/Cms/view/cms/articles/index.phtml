@@ -5,11 +5,12 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Bài viết <?php echo !empty($category) ? 'trong danh mục <i>'.$category->categories_articles_title.'</i>' : '' ?>
+                    <?php echo $this->translate('txt_bai_viet'); ?> 
+                    <?php echo !empty($category) ? $this->translate('txt_trong_danh_muc').'<i>'.$category->categories_articles_title.'</i>' : '' ?>
                 </li>
             </ol>
         </div>
@@ -24,7 +25,9 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Bài viết <?php echo !empty($category) ? 'trong danh mục <i>'.$category->categories_articles_title.'</i>' : '' ?>:: Quản lý
+                <?php echo $this->translate('txt_bai_viet'); ?> 
+                <?php echo !empty($category) ? $this->translate('txt_trong_danh_muc').'<i>'.$category->categories_articles_title.'</i>' : '' ?> ::
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -38,7 +41,8 @@
                             <div class="col-xs-5 col-coz-search" >
                                 <select name="type" class="form-control" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo tên
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ten'); ?>
                                     </option>
                                 </select>
                             </div>
@@ -62,20 +66,20 @@
                 <div class="col-sm-6" ></div>
                 <div class="col-sm-6" >
                     <div class="text-right" >
-                        <a href="<?php echo $this->url('cms/articles', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm bài viết" >
+                        <a href="<?php echo $this->url('cms/articles', array('action' => 'add')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_bai_viet'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($articles) ){ ?>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'publish')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện bài viết" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'publish')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_bai_viet'); ?>" >
                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'unpublish')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn bài viết" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'unpublish')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_bai_viet'); ?>" >
                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'autoOrder')) ?>')" data-toggle="tooltip" data-placement="top" title="Cập nhật thứ tự" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'autoOrder')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_cap_nhat_thu_tu'); ?>" >
                             <i class="fa fa-sort" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá bài viết" >
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/articles', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_bai_viet'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -92,13 +96,21 @@
                 <thead>
                     <tr>
                         <th class="text-center col-lim" ></th>
-                        <th class="text-center col-lim" >ID</th>
-                        <th class="text-center col-lim" >Hình</th>
-                        <th>Tên</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_hinh'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
                         <th class="col-lim" >
                             <i class="fa fa-sort" aria-hidden="true"></i>
                         </th>
-                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -116,17 +128,17 @@
                             <input name="ordering[<?php echo $row['articles_id'] ?>]" class="ordering" type="hidden" value="<?php echo $row['ordering'] ?>" >
                         </td>
                         <td class="text-center col-lim" >
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa bài viết" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_bai_viet'); ?>" >
                                 <img src="<?php echo $this->Images()->getUrlImage($this->Articles()->getImage($row),100); ?>" class="img-reponsive" width="100" >
                             </a>
                         </td>
                         <td>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa bài viết" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_bai_viet'); ?>" >
                                 <?php 
                                     if( !empty($row['has_language']) )
                                         echo $row['articles_title'];
                                     else
-                                        echo '<i class="coz-color-disable" >'.$row['articles_title'].'</i><i class="coz-color-important" data-toggle="tooltip" data-placement="top" title="Bạn vui lòng cập nhật bài viết này, nó đang trống cho ngôn ngữ hiện tại" > Warning ,Empty !</a>';
+                                        echo '<i class="coz-color-disable" >'.$row['articles_title'].'</i><i class="coz-color-important" data-toggle="tooltip" data-placement="top" title="'.$this->translate('txt_warning_empty_present_language').'" > Warning ,Empty !</a>';
                                 ?>
                             </a>
                         </td>
@@ -135,43 +147,43 @@
                         </td>
                         <td class="col-lim" >
                             <?php if( !empty($row['is_new']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Bài viết mới" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_la_bai_viet_moi'); ?>" >
                                     <i class="fa fa-file-o" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Bài viết không mới" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_khong_la_bai_viet_moi'); ?>" >
                                     <i class="fa fa-file-o" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
 
                             <?php if( !empty($row['is_hot']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Bài viết nổi bật" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_la_bai_viet_noi_bat'); ?>" >
                                     <i class="fa fa-fire" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Bài viết không nổi bật" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_khong_la_bai_viet_noi_bat'); ?>" >
                                     <i class="fa fa-fire" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
 
                             <?php if( !empty($row['is_published']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
                         </td>
                         <td class="text-right col-lim" >
                             <?php if( empty($languages) ){ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa bài viết" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_bai_viet'); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
                             <?php }else{ ?>
                             <span class="inline-box" >
-                                <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" title="Sửa bài viết" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                <a href="<?php echo $this->url('cms/articles', array('action' => 'edit', 'id' => $row['articles_id'])) ?>" title="<?php echo $this->translate('txt_sua_bai_viet'); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
                                 <span class="dropdown-menu dropdown-langs" >
@@ -188,36 +200,36 @@
                             </span>
                             <?php } ?>
 
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'delete', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá bài viết" data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'delete', 'id' => $row['articles_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_bai_viet'); ?>" data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
 
                             <?php if( !empty($row['is_new']) ){ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'unnew', 'id' => $row['articles_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Bài viết mới" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'unnew', 'id' => $row['articles_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_bai_viet_moi'); ?>" >
                                 <i class="fa fa-file-o" aria-hidden="true"></i>
                             </a>
                             <?php }else{ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'new', 'id' => $row['articles_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Bài viết không mới" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'new', 'id' => $row['articles_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_bai_viet_khong_moi'); ?>" >
                                 <i class="fa fa-file-o" aria-hidden="true"></i>
                             </a>
                             <?php } ?>
 
                             <?php if( !empty($row['is_hot']) ){ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'unhot', 'id' => $row['articles_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Bài viết hot" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'unhot', 'id' => $row['articles_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_bai_viet_hot'); ?>" >
                                 <i class="fa fa-fire" aria-hidden="true"></i>
                             </a>
                             <?php }else{ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'hot', 'id' => $row['articles_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Bài viết không hot" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'hot', 'id' => $row['articles_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_bai_viet_khong_hot'); ?>" >
                                 <i class="fa fa-fire" aria-hidden="true"></i>
                             </a>
                             <?php } ?>
 
                             <?php if( !empty($row['is_published']) ){ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'unpublish', 'id' => $row['articles_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn bài viết" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'unpublish', 'id' => $row['articles_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_bai_viet'); ?>" >
                                 <i class="fa fa-toggle-on" aria-hidden="true"></i>
                             </a>
                             <?php }else{ ?>
-                            <a href="<?php echo $this->url('cms/articles', array('action' => 'publish', 'id' => $row['articles_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện bài viết" >
+                            <a href="<?php echo $this->url('cms/articles', array('action' => 'publish', 'id' => $row['articles_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_bai_viet'); ?>" >
                                 <i class="fa fa-toggle-off" aria-hidden="true"></i>
                             </a>
                             <?php } ?>
@@ -232,7 +244,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có bài viết
+            <?php echo $this->translate('txt_hien_bai_viet'); ?>
         </p>
         <?php } ?>
 

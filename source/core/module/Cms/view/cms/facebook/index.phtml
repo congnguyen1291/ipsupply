@@ -24,7 +24,7 @@
 				<div class="coz-fb-dtbc" >
 					<div class="coz-fb-empty-ct" >
 						<a href="${tmlFacebook.getUrlAuth(auth)}" class="coz-fb-btn-oauth" >
-							Get access token
+							<?php echo $this->translate('txt_get_token_access'); ?>
 						</a>
 						<p>
 							${tmlFacebook.getReasonAuth(auth)}
@@ -44,7 +44,9 @@
 							<div class="coz-fb-empty-ct" >
 								<div class="row" >
 									<div class="col-sm-12" >
-										<p>Chọn trang bạn muốn quản lý</p>
+										<p>
+											<?php echo $this->translate('txt_chon_trang_ban_muon_quan_ly'); ?>
+										</p>
 									</div>
 									<div class="col-sm-offset-4 col-sm-4" >
 										<form action="" method="post" data-form="configApp" >
@@ -73,7 +75,7 @@
 											<div class="form-group">
 												<div class="coz-fb-btn-refresh" >
 													<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="appConfig" >
-														Sử dụng
+														<?php echo $this->translate('txt_su_dung'); ?>
 													</a>
 												</div>
 											</div>
@@ -97,8 +99,7 @@
 										<div class="coz-fb-loadding" >
 											<div class="coz-fb-process-ld" ></div>
 											<div class="coz-fb-text-ld" >
-												Đồng bộ dữ liệu,
-												vui lòng đợi
+												<?php echo $this->translate('txt_dong_bo_du_lieu_vui_long_doi'); ?>
 											</div>
 										</div>
 									</div>
@@ -114,13 +115,13 @@
 						<ul class="nav nav-tabs  clearfix" role="tablist">
 							<li role="presentation" {{if tmlFacebook.isTabActive('#fb-comment') }} class="active" {{/if}} >
 								<a href="#fb-comment" aria-controls="fb-comment" role="tab" data-toggle="tab">
-									Danh sách trả lời trên facebook
+									<?php echo $this->translate('txt_danh_sach_tra_loi_tren_face'); ?>
 								</a>
 							</li>
 
 							<li role="presentation" {{if tmlFacebook.isTabActive('#fb-feed') }} class="active" {{/if}} >
 								<a href="#fb-feed" aria-controls="fb-feed" role="tab" data-toggle="tab">
-									Danh sách bài đăng trên facebook
+									<?php echo $this->translate('txt_danh_sach_bai_dang_tren_face'); ?>
 								</a>
 							</li>
 						</ul>
@@ -156,7 +157,7 @@
 																</div>
 																<div class="coz-fb-btn-refresh" >
 																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshComments" >
-																		Tải lại
+																		<?php echo $this->translate('txt_tai_lai'); ?>
 																	</a>
 																</div>
 															</div>
@@ -173,11 +174,11 @@
 														<div class="coz-fb-loadd-error" >
 															<div class="coz-fb-in-loadd-error" >
 																<div class="coz-fb-text-loadd-error" >
-																	Không có dữ liệu trả về
+																	<?php echo $this->translate('txt_khong_co_du_lieu_tra_ve'); ?>
 																</div>
 																<div class="coz-fb-btn-refresh" >
 																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshComments" >
-																		Tải lại
+																		<?php echo $this->translate('txt_tai_lai'); ?>
 																	</a>
 																</div>
 															</div>
@@ -300,7 +301,7 @@
 								<div class="coz-fb-more" >
 									<div class="coz-fb-inner-more" >
 										<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="moreComments" data-page="${tmlFacebook.getPageComment(comments)}" data-offset="${tmlFacebook.getOffsetComment(comments)}" data-since="${tmlFacebook.getSinceComment(comments)}" data-xoffset="${tmlFacebook.getXOffsetComment(comments)}" data-yoffset="${tmlFacebook.getYOffsetComment(comments)}" >
-											Xem thêm bình luận
+											<?php echo $this->translate('txt_xem_them_binh_luan'); ?>
 										</a>
 									</div>
 								</div>
@@ -337,7 +338,7 @@
 																</div>
 																<div class="coz-fb-btn-refresh" >
 																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshFeeds" >
-																		Tải lại
+																		<?php echo $this->translate('txt_tai_lai'); ?>
 																	</a>
 																</div>
 															</div>
@@ -354,11 +355,11 @@
 														<div class="coz-fb-loadd-error" >
 															<div class="coz-fb-in-loadd-error" >
 																<div class="coz-fb-text-loadd-error" >
-																	Không có dữ liệu trả về
+																	<?php echo $this->translate('txt_khong_co_du_lieu_tra_ve'); ?>
 																</div>
 																<div class="coz-fb-btn-refresh" >
 																	<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="refreshFeeds" >
-																		Tải lại
+																		<?php echo $this->translate('txt_tai_lai'); ?>
 																	</a>
 																</div>
 															</div>
@@ -395,9 +396,9 @@
 			                                                		<a href="${tmlFacebook.user.getLink($value.from)}" >
 						                                        		${tmlFacebook.user.getName($value.from)}
 						                                        	</a>
-						                                        	đã chia sẻ
+						                                        	<?php echo $this->translate('txt_da_chia_se'); ?>
 			                                                    	<a href="${tmlFacebook.feed.getLink($value)}" >
-						                                        		một liên kết
+						                                        		<?php echo $this->translate('txt_mot_lien_ket'); ?>
 						                                        	</a>
 			                                                    </div>
 			                                                </div>
@@ -512,7 +513,7 @@
 								<div class="coz-fb-more" >
 									<div class="coz-fb-inner-more" >
 										<a href="javascript:void(0);" class="coz-fb-btn-oauth" data-btn="moreFeeds" data-page="${tmlFacebook.getPageFeed(feeds)}" data-offset="${tmlFacebook.getOffsetFeed(feeds)}" data-since="${tmlFacebook.getSinceFeed(feeds)}" >
-											Xem thêm bài viết
+											<?php echo $this->translate('txt_xem_them_bai_viet'); ?>
 										</a>
 									</div>
 								</div>

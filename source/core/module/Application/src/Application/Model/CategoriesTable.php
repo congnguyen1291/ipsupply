@@ -751,7 +751,16 @@ class CategoriesTable extends AppTable {
             $adapter = $this->tableGateway->getAdapter();
             $sql = new Sql($adapter);
             $select = $sql->select();
-            $select->columns(array('categories_id', 'website_id', 'parent_id', 'is_static', 'icon', 'is_published', 'is_delete', 'date_create', 'date_update', 'ordering', 'parent_name', 'addfeature'));
+            $select->columns(array('categories_id', 'website_id', 'parent_id', 'is_static', 'icon', 'is_published', 'is_delete', 'date_create', 'date_update', 'ordering', 'parent_name', 'addfeature', 'number_product'=> new Expression('(SELECT COUNT(DISTINCT `products`.`products_id`) 
+                FROM `products` 
+                INNER JOIN `products_category` ON `products_category`.`products_id` = `products`.`products_id`
+                WHERE `categories`.`categories_id` = `products_category`.`categories_id` OR 0 < (SELECT COUNT(*)
+                    FROM `categories` AS `t1`
+                    LEFT JOIN `categories` AS `t2` ON `t2`.`parent_id` = `t1`.`categories_id`
+                    LEFT JOIN `categories` AS `t3` ON `t3`.`parent_id` = `t2`.`categories_id`
+                    LEFT JOIN `categories` AS `t4` ON `t4`.`parent_id` = `t3`.`categories_id`
+                    WHERE   `t1`.`parent_id` = `categories`.`categories_id` 
+                            AND (`t1`.`is_published` = 1 OR `t2`.`is_published` = 1 OR `t3`.`is_published` = 1 OR `t4`.`is_published` = 1) AND (`t1`.`categories_id` = `products_category`.`categories_id` OR `t2`.`categories_id` = `products_category`.`categories_id` OR `t3`.`categories_id` = `products_category`.`categories_id` OR `t4`.`categories_id` = `products_category`.`categories_id` )))')));
             $select->from('categories');
             $select->join('categories_translate', 'categories_translate.categories_id=categories.categories_id',array('categories_title', 'categories_description', 'categories_alias', 'seo_keywords', 'seo_description', 'seo_title', 'language'));
             $select->where(array(

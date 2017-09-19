@@ -10,16 +10,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/articles') ?>" >
-                        Bài viết
+                        <?php echo $this->translate('txt_bai_viet'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Cập nhật bài viết
+                    <?php echo $this->translate('txt_cap_nhat_bai_viet'); ?>
                 </li>
             </ol>
         </div>
@@ -34,7 +34,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Bài viết :: Cập nhật
+                <?php echo $this->translate('txt_bai_viet'); ?> :: 
+                <?php echo $this->translate('txt_cap_nhat'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-6 pull-rigth" >
@@ -58,12 +59,12 @@
         <ul class="nav nav-inline coz-tab clearfix" role="tablist">
             <li class="nav-item active" >
                 <a class="nav-link" data-toggle="tab" href="#tab_common" role="tab" rel="nofollow">
-                    Thông tin chung                                    
+                    <?php echo $this->translate('txt_thong_tin_chung'); ?>                                    
                 </a>
             </li>
             <li class="nav-item" >
                 <a class="nav-link" data-toggle="tab" href="#tab_seo" role="tab" rel="nofollow">
-                    SEO                                    
+                    <?php echo $this->translate('txt_seo'); ?>                                    
                 </a>
             </li>
         </ul>
@@ -75,7 +76,7 @@
                     <div class="col-sm-6 col-xs-6" >
                         <div class="form-group">
                             <label for="languageoption">
-                                Ngôn ngữ
+                                <?php echo $this->translate('txt_ngon_ngu'); ?>
                             </label>
                             <input type="hidden" name="language" value="<?php echo $this->langselected;?>" />
                             <select name="languageoption" id="language" class="form-control input-sm" disabled >
@@ -94,10 +95,10 @@
                         </div>
                         <div class="form-group">
                             <label for="articles_title" >
-                                Tiêu đề
+                                <?php echo $this->translate('txt_tieu_de'); ?>
                                 <?php if( empty($article->articles_title) ){ ?>
                                 <div class="coz-color-disable" >
-                                    Gợi ý : tên của nó trên ngôn ngữ khác là : 
+                                    <?php echo $this->translate('txt_goi_y_ten_tren_nn_khac'); ?> 
                                     (<i><?php echo $article->articles_title_root ?></i>)
                                 </div>
                                 <?php } ?>
@@ -106,20 +107,20 @@
                         </div>
                         <div class="form-group">
                             <label for="articles_alias">
-                                Đường dẫn
+                                <?php echo $this->translate('txt_duong_dan'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('articles_alias')); ?>
                         </div>
                         <div class="form-group">
                             <label for="categories_articles_id" >
-                                Danh mục
+                                <?php echo $this->translate('txt_danh_muc'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('categories_articles_id')); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="tags" >
-                                Tags
+                                <?php echo $this->translate('txt_tags'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('tags')); ?>
                         </div>
@@ -158,34 +159,34 @@
 
                 <div class="form-group">
                     <label for="articles_sub_content">
-                        Tóm tắt
+                        <?php echo $this->translate('txt_tom_tat'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('articles_sub_content')); ?>
                 </div>
 
                 <div class="form-group">
                     <label for="articles_content">
-                        Nội dung
+                        <?php echo $this->translate('txt_noi_dung'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('articles_content')); ?>
                 </div>
 
                 <div class="form-group" >
                     <label for="ordering">
-                        Vị trí
+                        <?php echo $this->translate('txt_vi_tri'); ?>
                         <?php echo $this->formRow($form->get('ordering')); ?>
                     </label>
                     <label for="is_new">
                         <?php echo $this->formRow($form->get('is_new')); ?>
-                        Bài viết mới
+                        <?php echo $this->translate('txt_bai_viet_moi'); ?>
                     </label>
                     <label for="is_hot">
                         <?php echo $this->formRow($form->get('is_hot')); ?>
-                        Bài viết nổi bật
+                        <?php echo $this->translate('txt_bai_viet_noi_bat'); ?>
                     </label>
                     <label for="is_published" >
                         <?php echo $this->formRow($form->get('is_published')); ?>
-                        Hiển thị
+                        <?php echo $this->translate('txt_hien_thi'); ?>
                     </label>
                 </div>
 
@@ -195,19 +196,19 @@
             <div class="coz-tab-content clearfix" >
                 <div class="form-group">
                     <label for="title_seo" >
-                        Seo title
+                        <?php echo $this->translate('txt_seo_title'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('title_seo')); ?>
                 </div>
                 <div class="form-group">
                     <label for="keyword_seo" >
-                        SEO Keywords
+                        <?php echo $this->translate('txt_seo_keywords'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('keyword_seo')); ?>
                 </div>
                 <div class="form-group">
                     <label for="description_seo">
-                        SEO Description
+                        <?php echo $this->translate('txt_seo_description'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('description_seo')); ?>
                 </div>
@@ -217,10 +218,10 @@
 
     <div class="form-group">
         <button class="btn btn-primary btn-sm" >
-            Cập nhật bài viết
+            <?php echo $this->translate('txt_cap_nhat_bai_viet'); ?>
         </button>
         <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-            Quay lại
+            <?php echo $this->translate('txt_quay_lai'); ?>
         </button>
     </div>
     <?php echo $this->form()->closeTag(); ?>

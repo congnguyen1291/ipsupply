@@ -142,6 +142,17 @@ class Articles  extends App
         return $articles;
     }
 
+    public function getRow( $articles_id=0 )
+    {
+        $key = md5($this->getNamspaceCached().':ArticlesTable:getRow('.$articles_id.')');
+        $results = $this->view->Datas()->popIDataHashMap($key);
+        if( !$results ) {
+            $results = $this->getModelTable('ArticlesTable')->getRow($articles_id);
+            $this->view->Datas()->pushIDataHashMap($key, $results);
+        }
+        return $results;
+    }
+
     public function getCategoriesId($article){
         if( !empty($article) && !empty($article['categories_articles_id']) ){
             return $article['categories_articles_id'];
@@ -191,7 +202,7 @@ class Articles  extends App
             && !empty($article['rating']) ){
             return $article['rating'];
         }
-        return '';
+        return 0;
     }
 
     public function getDateCreate($article){

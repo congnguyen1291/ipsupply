@@ -100,7 +100,7 @@ class BackEndController extends AbstractActionController
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'vi_VN';
         $sm = $this->getServiceLocator();
         $translator = $sm->get('translator');
-        $path_lang = LANG_PATH.'/'.$lang.'.php';
+        $path_lang = PATH_MODULE.'/Cms/lang/'.$lang.'.php';
         $translator->addTranslationFile("phparray",$path_lang);
 
         $sm->get('ViewHelperManager')->get('translate')

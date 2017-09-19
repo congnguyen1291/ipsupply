@@ -167,6 +167,14 @@ class Categories extends App
         return '';
     }
 
+    public function getNumberProduct($categories){
+        if( !empty($categories) 
+            && !empty($categories['number_product']) ){
+            return $categories['number_product'];
+        }
+        return 0;
+    }
+
     public function getIcon($categories){
         if( !empty($categories) && !empty($categories['icon']) ){
             return $categories['icon'];

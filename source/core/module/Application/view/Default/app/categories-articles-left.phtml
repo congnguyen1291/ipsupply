@@ -16,7 +16,9 @@ if( !empty($categoriesRoot) ){ ?>
             <span class="txt-inner" >
                 <?php echo $this->CategoriesArticles()->getTitle($category01); ?>
             </span>
-            <span class="number-in" >10</span>
+            <span class="number-in" >
+                <?php echo $this->CategoriesArticles()->getNumberArticle($category01); ?>
+            </span>
         </a>
         <?php if( !empty($childrens) ){ ?>
         <ul class="dropdown-menu">
@@ -28,7 +30,9 @@ if( !empty($categoriesRoot) ){ ?>
                     <span class="txt-inner" >
                         <?php echo $this->CategoriesArticles()->getTitle($category02); ?>
                     </span>
-                    <span class="number-in" >10</span>
+                    <span class="number-in" >
+                        <?php echo $this->CategoriesArticles()->getNumberArticle($category02); ?>
+                    </span>
                 </a>
 
                 <?php if( !empty($childrens02) ){ ?>
@@ -38,6 +42,9 @@ if( !empty($categoriesRoot) ){ ?>
                         <a class="nav-link" href="<?php echo $this->CategoriesArticles()->getCategoriesUrl($category03); ?>" title="<?php echo $this->CategoriesArticles()->getTitle($category03); ?>"  data-pjax="true" data-container="Main"  itemprop="url" >
                             <span class="txt-inner" >
                                 <?php echo $this->CategoriesArticles()->getTitle($category03); ?>
+                            </span>
+                            <span class="number-in" >
+                                <?php echo $this->CategoriesArticles()->getNumberArticle($category03); ?>
                             </span>
                         </a>
                     </li>

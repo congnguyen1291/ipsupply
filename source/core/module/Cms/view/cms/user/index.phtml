@@ -172,7 +172,7 @@
                             <?php } ?>
 
                             <?php if( !empty($row['merchant_id']) ){ ?>
-                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'edit', 'id' => $row['merchant_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Có liên kết đến một merchant" >
+                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'edit', 'id' => $row['merchant_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Có liên kết đến một merchant"  style="display: none;"  >
                                 <i class="fa fa-link" aria-hidden="true"></i>
                             </a>
                             <?php } ?>

@@ -5,16 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/coupons') ?>">
-                        Mã khuyến mãi
+                        <?php echo $this->translate('txt_khuyen_mai'); ?>
                     </a>
                 </li>
                 <li class="active"> 
-                    Thêm mã mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </li>
             </ol>
         </div>
@@ -28,7 +28,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Khuyến mãi :: Thêm mới
+                <?php echo $this->translate('txt_khuyen_mai'); ?> :: 
+                <?php echo $this->translate('txt_them_moi'); ?>
             </h1>
         </div>
     </div>
@@ -48,26 +49,34 @@
         <div class="row" >
             <div class="col-sm-6 col-xs-6" >
                 <div class="form-group">
-                    <label for="coupons_code" >Mã khuyến mãi</label>
+                    <label for="coupons_code" >
+                        <?php echo $this->translate('txt_ma_khuyen_mai'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('coupons_code')); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="coupon_price">Giá trị</label>
+                    <label for="coupon_price">
+                        <?php echo $this->translate('txt_gia_tri'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('coupon_price')); ?>
                 </div>
 
                 <div class="row" >
                     <div class="col-xs-6" >
                         <div class="form-group">
-                            <label for="start_date">Ngày bắt đầu</label>
+                            <label for="start_date">
+                                <?php echo $this->translate('txt_ngay_bat_dau'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('start_date')); ?>
                         </div>
                     </div>
 
                     <div class="col-xs-6" >
                         <div class="form-group">
-                            <label for="expire_date">Ngày hết hạn</label>
+                            <label for="expire_date">
+                                <?php echo $this->translate('txt_ngay_ket_thuc'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('expire_date')); ?>
                         </div>
                     </div>
@@ -75,7 +84,7 @@
 
                 <div class="form-group">
                     <label for="min_price_use">
-                        Điều kiện giá trị đơn hàng có thể dùng mã
+                        <?php echo $this->translate('txt_dk_su_dung_coupon'); ?>
                     </label>
                     <div class="row" >
                         <div class="col-xs-6" >
@@ -93,10 +102,10 @@
         <div class="form-group" >
             <label for="coupons_type">
                 <?php echo $this->formRow($form->get('coupons_type')); ?>
-                Dùng nhiều lần
+                <?php echo $this->translate('txt_dung_nhieu_lan'); ?>
             </label>
             <label for="ordering" id="wrap-coupons-max-use" style="margin-left: 20px"  >
-                Số lần dùng tối đa
+                <?php echo $this->translate('txt_so_lan_dung_max'); ?>
                 <?php echo $this->formRow($form->get('coupons_max_use')); ?>
             </label>
         </div>
@@ -104,16 +113,16 @@
         <div class="form-group" >
             <label for="is_published">
                 <?php echo $this->formRow($form->get('is_published')); ?>
-                Kích hoạt
+                <?php echo $this->translate('txt_kich_hoat'); ?>
             </label>
         </div>
 
         <div class="form-group" >
             <button class="btn btn-primary btn-sm">
-                Thêm mới mã khuyến mại
+                <?php echo $this->translate('txt_them_moi_ma_km'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

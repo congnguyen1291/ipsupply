@@ -9,6 +9,7 @@
 define('PATH_BASE_ROOT', dirname(__FILE__));
 define('DS', DIRECTORY_SEPARATOR);
 define('LANG_PATH', PATH_BASE_ROOT.'/../core/module/lang');
+define('PATH_MODULE', PATH_BASE_ROOT.'/../core/module');
 define('PRICE_UNIT', 'đ');
 /**
  * This makes our life easier when dealing with paths. Everything is relative

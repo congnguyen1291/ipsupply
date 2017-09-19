@@ -1,7 +1,11 @@
-html{overflow-x:hidden;font-family: 'PT Sans', sans-serif;font-size: 13px;background: #FFF}
-body{font-family: 'PT Sans', sans-serif;font-size: 13px;color:#333;background: #FFF;overflow: hidden;}
-a{color: #333;font-size: 13px}
-h1, h2, h3, h4, h5, h6{font-family: 'PT Sans', sans-serif;color:#333;line-height: normal;}
+@font-face {
+  font-family: 'QuattrocentoSans';
+  src: url('../fonts/QuattrocentoSans/QuattrocentoSans-Regular.ttf')  format('truetype')
+}
+html{overflow-x:hidden;font-family: 'QuattrocentoSans', 'PT Sans', sans-serif;font-size: 14px;background: #FFF}
+body{font-family: 'QuattrocentoSans', 'PT Sans', sans-serif;font-size: 14px;color:#333;background: #FFF;overflow: hidden;}
+a{color: #333;font-size: 14px}
+h1, h2, h3, h4, h5, h6{font-family: 'QuattrocentoSans', 'PT Sans', sans-serif;color:#333;line-height: normal;}
 .clearfix:after {
     content: "";
     display: block;
@@ -104,7 +108,7 @@ select.form-control {
     padding: 0 50px 0 0;
     position: relative;
     border-radius: 30px;
-    width: 50%;
+    width: 35%;
 }
 .search-bar .input-search {
     height: 40px;
@@ -1287,12 +1291,14 @@ select.form-control {
 }
 .search-bar-mm {
     background: #333;
+    position: relative;
+    z-index: 9;
 }
 .search-bar-mm .search-bar {
     display: block;
     background: transparent;
     padding: 0 50px 0 0;
-    position: relative;
+    position: initial;
     border-radius: 0;
     width: auto;
 }
@@ -1486,6 +1492,63 @@ select.form-control {
 .login-content input.form-control{
     border: 1px solid #eee;
     border-radius: 0
+}
+.icon{
+    display: inline-block;
+    vertical-align: middle;
+    background: url(../images/icon.png) no-repeat;
+}
+.icon.i-phone{
+    width: 35px;
+    height: 35px;
+    background-position: 0 0;
+    margin-top: -1px
+}
+.link-call-me-mm {
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    padding: 8px 0;
+    width: 50px;
+    text-align: center;
+}
+.psm-sort {
+    display: table-row;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+.psm-isort {
+    display: table-cell;
+    width: 30px;
+    vertical-align: middle;
+    padding: 10px 0;
+}
+.psm-nsort {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px 0 10px 15px;
+    white-space: normal;
+}
+.ipsm-sort{
+    display: table;
+    width: 100%
+}
+.search-bar .xdsoft_autocomplete .xdsoft_autocomplete_dropdown{
+    left: 20px !important;
+    border: none
+}
+.psm-isort img {
+    max-width: 100%;
+}
+.search-bar-mm .xdsoft_autocomplete{
+    position: initial !important;
+}
+.search-bar-mm  .xdsoft_autocomplete .xdsoft_autocomplete_dropdown {
+    left: 0 !important;
+    width: 100% !important;
+    border: none;
 }
 @media (max-width: 991px){
     .container {
