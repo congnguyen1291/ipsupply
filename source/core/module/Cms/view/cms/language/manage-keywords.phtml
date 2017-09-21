@@ -5,16 +5,18 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/language') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Ngôn ngữ
+                        <?php echo $this->translate('txt_ngon_ngu'); ?>
                     </a>
                 </li>
-                <li class="active">Từ khóa</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -28,14 +30,15 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Từ khóa :: Quản lý
+                <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
             <form action="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>" method="get">
                 <div class="coz-search-bar clearfix" data-form="searchAjax" >
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
                         <span class="input-group-btn">
                             <button type="submit" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>
@@ -55,12 +58,12 @@
             <div class="row" >
                 <div class="col-sm-12" >
                     <div class="text-right" >
-                        <a href="<?php echo $this->url('cms/language', array('action' => 'add-keyword')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm từ khóa" >
+                        <a href="<?php echo $this->url('cms/language', array('action' => 'add-keyword')) ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_tu_khoa'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($keywords) ){ ?>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/language', array('action' => 'delete-keyword')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá từ khóa" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/language', array('action' => 'delete-keyword')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_tu_khoa'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -74,9 +77,13 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="col-lim" >Id</th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
                         <?php foreach($languages as $lang) { ?>
-                        <th><?php echo $lang['languages_name'] ?></th>
+                        <th>
+                            <?php echo $lang['languages_name'] ?>
+                        </th>
                         <?php } ?>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
@@ -102,7 +109,7 @@
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/language', array('action' => 'delete-keyword')) ?>?word=<?php echo $row['keyword'] ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Xoá từ khóa"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/language', array('action' => 'delete-keyword')) ?>?word=<?php echo $row['keyword'] ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_tu_khoa'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -116,7 +123,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có từ khoá
+            <?php echo $this->translate('txt_chua_co_tu_khoa'); ?>
         </p>
         <?php } ?>
 

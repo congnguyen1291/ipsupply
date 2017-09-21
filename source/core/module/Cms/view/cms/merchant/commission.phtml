@@ -2,9 +2,14 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
                 <li class="active">
-                    Danh sách commission của đại lý
+                    <?php echo $this->translate('txt_ds_commission_cho_dai_ly'); ?>
                     <i><?php echo $merchant->merchant_name ?></i>
                 </li>
             </ol>
@@ -20,14 +25,16 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Commission của đại lý <i><?php echo $merchant->merchant_name ?></i> :: Quản lý
+                <?php echo $this->translate('txt_commission_cho_dai_ly'); ?> 
+                <i><?php echo $merchant->merchant_name ?></i> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
             <form action="<?php echo $this->url('cms/merchant', array('action' => 'commission')) ?>" method="post">
                 <div class="coz-search-bar clearfix" data-form="searchAjax" >
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" >
                         <span class="input-group-btn">
                             <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>
@@ -48,20 +55,20 @@
                 <div class="col-sm-12" >
                     <div class="text-right" >
                         <a href="<?php echo $this->url('cms/merchant', array('action' => 'addCommission')) ?>"
-                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm commission" >
+                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_commission'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($commissions) ){ ?>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'publishCommission')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện commission" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'publishCommission')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_commission'); ?>" >
                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'unpublishCommission')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn commission" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'unpublishCommission')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_commission'); ?>" >
                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'deleteCommission')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá commission" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'deleteCommission')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_commission'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -75,11 +82,21 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >ID</th>
-                        <th class="text-right" >Rate</th>
-                        <th class="col-lim text-right" >Start</th>
-                        <th class="col-lim text-right" >End</th>
-                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th class="text-right" >
+                            <?php echo $this->translate('txt_rate'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_start'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_end'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -103,30 +120,30 @@
                         </td>
                         <td class="col-lim text-right" >    
                             <?php if( !empty($commission['is_published']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
                         </td>
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'editCommission', 'id' => $commission['commission_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa commission" >
+                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'editCommission', 'id' => $commission['commission_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_commission'); ?>" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'deleteCommission', 'id' => $commission['commission_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá commission"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'deleteCommission', 'id' => $commission['commission_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_commission'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
 
                             <?php if( !empty($commission['is_published']) ){ ?>
-                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'unpublishCommission', 'id' => $commission['commission_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn commission" >
+                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'unpublishCommission', 'id' => $commission['commission_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_commission'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'publishCommission', 'id' => $commission['commission_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện commission" >
+                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'publishCommission', 'id' => $commission['commission_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_commission'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
@@ -141,7 +158,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có commission
+            <?php echo $this->translate('txt_chua_co_commission'); ?>
         </p>
         <?php } ?>
 

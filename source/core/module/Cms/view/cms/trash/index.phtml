@@ -5,11 +5,11 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Trash
+                    <?php echo $this->translate('txt_trash'); ?>
                 </li>
             </ol>
         </div>
@@ -24,7 +24,7 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Trash
+                <?php echo $this->translate('txt_trash'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -33,12 +33,13 @@
                     <div class="input-group">
                         <div class="row row-coz-search" >
                             <div class="col-xs-7 col-coz-search" >
-                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
                             </div>
                             <div class="col-xs-5 col-coz-search" >
                                 <select name="type" class="form-control" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo tên
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ten'); ?>
                                     </option>
                                 </select>
                             </div>
@@ -57,6 +58,6 @@
 
 <section class="content clearfix" >
     <form action="<?php echo $this->url('cms/trash') ?>" method="post" class="clearfix" >
-        <p>Chúng tôi đang phát triển, mong các bạn thông cảm</p>
+        <p><?php echo $this->translate('txt_chung_toi_dang_phat_trien_mong_thong_cam'); ?></p>
     </form>
 </section>

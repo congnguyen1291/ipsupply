@@ -5,15 +5,17 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/payment') ?>">
-                        Phương thức thanh toán
+                        <?php echo $this->translate('txt_phuong_thuc_thanh_toan'); ?>
                     </a>
                 </li>
-                <li class="active">Thêm mới</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_them_moi'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -26,7 +28,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Phương thức thanh toán :: Thêm mới
+                <?php echo $this->translate('txt_phuong_thuc_thanh_toan'); ?> :: 
+                <?php echo $this->translate('txt_them_moi'); ?>
             </h1>
         </div>
     </div>
@@ -46,20 +49,22 @@
             <div class="col-sm-6 col-xs-6" >
                 <div class="form-group">
                     <label for="payment_name" >
-                        Tên phương thức
+                        <?php echo $this->translate('txt_ten_phuong_thuc_pay'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('payment_name')); ?>
                 </div>
 
                 <div class="form-group payment_code" >
                     <label for="code" >
-                        Kiểu phương thức
+                        <?php echo $this->translate('txt_kieu_phuong_thuc_pay'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('code')); ?>
                 </div>
 
                 <div class="form-group payment_atm payment_paypal" style="display:none" >
-                    <label for="sale_account">Tài khoản nhận tiền</label>
+                    <label for="sale_account">
+                        <?php echo $this->translate('txt_tai_khoan_nhan_tien'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('sale_account')); ?>
                 </div>
 
@@ -67,19 +72,25 @@
                     <div class="row" >
                         <div class="col-sm-4" >
                             <div class="form-group" >
-                                <label for="username">API Username</label>
+                                <label for="username">
+                                    <?php echo $this->translate('txt_api_usernam_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('api_username')); ?>
                             </div>
                         </div>
                         <div class="col-sm-4" >
                             <div class="form-group" >
-                                <label for="password">API Password</label>
+                                <label for="password">
+                                    <?php echo $this->translate('txt_api_password_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('api_password')); ?>
                             </div>
                         </div>
                         <div class="col-sm-4" >
                             <div class="form-group" >
-                                <label for="signature">API Signature</label>
+                                <label for="signature">
+                                    <?php echo $this->translate('txt_api_signature_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('api_signature')); ?>
                             </div>
                         </div>
@@ -90,19 +101,25 @@
                     <div class="row" >
                         <div class="col-sm-3" >
                             <div class="form-group" >
-                                <label for="vpc_merchant">Merchant</label>
+                                <label for="vpc_merchant">
+                                    <?php echo $this->translate('txt_merchant_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('vpc_merchant')); ?>
                             </div>
                         </div>
                         <div class="col-sm-3" >
                             <div class="form-group" >
-                                <label for="vpc_accesscode">AccessCode</label>
+                                <label for="vpc_accesscode">
+                                    <?php echo $this->translate('txt_accesscode_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('vpc_accesscode')); ?>
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group" >
-                                <label for="vpc_hashcode">HashCode</label>
+                                <label for="vpc_hashcode">
+                                    <?php echo $this->translate('txt_hashcode_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('vpc_hashcode')); ?>
                             </div>
                         </div>
@@ -110,7 +127,7 @@
                             <div class="form-group" >
                                 <label for="is_local">
                                     <?php echo $this->formRow($form->get('is_local')); ?>
-                                    Thanh toán nội địa
+                                    <?php echo $this->translate('txt_thanh_toan_noi_dia_pay'); ?>
                                 </label>
                             </div>
                         </div>
@@ -121,19 +138,25 @@
                     <div class="row" >
                         <div class="col-sm-3" >
                             <div class="form-group" >
-                                <label for="vnp_merchant">Merchant</label>
+                                <label for="vnp_merchant">
+                                    <?php echo $this->translate('txt_merchant_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('vnp_merchant')); ?>
                             </div>
                         </div>
                         <div class="col-sm-3" >
                             <div class="form-group" >
-                                <label for="vnp_tmncode">TmnCode</label>
+                                <label for="vnp_tmncode">
+                                    <?php echo $this->translate('txt_tmncode_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('vnp_tmncode')); ?>
                             </div>
                         </div>
                         <div class="col-sm-6" >
                             <div class="form-group" >
-                                <label for="vnp_hashsecret">HashSecret</label>
+                                <label for="vnp_hashsecret">
+                                    <?php echo $this->translate('txt_hashsecret_pay'); ?>
+                                </label>
                                 <?php echo $this->formRow($form->get('vnp_hashsecret')); ?>
                             </div>
                         </div>
@@ -145,16 +168,7 @@
 
         <div class="form-group" >
             <div class="result-list-img clearfix" >
-                <div class="list-img-upload clearfix" >
-                    <?php if(!empty($payment->image)){ ?>
-                    <div class="img-prevew-upload" data-place="prevewImage" >
-                        <a href="javascript:void(0)" class="action-upload" data-btn="removePrevewImage" >
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                        </a>
-                        <img src="<?php echo $payment->image; ?>" class="img-responsive" >
-                    </div>
-                    <?php } ?>
-                </div>
+                <div class="list-img-upload clearfix" ></div>
                 <div class="img-prevew-upload btn-upload btn-upload-image-payment" >
                     <a href="javascript:void(0)" class="action-upload" >
                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -167,27 +181,29 @@
         </div>
 
         <div class="form-group" >
-            <label for="payment_description">Mô tả</label>
+            <label for="payment_description">
+                <?php echo $this->translate('txt_mo_ta_pay'); ?>
+            </label>
             <?php echo $this->formRow($form->get('payment_description')); ?>
         </div>
 
         <div class="form-group" >
             <label for="is_sandbox">
                 <?php echo $this->formRow($form->get('is_sandbox')); ?>
-                Chế độ test
+                <?php echo $this->translate('txt_che_do_test_pay'); ?>
             </label>
             <label for="is_published">
                 <?php echo $this->formRow($form->get('is_published')); ?>
-                Kích hoạt
+                <?php echo $this->translate('txt_kich_hoat'); ?>
             </label>
         </div>
 
         <div class="form-group" >
             <button class="btn btn-primary btn-sm">
-                Thêm mới phương thức thanh toán
+                <?php echo $this->translate('txt_them_phuong_thuc_thanh_toan'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

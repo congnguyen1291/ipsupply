@@ -2,9 +2,20 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-                <li><a href="<?php echo $this->url('cms/user_level') ?>">Loại thành viên</a></li>
-                <li class="active">Thêm mới</li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/user_level') ?>" >
+                        <?php echo $this->translate('txt_loai_thanh_vien'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_them_moi'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -17,7 +28,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Loại thành viên :: Thêm mới
+                <?php echo $this->translate('txt_loai_thanh_vien'); ?> :: 
+                <?php echo $this->translate('txt_them_moi'); ?>
             </h1>
         </div>
     </div>
@@ -37,12 +49,16 @@
             <div class="col-sm-6 col-xs-6" >
 
                 <div class="form-group">
-                    <label for="users_level_name">Tên</label>
+                    <label for="users_level_name">
+                        <?php echo $this->translate('txt_ten_loai_thanh_vien'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('users_level_name')); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="users_level_decrease">Mức giảm</label>
+                    <label for="users_level_decrease">
+                        <?php echo $this->translate('txt_muc_giam_loai_thanh_vien'); ?>
+                    </label>
                     <div class="input-group">
                         <?php echo $this->formRow($form->get('users_level_decrease')); ?>
                         <span class="input-group-addon">%</span>
@@ -50,7 +66,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="birthday">Tổng tiền nhỏ nhất</label>
+                    <label for="birthday">
+                        <?php echo $this->translate('txt_tong_tien_min_loai_thanh_vien'); ?>
+                    </label>
                     <div class="input-group">
                         <span class="input-group-addon">$</span>
                         <?php echo $this->formRow($form->get('min_buy')); ?>
@@ -62,23 +80,25 @@
         </div>
 
         <div class="form-group">
-            <label for="users_level_longdescription">Mô tả</label>
+            <label for="users_level_longdescription">
+                <?php echo $this->translate('txt_mo_ta_loai_thanh_vien'); ?>
+            </label>
             <?php echo $this->formRow($form->get('users_level_longdescription')); ?>
         </div>
 
         <div class="form-group" >
             <label for="is_published">
                 <?php echo $this->formRow($form->get('is_published')); ?>
-                Kích hoạt
+                <?php echo $this->translate('txt_kich_hoat'); ?>
             </label>
         </div>
 
         <div class="form-group" >
             <button class="btn btn-primary btn-sm">
-                Thêm mới loại thành viên
+                <?php echo $this->translate('txt_them_moi_loai_thanh_vien'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

@@ -2,9 +2,19 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/merchant') ?>" >
+                        <?php echo $this->translate('txt_trang_dai_ly'); ?>
+                    </a>
+                </li>
                 <li class="active">
-                    Danh sách admin của đại lý
+                    <?php echo $this->translate('txt_danh_sach_admin_cua_dai_ly'); ?>
                     <i><?php echo $merchant->merchant_name ?></i>
                 </li>
             </ol>
@@ -20,14 +30,16 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Admin của đại lý <i><?php echo $merchant->merchant_name ?></i> :: Quản lý
+                <?php echo $this->translate('txt_danh_sach_admin_cua_dai_ly'); ?> 
+                <i><?php echo $merchant->merchant_name ?></i> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-6 pull-rigth" >
             <form action="<?php echo $this->url('cms/merchant', array('action' => 'users')) ?>" method="post">
                 <div class="coz-search-bar clearfix" data-form="searchAjax" >
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>">
                         <span class="input-group-btn">
                             <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>
@@ -48,20 +60,20 @@
                 <div class="col-sm-12" >
                     <div class="text-right" >
                         <a href="<?php echo $this->url('cms/user', array('action' => 'add')) ?>"
-                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm user" >
+                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_user'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($users) ){ ?>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'publishUser')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện user" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'publishUser')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_user'); ?>" >
                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'unpublishUser')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn user" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'unpublishUser')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_user'); ?>" >
                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'deleteUser')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá user" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/merchant', array('action' => 'deleteUser')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_user'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -75,12 +87,24 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >ID</th>
-                        <th>Tên</th>
-                        <th>Địa chỉ</th>
-                        <th class="col-lim" >Sdt</th>
-                        <th class="col-lim" >Email</th>
-                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->translate('txt_dia_chi'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_sdt'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_email'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -94,7 +118,7 @@
                             <?php echo $user['users_id'] ?>
                         </td>
                         <td>
-                            <a href="<?php echo $this->url('cms/user', array('action' => 'edit', 'id' => $user['users_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa user" >
+                            <a href="<?php echo $this->url('cms/user', array('action' => 'edit', 'id' => $user['users_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_user'); ?>" >
                                 <?php echo $user['first_name'].' '.$user['last_name'] ?>
                             </a>
                         </td>
@@ -109,30 +133,30 @@
                         </td>
                         <td class="col-lim text-right" >    
                             <?php if( !empty($user['is_published']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
                         </td>
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/user', array('action' => 'edit', 'id' => $user['users_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa user" >
+                            <a href="<?php echo $this->url('cms/user', array('action' => 'edit', 'id' => $user['users_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_user'); ?>" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'deleteUser', 'id' => $user['id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá user"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/merchant', array('action' => 'deleteUser', 'id' => $user['id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_user'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
 
                             <?php if( !empty($user['is_published']) ){ ?>
-                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'unpublishUser', 'id' => $user['id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn user" >
+                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'unpublishUser', 'id' => $user['id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_user'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'publishUser', 'id' => $user['id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện user" >
+                                <a href="<?php echo $this->url('cms/merchant', array('action' => 'publishUser', 'id' => $user['id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_user'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
@@ -147,7 +171,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có user
+            <?php echo $this->translate('txt_chua_co_user'); ?>
         </p>
         <?php } ?>
 

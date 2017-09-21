@@ -5,11 +5,11 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Website
+                    <?php echo $this->translate('txt_websites'); ?>
                 </li>
             </ol>
         </div>
@@ -19,18 +19,17 @@
     </nav>
 </header>
 
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="row" >
         <div class="col-sm-12 col-xs-12" >
             <h1>
-                Website :: Quản lý
+                <?php echo $this->translate('txt_websites'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
     </div>
 </section>
 
-<!-- Main content -->
 <section class="content clearfix" >
     <?php
     $form = $this->form;
@@ -42,32 +41,32 @@
         <ul class="nav nav-inline coz-tab clearfix" role="tablist">
             <li class="nav-item active" >
                 <a class="nav-link" data-toggle="tab" href="#tab_common" role="tab" rel="nofollow">
-                    Thông tin chung                                    
+                    <?php echo $this->translate('txt_thong_tin_chung'); ?>                                    
                 </a>
             </li>
             <li class="nav-item" >
                 <a class="nav-link" data-toggle="tab" href="#tab_order" role="tab" rel="nofollow">
-                    Order                                    
+                    <?php echo $this->translate('txt_order_website'); ?>                                    
                 </a>
             </li>
             <li class="nav-item" >
                 <a class="nav-link" data-toggle="tab" href="#tab_coding" role="tab" rel="nofollow">
-                    Coding                                    
+                    <?php echo $this->translate('txt_coding_website'); ?>                                    
                 </a>
             </li>
             <li class="nav-item" >
                 <a class="nav-link" data-toggle="tab" href="#tab_analytics" role="tab" rel="nofollow">
-                    Analytics and Social                                    
+                    <?php echo $this->translate('txt_analytics_and_social_website'); ?>
                 </a>
             </li>
             <li class="nav-item" >
                 <a class="nav-link" data-toggle="tab" href="#tab_seo" role="tab" rel="nofollow">
-                    Seo                                  
+                    <?php echo $this->translate('txt_seo_website'); ?>
                 </a>
             </li>
             <li class="nav-item" >
                 <a class="nav-link" data-toggle="tab" href="#tab_orther" role="tab" rel="nofollow">
-                    Thông tin khác                                  
+                    <?php echo $this->translate('txt_thong_tin_khac_website'); ?>
                 </a>
             </li>
         </ul>
@@ -78,50 +77,70 @@
                 <div class="row" >
                     <div class="col-sm-6" >
                         <div class="form-group">
-                            <label class="control-label" for="website_name" >Tên</label>
+                            <label class="control-label" for="website_name" >
+                                <?php echo $this->translate('txt_ten_website'); ?>
+                            </label>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('website_name')); ?>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="website_name_business">Tên kinh doanh</label>
+                            <label class="control-label" for="website_name_business">
+                                <?php echo $this->translate('txt_ten_kinh_doanh_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('website_name_business')); ?>
                         </div>
 
                         <div class="form-group" >
-                            <label class="control-label" for="website_email_admin" >Email quản trị</label>
-                            <p class="text-muted">Email được sử dụng cho COZ liên lạc với bạn</p>
+                            <label class="control-label" for="website_email_admin" >
+                                <?php echo $this->translate('txt_email_quan_tri_website'); ?>
+                            </label>
+                            <p class="text-muted">
+                                <?php echo $this->translate('txt_email_dc_su_dung_de_lien_lac_website'); ?>
+                            </p>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('website_email_admin')); ?>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="website_email_customer">Email gửi thông báo</label>
-                            <p class="text-muted">Email này được sử dụng để gửi thông báo đến các khách hàng của bạn</p>
+                            <label class="control-label" for="website_email_customer">
+                                <?php echo $this->translate('txt_email_gui_thong_bao_website'); ?>
+                            </label>
+                            <p class="text-muted">
+                                <?php echo $this->translate('txt_giai_thich_email_gui_thong_bao_website'); ?>
+                            </p>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('website_email_customer')); ?>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="website_phone">Điện thoại</label>
+                            <label class="control-label" for="website_phone">
+                                <?php echo $this->translate('txt_dien_thoai_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('website_phone')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="website_address">Địa chỉ</label>
+                            <label class="control-label" for="website_address">
+                                <?php echo $this->translate('txt_dia_chi_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('website_address')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="website_contries">Quốc gia</label>
+                            <label class="control-label" for="website_contries">
+                                <?php echo $this->translate('txt_quoc_gia_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('website_contries')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="is_local">Chỉ bán hàng trong nước</label>
+                            <label class="control-label" for="is_local">
+                                <?php echo $this->translate('txt_chi_ban_trong_nuoc_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('is_local')); ?>
                         </div>
 
@@ -152,23 +171,27 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label" for="website_domain_refer" >Trỏ domain (ngăn cách nhau bằng dấu ,)</label>
+                    <label class="control-label" for="website_domain_refer" >
+                        <?php echo $this->translate('txt_tro_do_main_website'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('website_domain_refer')); ?>
                 </div>
 
-                <h5>Tích hợp login</h5>
+                <h5>
+                    <?php echo $this->translate('txt_tich_hop_login_website'); ?>
+                </h5>
                 <div class="form-group">
                     <label for="has_login_facebook" >
                         <?php echo $this->formRow($form->get('has_login_facebook')); ?>
-                        Login facebook
+                        <?php echo $this->translate('txt_login_facebook_website'); ?>
                     </label>
                     <label for="has_login_google" >
                         <?php echo $this->formRow($form->get('has_login_google')); ?>
-                        Login google
+                        <?php echo $this->translate('txt_login_google_website'); ?>
                     </label>
                     <label for="has_login_twister" >
                         <?php echo $this->formRow($form->get('has_login_twister')); ?>
-                        Login Twister
+                        <?php echo $this->translate('txt_login_twister_website'); ?>
                     </label>
                 </div>
 
@@ -180,26 +203,38 @@
                 <div class="row" >
                     <div class="col-sm-6" >
                         <div class="form-group">
-                            <label class="control-label" for="website_timezone" >Tiền tệ</label>
-                            <a href="javascript:void(0)" class="btn-format-currency" >thay đổi định dạng </a>
+                            <label class="control-label" for="website_timezone" >
+                                <?php echo $this->translate('txt_tien_te_website'); ?>
+                            </label>
+                            <a href="javascript:void(0)" class="btn-format-currency" >
+                                <?php echo $this->translate('txt_thay_doi_dinh_dang_tien_te_website'); ?>
+                            </a>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('website_currency')); ?>
                             </div>
                         </div>
                         <div class="box-format-currency" style="display:none" >
                             <div class="form-group">
-                                <h5>Cấu hình hiển thị gía trị tiền nâng cao</h5>
+                                <h5>
+                                    <?php echo $this->translate('txt_cau_hinh_hien_thi_tien_website'); ?>
+                                </h5>
                                 <div class="row" >
                                     <div class="col-xs-4">
-                                        <label class="control-label" for="website_currency_decimals">decimals</label>
+                                        <label class="control-label" for="website_currency_decimals">
+                                            <?php echo $this->translate('txt_decimals_tien_website'); ?>
+                                        </label>
                                         <?php echo $this->formRow($form->get('website_currency_decimals')); ?>
                                     </div>
                                     <div class="col-xs-4">
-                                        <label class="control-label" for="website_currency_decimalpoint">decimalpoint</label>
+                                        <label class="control-label" for="website_currency_decimalpoint">
+                                            <?php echo $this->translate('txt_decimalpoint_tien_website'); ?>
+                                        </label>
                                         <?php echo $this->formRow($form->get('website_currency_decimalpoint')); ?>
                                     </div>
                                     <div class="col-xs-4">
-                                        <label class="control-label" for="website_currency_separator">separator</label>
+                                        <label class="control-label" for="website_currency_separator">
+                                            <?php echo $this->translate('txt_separator_tien_website'); ?>
+                                        </label>
                                         <?php echo $this->formRow($form->get('website_currency_separator')); ?>
                                     </div>
                                 </div>
@@ -207,25 +242,36 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label">Định dạng mã đơn hàng</label> <br>
-                            <span class="text-muted">Đơn hàng mặc định bắt đầu là #1001, bạn có thể thay đổi tiền tố hoặc hậu tố giống như "BN1001" hoặc "1001-AD"</span>
+                            <label class="control-label">
+                                <?php echo $this->translate('txt_dinh_dang_ma_hoa_don_website'); ?>
+                            </label> <br>
+                            <span class="text-muted">
+                                <?php echo $this->translate('txt_giai_thich_dinh_dang_ma_hoa_don_website'); ?>
+                            </span>
                         </div>
 
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <label class="control-label" for="website_order_code_prefix">Tiền tố</label>
+                                    <label class="control-label" for="website_order_code_prefix">
+                                        <?php echo $this->translate('txt_tien_to_ma_hoa_don_website'); ?>
+                                    </label>
                                     <?php echo $this->formRow($form->get('website_order_code_prefix')); ?>
                                 </div>
                                 <div class="col-xs-6">
-                                    <label class="control-label" for="website_order_code_suffix">Hậu tố</label>
+                                    <label class="control-label" for="website_order_code_suffix">
+                                        <?php echo $this->translate('txt_hau_to_ma_hoa_don_website'); ?>
+                                    </label>
                                     <?php echo $this->formRow($form->get('website_order_code_suffix')); ?>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <span class="text-muted">Mã đơn hàng sẽ được áp dụng là: </span><span class="example-order-code">#1001, #1002</span>
+                            <span class="text-muted">
+                                <?php echo $this->translate('txt_ma_hoa_don_ap_dung_la_website'); ?> 
+                            </span>
+                            <span class="example-order-code">#1001, #1002</span>
                         </div>
 
                     </div>
@@ -238,13 +284,17 @@
                 <div class="row" >
                     <div class="col-sm-10" >
                         <div class="form-group">
-                            <label class="control-label" for="javascript">Javascript</label>
+                            <label class="control-label" for="javascript">
+                                <?php echo $this->translate('txt_javascript_website'); ?>
+                            </label>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('javascript')); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="css">Css</label>
+                            <label class="control-label" for="css">
+                                <?php echo $this->translate('txt_css_website'); ?>
+                            </label>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('css')); ?>
                             </div>
@@ -259,20 +309,22 @@
                 <div class="row" >
                     <div class="col-sm-6" >
                         <div class="form-group">
-                            <label class="control-label" for="website_ga_code">GA</label>
+                            <label class="control-label" for="website_ga_code">
+                                <?php echo $this->translate('txt_ga_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('website_ga_code')); ?>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label" for="facebook_id">
-                                App Facebook id
+                                <?php echo $this->translate('txt_app_facebook_id_website'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('facebook_id')); ?>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label" for="google_client_id">
-                                Google Client id
+                                <?php echo $this->translate('txt_google_client_id_website'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('google_client_id')); ?>
                         </div>
@@ -282,11 +334,10 @@
 
                             <div class="col-sm-12 text-center"  id="not-oauth-fbapp" >
                                 <p>
-                                    Bạn chưa chứng thực app facebook <br />
-                                    vui lòng nhấn link ở dưới để cập nhật
+                                    <?php echo $this->translate('txt_ban_chua_auth_facebook_website'); ?>
                                 </p>
                                 <a href="/cms/facebook" >
-                                    OAuth facebook
+                                    <?php echo $this->translate('txt_auth_facebook_website'); ?>
                                 </a>
                             </div>
 
@@ -295,7 +346,7 @@
                                     <div class="col-sm-6" >
                                         <div class="form-group" >
                                             <label class="control-label strong" for="fb_page_id">
-                                                Fanpage
+                                                <?php echo $this->translate('txt_fanpage_website'); ?>
                                             </label>
                                             <div class="controls">
                                                 <select name="fb_page_id" id="fb_page_id" class="form-control fb_page_id" id="fb_page_id" ></select>
@@ -305,7 +356,7 @@
                                     <div class="col-sm-6" id="wrap-fb_page_tab" style="display: none;" >
                                         <div class="form-group">
                                             <label class="control-label strong" for="fb_page_tab">
-                                                Tab page
+                                                <?php echo $this->translate('txt_tab_page_website'); ?>
                                             </label>
                                             <div class="controls">
                                                 <select name="fb_page_tab" id="fb_page_tab" class="form-control fb_page_tab" >
@@ -315,11 +366,10 @@
                                     </div>
                                     <div class="col-sm-12 text-center"  id="not-oauth-fbapp" >
                                         <p>
-                                            Bạn đã chứng thực app facebook <br />
-                                            Nếu bạn muốn thay đổi kết nối app hãy nhẫn nút bên dưới
+                                            <?php echo $this->translate('txt_ban_da_auth_facebook_website'); ?>
                                         </p>
                                         <a href="javascript:void(0);" data-btn="reOauthFacebookApp" >
-                                            OAuth facebook
+                                            <?php echo $this->translate('txt_auth_facebook_website'); ?>
                                         </a>
                                     </div>
                                 </div>
@@ -328,42 +378,58 @@
                         <?php } ?>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_twister">url twister</label>
+                            <label class="control-label" for="url_twister">
+                                <?php echo $this->translate('txt_url_twister_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_twister')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_google_plus">url googleplus</label>
+                            <label class="control-label" for="url_google_plus">
+                                <?php echo $this->translate('txt_url_googleplus_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_google_plus')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_facebook">url facebook</label>
+                            <label class="control-label" for="url_facebook">
+                                <?php echo $this->translate('txt_url_facebook_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_facebook')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_pinterest">url pinterest</label>
+                            <label class="control-label" for="url_pinterest">
+                                <?php echo $this->translate('txt_url_pinterest_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_pinterest')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_houzz">url houzz</label>
+                            <label class="control-label" for="url_houzz">
+                                <?php echo $this->translate('txt_url_houzz_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_houzz')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_instagram">url instagram</label>
+                            <label class="control-label" for="url_instagram">
+                                <?php echo $this->translate('txt_url_instagram_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_instagram')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_rss">url rss</label>
+                            <label class="control-label" for="url_rss">
+                                <?php echo $this->translate('txt_url_rss_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_rss')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="url_youtube">url youtube</label>
+                            <label class="control-label" for="url_youtube">
+                                <?php echo $this->translate('txt_url_youtube_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('url_youtube')); ?>
                         </div>
 
@@ -377,7 +443,9 @@
                 <div class="row" >
                     <div class="col-sm-6" >
                         <div class="form-group">
-                            <label class="control-label" for="seo_title">Seo title</label>
+                            <label class="control-label" for="seo_title">
+                                <?php echo $this->translate('txt_seo_title_website'); ?>
+                            </label>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('seo_title')); ?>
                             </div>
@@ -388,13 +456,17 @@
                 <div class="row" >
                     <div class="col-sm-10" >
                         <div class="form-group">
-                            <label class="control-label" for="seo_keywords">Seo keywords</label>
+                            <label class="control-label" for="seo_keywords">
+                                <?php echo $this->translate('txt_seo_keywords_website'); ?>
+                            </label>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('seo_keywords')); ?>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="seo_description">Seo description</label>
+                            <label class="control-label" for="seo_description">
+                                <?php echo $this->translate('txt_seo_description_website'); ?>
+                            </label>
                             <div class="controls">
                                 <?php echo $this->formRow($form->get('seo_description')); ?>
                             </div>
@@ -411,52 +483,60 @@
                     <div class="col-sm-6" >
                         <div class="form-group">
                             <label class="control-label" for="version_cart">
-                                Phiên bản cart
+                                <?php echo $this->translate('txt_version_cart_website'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('version_cart')); ?>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label" for="type_crop_image">
-                                Kiểu cắt hình
+                                <?php echo $this->translate('txt_kieu_cat_hinh_website'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('type_crop_image')); ?>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label" for="confirm_location">
-                                Hiện popup hỏi vị trí của bạn 
+                                <?php echo $this->translate('txt_hien_poup_hoi_vi_tri_website'); ?>
                             </label>
                             <?php echo $this->formRow($form->get('confirm_location')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="type_buy">Giao hàng</label>
+                            <label class="control-label" for="type_buy">
+                                <?php echo $this->translate('txt_giao_hang_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('type_buy')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="ship" >Giá trị để hóa đơn tính ship</label>
+                            <label class="control-label" for="ship" >
+                                <?php echo $this->translate('txt_gia_tri_don_hang_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('ship')); ?>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="website_timezone" >Múi giờ</label>
+                            <label class="control-label" for="website_timezone" >
+                                <?php echo $this->translate('txt_mui_gio_website'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('website_timezone')); ?>
                         </div>
 
-                        <h5>Lọc sản phẩm theo giá</h4>
+                        <h5>
+                            <?php echo $this->translate('txt_loc_san_pham_theo_gia_website'); ?>
+                        </h4>
                         <div class="form-group">
                             <div class="row" >
                                 <div class="col-xs-6" >
                                     <label class="control-label" for="website_min_value_slider">
-                                        Giá từ
+                                        <?php echo $this->translate('txt_gia_tu_website'); ?>
                                     </label>
                                     <?php echo $this->formRow($form->get('website_min_value_slider')); ?>
                                 </div>
                                 <div class="col-xs-6" >
                                     <label class="control-label" for="website_max_value_slider">
-                                        Giá đến
+                                        <?php echo $this->translate('txt_gia_den_website'); ?>
                                     </label>
                                     <?php echo $this->formRow($form->get('website_max_value_slider')); ?>
                                 </div>
@@ -472,10 +552,10 @@
 
     <div class="form-group">
         <button class="btn btn-primary btn-sm" >
-            Cập nhật thông tin
+            <?php echo $this->translate('txt_cap_nhat_thong_tin_website'); ?>
         </button>
         <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-            Quay lại
+            <?php echo $this->translate('txt_quay_lai'); ?>
         </button>
     </div>
     <?php echo $this->form()->closeTag(); ?>

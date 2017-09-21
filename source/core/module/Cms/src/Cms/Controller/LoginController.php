@@ -34,14 +34,24 @@ class LoginController extends AbstractActionController{
             $this->domain = substr($this->domain, 4);
         if(!empty($this->domain)){
             $this->website = $this->getModelTable('WebsitesTable')->getWebsite($this->domain);
-           // $_SESSION['website_id'] = $this->website->website_id;
         }
         $_SESSION['domain'] = $this->domain;
         $_SESSION['protocol'] = $this->protocol;
         $_SESSION['baseUrl'] = $this->baseUrl;
         $_SESSION['website'] = $this->website;
+        
+        $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'vi_VN';
+        $sm = $this->getServiceLocator();
+        $translator = $sm->get('translator');
+        $path_lang = PATH_MODULE.'/Cms/lang/'.$lang.'.php';
+        $translator->addTranslationFile("phparray",$path_lang);
+
+        $sm->get('ViewHelperManager')->get('translate')
+            ->setTranslator($translator);
+
         return parent::onDispatch($e);
     }
+
     public function indexAction(){
         $form = new LoginForm();
         $request = $this->getRequest();
@@ -56,10 +66,7 @@ class LoginController extends AbstractActionController{
 				$domainname="http://".$_SERVER['HTTP_HOST'];
 				
                 if($this->getModelTable('UserTable')->login($login)){
-					//var_dump($this->getModelTable('UserTable')->login($login));
-					//die();
 					return $this->redirect()->toRoute('cms');
-                  // return $this->redirect()->toUrl($domainname.$linkrefer);
                 }
             }
         }
@@ -70,6 +77,7 @@ class LoginController extends AbstractActionController{
         ));
         return $view;
     }
+
     public function logoutAction(){
         if(isset($_SESSION['CMSMEMBER'])){
             unset($_SESSION['CMSMEMBER']);

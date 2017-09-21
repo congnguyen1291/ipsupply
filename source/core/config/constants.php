@@ -79,6 +79,33 @@ if (!function_exists('megeTranslate')) {
     };
 }
 
+if (!function_exists('mergeTranslateForCms')) {
+    function mergeTranslateForCms($langs, $type){
+        $results = $langs;
+        try{
+            $langsRoot = getArrayLangsRoot($type);
+            foreach ($langsRoot as $key => $lang) {
+                if( !isset($langs[$key]) ){
+                    $langs[$key] = $lang;
+                }
+            }
+            $results = $langs;
+        }catch(\Exception $ex){}
+        
+        try{
+            if( is_file(LANG_PATH . '/'.$type.'.php') ){
+                require_once LANG_PATH . '/'.$type.'.php';
+                $main_langs = $$type;
+                foreach ($results as $key => $lang) {
+                    $main_langs[$key] = $lang;
+                }
+                return $main_langs;
+            }
+        }catch(\Exception $ex){}
+        return $results;
+    };
+}
+
 if (!function_exists('getDirWebsite')) {
     function getDirWebsite($website){
         $url_website = '';

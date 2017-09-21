@@ -31,9 +31,9 @@
 <div class="login-content">
     <div class="container">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6 col-md-offset-3" >
                 <div class="form-style form-login">
-                    <form accept-charset='UTF-8' accept-charset='UTF-8' action='/login' id='loginform' method='post' data-form="signin" >
+                    <form accept-charset='UTF-8' accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/login' id='loginform' method='post' data-form="signin" >
                         <h3 class="form-heading">
                             <?php echo $this->translate('txt_dang_nhap') ?>
                         </h3>
@@ -64,16 +64,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group clearfix" >
+                            <div class="pull-xs-left" >
+                                <a href="javascript:void(0);" data-neo="silling" data-from="#loginform" data-to="#recover_customer_password" >
+                                    <?php echo $this->translate('txt_ban_quyen_mat_khau') ?>
+                                </a>
+                            </div>
+                            <div class="pull-xs-right" >
+                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up">
+                                    <?php echo $this->translate('txt_tao_tai_khoan') ?>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="form-group" >
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="text-xs-right" >
-                                        <p>
-                                            <a href="/sign-up">
-                                                <?php echo $this->translate('txt_tao_tai_khoan') ?>
-                                            </a>
-                                        </p>
-                                    </div>
                                     <button class="btn btn-style-b" type="submit" >
                                         <?php echo $this->translate('txt_login')?>
                                     </button>
@@ -83,10 +89,10 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-5">
+
+            <div class="col-md-6 col-md-offset-3" >
                 <div class="form-style form-login">
-                    <form accept-charset='UTF-8' action='/profile/recover' id='recover_customer_password' method='post' data-form="recoverPassword"  >
+                    <form accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/recover' id='recover_customer_password' method='post' data-form="recoverPassword" style="display: none;"  >
                         <h3 class="form-heading">
                             <?php echo $this->translate('txt_quyen_mat_khau')?>
                         </h3>
@@ -103,6 +109,20 @@
                             <label>Email*</label>
                             <input type="email" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_dia_chi_email')?>" data-input="email" />
                         </div>
+
+                        <div class="form-group clearfix" >
+                            <div class="pull-xs-left" >
+                                <a href="javascript:void(0);" data-neo="silling" data-from="#recover_customer_password" data-to="#loginform" >
+                                    <?php echo $this->translate('txt_ban_muon_dang_nhap') ?>
+                                </a>
+                            </div>
+                            <div class="pull-xs-right" >
+                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up">
+                                    <?php echo $this->translate('txt_tao_tai_khoan') ?>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="form-group" >
                             <button class="btn btn-style-b" type="submit" >
                                 <?php echo $this->translate('txt_gui_thuong_tin')?>

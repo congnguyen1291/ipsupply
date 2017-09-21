@@ -1,4 +1,5 @@
 <?php
+$features = $this->Features()->getAllFeatureOfCategoryAndSort($this->Categories()->getId($category));
 $list_bcum = $this->Categories()->getAllParentsOfCategory($this->Categories()->getId($category), false);
 $manufacturers = $this->Manufacturers()->getManufacturers();
 $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
@@ -212,7 +213,7 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
                         </div>
 
                         <div class="fillter-feature clearfix" >
-                            <div class="tmpl-fillter-feature clearfix" data-place="fillterFeature" ></div>
+                            <div class="tmpl-fillter-feature clearfix" data-place="fillterFeature" data-id="<?php echo $id; ?>" ></div>
                         </div>
 
                     </div>

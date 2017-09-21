@@ -18,7 +18,7 @@ if( !empty($product) ){
             <form action="<?php echo $this->Websites()->getUrlPrefixLang() ?>/cart/addToCart" data-neo="form" method="post" class="variants pro-action-btn" enctype="multipart/form-data" data-form="addToCart" >
                 <input type="hidden" value="<?php echo $this->Products()->getProductsId($product); ?>" name="products_id" data-input="products_id" >
                 <?php if ($this->Products()->getToBuy($product)){ ?>
-                    <a href="<?php echo $this->Products()->getAddToCartProductsUrl($product) ?>" class="btn-sm-ico" data-neo="ajax" data-role="form" >
+                    <a href="<?php echo $this->Products()->getAddToCartProductsUrl($product) ?>" class="btn-sm-ico" data-role="form" >
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     </a>
                 <?php }else{ ?>
@@ -80,7 +80,7 @@ if( !empty($product) ){
                 <input type="hidden" value="<?php echo $this->Products()->getProductsId($product); ?>" name="products_id" data-input="products_id" >
                 <div class="clearfix" >
                     <?php if ($this->Products()->getToBuy($product)){ ?>
-                        <a href="<?php echo $this->Products()->getAddToCartProductsUrl($product) ?>" class="btn btn-style" data-neo="ajax" data-role="form" >
+                        <a href="<?php echo $this->Products()->getAddToCartProductsUrl($product) ?>" class="btn btn-style" data-role="form" >
                             <?php echo $this->translate('txt_mua_ngay') ?>
                         </a>
                     <?php }else{ ?>

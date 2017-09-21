@@ -2,8 +2,20 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-                <li class="active">Hoặt động</li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/user') ?>" >
+                        <?php echo $this->translate('txt_thanh_vien'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_hoat_dong'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -17,7 +29,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Hoặt động :: Quản lý
+                <?php echo $this->translate('txt_thanh_vien'); ?> :: 
+                <?php echo $this->translate('txt_hoat_dong'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -33,7 +46,7 @@
                 <div class="col-sm-12" >
                     <div class="text-right" >
                         <?php if( !empty($logs) ){ ?>
-                        <a href="<?php echo $this->url('cms/user', array('action' => 'deleteLog')).'?id='.$id ?>"  data-confirm="Bạn có muốn xoá ?" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xoá hoặt động" >
+                        <a href="<?php echo $this->url('cms/user', array('action' => 'deleteLog')).'?id='.$id ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_hoat_dong'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>
                         <?php } ?>
@@ -47,8 +60,12 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="col-lim" >id</th>
-                        <th colspan="2" >Tên</th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th colspan="2" >
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,7 +85,7 @@
                             </span>
                         </td>
                         <td colspan="3" >
-                            Nội dung
+                            <?php echo $this->translate('txt_noi_dung_log'); ?>
                         </td>
                     </tr>
 
@@ -123,7 +140,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có hoặt động nào
+            <?php echo $this->translate('txt_chua_co_hoat_dong_nao'); ?>
         </p>
         <?php } ?>
     </form>

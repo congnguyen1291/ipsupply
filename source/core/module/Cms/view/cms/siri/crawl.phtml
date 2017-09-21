@@ -5,12 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
-                <li><a href="<?php echo $this->url('cms/siri') ?>">Siri</a></li>
+                <li>
+                    <a href="<?php echo $this->url('cms/siri') ?>">
+                        <?php echo $this->translate('txt_siri'); ?>
+                    </a>
+                </li>
                 <li class="active" >
-                    Crawl
+                    <?php echo $this->translate('txt_crawl'); ?>
                 </li>
             </ol>
         </div>
@@ -25,7 +29,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Siri :: Crawl
+                <?php echo $this->translate('txt_siri'); ?> :: 
+                <?php echo $this->translate('txt_crawl'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >

@@ -205,6 +205,57 @@ class UserController extends BackEndController
         return $this->data_view;
     }
 
+    public function editPasswordAction(){
+        $id = (int)$this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('cms/user', array(
+                'action' => 'add'
+            ));
+        }
+        try {
+            $user = $this->getModelTable('UserTable')->getUserById($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('cms/user', array(
+                'action' => 'index'
+            ));
+        }
+
+        if( empty($user) ){
+            return $this->redirect()->toRoute('cms/user', array(
+                'action' => 'index'
+            ));
+        }
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $data = $request->getPost();
+            $password = $request->getPost('password', '');
+            $newpassword = $request->getPost('newpassword', '');
+            $re_newpassword = $request->getPost('re_newpassword', '');
+            if( !empty($password) && !empty($newpassword) 
+                && !empty($re_newpassword) && md5($password) ==  $user->password
+                && $re_newpassword ==  $newpassword ){
+
+                try {
+                    $row = array(
+                        'password' => md5($newpassword)
+                    );
+                    $this->getModelTable('UserTable')->updateUsers($id, $row);
+                } catch (\Exception $e ) {}
+                if( $_SESSION['CMSMEMBER']['users_id'] == $id){
+                    $this->getModelTable('UserTable')->logout();
+                    return $this->redirect()->toRoute('cms/login', array(
+                        'action' => 'index'
+                    ));
+                }
+                return $this->redirect()->toRoute('cms/user');
+            }
+        }
+        $this->data_view['user'] = $user;
+        $this->data_view['id'] = $id;
+        return $this->data_view;
+    }
+
     public function profileAction(){
         $id = $_SESSION['CMSMEMBER']['users_id'];
         if (!$id) {
@@ -267,7 +318,7 @@ class UserController extends BackEndController
         return $this->data_view;
     }
 
-    public function editPasswordAction(){
+    public function editPasswordAction_(){
         $id = $_SESSION['CMSMEMBER']['users_id'];
         if (!$id) {
             return $this->redirect()->toRoute('cms/login', array(

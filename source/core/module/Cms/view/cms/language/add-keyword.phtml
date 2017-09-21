@@ -5,16 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>" >
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>" >
-                        Từ khóa
+                        <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Thêm mới
+                    <?php echo $this->translate('txt_them_moi'); ?>
                 </li>
             </ol>
         </div>
@@ -28,7 +28,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Từ khóa :: Thêm mới
+                <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?> :: 
+                <?php echo $this->translate('txt_them_moi'); ?>
             </h1>
         </div>
     </div>
@@ -40,7 +41,9 @@
             <div class="row" >
                 <div class="col-sm-6" >
                     <div class="form-group">
-                        <label for="keyword">Từ khóa</label>
+                        <label for="keyword">
+                            <?php echo $this->translate('txt_tu_khoa'); ?>
+                        </label>
                         <input type="text" name="keyword" class="form-control input-sm" />
                     </div>
 
@@ -58,10 +61,10 @@
 
             <div class="form-group" >
                 <button class="btn btn-primary btn-sm">
-                    Thêm mới từ khóa
+                    <?php echo $this->translate('txt_them_moi_tu_khoa'); ?>
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                    Quay lại
+                    <?php echo $this->translate('txt_quay_lai'); ?>
                 </button>
             </div>
         </div>

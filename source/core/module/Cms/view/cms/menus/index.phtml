@@ -2,8 +2,15 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-                <li class="active">Menus</li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li class="active" >
+                    <?php echo $this->translate('txt_menus'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -17,14 +24,15 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Menus :: Quản lý
+                <?php echo $this->translate('txt_menus'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
             <form action="<?php echo $this->url('cms/menus') ?>" method="post">
                 <div class="coz-search-bar clearfix" data-form="searchAjax" >
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>">
                         <span class="input-group-btn">
                             <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>
@@ -55,9 +63,11 @@
         <?php if( !empty($menus) ){ ?>
         <div class="row">
             <div class="col-sm-12">
-                <h4>Danh sách menu</h4>
+                <h4>
+                    <?php echo $this->translate('txt_danh_sach_menu'); ?>
+                </h4>
                 <p class="text-muted">
-                    Danh sách menu sẽ giup khách hàng duyệt web của bạn dễ dàng hơn.
+                    <?php echo $this->translate('txt_danh_sach_menu_se_giup_khach_hang_duyet'); ?>
                 </p>
             </div>
             <div class="col-sm-12" >
@@ -67,12 +77,18 @@
                         <table class="table table-data-bind table-no-border" >
                             <thead>
                                 <tr>
-                                    <th class="text-center col-lim" >id</th>
-                                    <th colspan="2" >Tên</th>
+                                    <th class="text-center col-lim" >
+                                        <?php echo $this->translate('txt_id'); ?>
+                                    </th>
+                                    <th colspan="2" >
+                                    <?php echo $this->translate('txt_ten'); ?>
+                                    </th>
                                     <th class="col-lim text-right" >
                                         <i class="fa fa-sort" aria-hidden="true"></i>
                                     </th>
-                                    <th class="col-lim text-right" >Trạng thái</th>
+                                    <th class="col-lim text-right" >
+                                        <?php echo $this->translate('txt_trang_thai'); ?>
+                                    </th>
                                     <th class="col-lim" ></th>
                                 </tr>
                             </thead>
@@ -86,50 +102,50 @@
                                     </td>
                                     <th class="col-lim text-right" ></th>
                                     <td class="text-right col-lim" >
-                                        <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="là menu gốc" >
+                                        <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_la_menu_goc'); ?>" >
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                         </span>
                                         <?php if( !empty($menu['is_root']) ){ ?>
-                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Menu của hệ thống" >
+                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_menu_cua_he_thong'); ?>" >
                                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                             </span>
                                         <?php }else{ ?>
-                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Menu của custommer" >
+                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_menu_cua_khach_hang'); ?>" >
                                                 <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                             </span>
                                         <?php } ?>
 
                                         <?php if( !empty($menu['is_published']) ){ ?>
-                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                                 <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                             </span>
                                         <?php }else{ ?>
-                                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                                 <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                             </span>
                                         <?php } ?>
                                     </td>
                                     <td class="text-right col-lim" >
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'add', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Sửa menu" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'add', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_menu'); ?>" >
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a>
 
                                         <?php if( !empty($menu['is_root']) ){ ?>
-                                        <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Không xoá được vì menu của hệ thống" >
+                                        <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_khong_xoa_duoc_vi_menu_he_thong'); ?>" >
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </span>
                                         <?php }else{ ?>
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'delete', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Xoá menu"  data-confirm="Bạn có muốn xoá ?" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'delete', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_menu'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </a>
                                         <?php } ?>
 
                                         <?php if( !empty($menu['is_published']) ){ ?>
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'unpublish', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn bài viết" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'unpublish', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_menu'); ?>" >
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </a>
                                         <?php }else{ ?>
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'publish', 'id' => $menu['menus_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện bài viết" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'publish', 'id' => $menu['menus_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_menu'); ?>" >
                                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                         </a>
                                         <?php } ?>
@@ -155,46 +171,46 @@
                                         <?php echo $menulv1['ordering']; ?>
                                     </th>
                                     <td class="text-right col-lim" >
-                                        <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="là menu con" >
+                                        <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_la_menu_con'); ?>" >
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                         </span>
 
                                         <?php if( !empty($menulv1['number_childrens']) ){ ?>
-                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Có <?php echo $menulv1['number_childrens']; ?> menu con" >
+                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $menulv1['number_childrens']; ?> <?php echo $this->translate('txt_menu_con'); ?>" >
                                                 <i class="fa fa-share-alt" aria-hidden="true"></i>
                                             </span>
                                         <?php }else{ ?>
-                                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Không có menu con" >
+                                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_khong_co_menu_con'); ?>" >
                                                 <i class="fa fa-share-alt" aria-hidden="true"></i>
                                             </span>
                                         <?php } ?>
 
                                         <?php if( !empty($menulv1['is_published']) ){ ?>
-                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                            <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                                 <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                             </span>
                                         <?php }else{ ?>
-                                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                            <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                                 <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                             </span>
                                         <?php } ?>
                                     </td>
                                     <td class="text-right col-lim" >
 
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'add', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Sửa menu" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'add', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_menu'); ?>" >
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a>
 
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'delete', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Xoá menu"  data-confirm="Bạn có muốn xoá ?" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'delete', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_menu'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </a>
 
                                         <?php if( !empty($menulv1['is_published']) ){ ?>
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'unpublish', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn bài viết" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'unpublish', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_menu'); ?>" >
                                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </a>
                                         <?php }else{ ?>
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'publish', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện bài viết" >
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'publish', 'id' => $menulv1['menus_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_menu'); ?>" >
                                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                         </a>
                                         <?php } ?>
@@ -205,9 +221,8 @@
                                 }else{ ?>
                                 <tr>
                                     <td colspan="4" class="text-center" >
-                                        Chưa có menu con <br />
-                                        Thêm menu con 
-                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'add', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Thêm menu" >
+                                        <?php echo $this->translate('txt_chua_co_menu_con_them_menu'); ?>
+                                        <a href="<?php echo $this->url('cms/menus', array('action' => 'add', 'id' => $menu['menus_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_menu'); ?>" >
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a>
                                     </td>
@@ -222,7 +237,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có menus
+            <?php echo $this->translate('txt_chua_co_menu'); ?>
         </p>
         <?php } ?>
     </form>

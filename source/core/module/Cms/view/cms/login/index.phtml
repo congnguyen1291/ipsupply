@@ -1,55 +1,64 @@
 <!DOCTYPE html>
-<html class="bg-black">
-<head>
-    <meta charset="UTF-8">
-    <title>Login :: Administrator</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img_/favicon.ico'))
-        ->appendStylesheet($this->basePath() . '/admincp/css/bootstrap.min.css')
-        ->appendStylesheet($this->basePath() . '/admincp/css/font-awesome.min.css')
-        ->appendStylesheet($this->basePath() . '/admincp/css/AdminLTE.css')?>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body class="bg-black">
-
-<div class="form-box" id="login-box">
-    <div class="header">Sign In</div>
-    <?php
-    $form = $this->form;
-    $form->setAttribute('action', $this->url('cms/login'));
-    $form->setAttribute('id', 'form-login');
-    $form->prepare();
-    echo $this->form()->openTag($form);
-	
-    ?>
-    <input type='hidden' value="<?php echo urlencode($_SERVER["HTTP_REFERER"]);?>" name="redirect_refer" />
-	<div class="body bg-gray">
-        <div class="form-group">
-            <?php echo $this->formRow($form->get('username')); ?>
+<html class="bg-black" >
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            <?php echo $this->translate('txt_login_administrator'); ?>
+        </title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img_/favicon.ico'))
+            ->appendStylesheet($this->basePath() . '/admincp/css/bootstrap.min.css')
+            ->appendStylesheet($this->basePath() . '/admincp/css/font-awesome.min.css')
+            ->appendStylesheet($this->basePath() . '/admincp/css/AdminLTE.css')?>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body class="bg-black" >
+        <div class="form-box" id="login-box">
+            <div class="header">
+                <?php echo $this->translate('txt_sign_in'); ?>
+            </div>
+            <?php
+            $form = $this->form;
+            $form->setAttribute('action', $this->url('cms/login'));
+            $form->setAttribute('id', 'form-login');
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            ?>
+            <input type='hidden' value="<?php echo !empty($_SERVER["HTTP_REFERER"]) ? urlencode($_SERVER["HTTP_REFERER"]) : '';?>" name="redirect_refer" />
+        	<div class="body bg-gray">
+                <div class="form-group">
+                    <?php echo $this->formRow($form->get('username')); ?>
+                </div>
+                <div class="form-group">
+                    <?php echo $this->formRow($form->get('password')); ?>
+                </div>
+                <div class="form-group">
+                    <label for="rememberme">
+                        <?php echo $this->formRow($form->get('rememberme')); ?> 
+                        <?php echo $this->translate('txt_remember_me'); ?>
+                    </label>
+                </div>
+            </div>
+            <div class="footer">
+                <button type="submit" class="btn bg-olive btn-block">
+                    <?php echo $this->translate('txt_sign_me_in'); ?>
+                </button>
+                <p class="text-center" >
+                    <a href="/cms/login/forgot" style="color: #ccc" >
+                        <?php echo $this->translate('txt_i_forgot_my_password'); ?>
+                    </a>
+                </p>
+            </div>
+            <?php echo $this->form()->closeTag(); ?>
         </div>
-        <div class="form-group">
-            <?php echo $this->formRow($form->get('password')); ?>
-        </div>
-        <div class="form-group">
-            <label for="rememberme">
-                <?php echo $this->formRow($form->get('rememberme')); ?> Remember me
-            </label>
-        </div>
-    </div>
-    <div class="footer">
-        <button type="submit" class="btn bg-olive btn-block">Sign me in</button>
-        <p><a href="#">I forgot my password</a></p>
-    </div>
-    <?php echo $this->form()->closeTag(); ?>
-</div>
-<?php echo $this->headScript()
-    ->appendFile($this->basePath() . '/admincp/js/jquery.min.js')
-    ->appendFile($this->basePath() . '/admincp/js/bootstrap.min.js')
-?>
-</body>
+        <?php echo $this->headScript()
+            ->appendFile($this->basePath() . '/admincp/js/jquery.min.js')
+            ->appendFile($this->basePath() . '/admincp/js/bootstrap.min.js')
+        ?>
+    </body>
 </html>

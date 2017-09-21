@@ -1,20 +1,16 @@
 <?php 
 if(!empty($rows)){
     foreach ($rows as $key => $p) { ?>
-        <div class="col-lg-4 col-md-4 col-sm-6" >
+        <div class="col-lg-3 col-md-6 col-sm-6" >
             <?php echo $this->partial('app/item-product', array('product' => $p) ); ?>
         </div>
-        <?php if( $key%3 == 0 ){ ?>
-        <div class="col-sm-12 hidden-sm-up" >
-            <div class="line-grid" ></div>
+        <?php if( $key%4 == 1 ){ ?>
+        <div class="col-sm-12 hidden-lg-up" >
+            <div class="line-grid" ><div class="iline-grid" ></div></div>
         </div>
-        <?php }else if( $key%3 == 1 ){ ?>
-        <div class="col-sm-12 hidden-md-up" >
-            <div class="line-grid" ></div>
-        </div>
-        <?php }else if( $key%3 == 2 ){ ?>
-        <div class="col-sm-12 hidden-sm-down" >
-            <div class="line-grid" ></div>
+        <?php }else if( $key%4 == 3 ){ ?>
+        <div class="col-sm-12" >
+            <div class="line-grid" ><div class="iline-grid" ></div></div>
         </div>
         <?php } ?>
 <?php

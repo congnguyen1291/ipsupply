@@ -87,13 +87,14 @@
                                             <b><?php echo $feature['feature_title']; ?></b>
                                         </h4>
                                         <div class="row">
-                                            <div class="col-xs-12 box box-primary" id="box-primary-form-1" data-row="1">
-                                                <div class="box-body">
+                                            <div class="col-xs-12" id="box-primary-form-1" data-row="1">
+                                                <div class="row">
                                                     <div class="col-md-2" style="display: none;">
                                                         <div class="form-group">
                                                             <input type="hidden" name="feature[<?php echo $key?>][parent_id]" id="parent_id_<?php echo $key?>" class="form-control input-sm" value="<?php echo $feature['feature_id']?>">
                                                         </div>
                                                     </div>
+                                                    
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="feature_title"> <?php echo $this->translate("name");?></label>

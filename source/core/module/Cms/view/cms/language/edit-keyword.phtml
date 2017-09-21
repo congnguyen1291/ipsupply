@@ -8,16 +8,16 @@ $word = $keyword;
                 <li>
                     <a href="<?php echo $this->url('cms') ?>" >
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cms/language', array('action' => 'manage-keywords')) ?>" >
-                        Từ khóa
+                        <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?>
                     </a>
                 </li>
                 <li class="active">
-                    Cập nhật
+                    <?php echo $this->translate('txt_cap_nhat'); ?>
                 </li>
             </ol>
         </div>
@@ -31,7 +31,8 @@ $word = $keyword;
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Từ khóa :: Cập nhật
+                <?php echo $this->translate('txt_quan_ly_tu_khoa'); ?> :: 
+                <?php echo $this->translate('txt_cap_nhat'); ?>
             </h1>
         </div>
     </div>
@@ -43,7 +44,9 @@ $word = $keyword;
             <div class="row" >
                 <div class="col-sm-6" >
                     <div class="form-group">
-                        <label for="keyword">Từ khóa</label>
+                        <label for="keyword">
+                            <?php echo $this->translate('txt_tu_khoa'); ?>
+                        </label>
                         <input type="text" name="keyword" value="<?php echo $word['keyword'] ?>" class="form-control input-sm" />
                     </div>
 
@@ -61,10 +64,10 @@ $word = $keyword;
 
             <div class="form-group" >
                 <button class="btn btn-primary btn-sm">
-                    Cập nhật từ khóa
+                    <?php echo $this->translate('txt_cap_nhat_tu_khoa'); ?>
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                    Quay lại
+                    <?php echo $this->translate('txt_quay_lai'); ?>
                 </button>
             </div>
         </div>

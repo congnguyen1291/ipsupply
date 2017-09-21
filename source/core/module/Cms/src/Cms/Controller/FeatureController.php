@@ -91,7 +91,9 @@ class FeatureController extends BackEndController
         $form->get('submit')->setValue('Lưu lại');
         $fAll = $this->getModelTable('FeatureTable')->fetchAll();
         $features = $this->multiLevelData(TRUE, $fAll, 'feature_id', 'parent_id', 'feature_title');
-        $features = array_merge(array(0=>'__ROOT__'), $features);
+        if( empty($features) ){
+            $features = array(0=>'__ROOT__');
+        }
         $form->get('parent_id')->setOptions(array(
             'options' => $features,
         ));
@@ -230,7 +232,9 @@ class FeatureController extends BackEndController
         $form = new FeatureForm();
         $fAll = $this->getModelTable('FeatureTable')->fetchAll();
         $features = $this->multiLevelData(TRUE, $fAll, 'feature_id', 'parent_id', 'feature_title');
-        $features = array_merge(array(0=>'__ROOT__'), $features);
+        if( empty($features) ){
+            $features = array(0=>'__ROOT__');
+        }
         $form->get('parent_id')->setOptions(array(
             'options' => $features,
         ));

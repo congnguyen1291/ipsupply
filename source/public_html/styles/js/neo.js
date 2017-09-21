@@ -196,7 +196,7 @@ coz.menuMega = {
         $('.coz-toolbar').hide();
     },
     addMenu : function( act , txt, icon , callback){
-        var _idt = coz.aliasString(act);
+        /*var _idt = coz.aliasString(act);
         if( $('.coz-ls-action-toolbar .'+_idt).length <=0 ){
             _str = '<a href="javascript:void(0)" class="coz-action-toolbar '+_idt+'" onclick="'+act+'" >'+
                 '<span class="coz-action-ico-toolbar" >'+
@@ -212,7 +212,7 @@ coz.menuMega = {
             if( typeof callback == 'function' ){
                 callback();
             }
-        }
+        }*/
     },
     init : function(){
         var _tr =   '<div class="coz-toolbar" style="display:none" >'+

@@ -10,9 +10,20 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-                <li><a href="<?php echo $this->url('cms/user') ?>">Thành viên</a></li>
-                <li class="active">Cập nhật</li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/user') ?>" >
+                        <?php echo $this->translate('txt_thanh_vien'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_cap_nhat'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -25,7 +36,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Thành viên :: Cập nhật
+                <?php echo $this->translate('txt_thanh_vien'); ?> :: 
+                <?php echo $this->translate('txt_cap_nhat'); ?>
             </h1>
         </div>
     </div>
@@ -47,43 +59,55 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group">
-                            <label for="first_name">First name</label>
+                            <label for="first_name">
+                                <?php echo $this->translate('txt_first_name_user'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('first_name')); ?>
                         </div>
                     </div>
                     <div class="col-sm-6" >
                         <div class="form-group">
-                            <label for="last_name">Last name</label>
+                            <label for="last_name">
+                                <?php echo $this->translate('txt_last_name_user'); ?>
+                            </label>
                             <?php echo $this->formRow($form->get('last_name')); ?>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="user_name">Tên đăng nhập</label>
+                    <label for="user_name">
+                        <?php echo $this->translate('txt_ten_dang_nhap_user'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('user_name')); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Số DT</label>
+                    <label for="phone">
+                        <?php echo $this->translate('txt_so_dt_user'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('phone')); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="birthday">Ngày sinh</label>
+                    <label for="birthday">
+                        <?php echo $this->translate('txt_ngay_sinh_user'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('birthday')); ?>
                 </div>
 
                 <div class="form-group">
-                    <label >Loại người dùng</label>
+                    <label>
+                        <?php echo $this->translate('txt_loai_nguoi_dung_user'); ?>
+                    </label>
                     <div class="clearfix" >
                         <label for="type_admin" >
                             <input type="radio" name="type" id="type_admin" value="admin" <?php echo $user->type == 'admin' ? 'checked="checked"' : '' ?> >
-                            Admin
+                            <?php echo $this->translate('txt_admin_user'); ?>
                         </label>
                         <label for="type_user" >
                             <input type="radio" name="type" id="type_user" value="user" <?php echo $user->type != 'admin' ? 'checked="checked"' : '' ?> >
-                            User
+                            <?php echo $this->translate('txt_user_user'); ?>
                         </label>
                     </div>
                 </div>
@@ -95,19 +119,21 @@
                             <?php if( !empty($_SESSION['CMSMEMBER']['is_administrator']) ){ ?>
                             <div class="form-group">
                                 <p class="bg-info" >
-                                    Kiểu dùng xác định tài khoản này là supper admin, khi đó chủ tài khoản sẽ có toàn quyền trên trang
+                                    <?php echo $this->translate('txt_dieu_kien_is_admin'); ?>
                                 </p>
                                 <label>
                                     <input type="checkbox" name="is_administrator" <?php echo !empty($user->is_administrator) ? 'checked="checked"' : '' ?> value="1" >
-                                    Là administrator
+                                    <?php echo $this->translate('txt_la_admintrator_user'); ?>
                                 </label>
                             </div>
                             <?php } ?>
 
                             <div class="form-group group-admin" >
-                                <label for="groups_id">Nhóm admin</label>
+                                <label for="groups_id">
+                                    <?php echo $this->translate('txt_nhom_admin_user'); ?>
+                                </label>
                                 <p class="bg-info" >
-                                    Nhóm này sẽ phân loại quyền của admin theo nhóm, nó chỉ xuất hiện khi admin không phải là supper admin
+                                    <?php echo $this->translate('txt_giai_thich_nhom_admin_user'); ?>
                                 </p>
                                 <select name="groups_id" class="form-control input-sm" id="groups_id" >
                                     <?php foreach ($groups as $group){ ?>
@@ -122,7 +148,9 @@
                 </div>
 
                 <div class="form-group" style="display: none;" >
-                    <label for="merchant_id">Thuộc đại lý</label>
+                    <label for="merchant_id">
+                        <?php echo $this->translate('txt_thuoc_dai_ly_user'); ?>
+                    </label>
                     <?php echo $this->formRow($form->get('merchant_id')); ?>
                 </div>
 
@@ -133,13 +161,17 @@
         <div class="row address-user" >
             <div class="col-sm-12" >
                 <div class="form-group" >
-                    <h3>Thông tin vị trí</h3>
+                    <h3>
+                        <?php echo $this->translate('txt_thong_tin_vi_tri_user'); ?>
+                    </h3>
                 </div>
             </div>
             <div class="col-sm-6" >
                 <?php if( !empty($countries) ){ ?>
                 <div class="form-group" >
-                    <label for="country_id">Đất nước</label>
+                    <label for="country_id">
+                        <?php echo $this->translate('txt_dat_nuoc_user'); ?>
+                    </label>
                     <select name="country_id" class="form-control input-sm" id="country_id" >
                         <option value="" >
                             <?php echo $this->translate('chon_country');?>
@@ -166,16 +198,16 @@
         <div class="form-group" >
             <label for="is_published">
                 <?php echo $this->formRow($form->get('is_published')); ?>
-                Kích hoạt
+                <?php echo $this->translate('txt_kich_hoat'); ?>
             </label>
         </div>
 
         <div class="form-group" >
             <button class="btn btn-primary btn-sm">
-                Cập nhật thành viên
+                <?php echo $this->translate('txt_cap_nhat_vien_moi_user'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

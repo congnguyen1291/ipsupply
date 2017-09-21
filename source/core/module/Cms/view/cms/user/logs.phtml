@@ -2,8 +2,20 @@
     <nav class="navbar navbar-static-top clearfix" role="navigation">
         <div class="pull-left" >
             <ol class="breadcrumb">
-                <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-                <li class="active">Danh sách hoặt động</li>
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/user') ?>" >
+                        <?php echo $this->translate('txt_thanh_vien'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_hoat_dong'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -12,12 +24,12 @@
     </nav>
 </header>
 
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Hoặt động :: Quản lý
+                <?php echo $this->translate('txt_thanh_vien'); ?> :: 
+                <?php echo $this->translate('txt_hoat_dong'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -25,7 +37,6 @@
     </div>
 </section>
 
-<!-- Main content -->
 <section class="content clearfix" >
     <form action="<?php echo $this->url('cms/user', array('action' => 'logs', 'id' => $id)) ?>" method="post" class="clearfix" >
         <?php if( !empty($logs) ){ ?>
@@ -33,8 +44,9 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="col-lim" >Sesion</th>
-                        <th>Hoặt động</th>
+                        <th>
+                            <?php echo $this->translate('txt_hoat_dong'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -44,16 +56,13 @@
                 <tbody>
                     <?php foreach ($logs as $row) { ?>
                     <tr>
-                        <td class="col-lim" >
-                            <?php echo $row['session_id'] ?>
-                        </td>
                         <td>
-                            <a href="<?php echo $this->url('cms/user', array('action' => 'log')).'?id='.$row['session_id'] ?>" data-toggle="tooltip" data-placement="top" title="xem chi tiết hoặt động" >
+                            <a href="<?php echo $this->url('cms/user', array('action' => 'log')).'?id='.$row['session_id'] ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xem_chi_tiet_hoat_dong'); ?>" >
                                 <?php echo $row['step'] ?>
                             </a>
                         </td>
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/user', array('action' => 'deleteLog')).'?id='.$row['session_id'] ?>" data-toggle="tooltip" data-placement="top" title="Xoá hoặt động"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/user', array('action' => 'deleteLog')).'?id='.$row['session_id'] ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_hoat_dong'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -67,7 +76,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có hoặt động nào
+            <?php echo $this->translate('txt_chua_co_hoat_dong_nao'); ?>
         </p>
         <?php } ?>
 

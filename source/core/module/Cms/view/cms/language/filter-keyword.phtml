@@ -1,6 +1,10 @@
 <?php foreach($keywords as $word) : ?>
     <tr>
-        <td><a href="<?php echo $this->url('cms/language', array('action' => 'edit-keyword')) ?>?word=<?php echo $word['keyword'] ?>"><?php echo $word['keyword'] ?></a></td>
+        <td>
+        	<a href="<?php echo $this->url('cms/language', array('action' => 'edit-keyword')) ?>?word=<?php echo $word['keyword'] ?>">
+        		<?php echo $word['keyword'] ?>
+        	</a>
+        </td>
         <?php foreach($languages as $lang) : ?>
             <td><?php echo isset($word[$lang['languages_id']]) ? $word[$lang['languages_id']] : '' ?></td>
         <?php endforeach; ?>

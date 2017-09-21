@@ -5,10 +5,12 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
-                <li class="active">Quyền người dùng</li>
+                <li class="active">
+                    <?php echo $this->translate('txt_quyen_nguoi_dung'); ?>
+                </li>
             </ol>
         </div>
         <div class="navbar-right" >
@@ -22,7 +24,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Quyền người dùng :: Quản lý
+                <?php echo $this->translate('txt_quyen_nguoi_dung'); ?> :: 
+                <?php echo $this->translate('txt_quan_ly'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -31,12 +34,13 @@
                     <div class="input-group">
                         <div class="row row-coz-search" >
                             <div class="col-xs-7 col-coz-search" >
-                                <input type="text" name="q" class="form-control" placeholder="Search..." value="<?php echo $q ?>" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
                             </div>
                             <div class="col-xs-5 col-coz-search" >
                                 <select name="type" class="form-control" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
-                                        Kiểu tìm kiếm : theo tên
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_ten'); ?>
                                     </option>
                                 </select>
                             </div>
@@ -61,24 +65,24 @@
                 <div class="col-sm-12" >
                     <div class="text-right" >
                         <a href="<?php echo $this->url('cms/permission', array('action' => 'add')) ?>"
-                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Thêm quyền người dùng" >
+                   class="btn btn-link" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_them_quyen'); ?>" >
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                         <?php if( !empty($permissions) ){ ?>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'publish')) ?>')" data-toggle="tooltip" data-placement="top" title="Hiện quyền người dùng" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'publish')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_quyen'); ?>" >
                             <i class="fa fa-toggle-on" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'unpublish')) ?>')" data-toggle="tooltip" data-placement="top" title="Ẩn quyền người dùng" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'unpublish')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_quyen'); ?>" >
                             <i class="fa fa-toggle-off" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'order')) ?>')" data-toggle="tooltip" data-placement="top" title="Cập nhật thứ tự" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'order')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_cap_nhat_thu_tu'); ?>" >
                             <i class="fa fa-sort" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-link" type="button"
-                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="Xoá quyền người dùng" >
+                                onclick="doSubmit(this.form, '<?php echo $this->url('cms/permission', array('action' => 'delete')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_quyen'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                         <?php } ?>
@@ -92,10 +96,18 @@
             <table class="table table-data-bind table-no-border" >
                 <thead>
                     <tr>
-                        <th class="text-center col-lim" >Id</th>
-                        <th >Tên</th>
-                        <th class="col-lim" >Module</th>
-                        <th class="col-lim text-right" >Trạng thái</th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th >
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
+                        <th class="col-lim" >
+                            <?php echo $this->translate('txt_module'); ?>
+                        </th>
+                        <th class="col-lim text-right" >
+                            <?php echo $this->translate('txt_trang_thai'); ?>
+                        </th>
                         <th class="col-lim" ></th>
                         <th class="text-center col-lim" >
                             <input type="checkbox" class="checkall" />
@@ -109,7 +121,7 @@
                             <?php echo $row['permissions_id'] ?>
                         </td>
                         <td >
-                            <a href="<?php echo $this->url('cms/permission', array('action' => 'edit', 'id' => $row['permissions_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa quyền người dùng" >
+                            <a href="<?php echo $this->url('cms/permission', array('action' => 'edit', 'id' => $row['permissions_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_quyen_nguoi_dung'); ?>" >
                                 <?php echo $row['permissions_name'] ?>
                             </a>
                         </td>
@@ -120,31 +132,31 @@
 
                         <td class="col-lim text-right" >
                             <?php if( !empty($row['is_published']) ){ ?>
-                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Đang hiển thị" >
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_hien_thi'); ?>" >
                                     <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                 </span>
                             <?php }else{ ?>
-                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Đang ẩn" >
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_dang_an'); ?>" >
                                     <i class="fa fa-toggle-off" aria-hidden="true"></i>
                                 </span>
                             <?php } ?>
                         </td>
 
                         <td class="text-right col-lim" >
-                            <a href="<?php echo $this->url('cms/permission', array('action' => 'edit', 'id' => $row['permissions_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Sửa quyền người dùng" >
+                            <a href="<?php echo $this->url('cms/permission', array('action' => 'edit', 'id' => $row['permissions_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_sua_quyen_nguoi_dung'); ?>" >
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
 
-                            <a href="<?php echo $this->url('cms/permission', array('action' => 'delete', 'id' => $row['permissions_id'])) ?>" data-toggle="tooltip" data-placement="top" title="Xoá quyền người dùng"  data-confirm="Bạn có muốn xoá ?" >
+                            <a href="<?php echo $this->url('cms/permission', array('action' => 'delete', 'id' => $row['permissions_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_quyen'); ?>"  data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
 
                             <?php if( !empty($row['is_published']) ){ ?>
-                            <a href="<?php echo $this->url('cms/permission', array('action' => 'unpublish', 'id' => $row['permissions_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="Ẩn quyền người dùng" >
+                            <a href="<?php echo $this->url('cms/permission', array('action' => 'unpublish', 'id' => $row['permissions_id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_quyen'); ?>" >
                                 <i class="fa fa-toggle-on" aria-hidden="true"></i>
                             </a>
                             <?php }else{ ?>
-                            <a href="<?php echo $this->url('cms/permission', array('action' => 'publish', 'id' => $row['permissions_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="Hiện quyền người dùng" >
+                            <a href="<?php echo $this->url('cms/permission', array('action' => 'publish', 'id' => $row['permissions_id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_quyen'); ?>" >
                                 <i class="fa fa-toggle-off" aria-hidden="true"></i>
                             </a>
                             <?php } ?>
@@ -160,7 +172,7 @@
         </div>
         <?php }else{ ?>
         <p class="empty" >
-            Chưa có quyền người dùng
+            <?php echo $this->translate('txt_chua_co_quyen_nguoi_dung'); ?>
         </p>
         <?php } ?>
 

@@ -1,4 +1,5 @@
 <?php
+$features = $this->Features()->getAllFeatureAndSort();
 $manufacturers = $this->Manufacturers()->getManufacturers();
 $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
 echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>

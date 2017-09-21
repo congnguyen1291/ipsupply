@@ -5,12 +5,16 @@
                 <li>
                     <a href="<?php echo $this->url('cms') ?>">
                         <i class="fa fa-dashboard"></i> 
-                        Trang chủ
+                        <?php echo $this->translate('txt_trang_chu'); ?>
                     </a>
                 </li>
-                <li><a href="<?php echo $this->url('cms/siri') ?>">Siri</a></li>
+                <li>
+                    <a href="<?php echo $this->url('cms/siri') ?>">
+                        <?php echo $this->translate('txt_siri'); ?>
+                    </a>
+                </li>
                 <li class="active" >
-                    fix image
+                    <?php echo $this->translate('txt_fix_images'); ?>
                 </li>
             </ol>
         </div>
@@ -25,7 +29,8 @@
     <div class="row" >
         <div class="col-sm-6 col-xs-12" >
             <h1>
-                Siri :: fix image
+                <?php echo $this->translate('txt_siri'); ?> :: 
+                <?php echo $this->translate('txt_fix_images'); ?>
             </h1>
         </div>
         <div class="col-sm-6 col-xs-12 pull-right" >
@@ -50,19 +55,19 @@
             <div class="col-sm-6" >
                 <div class="form-group">
                     <label for="url" >
-                        Link hình ảnh
+                        <?php echo $this->translate('txt_link_hinh_anh_siri'); ?>
                     </label>
-                    <input type="text" name="url" id="url" placeholder="Link hình ảnh" class="form-control input-sm" value="<?php echo $url ?>" >
+                    <input type="text" name="url" id="url" placeholder="<?php echo $this->translate('txt_link_hinh_anh_siri'); ?>" class="form-control input-sm" value="<?php echo $url ?>" >
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <button class="btn btn-primary btn-sm" >
-                Fix lại hình này
+                <?php echo $this->translate('txt_fix_hinh_nay_siri'); ?>
             </button>
             <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
-                Quay lại
+                <?php echo $this->translate('txt_quay_lai'); ?>
             </button>
         </div>
     </form>
