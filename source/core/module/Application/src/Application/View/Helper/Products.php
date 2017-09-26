@@ -198,6 +198,40 @@ class Products extends App
         return $results;
     }
 
+    public function getTotalFqaProduct($products_id)
+    {
+        $stri_key = '';
+        if(is_array($products_id)){
+            $stri_key = $this->createKeyCacheFromArray($products_id);
+        }else{
+            $stri_key = $products_id;
+        }
+        $key = md5($this->getNamspaceCached().':ProductsTable:getTotalFqaProduct('.$stri_key.')');
+        $results = $this->view->Datas()->popIDataHashMap($key);
+        if( !$results ) {
+            $results = $this->getModelTable('ProductsTable')->getTotalFqa($products_id);
+            $this->view->Datas()->pushIDataHashMap($key, $results);
+        }
+        return $results;
+    }
+
+    public function getFqaChild($id, $offset = 0, $limit = 5)
+    {
+        $stri_key = '';
+        if(is_array($id)){
+            $stri_key = $this->createKeyCacheFromArray($id);
+        }else{
+            $stri_key = $id;
+        }
+        $key = md5($this->getNamspaceCached().':ProductsTable:getAllFqa('.$stri_key.';'.$offset.';'.$limit.')');
+        $results = $this->view->Datas()->popIDataHashMap($key);
+        if( !$results ) {
+            $results = $this->getModelTable('ProductsTable')->getAllFqaChild($id, $offset, $limit);
+            $this->view->Datas()->pushIDataHashMap($key, $results);
+        }
+        return $results;
+    }
+
     public function getExtensionsRequireForProduct($products_id)
     {
         $stri_key = '';

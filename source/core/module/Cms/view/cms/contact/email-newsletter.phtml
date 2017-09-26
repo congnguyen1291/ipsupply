@@ -1,0 +1,139 @@
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_email_newsletter'); ?>
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+<section class="content-header">
+    <div class="row" >
+        <div class="col-sm-6 col-xs-12" >
+            <h1>
+                <?php echo $this->translate('txt_email_newsletter'); ?> ::
+                <?php echo $this->translate('txt_quan_ly'); ?>
+            </h1>
+        </div>
+        <div class="col-sm-6 col-xs-12 pull-right" >
+            <form action="<?php echo $this->url('cms/contact', array('action' => 'index')) ?>" method="get" role="form" data-form="searchAjax" >
+                <div class="coz-search-bar clearfix" >
+                    <div class="input-group">
+                        <div class="row row-coz-search" >
+                            <div class="col-xs-7 col-coz-search" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
+                            </div>
+                            <div class="col-xs-5 col-coz-search" >
+                                <select name="type" class="form-control" >
+                                    <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
+                                        <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
+                                        <?php echo $this->translate('txt_theo_email'); ?>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="content clearfix" >
+    <form action="<?php echo $this->url('cms/contact', array('action' => 'email-newsletter')) ?>" method="post" class="clearfix" id="form-list-contact" >
+        <div class="toolbar clearfix" >
+            <div class="row" >
+                <div class="col-sm-6" ></div>
+                <div class="col-sm-6" >
+                    <div class="text-right" >
+                        <?php if( !empty($emails) ){ ?>
+                        <button class="btn btn-link" type="button" onclick="doSubmit(this.form, '<?php echo $this->url('cms/contact', array('action' => 'delete-email-newsletter')) ?>')" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_email_newsletter'); ?>" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-box" id="error-box" ></div>
+
+        <?php if( !empty($emails) ){ ?>
+        <div class="table-responsive" data-table="searchAjax" >
+            <table class="table table-data-bind table-no-border" >
+                <thead>
+                    <tr>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_id'); ?>
+                        </th>
+                        <th >
+                            <?php echo $this->translate('txt_email'); ?>
+                        </th>
+                        <th class="text-center col-lim" >
+                            <?php echo $this->translate('txt_ngay_tao'); ?>
+                        </th>
+                        <th class="col-lim" ></th>
+                        <th class="text-center col-lim" >
+                            <input type="checkbox" class="checkall" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($emails as $key=>$row ) { ?>
+                    <tr>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['email_id'] ?>
+                        </td>
+                        <td>
+                            <?php echo $row['email'] ?>
+                        </td>
+                        <td class="text-center col-lim" >
+                            <?php echo $row['date_create'] ?>
+                        </td>
+                        <td class="text-right col-lim" >
+
+                            <a href="<?php echo $this->url('cms/contact', array('action' => 'delete-email-newsletter', 'id' => $row['email_id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_email_newsletter'); ?>" data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cid[]" value="<?php echo $row['email_id'] ?>" />
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php }else{ ?>
+        <p class="empty" >
+            <?php echo $this->translate('txt_chua_co_email'); ?>
+        </p>
+        <?php } ?>
+
+        <?php if( !empty($paging) ){ ?>
+        <div class="toolbar clearfix" >
+            <div class="pull-right" >
+                <?php echo $paging ?>
+            </div>
+        </div>
+        <?php } ?>
+    </form>
+</section>

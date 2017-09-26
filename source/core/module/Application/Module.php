@@ -507,6 +507,10 @@ class Module {
 							$helper = new View\Helper\SEO($sm);
 							return $helper;
 						},
+						'Faq' => function ($sm) {
+							$helper = new View\Helper\Faq($sm);
+							return $helper;
+						},
 						'Neo' => function ($sm) {
 							$helper = new View\Helper\Neo($sm);
 							return $helper;

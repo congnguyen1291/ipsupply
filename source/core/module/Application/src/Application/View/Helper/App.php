@@ -228,5 +228,13 @@ class App extends AbstractHelper implements ServiceLocatorAwareInterface
         }
         return FALSE;
     }
+
+    public function setJavascriptManufacturers( $manufacturers, $type = '' ) {
+        if( !empty($manufacturers) ){
+            $scripts = $this->view->inlineScript();
+            $scripts->appendScript('coz.addManufacturersModel('.json_encode($manufacturers).');');
+        }
+        return FALSE;
+    }
 	
 }

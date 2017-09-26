@@ -13,6 +13,8 @@ use Cms\Lib\Paging;
 use Cms\Model\Coupons;
 use Zend\View\Model\ViewModel;
 
+use JasonGrimes\Paginator;
+
 class QuestionAnswerController extends BackEndController
 {
     public function __construct()
@@ -23,20 +25,29 @@ class QuestionAnswerController extends BackEndController
 
     public function indexAction()
     {
-        $where = array();
-        $order = array(
-            'fqa.date_create' => 'DESC',
-        );
-        $total = $this->getModelTable('SettingTable')->countAllQuestion($where, $order);
-        $page = isset($_GET['page']) ? $_GET['page'] : 0;
-        $this->intPage = $page;
-        $page_size = $this->intPageSize;
-        $link = "";
-        $objPage = new Paging($total, $page, $page_size, $link);
-        $paging = $objPage->getListFooter($link);
-        $datas = $this->getModelTable('SettingTable')->getAllQuestion($where, $order, $this->intPage, $this->intPageSize);
-        $this->data_view['datas'] = $datas;
-        $this->data_view['paging'] = $paging;
+    	$language = $this->params()->fromQuery('language', 1);
+        $limit = $this->params()->fromQuery('limit', 20);
+        $page = $this->params()->fromQuery('page', 1);
+        $id = $this->params()->fromRoute('id', 0);
+        $q = $this->params()->fromQuery('q', '');
+        $type = $this->params()->fromQuery('type', 0);
+
+        $params = array();
+        $params['page'] = $page;
+        $params['limit'] = $limit;
+
+        $total = $this->getModelTable('SettingTable')->countAllQuestion($params);
+        $fqas = $this->getModelTable('SettingTable')->getAllQuestion($params);
+
+        $link = '/cms/fqa?page=(:num)'.( !empty($q) ? '&q='.$q.'&type='.$type : '');
+        $paginator = new Paginator($total, $limit, $page, $link);
+
+        $this->data_view['fqas'] = $fqas;
+        $this->data_view['limit'] = $limit;
+        $this->data_view['page'] = $page;
+        $this->data_view['paging'] = $paginator->toHtml();
+        $this->data_view['q'] = $q;
+        $this->data_view['type'] = $type;
         return $this->data_view;
     }
 
@@ -50,6 +61,7 @@ class QuestionAnswerController extends BackEndController
         }catch (\Exception $ex){
             return $this->redirect()->toRoute('cms/fqa');
         }
+        $error = array();
         $request = $this->getRequest();
         if($request->isPost()){
             $data = $request->getPost();
@@ -57,16 +69,15 @@ class QuestionAnswerController extends BackEndController
                 $error[] = "Nội dung trả lời không được bỏ trống";
             }else{
                 $this->getModelTable('SettingTable')->addAnswer($data);
-
                 /*strigger change namespace cached*/
                 $this->updateNamespaceCached();
-
+                return $this->redirect()->toRoute('cms/fqa', array('action' => 'answer', 'id' => $id));
             }
         }
         $answers = $this->getModelTable('SettingTable')->getAnswers($id);
         $this->data_view['question'] = $question;
         $this->data_view['answers'] = $answers;
-        $this->data_view['error'] = isset($error) ? $error : false;
+        $this->data_view['error'] = $error;
         return $this->data_view;
     }
 	

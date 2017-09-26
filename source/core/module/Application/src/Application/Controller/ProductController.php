@@ -628,6 +628,7 @@ class ProductController extends FrontEndController
 
     public function postFqaAction()
     {
+        $translator = $this->getServiceLocator()->get('translator');
         $id = $this->params()->fromPost('id', null);
         $noidung = $this->params()->fromPost('noidung', null);
         $email = $this->params()->fromPost('email', null);
@@ -654,18 +655,18 @@ class ProductController extends FrontEndController
 			
             if (!empty($lastID)) {
                 $result = new JsonModel(array(
-                    'html' => 'Cám ơn bạn đã gửi câu hỏi cho chúng tôi',
+                    'msg' => $translator->translate('txt_cam_on_da_dat_cau_hoi'),
                     'flag' => true,
                 ));
             } else {
                 $result = new JsonModel(array(
-                    'html' => 'Có lỗi xảy ra ,bạn vui lòng thử lại',
+                    'msg' => $translator->translate('txt_co_loi_xay_ra'),
                     'flag' => false,
                 ));
             }
         } else {
             $result = new JsonModel(array(
-                'html' => 'Có lỗi xảy ra ,bạn vui lòng thử lại',
+                'msg' => $translator->translate('txt_co_loi_xay_ra'),
                 'flag' => false,
             ));
         }

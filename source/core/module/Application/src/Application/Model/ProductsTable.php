@@ -289,7 +289,44 @@ class ProductsTable extends AppTable{
         return $results;
 	}
 	
-	public function getAllFqa($id, $intPage, $intPageSize){
+	public function getTotalFqa($id){
+        $cache = $this->getServiceLocator()->get('cache');
+        $stri_key = '';
+        if(is_array($id)){
+            $stri_key = $this->createKeyCacheFromArray($id);
+        }else{
+            $stri_key = $id;
+        }
+        $key = md5($this->getNamspaceCached().':ProductsTable:getTotalFqa('.$stri_key.')');
+        $results = $cache->getItem($key);
+        if(!$results) {
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select->columns(array('total'=> new Expression('COUNT(DISTINCT fqa.id)')));
+            $select->from('fqa');
+            $select->where(array(
+                'products_id' => $id,
+                'fqa.is_published' => 1,
+                'fqa.id_parent' => 0,
+            ));
+            try {
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $result = $results->toArray();
+                $results = 0;
+                if ( !empty($result) ) {
+                    $results = $result[0]['total'];
+                }
+                $cache->setItem($key, $results);
+            } catch (\Exception $ex) {
+                $results = array();
+            }
+        }
+        return $results;
+    }
+
+    public function getAllFqa($id, $intPage, $intPageSize){
         $cache = $this->getServiceLocator()->get('cache');
         $stri_key = '';
         if(is_array($id)){
@@ -308,30 +345,21 @@ class ProductsTable extends AppTable{
             $adapter = $this->tableGateway->getAdapter();
             $sql = new Sql($adapter);
             $select = $sql->select();
+            $select->columns(array('*','total_child'=> new Expression('(SELECT COUNT(*) FROM fqa AS t1 WHERE t1.id_parent =  fqa.id )')));
             $select->from('fqa');
             $select->join('users', 'users.users_id=fqa.users_id', array('full_name', 'user_name', 'avatar'), 'left');
             $select->where(array(
                 'products_id' => $id,
                 'fqa.is_published' => 1,
                 'fqa.id_parent' => 0,
-                'users.website_id'=>$this->getWebsiteId()
+                //'users.website_id'=>$this->getWebsiteId()
             ));
             $select->limit($intPageSize);
             $select->offset($intPage);
             try {
                 $selectString = $sql->getSqlStringForSqlObject($select);
-                $resultsPa = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-                $resultsPa = $resultsPa->toArray();
-                $results = $resultsPa;
-                if ( !empty($resultsPa) ) {
-                    $fqa_ids = array_map(function ($a) {
-                            return $a['id'];
-                        }, $resultsPa);
-                    $child = $this->getAllFqaChild($fqa_ids, $intPage, $intPageSize);
-                    if ( !empty($child) ) {
-                        $results = array_merge($resultsPa, $child);
-                    }
-                }
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $results = $results->toArray();
                 $cache->setItem($key, $results);
             } catch (\Exception $ex) {
                 $results = array();
@@ -1717,9 +1745,12 @@ class ProductsTable extends AppTable{
                     $select->where->like('tags.tags_alias', '%' . $tag . '%');
                 }
 
-                if ( !empty($params['manus']) ) {
+                if ( !empty($params['manufacturer']) ) {
+                    $manufacturer = $params['manufacturer'];
+                    if( !is_array($params['manufacturer']) )
+                        $manufacturer = explode(';', $params['manufacturer']);
                     $select->where(array(
-                        'products.manufacturers_id' => $params['manus']
+                        'products.manufacturers_id' => $manufacturer
                     ));
                 }
 
@@ -2191,12 +2222,15 @@ class ProductsTable extends AppTable{
 
                 if ( !empty($params['keyword']) ) {
                     $keyword = $this->toAlias($params['keyword']);
-                    $select->where->like('products_translate.products_alias', '%' . $keyword . '%');
+                    $select->where("(products_translate.products_alias LIKE '%{$keyword}%' OR products.products_code LIKE '%{$keyword}%')");
                 }
 
-                if ( !empty($params['manus']) ) {
+                if ( !empty($params['manufacturer']) ) {
+                    $manufacturer = $params['manufacturer'];
+                    if( !is_array($params['manufacturer']) )
+                        $manufacturer = explode(';', $params['manufacturer']);
                     $select->where(array(
-                        'products.manufacturers_id' => $params['manus']
+                        'products.manufacturers_id' => $manufacturer
                     ));
                 }
 
@@ -2746,9 +2780,12 @@ class ProductsTable extends AppTable{
                     $select->where->like('tags.tags_alias', '%' . $tag . '%');
                 }
 
-                if ( !empty($params['manus']) ) {
+                if ( !empty($params['manufacturer']) ) {
+                    $manufacturer = $params['manufacturer'];
+                    if( !is_array($params['manufacturer']) )
+                        $manufacturer = explode(';', $params['manufacturer']);
                     $select->where(array(
-                        'products.manufacturers_id' => $params['manus']
+                        'products.manufacturers_id' => $manufacturer
                     ));
                 }
 
@@ -2991,12 +3028,15 @@ class ProductsTable extends AppTable{
                 
                 if ( !empty($params['keyword']) ) {
                     $keyword = $this->toAlias($params['keyword']);
-                    $select->where->like('products_translate.products_alias', '%' . $keyword . '%');
+                    $select->where("(products_translate.products_alias LIKE '%{$keyword}%' OR products.products_code LIKE '%{$keyword}%')");
                 }
 
-                if ( !empty($params['manus']) ) {
+                if ( !empty($params['manufacturer']) ) {
+                    $manufacturer = $params['manufacturer'];
+                    if( !is_array($params['manufacturer']) )
+                        $manufacturer = explode(';', $params['manufacturer']);
                     $select->where(array(
-                        'products.manufacturers_id' => $params['manus']
+                        'products.manufacturers_id' => $manufacturer
                     ));
                 }
 

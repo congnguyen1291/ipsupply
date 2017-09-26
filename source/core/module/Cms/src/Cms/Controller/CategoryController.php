@@ -97,7 +97,7 @@ class CategoryController extends BackEndController
                     $this->updateNamespaceCached();
                     
                     // Redirect to list of albums
-                    return $this->redirect()->toRoute('cms/category', array('action' => 'index', 'id' => $parent_id));
+                    return $this->redirect()->toRoute('cms/category', array('action' => 'index', 'id' => $cat->parent_id));
                 }catch(\Exception $ex){
                     die($ex->getMessage());
                 }

@@ -318,5 +318,8 @@ Trụ sở chính:158/90 Xô Viết Nghệ Tĩnh, P.21, Q. Bình Thạnh, TPHCM,
   'don_hang_ban_da_mua' => 'Đơn hàng của bạn',
   'tong_cong_tax' => 'Tổng tiền phải thanh toán',
   'txt_don_hang_khong_van_chuyen_den_dia_diem_nay' => 'Địa điểm này chúng tôi không vận chuyển tới',
+  'ttl_thanks' => 'ttl_thanks',
+  'txt_thanks_for_contact' => 'txt_thanks_for_contact',
+  'ttl_lien_he' => 'ttl_lien_he',
 ); 
  return swapTranslateForAdmin($vi_VN, 'vi_VN');

@@ -13,7 +13,7 @@ use Cms\Model\AppTable;
 
 class ContactTable extends AppTable {
 
-    public function getContacts() {
+    public function getContacts( $where = array() ) {
         $adapter = $this->tableGateway->getAdapter();
         $sql = new Sql($adapter);
         $select = $sql->select();
@@ -23,8 +23,14 @@ class ContactTable extends AppTable {
         $select->where(array(
             'website_contact.website_id' => $this->getWebsiteId()
         ));
-        $select->order('website_contact.id ASC');
+        $select->order('website_contact.id DESC');
         $select->group('website_contact.id');
+
+        if( $this->hasPaging($where) ){
+            $select->offset($this->getOffsetPaging($where['page'], $where['limit']));
+            $select->limit($where['limit']);
+        }
+        
         try{
             $selectString = $sql->getSqlStringForSqlObject($select);
             $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -56,7 +62,7 @@ class ContactTable extends AppTable {
         }
     }
 
-    public function getTotalContact() {
+    public function getTotalContact( $where = array() ) {
         $adapter = $this->tableGateway->getAdapter();
         $sql = new Sql($adapter);
         $select = $sql->select();
@@ -66,7 +72,6 @@ class ContactTable extends AppTable {
         $select->where(array(
             'website_contact.website_id' => $this->getWebsiteId()
         ));
-        $select->order('website_contact.id ASC');
         try{
             $selectString = $sql->getSqlStringForSqlObject($select);
             $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -105,7 +110,7 @@ class ContactTable extends AppTable {
         $sql = new Sql($adapter);
         $insert = $sql->insert();
         $insert->columns(array(
-            'users_id','contact_id','date_create','content',
+            'users_id','contact_id','date_create','content','has_attachment','file',
         ));
         $insert->into('website_replay_contact');
         $insert->values(array(
@@ -113,6 +118,8 @@ class ContactTable extends AppTable {
             'contact_id' => $row['id'],
             'date_create' => date('Y-m-d H:i:s'),
             'content' => $row['content'],
+            'has_attachment' => $row['has_attachment'],
+            'file' => $row['file'],
         ));
         try{
             $insertString = $sql->getSqlStringForSqlObject($insert);
@@ -123,7 +130,7 @@ class ContactTable extends AppTable {
         }
     }
 
-    public function update( $row, $where ) {
+    public function updateContact( $row, $where ) {
         $this->tableGateway->update($row, $where);
     }
 

@@ -6,18 +6,24 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
 echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
 <script id="tmplFillterSort" data-place="tmplFillterSort" type="text/x-jQuery-tmpl">
 <div>
-    <?php echo $this->translate('txt_sap_xep_theo') ?>
-    <div class="form-inline form-viewpro" data-form="category" >
-        <div class="form-group">
-            <select class="form-control sort-by-script neo-trigger-filter" name="sort" data-input="sort" >
-                {{each coz.model.fillter.sort.getOptions() }}
-                <option value="${coz.model.fillter.sort.getValue($value)}" {{if coz.model.fillter.sort.isSelected($value) }}selected="selected"{{/if}} >
-                    ${coz.model.fillter.sort.getText($value)}
-                </option>
-                {{/each}}
-            </select>
-        </div>
-    </div>
+    <select class="select-filter neo-trigger-filter" name="sort" data-input="sort" >
+        {{each coz.model.fillter.sort.getOptions() }}
+        <option value="${coz.model.fillter.sort.getValue($value)}" {{if coz.model.fillter.sort.isSelected($value) }}selected="selected"{{/if}} >
+            ${coz.model.fillter.sort.getText($value)}
+        </option>
+        {{/each}}
+    </select>
+</div>
+</script>
+
+<script id="tmplFillterSwitchView" data-place="tmplFillterSwitchView" type="text/x-jQuery-tmpl">
+<div>
+    <a href="javascript:void(0);" title="" class="switche-view hidden-sm-down {{if coz.model.fillter.switchview.isList() }}active{{/if}}" data-btn="switchView" data-value="list" >
+        <i class="fa fa-th-large" aria-hidden="true"></i>
+    </a>
+    <a href="javascript:void(0);" title="" class="switche-view hidden-sm-down {{if coz.model.fillter.switchview.isBox() }}active{{/if}}" data-btn="switchView"  data-value="box" >
+        <i class="fa fa-th-list" aria-hidden="true"></i>
+    </a>
 </div>
 </script>
 
@@ -75,7 +81,6 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
                                 <span class="coz-label-check-inner">
                                     ${coz.feature.getName($value)}
                                 </span>
-                                <span class="coz-sum-check" >(${coz.feature.getNum($value)})</span>
                             </div>
                         </div>
                         {{/each}}
@@ -209,7 +214,7 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
 
                     <div class="ds-general clearfix" >
                         <div class="sub-general clearfix" >
-                            <?php echo $this->partial('app/categories-left', array('categories' => $categories) ); ?>
+                            <?php echo $this->partial('app/categories-left', array('categories' => $categories, 'category' => $category) ); ?>
                         </div>
 
                         <div class="fillter-feature clearfix" >

@@ -3438,6 +3438,12 @@ div#map_canvas {
   border: none;
   vertical-align: middle;
 }
+.table.table-no-border>tbody>tr:hover{
+    background: #eee;
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: 0px 0px 3px 1px #eee;
+    box-shadow: 0px 0px 3px 1px #eee;
+}
 .coz-color-ative, .btn-link {
     color: #4285f4;
 }
@@ -3634,4 +3640,11 @@ img.coz-ico-menu {
   padding-right: 0;
 }
 .sumary-dashboard .row, .lang-status .row{margin-left: 0;margin-right: 0}
+.bg-login{
+    background: url(../img/bg-login.jpg) no-repeat center center #333;
+    background-size: cover;
+}
+.bg-login body{
+  background: transparent
+}
 

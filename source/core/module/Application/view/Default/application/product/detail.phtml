@@ -504,7 +504,127 @@ $item_cum = array();
                         <div class="row" >
                             <div class="col-sm-10 col-sm-offset-1" >
                                 <div class="tab-pane-mm clearfix" >
-                                    <div class="fb-comments" data-width="100%" ></div>
+                                    <form class="form-horizontal form-comment" data-form="commentProduct" >
+                                        <input type="hidden" name="id" value="<?php echo $this->Products()->getProductsId($product); ?>" >
+
+                                        <div class="form-group" >
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>
+                                                        <?php echo $this->translate('txt_title_comment'); ?>
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" value="" class="form-control title" name="title" id="title"  placeholder="<?php echo $this->translate('txt_title_comment'); ?>" data-input="title" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>
+                                                        <?php echo $this->translate('txt_email_comment'); ?>
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" value="" class="form-control title" name="email" id="email"  placeholder="<?php echo $this->translate('txt_email_comment'); ?>" data-input="email" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <label>
+                                                <?php echo $this->translate('txt_noidung_comment'); ?>
+                                            </label>
+                                            <textarea name="noidung" class="form-control" placeholder="<?php echo $this->translate('txt_noidung_comment'); ?>" data-input="noidung" ></textarea>
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <button type="button" class="btn btn-style-b" data-btn="commentProduct" >
+                                                <?php echo $this->translate('txt_btn_send_comment'); ?>
+                                            </button>
+                                        </div>
+
+                                    </form>
+
+                                    <?php
+                                    $totalFaq = $this->Products()->getTotalFqaProduct($this->Products()->getProductsId($product));
+                                    if( !empty($totalFaq) ){
+                                        $faqs = $this->Products()->getFqaProduct($this->Products()->getProductsId($product), 0, 5);
+                                    ?>
+                                    <h3 class="tlt-comment" >
+                                        <?php echo $this->translate('txt_list_faq_product') ?>
+                                    </h3>
+                                    <div class="list-faq clearfix" >
+                                        <?php foreach ($faqs as $key => $faq) {
+                                            $faqcs = array();
+                                            if( !empty($faq['total_child']) ){
+                                                $faqcs = $this->Products()->getFqaChild($this->Faq()->getId($faq), 0, 5);
+                                            }
+                                        ?>
+                                        <div class="item-faq clearfix" data-place="listComment" data-id="0" >
+                                            <div class="ava-comment" >
+                                                <a href="javascript:void(0);" title="" rel="nofollow" >
+                                                    <img src="<?php echo $this->Images()->getUrlImage($this->Faq()->getAvatar($faq), 60, 60); ?>" class="img-fluid" >
+                                                </a>
+                                            </div>
+                                            <div class="nava-comment" >
+                                                <div class="mana-comment" >
+                                                    <div class="tie-comment" >
+                                                        <?php echo $this->Faq()->getTitle($faq); ?>
+                                                    </div>
+                                                    <div class="mcom-comment" >
+                                                        <?php echo $this->Faq()->getContent($faq); ?>
+                                                    </div>
+                                                </div>
+                                                <?php if( !empty($faqcs) ){ ?>
+                                                <div class="list-faq clearfix" data-place="listComment" data-id="<?php echo $this->Faq()->getId($faq); ?>" >
+                                                    <?php foreach ($faqcs as $key => $faqc) { ?>
+                                                    <div class="item-faq clearfix" >
+                                                        <div class="ava-comment" >
+                                                            <a href="" title="" rel="nofollow" >
+                                                                <img src="<?php echo $this->Images()->getUrlImage($this->Faq()->getAvatar($faqc), 60, 60); ?>" class="img-fluid" >
+                                                            </a>
+                                                        </div>
+                                                        <div class="nava-comment" >
+                                                            <div class="mana-comment" >
+                                                                <div class="tie-comment" >
+                                                                    <?php echo $this->Faq()->getTitle($faqc); ?>
+                                                                </div>
+                                                                <div class="mcom-comment" >
+                                                                    <?php echo $this->Faq()->getContent($faqc); ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php } ?>
+                                                </div>
+
+                                                <?php if( $faq['total_child'] > 5 ){ ?>
+                                                <div class="text-xs-center" >
+                                                    <a href="javascript:void(0);" class="btn-more-comment" data-bnt="moreComment" data-id="<?php echo $this->Faq()->getId($faq); ?>"  data-page="1" data-size="5" >
+                                                        <?php echo $this->translate('txt_view_more_comment') ?>
+                                                    </a>
+                                                </div>
+                                                <?php } ?>
+
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+
+                                    <?php if( $totalFaq > 5 ){ ?>
+                                    <div class="text-xs-center" >
+                                        <a href="javascript:void(0);" class="btn-more-comment" data-bnt="moreComment" data-id="0" data-page="1" data-size="5" >
+                                            <?php echo $this->translate('txt_view_more_comment') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
+
+                                    <?php } ?>
+
                                 </div>
                             </div>
                         </div>

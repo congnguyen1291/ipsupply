@@ -1,63 +1,204 @@
-<!-- Content Header (Page header) -->
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/contact') ?>">
+                        <?php echo $this->translate('txt_lien_he'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_tra_loi_cau_hoi'); ?>
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+
 <section class="content-header">
-    <h1>
-        Liên hệ :: Trả lời
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a href="<?php echo $this->url('cms/contact') ?>">Liên hệ</a></li>
-        <li class="active">Trả lời câu hỏi</li>
-    </ol>
+    <div class="row" >
+        <div class="col-sm-12 col-xs-12" >
+            <h1>
+                <?php echo $this->translate('txt_lien_he'); ?> ::
+                <?php echo $this->translate('txt_tra_loi_cau_hoi'); ?>
+            </h1>
+        </div>
+    </div>
 </section>
-<!-- Main content -->
-<section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Liên hệ</h3>
-                </div>
-                <div class="box-body">
-                        <p>Email: <strong><?php echo $contact['email'] ?></strong></p>
-                        <p>Người hỏi: <strong><?php echo $contact['fullname'] ?></strong></p>
-                        <p>Thời gian hỏi: <strong><?php echo date('d-m-Y H:i:s', strtotime($contact['date_create'])) ?></strong></p>
-                        <label>Nội dung</label>
-                        <div>
-                            <strong>
-                            <?php echo $contact['description'] ?>
-                            </strong>
-                        </div>
-                </div>
-            </div>
-            <div class="box box-default">
-                <div class="box-header">
-                    <h3 class="box-title">Trả lời</h3>
-                </div>
-                <div class="box-body" >
-                    <?php foreach($replays as $replay) { ?>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <?php echo $replay['content'] ?>
-                        </div>
-                    </div>
+
+
+
+<section class="content" >
+    <div class="clearfix">
+        <h3>
+            <?php echo $this->translate('txt_thong_tin_lien_he'); ?>
+        </h3>
+        <div class="table-responsive" >
+            <table class="table table-data-bind table-no-border" >
+                <tbody>
+
+                    <?php if( !empty(trim($contact['fullname'])) ){ ?>
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_ten'); ?>
+                        </th>
+                        <td>
+                            <?php echo $contact['fullname'] ?>
+                        </td>
+                    </tr>
                     <?php } ?>
 
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <form action="" method="post">
-                                <input name="id" type="hidden" value="<?php echo $contact['id'] ?>"/>
-                                <input name="users_id" type="hidden" value="<?php echo $_SESSION['CMSMEMBER']['users_id'] ?>"/>
-                                <div class="form-group">
-                                    <textarea name="content" id="content" cols="30" rows="5" class="form-control" style="border: none" autofocus></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary">Trả lời</button>
-                                </div>
-                            </form>
-                        </div>
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_email'); ?>
+                        </th>
+                        <td>
+                            <?php echo $contact['email'] ?>
+                        </td>
+                    </tr>
+
+                    <?php if( !empty(trim($contact['telephone'])) ){ ?>
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_telephone_lien_he'); ?>
+                        </th>
+                        <td>
+                            <?php echo $contact['telephone'] ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_ngay_lien_he'); ?>
+                        </th>
+                        <td>
+                            <?php echo $contact['date_send'] ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_kieu_lien_he'); ?>
+                        </th>
+                        <td>
+                            <?php if( $contact['type'] == 'request_quote' ){ ?>
+                                <?php echo $this->translate('txt_kieu_request_quote_lien_he'); ?>
+                            <?php }else{ ?>
+                                <?php echo $this->translate('txt_kieu_contact_lien_he'); ?>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <?php if( !empty(trim($contact['title'])) ){ ?>
+                    <tr>
+                        <th colspan="2" >
+                            <?php echo $this->translate('txt_title_lien_he'); ?>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2" >
+                            <?php echo $contact['title'] ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if( !empty(trim($contact['description'])) ){ ?>
+                    <tr>
+                        <th colspan="2" >
+                            <?php echo $this->translate('txt_description_lien_he'); ?>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2" >
+                            <?php echo $contact['description'] ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+
+                </tbody>
+            </table>
+        </div>
+
+        <?php if( !empty($replays) ){ ?>
+        <h3>
+            <?php echo $this->translate('txt_danh_sach_tra_loi'); ?>
+        </h3>
+        <div class="list-replay" >
+            <?php foreach($replays as $replay) { ?>
+            <div class="item-replay" >
+                <div class="time-replay" >
+                    <i class="fa fa-reply" aria-hidden="true"></i>
+                    <?php echo $replay['date_create'] ?>
+                </div>
+                <div class="dt-replay" >
+                    <div class="clearfix" >
+                        <?php echo $replay['content'] ?>
                     </div>
+                    <?php if( !empty($replay['has_attachment']) ){ 
+                        $files = json_decode($replay['file']);
+                    ?>
+                    <div class="clearfix text-right" >
+                        <?php foreach($files as $file) { ?>
+                            <a href="<?php echo $file ?>" target="_blank" class="item-fie-atact" >
+                                <span>
+                                    <i class="fa fa-file" aria-hidden="true"></i>
+                                </span>
+                                <?php echo $file ?>
+                            </a>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
+            <?php } ?>
         </div>
+        <?php } ?>
+
+        <?php if( !empty($error) ){ ?>
+        <div class="row" >
+            <div class="alert alert-danger" >
+                <?php echo $error ?>
+            </div>
+        </div>
+        <?php } ?>
+
+        <form action="<?php echo $this->url('cms/contact', array('action' => 'replay','id' => $contact['id'])) ?>" method="post" class="clearfix" enctype="multipart/form-data" >
+            <input name="id" type="hidden" value="<?php echo $contact['id'] ?>"/>
+            <input name="users_id" type="hidden" value="<?php echo $_SESSION['CMSMEMBER']['users_id'] ?>"/>
+            
+            <div class="form-group">
+                <label for="content">
+                    <?php echo $this->translate('txt_tra_loi'); ?>
+                </label>
+                <textarea name="content" id="content" cols="30" rows="5" class="form-control input-sm" ></textarea>
+            </div>
+
+            <div class="form-group" >
+                <label for="file">
+                    <?php echo $this->translate('txt_file_dinh_kem'); ?>
+                </label>
+                <input type="file" accept="application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" name="file" id="file" class="form-control input-sm" />
+            </div>
+
+            <div class="form-group" >
+                <button class="btn btn-primary btn-sm">
+                    <?php echo $this->translate('txt_them_cau_tra_loi'); ?>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                    <?php echo $this->translate('txt_quay_lai'); ?>
+                </button>
+            </div>
+        </form>
     </div>
 </section>

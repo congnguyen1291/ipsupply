@@ -10,6 +10,8 @@ class AnythingContact
     public $middle_name;
     public $last_name;
     public $fullname;
+    public $title;
+    public $type;
 
     /*not must*/
     public $telephone;
@@ -33,6 +35,10 @@ class AnythingContact
     public $payment_code;
     public $payment;
 
+    public $date_send;
+    public $readed;
+    public $reply;
+
     public function bin( $datas )
     {
         foreach ($datas as $key => $data) {
@@ -51,6 +57,9 @@ class AnythingContact
         $this->middle_name              = (!empty($data['middle_name'])) ? $data['middle_name'] : '';
         $this->last_name                = (!empty($data['last_name'])) ? $data['last_name'] : '';
         $this->fullname                 = (!empty($data['fullname'])) ? $data['fullname'] : '';
+        $this->title                    = (!empty($data['title'])) ? $data['title'] : '';
+        $this->type                     = (!empty($data['type'])) ? $data['type'] : 'contact';
+        
         $this->telephone                = (!empty($data['telephone'])) ? $data['telephone'] : '';
         $this->description              = (!empty($data['description'])) ? $data['description'] : '';
         $this->product_id               = (!empty($data['product_id'])) ? $data['product_id'] : '';
@@ -68,6 +77,9 @@ class AnythingContact
         $this->payment_code             = (!empty($data['payment_code'])) ? $data['payment_code'] : '';
         $this->payment                  = (!empty($data['payment'])) ? $data['payment'] : '';
         $this->service_id               = (!empty($data['service_id'])) ? $data['service_id'] : 0;
+        $this->date_send                = (!empty($data['date_send'])) ? $data['date_send'] : '';
+        $this->readed                   = (!empty($data['readed'])) ? $data['readed'] : '';
+        $this->reply                    = (!empty($data['reply'])) ? $data['reply'] : '';
     }
 
     public function getArrayCopy()

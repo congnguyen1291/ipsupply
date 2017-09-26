@@ -347,21 +347,23 @@ class ImagesController extends FrontEndController
     {
         $params = $this->params()->fromRoute();
         $getsize = $this->params()->fromRoute('dimensions', '100x100');
+
         header ("Content-type: image/png");
 
         $dimensions = explode('x', $getsize);
         if( !empty($dimensions[0]) && empty($dimensions[1]) ){
             $w_ = $dimensions[0];
-            $h_ = ($w_*143)/194;
+            $h_ = ($w_*1872)/1872;
             $dimensions = array($w_, $h_);
         }else if( empty($dimensions[0]) && !empty($dimensions[1]) ){
             $h_ = $dimensions[1];
-            $w_ = ($h_*194)/143;
+            $w_ = ($h_*1872)/1872;
             $dimensions = array($w_, $h_);
         }
 
-        $url_place = PATH_BASE_ROOT.'/styles/dataimages/bg-img.jpg';
-        $placeHolder = imagecreatefromjpeg($url_place);
+        $url_place = PATH_BASE_ROOT.'/styles/dataimages/no-photo.png';
+        $placeHolder = imagecreatefrompng($url_place);
+        //$placeHolder = imagecreatefromjpeg($url_place);
         // Create image
         $image      = imagecreate($dimensions[0], $dimensions[1]);
 
@@ -424,8 +426,14 @@ class ImagesController extends FrontEndController
             $new_width_holder = $new_width_holder_;
             $new_height_holder = $new_height_holder_;
         }
-
         $imageResized = imagecreatetruecolor($dimensions[0], $dimensions[1]);
+        //only png
+        $background = imagecolorallocate($imageResized , 0, 0, 0);
+        imagecolortransparent($imageResized, $background);
+        imagealphablending($imageResized, false);
+        imagesavealpha($imageResized, true);
+        //end only png
+
         $x = -($new_width_holder-$dimensions[0])/2;
         $y = -($new_height_holder-$dimensions[1])/2;
         imagecopyresampled($imageResized, $placeHolder, $x, $y, 0, 0, $new_width_holder, $new_height_holder, $width, $height);

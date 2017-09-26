@@ -5,18 +5,24 @@ $sliders = $this->Banners()->getBannerWithPositionAlias('HOME');
 echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
 <script id="tmplFillterSort" data-place="tmplFillterSort" type="text/x-jQuery-tmpl">
 <div>
-    <?php echo $this->translate('txt_sap_xep_theo') ?>
-    <div class="form-inline form-viewpro" data-form="category" >
-        <div class="form-group">
-            <select class="form-control sort-by-script neo-trigger-filter" name="sort" data-input="sort" >
-                {{each coz.model.fillter.sort.getOptions() }}
-                <option value="${coz.model.fillter.sort.getValue($value)}" {{if coz.model.fillter.sort.isSelected($value) }}selected="selected"{{/if}} >
-                    ${coz.model.fillter.sort.getText($value)}
-                </option>
-                {{/each}}
-            </select>
-        </div>
-    </div>
+    <select class="select-filter neo-trigger-filter" name="sort" data-input="sort" >
+        {{each coz.model.fillter.sort.getOptions() }}
+        <option value="${coz.model.fillter.sort.getValue($value)}" {{if coz.model.fillter.sort.isSelected($value) }}selected="selected"{{/if}} >
+            ${coz.model.fillter.sort.getText($value)}
+        </option>
+        {{/each}}
+    </select>
+</div>
+</script>
+
+<script id="tmplFillterSwitchView" data-place="tmplFillterSwitchView" type="text/x-jQuery-tmpl">
+<div>
+    <a href="javascript:void(0);" title="" class="switche-view hidden-sm-down {{if coz.model.fillter.switchview.isList() }}active{{/if}}" data-btn="switchView" data-value="list" >
+        <i class="fa fa-th-large" aria-hidden="true"></i>
+    </a>
+    <a href="javascript:void(0);" title="" class="switche-view hidden-sm-down {{if coz.model.fillter.switchview.isBox() }}active{{/if}}" data-btn="switchView"  data-value="box" >
+        <i class="fa fa-th-list" aria-hidden="true"></i>
+    </a>
 </div>
 </script>
 
@@ -74,7 +80,6 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
                                 <span class="coz-label-check-inner">
                                     ${coz.feature.getName($value)}
                                 </span>
-                                <span class="coz-sum-check" >(${coz.feature.getNum($value)})</span>
                             </div>
                         </div>
                         {{/each}}
@@ -84,22 +89,22 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
             {{/each}}
         {{/if}}
 
-        <?php if( !empty($manufacturers) ){ ?>
+        {{if coz.manufacturer.hasManufacturer() }}
         <div class="sub-general clearfix" >
             <h4 class="sub-title-general" >
                 <?php echo $this->translate('txt_manufacturers'); ?>
             </h4>
 
             <div class="form-group" >
-                <select name="manus[]" class="form-control" data-input="manus" >
+                <select name="manufacturer" class="form-control" data-input="manufacturer" >
                     <option value="0" >
                         <?php echo $this->translate('txt_select_your_brand'); ?>
                     </option>
-                    <?php foreach ($manufacturers as $key => $manufacturer) { ?>
-                        <option value="<?php echo $this->Manufacturers()->getId($manufacturer) ?>" >
-                            <?php echo $this->Manufacturers()->getName($manufacturer) ?>
-                        </option>
-                    <?php } ?>
+                    {{each coz.manufacturer.getManufacturersId() }}
+                    <option value="${coz.manufacturer.getID($value)}" {{if coz.manufacturer.isChecked($value) }}selected="selected"{{/if}} >
+                        ${coz.manufacturer.getName($value)}
+                    </option>
+                    {{/each}}
                 </select>
             </div>
             <div class="form-group" >
@@ -108,7 +113,8 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
                 </button>
             </div>
         </div>
-        <?php } ?>
+        {{/if}}
+
     </div>
 </div>
 </script>

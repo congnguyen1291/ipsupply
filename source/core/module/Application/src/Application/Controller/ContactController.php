@@ -24,6 +24,7 @@ use Application\Model\AnythingContact;
 class ContactController extends FrontEndController
 {
     public function indexAction(){
+        $websitesHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Websites');
         $script = $this->getServiceLocator()->get('viewhelpermanager')->get('inlineScript');
 		$translator = $this->getServiceLocator()->get('translator');
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
@@ -32,88 +33,83 @@ class ContactController extends FrontEndController
         $renderer->headMeta()->appendName('keyword', $translator->translate('keyword_site'));
     	$form = new ContactForm();
         $request = $this->getRequest();
-    	if ($request->isPost ()) {
-			$name = $request->getPost("fullname");
-            $title = $request->getPost("title");
-            $content = $request->getPost("content");
-            $phone = $request->getPost("phone");
-            $email = $request->getPost("email");
-            $error = array();
-            if (empty($name)) {
-                $error['fullname'] = $translator->translate('txt_chua_nhap_ten');
-            }
-            if (empty($title)) {
-                $error['title'] = $translator->translate('txt_chua_nhap_tieu_de');
-            }
-            if (empty($phone) || !is_numeric($phone)) {
-                $error['phone'] = $translator->translate('txt_nhap_so_dien_thoai_chua_dung');
-            }
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error['email'] = $translator->translate('REPORT_EMAIL_FAIL');
-            }
-            if (empty($content)) {
-                $error['content'] = $translator->translate('txt_ban_chua_nhap_noi_dung');
-            }
-            if (empty($error)) {
-                $contact = new Contact();
-                $contact->title = $title;
-                $contact->full_name = $name;
-                $contact->email = $email;
-                $contact->phone = $phone;
-                $contact->type = 'contact';
-                $contact->content = $content;
-                $contact->date_create = date('Y-m-d H:i:s');
-                $contact->is_viewed = 0;
-                
-        		if ($this->getModelTable ( 'ContactTable' )->save ( $contact )) {
-    				$html = "<table><tr><td>".$translator->translate('chao')." Admin</td></tr>
-					<tr><td>Có một liên hệ cho admin từ Shop: ".$this->website['website_name']." </td></tr>
-					<tr><td>Người liên hệ: {$name}</td></tr>
-					<tr><td> ".$translator->translate('so_dien_thoai')." : {$phone}</td></tr>
-					<tr><td>Email: {$email}</td></tr>
-					<tr><td>Tiêu đề: {$title}</td></tr>
-    				<tr><td>Nội dung: {$content}</td></tr></table>";
-    				$html = new MimePart($html);
-					$html->type = "text/html";
-					$body = new MimeMessage();
-					$body->setParts(array($html));
-    				$message = new Message();
-    				$message->addTo($this->website['website_email_admin'],"Admin website")
-    				->addFrom(EMAIL_ADMIN_SEND)
-					->addReplyTo($email, $name)
-    				->setSubject($this->website['website_name']." - ".$title)
-    				->setBody($body)
-    				->setEncoding("UTF-8");  
-    				// Setup SMTP transport using LOGIN authentication
-    				$transport = new SmtpTransport();
-    				$options   = new SmtpOptions(array(
-    						'name'              => HOST_MAIL,
-    						'host'              => HOST_MAIL,
-                            'port'              => 25,
-    						'connection_class'  => 'login',
-    						'connection_config' => array(
-    								'username' => USERNAME_HOST_MAIL,
-    								'password' => PASSWORD_HOST_MAIL,
-    						),
-    				));
-				
-    				$transport->setOptions($options);
+
+        if ($request->isPost ()) {
+            $email = $request->getPost ('email', '');
+            $first_name = $request->getPost ('first_name', '');
+            $middle_name = $request->getPost ('middle_name', '');
+            $last_name = $request->getPost ('last_name', '');
+            $fullname = $request->getPost ('fullname', '');
+            if( !empty($email) && (!empty($fullname) || ( !empty($first_name) && !empty($last_name))) ){
+                $contact = new AnythingContact();
+                $data = $request->getPost ();
+                $contact->exchangeArray ( $data );
+                $contact->website_id = $this->website->website_id;
+                $contact->fullname = $first_name.' '.$middle_name.' '.$last_name;
+                if ( $this->getModelTable ( 'AnythingContactTable' )->saveAnythingContact ( $contact ) ) {
+                    $html = "<table>
+                                <tr>
+                                    <td> 
+                                        {$translator->translate('chao')} Admin , 
+                                        {$contact->fullname} 
+                                        {$translator->translate('vua_gui_mot_lien_he')}:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{$contact->title}</td>
+                                </tr>
+                                <tr>
+                                    <td>{$contact->description}</td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        {$translator->translate('so_dien_thoai')} : {$contact->telephone}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email: {$contact->email}</td>
+                                </tr>
+                            </table>";
+        
+                    $html = new MimePart($html);
+                    $html->type = "text/html";
+        
+                    $body = new MimeMessage();
+                    $body->setParts(array($html));
+        
+        
+                    $message = new Message();
+                    $message->addTo($websitesHelper->getEmailSend())
+                    ->addFrom($contact->email)
+                    ->setSubject($translator->translate('thong_tin_lien_he'.$contact->type))
+                    ->setBody($body)
+                    ->setEncoding("UTF-8");
+                    
+                    $transport = new SmtpTransport();
+                    $options   = new SmtpOptions(array(
+                        'name' => $websitesHelper->getHostMail(),
+                        'host' => $websitesHelper->getHostMail(),
+                        'port' => $websitesHelper->getPortMail(),
+                        'connection_class'  => 'login',
+                        'connection_config' => array(
+                            'username' => $websitesHelper->getUserNameHostMail(),
+                            'password' => $websitesHelper->getPasswordHostMail(),
+                        ),
+                    ));
+
+                    $transport->setOptions($options);
+
                     try {
                         $transport->send($message);
                     } catch(\Zend\Mail\Exception $e) {
-                        $error['exception'] = $e->getMessage();
                     }catch(\Exception $ex) {
-                        $error['exception'] = $e->getMessage();
                     }
-                    if(!isset($error['exception'])){
-                        return $this->redirect()->toRoute($this->getUrlRouterLang().'contact', array(
-                            'action' =>  'thanks'
-                        ));
-                    }
-        		}
+                    return $this->redirect()->toRoute($this->getUrlRouterLang().'contact', array(
+                        'action' =>  'thanks'
+                    ));
+                }
             }
-            $this->data_view['error'] = $error;
-    	}
+        }
         $this->data_view['form'] = $form;
     	return $this->data_view;
     }
@@ -243,6 +239,7 @@ class ContactController extends FrontEndController
     }
 
     public function anythingAction(){
+        $websitesHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Websites');
         $translator = $this->getServiceLocator()->get('translator');
         $item = array( 'flag' => FALSE, 'msg' => $translator->translate('txt_not_found'));
         $form = new ContactForm();
@@ -260,8 +257,29 @@ class ContactController extends FrontEndController
                 $contact->website_id = $this->website->website_id;
                 $contact->fullname = $first_name.' '.$middle_name.' '.$last_name;
                 if ( $this->getModelTable ( 'AnythingContactTable' )->saveAnythingContact ( $contact ) ) {
-                    $html = "<table><tr><td> ".$translator->translate('chao')." admin , {$contact->fullname} ".$translator->translate('vua_gui_mot_lien_he')." :</td></tr>
-                    <tr><td>{$contact->description}</td></tr><tr><td> ".$translator->translate('so_dien_thoai')." : {$contact->telephone}</td></tr><tr><td>Email: {$contact->email}</td></tr></table>";
+                    $html = "<table>
+                                <tr>
+                                    <td> 
+                                        {$translator->translate('chao')} Admin , 
+                                        {$contact->fullname} 
+                                        {$translator->translate('vua_gui_mot_lien_he')}:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{$contact->title}</td>
+                                </tr>
+                                <tr>
+                                    <td>{$contact->description}</td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        {$translator->translate('so_dien_thoai')} : {$contact->telephone}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email: {$contact->email}</td>
+                                </tr>
+                            </table>";
         
                     $html = new MimePart($html);
                     $html->type = "text/html";
@@ -271,26 +289,32 @@ class ContactController extends FrontEndController
         
         
                     $message = new Message();
-                    $message->addTo(EMAIL_ADMIN_RECEIVE)
+                    $message->addTo($websitesHelper->getEmailSend())
                     ->addFrom($contact->email)
-                    ->setSubject($translator->translate('thong_tin_lien_he'))
+                    ->setSubject($translator->translate('thong_tin_lien_he'.$contact->type))
                     ->setBody($body)
                     ->setEncoding("UTF-8");
-        
-                            // Setup SMTP transport using LOGIN authentication
-                            $transport = new SmtpTransport();
-                    $options   = new SmtpOptions(array(
-                    'name'              => HOST_MAIL,
-                    'host'              => HOST_MAIL,
-                    //'connection_class'  => 'login',
-                    'connection_config' => array(
-                                    'username' => USERNAME_HOST_MAIL,
-                                    'password' => PASSWORD_HOST_MAIL,
-                            ),
-                    ));
                     
+                    $transport = new SmtpTransport();
+                    $options   = new SmtpOptions(array(
+                        'name' => $websitesHelper->getHostMail(),
+                        'host' => $websitesHelper->getHostMail(),
+                        'port' => $websitesHelper->getPortMail(),
+                        'connection_class'  => 'login',
+                        'connection_config' => array(
+                            'username' => $websitesHelper->getUserNameHostMail(),
+                            'password' => $websitesHelper->getPasswordHostMail(),
+                        ),
+                    ));
+
                     $transport->setOptions($options);
-                    $transport->send($message);
+
+                    try {
+                        $transport->send($message);
+                    } catch(\Zend\Mail\Exception $e) {
+                    }catch(\Exception $ex) {
+                    }
+                    
                     $item = array( 'flag' => TRUE, 'msg' => $translator->translate('txt_contact_success'));
                 }else{
                     $item = array( 'flag' => FALSE, 'msg' => $translator->translate('txt_co_mot_loi'));

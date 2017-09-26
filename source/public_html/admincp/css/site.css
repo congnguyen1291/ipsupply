@@ -1162,3 +1162,15 @@ input.input-payment,
 .drag-handle {
     cursor: move;
 }
+.item-replay {
+    border: 1px solid #e2dfdf;
+    margin-bottom: 20px;
+}
+.time-replay {
+    padding: 5px 10px;
+    color: #6f6d6d;
+    border-bottom: 1px solid #e2dfdf;
+}
+.dt-replay {
+    padding: 10px;
+}

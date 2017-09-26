@@ -29,7 +29,15 @@
                 <?php echo $this->translate('txt_robot_siri'); ?>
             </h1>
         </div>
-        <div class="col-sm-6 col-xs-12 pull-right" >
+        <div class="col-sm-12 col-xs-12" >
+            <p>
+                <?php echo $this->translate('txt_about_siri'); ?>
+            </p>
+            <div class="list-option-siri" >
+                <a href="<?php echo $this->url('cms/siri', array('action' => 'fix-image')) ?>" class="btn btn-primary btn-sm" >
+                    <?php echo $this->translate('txt_fix_images'); ?>
+                </a>
+            </div>
         </div>
     </div>
 </section>

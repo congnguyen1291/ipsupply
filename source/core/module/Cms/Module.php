@@ -110,6 +110,8 @@ use Cms\Model\Merchant;
 use Cms\Model\MerchantTable;
 use Cms\Model\Traffic;
 use Cms\Model\TrafficTable;
+use Cms\Model\EmailNewLetter;
+use Cms\Model\EmailNewLetterTable;
 
 use Zend\Cache\Storage\Adapter\Memcache;
 use Zend\Cache\Storage\Adapter\MemcachedOptions;
@@ -729,6 +731,19 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Traffic());
                     return new TableGateway('traffic', $dbAdapter, null, $resultSetPrototype);
                 },
+
+                'Cms\Model\EmailNewLetterTable' => function ($sm) {
+                    $tableGateway = $sm->get ( 'CmEmailNewLetterTableGateway' );
+                    $table = new EmailNewLetterTable ( $tableGateway );
+                    return $table;
+                },
+                'CmEmailNewLetterTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+                    $resultSetPrototype = new ResultSet ();
+                    $resultSetPrototype->setArrayObjectPrototype ( new EmailNewLetter() );
+                    return new TableGateway ( 'email_new_letter', $dbAdapter, null, $resultSetPrototype );
+                },
+
             ),
         );
     }

@@ -8,8 +8,11 @@ use Zend\Filter\File\LowerCase;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
-use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
 use Zend\Mime\Part as MimePart;
+use Zend\Mime\Message as MimeMessage;
+
+use JasonGrimes\Paginator;
 
 class ContactController extends BackEndController{
 
@@ -19,24 +22,62 @@ class ContactController extends BackEndController{
     }
 
     public function indexAction(){
-    	$page = isset($_GET['page']) ? $_GET['page'] : 0;
-    	$this->intPage = $page;
-        $page_size = $this->intPageSize;
-        $link = '';
-        $page = isset($_GET['page']) ? $_GET['page'] : 0;
+    	$language = $this->params()->fromQuery('language', 1);
+        $limit = $this->params()->fromQuery('limit', 20);
+        $page = $this->params()->fromQuery('page', 1);
+        $id = $this->params()->fromRoute('id', 0);
+        $q = $this->params()->fromQuery('q', '');
+        $type = $this->params()->fromQuery('type', 0);
 
-        $total = $this->getModelTable('ContactTable')->getTotalContact();
-        $objPage = new Paging($total, $page, $page_size, $link);
-        $paging = $objPage->getListFooter($link);
-        $contacts = $this->getModelTable('ContactTable')->getContacts();
+        $params = array();
+        $params['page'] = $page;
+        $params['limit'] = $limit;
+
+        $total = $this->getModelTable('ContactTable')->getTotalContact($params);
+        $contacts = $this->getModelTable('ContactTable')->getContacts($params);
+
+        $link = '/cms/contact?page=(:num)'.( !empty($q) ? '&q='.$q.'&type='.$type : '');
+        $paginator = new Paginator($total, $limit, $page, $link);
         
         $this->data_view['contacts'] = $contacts;
-        $this->data_view['paging'] = $paging;
+        $this->data_view['limit'] = $limit;
+        $this->data_view['page'] = $page;
+        $this->data_view['paging'] = $paginator->toHtml();
+        $this->data_view['q'] = $q;
+        $this->data_view['type'] = $type;
+        return $this->data_view;
+    }
+
+    public function emailNewsletterAction(){
+    	$language = $this->params()->fromQuery('language', 1);
+        $limit = $this->params()->fromQuery('limit', 20);
+        $page = $this->params()->fromQuery('page', 1);
+        $id = $this->params()->fromRoute('id', 0);
+        $q = $this->params()->fromQuery('q', '');
+        $type = $this->params()->fromQuery('type', 0);
+
+        $params = array();
+        $params['page'] = $page;
+        $params['limit'] = $limit;
+
+        $total = $this->getModelTable('EmailNewLetterTable')->countAll($params);
+        $emails = $this->getModelTable('EmailNewLetterTable')->fetchAll($params);
+
+        $link = '/cms/contact/email-newsletter?page=(:num)'.( !empty($q) ? '&q='.$q.'&type='.$type : '');
+        $paginator = new Paginator($total, $limit, $page, $link);
+        
+        $this->data_view['emails'] = $emails;
+        $this->data_view['limit'] = $limit;
+        $this->data_view['page'] = $page;
+        $this->data_view['paging'] = $paginator->toHtml();
+        $this->data_view['q'] = $q;
+        $this->data_view['type'] = $type;
         return $this->data_view;
     }
 
     public function replayAction(){
     	$websitesHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Websites');
+    	$translator = $this->getServiceLocator()->get('translator');
     	$id = $this->params()->fromRoute('id', NULL);
         if(!$id){
             return $this->redirect()->toRoute('cms/contact');
@@ -44,17 +85,18 @@ class ContactController extends BackEndController{
         try{
             $contact = $this->getModelTable('ContactTable')->getContact($id);
             $replays = $this->getModelTable('ContactTable')->getReplays($id);
-            $this->getModelTable('ContactTable')->update(array('readed' => 1), array('id' => $id) );
+            $this->getModelTable('ContactTable')->updateContact(array('readed' => 1), array('id' => $id) );
         }catch (\Exception $ex){
             return $this->redirect()->toRoute('cms/contact');
         }
+        $error = '';
         $request = $this->getRequest();
         if($request->isPost()){
             $data = $request->getPost();
+            $files = $this->params()->fromFiles('file');
             if(!trim($data['content'])){
-                $error[] = "Nội dung trả lời không được bỏ trống";
+                $error = $translator->translate('txt_noi_dung_tra_loi_trong');
             }else{
-                $this->getModelTable('ContactTable')->replay($data);
                 try {
 	                $viewModel = new ViewModel();
 			        $viewModel->setTerminal(true);
@@ -65,11 +107,68 @@ class ContactController extends BackEndController{
 			        $viewRender = $this->getServiceLocator()->get('ViewRenderer');
 			        $html = $viewRender->render($viewModel);
 
-	                $html = new MimePart($html);
-			        $html->type = "text/html";
-			        $body = new MimeMessage();
-			        $body->setParts(array($html));
+			        $attachments = array();
+			        $upload_url = '';
+			        if( !empty($files) ){
+			            $websiteFolder = PATH_BASE_ROOT . '/temps';
+			            if(!is_dir($websiteFolder)){
+			                @mkdir ( $websiteFolder, 0777 );
+			            }
+			            $size = $files['size'];//max 20M
+			            if($size > 20971520)
+			            {
+			                @unlink($attachmentFile['tmp_name']);
+			            }else{
+			            	$temp = preg_split ( '/[\/\\\\]+/', $files["name"] );
+			                $filename = $temp [count ( $temp ) - 1];
+			                if ( !empty($filename) ) {
+				            	$name = $this->file_name ( $filename );
+	                    		$extention = $this->file_extension ( $filename );
+	                    		if( in_array($extention, array('rar', 'zip')) ){
+					            	$upload_url = $websiteFolder. "/" . $name.'.'.$extention;
+					            	if (copy ( $files["tmp_name"], $upload_url )) {
+					            		$attachments[] = array(
+								            				'content' => file_get_contents($upload_url),
+								            				'filename' => $name.'.'.$extention,
+								            			);
+					            	}
+					            }
+						    }
+			            }
+				    }
 
+	                $htmlPart = new MimePart($html);
+			        $htmlPart->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+        			$htmlPart->type     = "text/html; charset=UTF-8";
+
+        			$textPart           = new MimePart($data['content']);
+			        $textPart->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+			        $textPart->type     = "text/plain; charset=UTF-8";
+
+			        $listUrlFile = array();
+			        $body = new MimeMessage();
+			        if( empty($attachments) ){
+				        $body->setParts(array($textPart));
+            			$messageType = 'text/html; charset=UTF-8';
+				    }else{
+				    	$content = new MimeMessage();
+				    	$content->addPart($textPart);
+			            $content->addPart($htmlPart);
+			            $contentPart = new MimePart($content->generateMessage());
+			            $contentPart->type = "multipart/alternative;\n boundary=\"" . $content->getMime()->boundary() . '"';
+			            $body->addPart($contentPart);
+			            $messageType = 'multipart/related';
+			            foreach ($attachments as $thisAttachment) {
+			                $attachment = new MimePart($thisAttachment['content']);
+			                $attachment->filename    = $thisAttachment['filename'];
+			                $attachment->type        = Mime::TYPE_OCTETSTREAM;
+			                $attachment->encoding    = Mime::ENCODING_BASE64;
+			                $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+			                $body->addPart($attachment);
+			                $listUrlFile[] = '/temps/'.$thisAttachment['filename'];
+			            }
+				    }
+				    
 					$listemailcc=explode(",",$this->website['website_email_customer']);
 					if(count($listemailcc)<=0){
 						$listemailcc=$this->website['website_email_customer'];
@@ -78,10 +177,11 @@ class ContactController extends BackEndController{
 			        $message->addTo($contact->email)
 			            ->addFrom($websitesHelper->getEmailSend(), $this->website['website_name'])
 						->addCc($listemailcc)
-						->addReplyTo($listemailcc, "Admin website")
-			            ->setSubject($this->website['website_name'].' replay liên hệ')
+						->addReplyTo($listemailcc, $translator->translate('txt_admin_website'))
+			            ->setSubject($this->website['website_name'].$translator->translate('txt_replay_lien_he'))
 			            ->setBody($body)
 			            ->setEncoding("UTF-8");
+			            //->getHeaders()->get('content-type')->setType($messageType);
 
 			        // Setup SMTP transport using LOGIN authentication
 			        $transport = new SmtpTransport();
@@ -98,11 +198,22 @@ class ContactController extends BackEndController{
 
 			        $transport->setOptions($options);
 		            $result=$transport->send($message);
+		            $row = array(
+		            		'users_id' => $data['users_id'],
+            				'id' => $data['id'],
+		            		'content' => $data['content'],
+		            		'has_attachment' => (empty($attachments) ? 0 : 1),
+		            		'file' => json_encode($listUrlFile)
+		            	);
+		            $this->getModelTable('ContactTable')->replay($row);
+		            if( !empty($upload_url) ){
+			            //@unlink($upload_url);
+			        }
 		            return $this->redirect()->toRoute('cms/contact');
 		        } catch(\Zend\Mail\Exception $e) {
-		            //return false;
+		        	$error = $translator->translate('txt_khong_gui_mail_duoc');
 		        }catch(\Exception $ex) {
-		            //return false;
+		        	$error = $translator->translate('txt_khong_luu_gui_mail_duoc');
 		        }
                 /*strigger change namespace cached*/
                 $this->updateNamespaceCached();
@@ -111,6 +222,7 @@ class ContactController extends BackEndController{
         }
         $this->data_view['contact'] = $contact;
         $this->data_view['replays'] = $replays;
+        $this->data_view['error'] = $error;
         return $this->data_view;
     }
 
@@ -128,8 +240,38 @@ class ContactController extends BackEndController{
 					
 				}
 			}
-		}
+		}else{
+            $id = (int)$this->params()->fromRoute('id', 0);
+            if ( !empty($id) ) {
+                $this->getModelTable('ContactTable')->deleteContact($id);
+                $this->updateNamespaceCached();
+            }
+        }
 		return $this->redirect()->toRoute('cms/contact');
+	}
+
+	public function deleteEmailNewsletterAction(){
+		$request = $this->getRequest();
+		if($request->isPost()){
+			$ids = $request->getPost('cid');
+			if(count($ids)){
+				try{
+					$this->getModelTable('EmailNewLetterTable')->deleteEmail($ids);
+					/*strigger change namespace cached*/
+                    $this->updateNamespaceCached();
+
+				}catch(\Exception $ex){
+					
+				}
+			}
+		}else{
+            $id = (int)$this->params()->fromRoute('id', 0);
+            if ( !empty($id) ) {
+                $this->getModelTable('EmailNewLetterTable')->deleteEmail($id);
+                $this->updateNamespaceCached();
+            }
+        }
+		return $this->redirect()->toRoute('cms/contact', array('action' => 'email-newsletter'));
 	}
 
 }

@@ -2,6 +2,13 @@
 namespace Application\View\Helper;
 use Application\View\Helper\App;
 
+use Zend\Mail\Message;
+use Zend\Mail\Transport\Smtp as SmtpTransport;
+use Zend\Mail\Transport\SmtpOptions;
+use Zend\Mime\Mime;
+use Zend\Mime\Part as MimePart;
+use Zend\Mime\Message as MimeMessage;
+
 class Websites  extends App
 {
     private  $website = NULL;
@@ -239,5 +246,74 @@ class Websites  extends App
             return $this->getWebsite()['css'];
         }
         return '';
+    }
+
+    function sendEmail($to, $from, $subject, $html, $text, $attachments = null)
+    {
+        $message = new Message();
+        $message->addTo($to);
+        $message->addFrom($from);
+        $message->setSubject($subject);
+
+        // HTML part
+        $htmlPart           = new MimePart($html);
+        $htmlPart->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+        $htmlPart->type     = "text/html; charset=UTF-8";
+
+        // Plain text part
+        $textPart           = new MimePart($text);
+        $textPart->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+        $textPart->type     = "text/plain; charset=UTF-8";
+
+        $body = new MimeMessage();
+        if ($attachments) {
+            // With attachments, we need a multipart/related email. First part
+            // is itself a multipart/alternative message        
+            $content = new MimeMessage();
+            $content->addPart($textPart);
+            $content->addPart($htmlPart);
+
+            $contentPart = new MimePart($content->generateMessage());
+            $contentPart->type = "multipart/alternative;\n boundary=\"" .
+                $content->getMime()->boundary() . '"';
+
+            $body->addPart($contentPart);
+            $messageType = 'multipart/related';
+
+            // Add each attachment
+            foreach ($attachments as $thisAttachment) {
+                $attachment = new MimePart($thisAttachment['content']);
+                $attachment->filename    = $thisAttachment['filename'];
+                $attachment->type        = Mime::TYPE_OCTETSTREAM;
+                $attachment->encoding    = Mime::ENCODING_BASE64;
+                $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+                $body->addPart($attachment);
+            }
+
+        } else {
+            // No attachments, just add the two textual parts to the body
+            $body->setParts(array($textPart, $htmlPart));
+            $messageType = 'multipart/alternative';
+        }
+
+        // attach the body to the message and set the content-type
+        $message->setBody($body);
+        $message->getHeaders()->get('content-type')->setType($messageType);
+        $message->setEncoding('UTF-8');
+
+        $transport = new SmtpTransport();
+        $options = new SmtpOptions(array(
+            'name' => $this->getHostMail(),
+            'host' => $this->getHostMail(),
+            'port' => $this->getPortMail(),
+            'connection_class' => 'login',
+            'connection_config' => array(
+                'username' => $this->getUserNameHostMail(),
+                'password' => $this->getPasswordHostMail(),
+            ),
+        ));
+
+        $transport->setOptions($options);
+        $result = $transport->send($message);
     }
 }

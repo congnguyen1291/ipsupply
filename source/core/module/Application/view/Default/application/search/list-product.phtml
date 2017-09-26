@@ -7,18 +7,8 @@
             </span>
         </div>
         <div class="col-md-5 col-sm-12 text-md-right text-xs-center" >
-            <select class="select-filter neo-trigger-filter" name="sort" data-input="sort" >
-                <?php echo $this->Html()->getHtmlOptionTagSortFilter(); ?>
-            </select>
-
-            <a href="javascript:void(0);" title="" class="switche-view <?php echo empty($view) ? 'active' : ''  ?> hidden-sm-down" data-btn="switchView" data-value="0" >
-                <i class="fa fa-th-large" aria-hidden="true"></i>
-                <input type="radio" name="view" value="0" <?php echo empty($view) ? 'checked="checked"' : ''  ?> style="display: none" data-input="view" >
-            </a>
-            <a href="javascript:void(0);" title="" class="switche-view <?php echo !empty($view) ? 'active' : ''  ?> hidden-sm-down" data-btn="switchView"  data-value="1" >
-                <i class="fa fa-th-list" aria-hidden="true"></i>
-                <input type="radio" name="view" value="1" <?php echo !empty($view) ? 'checked="checked"' : ''  ?> style="display: none" data-input="view" >
-            </a>
+            <span data-place="fillterSort" ></span>
+            <span data-place="fillterSwitchView" ></span>
         </div>
     </div>
 </div>

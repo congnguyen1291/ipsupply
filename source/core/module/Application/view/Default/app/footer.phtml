@@ -15,138 +15,140 @@ $menu_two = $this->Menus()->getMenuWithAlias('MENU_FOOTER_02');
         <div class="row" >
             <div class="col-sm-10 col-sm-offset-1" >
                 <div class="top-footer" >
-                    <div class="row" >
+                    <div class="itop-footer" >
+                        <div class="row" >
 
-                        <div class="col-md-3 col-sm-6" >
-                            <div class="col-footer" >
-                                <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter01" aria-expanded="false" >
-                                    <?php echo $this->translate('txt_need_help'); ?>
-                                </h2>
-                                <div class="info-footer navbar-toggleable-xs collapse" id="colFooter01" >
-                                    <div class="sub-col-footer" >
-                                        <div class="title-ms-footer" >
-                                            <?php echo $this->translate('txt_company_phone'); ?>
+                            <div class="col-md-3 col-sm-6" >
+                                <div class="col-footer" >
+                                    <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter01" aria-expanded="false" >
+                                        <?php echo $this->translate('txt_need_help'); ?>
+                                    </h2>
+                                    <div class="info-footer navbar-toggleable-xs collapse" id="colFooter01" >
+                                        <div class="sub-col-footer" >
+                                            <div class="title-ms-footer" >
+                                                <?php echo $this->translate('txt_company_phone'); ?>
+                                            </div>
+                                            <div>
+                                                <?php echo $this->translate('txt_company_email'); ?>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <?php echo $this->translate('txt_company_email'); ?>
-                                        </div>
-                                    </div>
-                                    <div class="sub-col-footer" >
-                                        <div class="title-ms-footer" >
-                                            <?php echo $this->translate('txt_company_name'); ?>
-                                        </div>
-                                        <div>
-                                            <?php echo $this->translate('txt_company_address'); ?>
+                                        <div class="sub-col-footer" >
+                                            <div class="title-ms-footer" >
+                                                <?php echo $this->translate('txt_company_name'); ?>
+                                            </div>
+                                            <div>
+                                                <?php echo $this->translate('txt_company_address'); ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <?php 
-                        $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_one));
-                        if( !empty($menuRoot)   ){ ?>
-                        <div class="col-md-3 col-sm-6" >
-                            <div class="col-footer" >
-                                <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter02" aria-expanded="false" >
-                                    <?php echo $this->Menus()->getName($menu_one); ?>
-                                </h2>
-                                <div class="info-footer navbar-toggleable-xs collapse" id="colFooter02" >
-                                    <?php 
-                                    foreach ($menuRoot as $key => $value) {
-                                        if( !$this->Menus()->isDescription($value) ){ ?>
-                                        <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" class="footer-link" >    
-                                            <span>
-                                                <?php echo $this->Menus()->getName($value); ?> 
-                                            </span>
-                                        </a>
-                                        <?php }else{ ?>
-                                        <div class="footer-link" >
-                                            <?php echo $this->Menus()->getDescription($value); ?>
-                                        </div>
-                                        <?php }
-                                    } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php } ?>
-
-                        <?php 
-                        $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_two));
-                        if( !empty($menuRoot)   ){ ?>
-                        <div class="col-md-3 col-sm-6" >
-                            <div class="col-footer" >
-                                <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter03" aria-expanded="false" >
-                                    <?php echo $this->Menus()->getName($menu_two); ?>
-                                </h2>
-                                <div class="info-footer navbar-toggleable-xs collapse" id="colFooter03" >
-                                    <?php 
-                                    foreach ($menuRoot as $key => $value) {
-                                        if( !$this->Menus()->isDescription($value) ){ ?>
-                                        <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" class="footer-link" >    
-                                            <span>
-                                                <?php echo $this->Menus()->getName($value); ?> 
-                                            </span>
-                                        </a>
-                                        <?php }else{ ?>
-                                        <div class="footer-link" >
-                                            <?php echo $this->Menus()->getDescription($value); ?>
-                                        </div>
-                                        <?php }
-                                    } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php } ?>
-
-                        <div class="col-md-3 col-sm-6" >
-                            <div class="col-footer" >
-                                <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter04" aria-expanded="false" >
-                                    <?php echo $this->translate('txt_newsletter') ?>
-                                </h2>
-                                <div class="info-footer navbar-toggleable-xs collapse" id="colFooter04" >
-                                    <div class="sub-col-footer" >
-                                        <?php echo $this->translate('txt_des_newsletter') ?>
-                                    </div>
-
-                                    <div class="sub-col-footer" >
-                                        <div class="letter-form" >
-                                            <form id="newsletterform" class="mini-iform-newleter" >
-                                                <input type="text" name="email" class="email" id="newsletter" placeholder="<?php echo $this->translate('txt_placeholder_your_email') ?>" >
-                                                <button class="neo-sent-newsletter" >
-                                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                            <?php 
+                            $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_one));
+                            if( !empty($menuRoot)   ){ ?>
+                            <div class="col-md-3 col-sm-6" >
+                                <div class="col-footer" >
+                                    <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter02" aria-expanded="false" >
+                                        <?php echo $this->Menus()->getName($menu_one); ?>
+                                    </h2>
+                                    <div class="info-footer navbar-toggleable-xs collapse" id="colFooter02" >
+                                        <?php 
+                                        foreach ($menuRoot as $key => $value) {
+                                            if( !$this->Menus()->isDescription($value) ){ ?>
+                                            <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" class="footer-link" >    
+                                                <span>
+                                                    <?php echo $this->Menus()->getName($value); ?> 
+                                                </span>
+                                            </a>
+                                            <?php }else{ ?>
+                                            <div class="footer-link" >
+                                                <?php echo $this->Menus()->getDescription($value); ?>
+                                            </div>
+                                            <?php }
+                                        } ?>
                                     </div>
                                 </div>
+                            </div>
+                            <?php } ?>
 
-                                <div class="info-footer" >
-                                    <div class="sub-col-footer" >
-                                        <?php if( !empty($this->Websites()->getUrlFacebook()) ){ ?>
-                                        <a href="<?php echo $this->Websites()->getUrlFacebook() ?>" title="Facebook" rel="nofollow" class="link-social" >
-                                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                                        </a>
-                                        <?php } ?>
-                                        <?php if( !empty($this->Websites()->getUrlTwister()) ){ ?>
-                                        <a href="<?php echo $this->Websites()->getUrlTwister() ?>" title="Twister" rel="nofollow" class="link-social" >
-                                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                                        </a>
-                                        <?php } ?>
-                                        <?php if( !empty($this->Websites()->getUrlGooglePlus()) ){ ?>
-                                        <a href="<?php echo $this->Websites()->getUrlGooglePlus() ?>" title="GooglePlus" rel="nofollow" class="link-social" >
-                                            <i class="fa fa-google-plus" aria-hidden="true"></i>
-                                        </a>
-                                        <?php } ?>
+                            <?php 
+                            $menuRoot = $this->Menus()->getChildrens($menus, $this->Menus()->getId($menu_two));
+                            if( !empty($menuRoot)   ){ ?>
+                            <div class="col-md-3 col-sm-6" >
+                                <div class="col-footer" >
+                                    <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter03" aria-expanded="false" >
+                                        <?php echo $this->Menus()->getName($menu_two); ?>
+                                    </h2>
+                                    <div class="info-footer navbar-toggleable-xs collapse" id="colFooter03" >
+                                        <?php 
+                                        foreach ($menuRoot as $key => $value) {
+                                            if( !$this->Menus()->isDescription($value) ){ ?>
+                                            <a href="<?php echo $this->Menus()->getLinkForMenu($value); ?>" title="<?php echo $this->Menus()->getName($value); ?>" data-pjax="true" data-container="Main" itemprop="url" class="footer-link" >    
+                                                <span>
+                                                    <?php echo $this->Menus()->getName($value); ?> 
+                                                </span>
+                                            </a>
+                                            <?php }else{ ?>
+                                            <div class="footer-link" >
+                                                <?php echo $this->Menus()->getDescription($value); ?>
+                                            </div>
+                                            <?php }
+                                        } ?>
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
+                            <?php } ?>
 
+                            <div class="col-md-3 col-sm-6" >
+                                <div class="col-footer" >
+                                    <h2 class="title-footer clearfix collapsed" type="button" data-toggle="collapse" data-target="#colFooter04" aria-expanded="false" >
+                                        <?php echo $this->translate('txt_newsletter') ?>
+                                    </h2>
+                                    <div class="info-footer navbar-toggleable-xs collapse" id="colFooter04" >
+                                        <div class="sub-col-footer" >
+                                            <?php echo $this->translate('txt_des_newsletter') ?>
+                                        </div>
+
+                                        <div class="sub-col-footer" >
+                                            <div class="letter-form" >
+                                                <form id="newsletterform" class="mini-iform-newleter" >
+                                                    <input type="text" name="email" class="email" id="newsletter" placeholder="<?php echo $this->translate('txt_placeholder_your_email') ?>" >
+                                                    <button class="neo-sent-newsletter" >
+                                                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-footer" >
+                                        <div class="sub-col-footer" >
+                                            <?php if( !empty($this->Websites()->getUrlFacebook()) ){ ?>
+                                            <a href="<?php echo $this->Websites()->getUrlFacebook() ?>" title="Facebook" rel="nofollow" class="link-social" >
+                                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                                            </a>
+                                            <?php } ?>
+                                            <?php if( !empty($this->Websites()->getUrlTwister()) ){ ?>
+                                            <a href="<?php echo $this->Websites()->getUrlTwister() ?>" title="Twister" rel="nofollow" class="link-social" >
+                                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                                            </a>
+                                            <?php } ?>
+                                            <?php if( !empty($this->Websites()->getUrlGooglePlus()) ){ ?>
+                                            <a href="<?php echo $this->Websites()->getUrlGooglePlus() ?>" title="GooglePlus" rel="nofollow" class="link-social" >
+                                                <i class="fa fa-google-plus" aria-hidden="true"></i>
+                                            </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-
+                
                 <div class="bottom-footer text-sm-left text-xs-center" >
                     <div class="row" >
                         <div class="col-sm-9" >

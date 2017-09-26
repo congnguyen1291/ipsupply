@@ -233,8 +233,8 @@ define ( 'ROOT_DIR', $_SERVER['DOCUMENT_ROOT']);
 define ( 'ROOT_DIR_FOLDER', $_SERVER['DOCUMENT_ROOT']."/custom/domain_1");
 define ('link_redirect','');
 
-define ( 'EMAIL_ADMIN_RECEIVE', 'info@coz.vn' );
-define ( 'EMAIL_ADMIN_SEND', 'support@coz.vn' );
+define ( 'EMAIL_ADMIN_RECEIVE', 'richard@ipsupply.com.au' );
+define ( 'EMAIL_ADMIN_SEND', 'richard@ipsupply.com.au' );
 
 define ( 'HOST_MAIL', 'mail.coz.vn' );
 define ( 'NAME_HOST', 'mail.coz.vn' );

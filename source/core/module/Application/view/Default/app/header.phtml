@@ -90,16 +90,43 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
 </script>
 
 <header class="header clearfix" id="header" >
-    <div class="container" >
-        <div class="top-header" >
+    <div class="top-header" >
+        <div class="container" >
             <div class="clearfix text-xs-right" >
                 <a href="<?php echo $this->translate('txt_href_number_holine') ?>" title="<?php echo $this->translate('txt_hotline_header') ?>" class="link-call-me-mm hidden-md-up" >
                     <i class="icon i-phone" ></i>
                 </a>
                 <div class="end-bar clearfix" >
-                    <a href="<?php echo $this->translate('txt_href_number_holine') ?>" title="" class="nav-link nav-link-blue" >
+                    <a href="javascript:void(0);" title="" class="nav-link nav-link-blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" rel="nofollow" >
                         <?php echo $this->translate('txt_request_a_quote') ?>
                     </a>
+                    <div class="dropdown-menu coz-dropdown-request-quote" >
+                        <div class="clearfix main-form-quote" >
+                            <form class="form-horizontal" data-form="anythingContact" >
+                                <input type="hidden" name="type" value="request_quote" >
+                                <div class="form-group" >
+                                    <input type="text" name="fullname" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_name'); ?>'" data-required="true" >
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_email'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_email'); ?>'" data-required="true" >
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="telephone" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_phone'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_phone'); ?>'" data-required="true" >
+                                </div>
+                                <div class="form-group" >
+                                    <textarea type="text" name="title" class="form-control product-name" placeholder="<?php echo $this->translate('txt_request_quote_product_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_product_name'); ?>'" data-required="true" ></textarea>
+                                </div>
+                                <div class="form-group" >
+                                    <textarea name="description" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_message'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_message'); ?>'" ></textarea>
+                                </div>
+                                <div class="form-group text-xs-center" >
+                                    <button type="button" class="btn btn-block btn-style-b" data-btn="anythingContact" >
+                                        <?php echo $this->translate('txt_btn_request_a_quote'); ?>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="user-bar clearfix" >
                     <span class="hidden-sm-down" >
@@ -169,7 +196,10 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                 <?php } ?>
             </div>
         </div>
-        <div class="bottom-header clearfix" >
+    </div>
+    
+    <div class="bottom-header clearfix" >
+        <div class="container" >
             <div class="row" >
                 <div class="col-lg-4 col-md-3 col-sm-7 col-xs-7" >
                     <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>" class="logo-navi" >
@@ -200,6 +230,7 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
             </div>
         </div>
     </div>
+
     <?php if( !empty($menuRoot) ){ ?>
     <div class="navi-top" >
         <div class="container" >

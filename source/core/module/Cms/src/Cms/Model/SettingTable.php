@@ -57,12 +57,7 @@ class SettingTable extends AppTable{
         }
     }
 
-    public function getAllQuestion($where = array(), $order = array(), $intPage, $intPageSize){
-        if ($intPage <= 1) {
-            $intPage = 0;
-        } else {
-            $intPage = ($intPage - 1) * $intPageSize;
-        }
+    public function getAllQuestion( $where = array() ){
         $adapter = $this->tableGateway->getAdapter();
         $sql = new Sql($adapter);
         $select = $sql->select();
@@ -70,31 +65,28 @@ class SettingTable extends AppTable{
         $select->join('users','fqa.users_id=users.users_id',array('full_name','user_name'),'left');
         $select->join('answer_questions', 'answer_questions.fqa_id=fqa.id',array('total_answer' => new Expression('count(answer_questions.id)')), 'left');
         $select->join('products','fqa.products_id=products.products_id', array('products_title','products_alias'));
-        if(count($where)){
-            $select->where($where);
-        }
         $select->where(array(
             'products.is_published' => 1,
             'products.is_delete' => 0,
             'products.website_id' => $this->getWebsiteId(),
         ));
-        $select->order(array(
-            'total_answer' => 'ASC',
-        ));
-        if(count($order)){
-            $select->order($order);
-        }
         $select->group('fqa.id');
-        $select->limit($intPageSize);
-        $select->offset($intPage);
+        $select->order(array(
+            'date_create' => 'DESC'
+        ));
+
+        if( $this->hasPaging($where) ){
+            $select->offset($this->getOffsetPaging($where['page'], $where['limit']));
+            $select->limit($where['limit']);
+        }
+
         try{
             $selectString = $sql->getSqlStringForSqlObject($select);
             $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
             $results = $results->toArray();
             return $results;
-        }catch (\Exception $ex){
-            throw new \Exception($ex->getMessage());
-        }
+        }catch (\Exception $ex){}
+        return array();
     }
 
     public function countAllNewQuestion(){
@@ -128,31 +120,24 @@ class SettingTable extends AppTable{
         }
     }
 
-    public function countAllQuestion($where = array(), $order = array()){
+    public function countAllQuestion( $where = array() ){
         $adapter = $this->tableGateway->getAdapter();
         $sql = new Sql($adapter);
         $select = $sql->select();
         $select->from('fqa')->columns(array('total' => new Expression('count(fqa.id)')));
         $select->join('products','fqa.products_id=products.products_id', array());
-        if(count($where)){
-            $select->where($where);
-        }
         $select->where(array(
             'products.is_published' => 1,
             'products.is_delete' => 0,
             'products.website_id' => $this->getWebsiteId(),
         ));
-        if(count($order)){
-            $select->order($order);
-        }
         try{
             $selectString = $sql->getSqlStringForSqlObject($select);
             $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-            $results = (array)$results->current();
-            return $results['total'];
-        }catch (\Exception $ex){
-            throw new \Exception($ex->getMessage());
-        }
+            $results = $results->current();
+            return $results->total;
+        }catch (\Exception $ex){}
+        return 0;
     }
 	
     public function getQuestion($id){

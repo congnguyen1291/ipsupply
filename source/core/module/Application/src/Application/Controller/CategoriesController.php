@@ -33,7 +33,7 @@ class CategoriesController extends FrontEndController
         $page = $this->params()->fromQuery('page', 1);
         $sort = $this->params()->fromQuery('sort', 'new');
         $filter = $this->params()->fromQuery('filter', '');
-        $manus = $this->params()->fromQuery('manus', '');
+        $manufacturer = $this->params()->fromQuery('manufacturer', '');
         $feature = $this->params()->fromQuery('feature', '');
         $price = $this->params()->fromQuery('price', '');
         $rating = $this->params()->fromQuery('rating', '');
@@ -46,7 +46,7 @@ class CategoriesController extends FrontEndController
             $feature = implode(";", $feature);
         }
         $params = array();
-        $params['manus'] = $manus;
+        $params['manufacturer'] = $manufacturer;
         $params['sort'] = $sort;
         $params['filter'] = $filter;
         $params['feature'] = $feature;
@@ -68,7 +68,7 @@ class CategoriesController extends FrontEndController
         $link = $this->baseUrl .$this->getUrlPrefixLang().'/category?'. $helper->buildParamsForUrlFromArray($params);
         $paginator = new Paginator($total, $page_size, $page, $link);
 
-        $this->data_view['manus'] = $manus;
+        $this->data_view['manufacturer'] = $manufacturer;
         $this->data_view['filter'] = $filter;
         $this->data_view['sort'] = $sort;
         $this->data_view['view'] = $view;
@@ -124,7 +124,7 @@ class CategoriesController extends FrontEndController
         $page = $this->params()->fromQuery('page', 1);
         $sort = $this->params()->fromQuery('sort', 'new');
         $filter = $this->params()->fromQuery('filter', '');
-        $manus = $this->params()->fromQuery('manus', '');
+        $manufacturer = $this->params()->fromQuery('manufacturer', '');
         $feature = $this->params()->fromQuery('feature', '');
         $price = $this->params()->fromQuery('price', '');
         $rating = $this->params()->fromQuery('rating', '');
@@ -138,7 +138,7 @@ class CategoriesController extends FrontEndController
             $feature = implode(";", $feature);
         }
         $params = array();
-        $params['manus'] = $manus;
+        $params['manufacturer'] = $manufacturer;
         $params['sort'] = $sort;
         $params['filter'] = $filter;
         $params['feature'] = $feature;
@@ -165,7 +165,7 @@ class CategoriesController extends FrontEndController
         $paginator = new Paginator($total, $page_size, $page, $link);
 
         $this->data_view['id'] = $id;
-        $this->data_view['manus'] = $manus;
+        $this->data_view['manufacturer'] = $manufacturer;
         $this->data_view['filter'] = $filter;
         $this->data_view['sort'] = $sort;
         $this->data_view['view'] = $view;
@@ -239,7 +239,7 @@ class CategoriesController extends FrontEndController
             $page = $this->params()->fromQuery('page', 0);
             $sort = $this->params()->fromQuery('sort', 'new');
             $filter = $this->params()->fromQuery('filter', '');
-            $manus = $this->params()->fromQuery('manus', '');
+            $manufacturer = $this->params()->fromQuery('manufacturer', '');
             $feature = $this->params()->fromQuery('feature', '');
             $price = $this->params()->fromQuery('price', '');
             $rating = $this->params()->fromQuery('rating', '');
@@ -254,7 +254,7 @@ class CategoriesController extends FrontEndController
             $params = array();
             $params['page'] = $page;
             $params['page_size'] = $page_size;
-            $params['manus'] = $manus;
+            $params['manufacturer'] = $manufacturer;
             $params['sort'] = $sort;
             $params['filter'] = $filter;
             $params['feature'] = $feature;
@@ -280,7 +280,7 @@ class CategoriesController extends FrontEndController
             
             $this->data_view['id'] = $id;
             $this->data_view['list'] = $list;
-            $this->data_view['manus'] = $manus;
+            $this->data_view['manufacturer'] = $manufacturer;
             $this->data_view['filter'] = $filter;
             $this->data_view['sort'] = $sort;
             $this->data_view['view'] = $view;

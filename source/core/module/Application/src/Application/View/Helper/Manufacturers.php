@@ -13,6 +13,7 @@ class Manufacturers extends App
     public function getManufacturers($list=array())
     {
         $manufacturers = $this->getModelTable('ManufacturersTable')->getRows($list);
+        $this->setJavascriptManufacturers($manufacturers, 'getManufacturers');
         return $manufacturers;
     }
 

@@ -1,74 +1,147 @@
-<!-- Content Header (Page header) -->
+<header class="header clearfix" >
+    <nav class="navbar navbar-static-top clearfix" role="navigation">
+        <div class="pull-left" >
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo $this->url('cms') ?>">
+                        <i class="fa fa-dashboard"></i> 
+                        <?php echo $this->translate('txt_trang_chu'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('cms/fqa') ?>">
+                        <?php echo $this->translate('txt_hoi_dap'); ?>
+                    </a>
+                </li>
+                <li class="active">
+                    <?php echo $this->translate('txt_tra_loi_cau_hoi_fqa'); ?>
+                </li>
+            </ol>
+        </div>
+        <div class="navbar-right" >
+            <?php echo $this->partial('layout/mini-navbar', array()) ?>
+        </div>
+    </nav>
+</header>
+
+
 <section class="content-header">
-    <h1>
-        Hỏi đáp :: Trả lời
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('cms') ?>"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a href="<?php echo $this->url('cms/fqa') ?>">Hỏi đáp</a></li>
-        <li class="active">Trả lời câu hỏi</li>
-    </ol>
+    <div class="row" >
+        <div class="col-sm-12 col-xs-12" >
+            <h1>
+                <?php echo $this->translate('txt_hoi_dap'); ?> ::
+                <?php echo $this->translate('txt_tra_loi_cau_hoi_fqa'); ?>
+            </h1>
+        </div>
+    </div>
 </section>
-<!-- Main content -->
-<section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Câu hỏi</h3>
-                </div>
-                <div class="box-body">
-                        <p>Tiêu đề: <strong><?php echo $question['tieu_de'] ?></strong></p>
-                        <p>Người hỏi: <strong><?php echo !$question['email'] ? $question['full_name'] : $question['email'] ?></strong></p>
-                        <p>Thời gian hỏi: <strong><?php echo date('d-m-Y H:i:s', strtotime($question['date_create'])) ?></strong></p>
-                        <label>Nội dung</label>
-                        <div>
-                            <strong>
+
+
+
+<section class="content" >
+    <div class="clearfix">
+        <h3>
+            <?php echo $this->translate('txt_cau_hoi'); ?>
+        </h3>
+        <div class="table-responsive" >
+            <table class="table table-data-bind table-no-border" >
+                <tbody>
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_tieu_de_fqa'); ?>
+                        </th>
+                        <td>
+                            <?php echo $question['tieu_de'] ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_nguoi_hoi'); ?>
+                        </th>
+                        <td>
+                            <?php echo !$question['email'] ? $question['full_name'] : $question['email'] ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-right col-lim" >
+                            <?php echo $this->translate('txt_ngay_hoi'); ?>
+                        </th>
+                        <td>
+                            <?php echo $question['date_create'] ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2" >
+                            <?php echo $this->translate('txt_noi_dung_fqa'); ?>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2" >
                             <?php echo $question['noi_dung'] ?>
-                            </strong>
-                        </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <?php if( !empty($answers) ){ ?>
+        <h3>
+            <?php echo $this->translate('txt_danh_sach_tra_loi_fqa'); ?>
+        </h3>
+        <div class="list-replay" >
+            <?php foreach($answers as $answer) { ?>
+            <div class="item-replay" >
+                <div class="time-replay" >
+                    <i class="fa fa-reply" aria-hidden="true"></i>
+                    <?php echo $answer['date_create'] ?>
+                </div>
+                <div class="dt-replay" >
+                    <div class="clearfix" >
+                        <?php echo $answer['answer_content'] ?>
+                    </div>
+                    <div class="clearfix text-right" >
+                        <a href="<?php echo $this->url('cms/fqa', array('action' => 'delete-answer', 'id' => $answer['id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_cau_tra_loi_fqa'); ?>" data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="box box-default">
-                <div class="box-header">
-                    <h3 class="box-title">Trả lời</h3>
-                </div>
-                <div class="box-body">
-                    <?php if(count($answers)) : ?>
-                    <?php foreach($answers as $answer) : ?>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <?php echo $answer['answer_content'] ?>
-							<br />
-							<a href="<?php echo $this->url('cms/fqa', array('action' => 'delete-answer', 'id' => $answer['id'])) ?>" class="btn btn-danger pull-right">Xóa</a>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
-                    <?php if($this->error) : ?>
-                        <ul>
-                        <?php foreach($error as $er) : ?>
-                            <li style="color: red"><?php echo $er ?></li>
-                        <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <form action="" method="post">
-                                <input name="fqa_id" type="hidden" value="<?php echo $question['id'] ?>"/>
-                                <input name="users_id" type="hidden" value="<?php echo $_SESSION['CMSMEMBER']['users_id'] ?>"/>
-                                <input name="is_published" type="hidden" value="1" />
-                                <div class="form-group">
-                                    <textarea name="answer_content" id="answer_content" cols="30" rows="5" class="form-control" style="border: none" autofocus></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary">Trả lời</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <?php } ?>
+        </div>
+        <?php } ?>
+
+        <?php if( !empty($error) ){ ?>
+        <div class="row" >
+            <div class="alert alert-danger" >
+                <?php echo $error ?>
             </div>
         </div>
+        <?php } ?>
+
+        <form action="<?php echo $this->url('cms/fqa', array('action' => 'answer','id' => $question['id'])) ?>" method="post" class="clearfix" enctype="multipart/form-data" >
+            <input name="fqa_id" type="hidden" value="<?php echo $question['id'] ?>"/>
+            <input name="users_id" type="hidden" value="<?php echo $_SESSION['CMSMEMBER']['users_id'] ?>"/>
+            <input name="is_published" type="hidden" value="1" />
+            
+            <div class="form-group">
+                <label for="answer_content">
+                    <?php echo $this->translate('txt_tra_loi'); ?>
+                </label>
+                <textarea name="answer_content" id="answer_content" cols="30" rows="5" class="form-control input-sm" ></textarea>
+            </div>
+
+            <div class="form-group" >
+                <button class="btn btn-primary btn-sm">
+                    <?php echo $this->translate('txt_them_cau_tra_loi_fqa'); ?>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="javascript:history.back(-1);">
+                    <?php echo $this->translate('txt_quay_lai'); ?>
+                </button>
+            </div>
+        </form>
     </div>
 </section>

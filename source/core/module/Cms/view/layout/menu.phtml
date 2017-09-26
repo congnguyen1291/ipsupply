@@ -672,6 +672,30 @@
         </ul>
     </li>
 
+    <li class="treeview <?php echo $view_val->current=='contact' ? 'active' : '' ?>">
+        <a href="#">
+            <img class="coz-ico-menu" src="/admincp/icon/contact.svg" >
+            <span>
+                <?php echo $this->translate('txt_lien_he'); ?>
+            </span>
+            <i class="fa fa-angle-right pull-right"></i>
+        </a>
+        <ul class="treeview-menu" >
+            <li>
+                <a href="<?php echo $this->url('cms/contact', array('action' => 'index')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <?php echo $this->translate('txt_quan_ly'); ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('cms/contact', array('action' => 'email-newsletter')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <?php echo $this->translate('txt_quan_ly_email_newsletter'); ?>
+                </a>
+            </li>
+        </ul>
+    </li>
+
     <li class="treeview <?php echo $view_val->current=='developer' ? 'active' : '' ?>">
         <a href="#">
             <img class="coz-ico-menu" src="/admincp/icon/developer.svg" >
@@ -685,6 +709,12 @@
                 <a href="<?php echo $this->url('cms/BannerPosition', array('action' => 'index')) ?>">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <?php echo $this->translate('txt_quan_ly_vi_tri_banner'); ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('cms/siri', array('action' => 'index')) ?>">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <?php echo $this->translate('txt_siri'); ?>
                 </a>
             </li>
         </ul>

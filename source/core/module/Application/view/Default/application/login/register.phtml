@@ -30,107 +30,150 @@
 <!-- Main Content -->
 <div class="login-content">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-style form-login">
-                    <form accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up' id='registerform' method='post' data-form="signup"  >
-                        <h3 class="form-heading"><?php echo $this->translate('txt_dang_ki_tai_khoan'); ?></h3>
-                        <p class="form-description">
-                            <?php echo $this->translate('txt_des_dang_ki_tai_khoan'); ?>
-                            <a href="/sign-in" >
-                                <strong><?php echo $this->translate('txt_dang_nhap'); ?></strong>
-                            </a>.
-                        </p>
-                        
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label class="text-right" >
-                                        <?php echo $this->translate('txt_ten_user'); ?>
-                                    </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" value="" class="form-control full_name" name="full_name" id="full_name"  placeholder="<?php echo $this->translate('fullname'); ?>" data-input="full_name" />
-                                </div>
-                            </div>
-                        </div>
+        <div class="unit-login clearfix" >
+            <div class="row tb-bx">
+                <div class="col-lg-6 tbc-bx" >
+                    <div class="row" >
+                        <div class="col-lg-11">
+                            <div class="form-style form-login">
+                                <form accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up' id='registerform' method='post' data-form="signup"  >
+                                    <h3 class="form-heading"><?php echo $this->translate('txt_dang_ki_tai_khoan'); ?></h3>
+                                    <p class="form-description">
+                                        <?php echo $this->translate('txt_des_dang_ki_tai_khoan'); ?>
+                                        <a href="/sign-in" >
+                                            <strong><?php echo $this->translate('txt_dang_nhap'); ?></strong>
+                                        </a>.
+                                    </p>
+                                    
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="text-right" >
+                                                    <?php echo $this->translate('txt_ten_user'); ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" value="" class="form-control full_name" name="full_name" id="full_name"  placeholder="<?php echo $this->translate('fullname'); ?>" data-input="full_name" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label class="text-right" >
-                                        <?php echo $this->translate('txt_email_user'); ?>
-                                    </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="email" value="" class="form-control user_name" name="user_name" id="user_name"  placeholder="<?php echo $this->translate('email'); ?>" data-input="user_name" />
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="text-right" >
+                                                    <?php echo $this->translate('txt_email_user'); ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="email" value="" class="form-control user_name" name="user_name" id="user_name"  placeholder="<?php echo $this->translate('email'); ?>" data-input="user_name" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label class="text-right" >
-                                        <?php echo $this->translate('txt_mat_khau_user'); ?>
-                                    </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="password" value="" class="form-control password" name="password" id="password" placeholder="<?php echo $this->translate('password'); ?>" data-input="password" />
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="text-right" >
+                                                    <?php echo $this->translate('txt_mat_khau_user'); ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="password" value="" class="form-control password" name="password" id="password" placeholder="<?php echo $this->translate('password'); ?>" data-input="password" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label class="text-right" >
-                                        <?php echo $this->translate('txt_re_mat_khau_user'); ?>
-                                    </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="password" value="" class="form-control repassword" name="repassword" id="repassword" placeholder="<?php echo $this->translate('repassword'); ?>" data-input="repassword" />
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="text-right" >
+                                                    <?php echo $this->translate('txt_re_mat_khau_user'); ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="password" value="" class="form-control repassword" name="repassword" id="repassword" placeholder="<?php echo $this->translate('repassword'); ?>" data-input="repassword" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label class="text-right" >
-                                        <?php echo $this->translate('txt_phone_user'); ?>
-                                    </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" value="" class="form-control phone" name="phone" id="phone"  placeholder="<?php echo $this->translate('phone'); ?>" data-input="phone" />
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="text-right" >
+                                                    <?php echo $this->translate('txt_phone_user'); ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" value="" class="form-control phone" name="phone" id="phone"  placeholder="<?php echo $this->translate('phone'); ?>" data-input="phone" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label class="text-right" >
-                                        <?php echo $this->translate('txt_address_user'); ?>
-                                    </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" value="" class="form-control address" name="address" id="address"  placeholder="<?php echo $this->translate('address'); ?>" data-input="address" />
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="text-right" >
+                                                    <?php echo $this->translate('txt_address_user'); ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" value="" class="form-control address" name="address" id="address"  placeholder="<?php echo $this->translate('address'); ?>" data-input="address" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group" >
-                            <div class="row">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-10">
-                                    <button class="btn btn-style-b" type="summit" >
-                                        <?php echo $this->translate('txt_dang_ki'); ?>
-                                    </button>
-                                </div>
+                                    <div class="form-group" >
+                                        <div class="row">
+                                            <div class="col-md-10 col-md-offset-2" >
+                                                <button class="btn btn-style-b" type="summit" >
+                                                    <?php echo $this->translate('txt_dang_ki'); ?>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
+
+                <div class="or-divider" >
+                    <span>
+                        <?php echo $this->translate('txt_or_login') ?>
+                    </span>
+                </div>
+
+                <div class="col-lg-6 tbc-bx" >
+                    <div class="login-social" data-place="authCart" >
+                        <div class="clearfix row" data-place="loginSocial" >
+                            <div class="clearfix col-lg-6 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0" >
+                                <?php if( $this->Websites()->hasLoginFacebook() ){ ?>
+                                <div class="form-element-payment" >
+                                    <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-facebook coz-btn-flat-block" data-btn="loginFacebook" rel="nofollow" >
+                                        <?php echo $this->translate('txt_login_face_va_mua_hang') ?>
+                                    </a>
+                                </div>
+                                <?php } ?>
+
+                                <?php if( $this->Websites()->hasLoginGoogle() ){ ?>
+                                <div class="form-element-payment" >
+                                    <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-google coz-btn-flat-block" id="loginGoogle" data-btn="loginGoogle" rel="nofollow" >
+                                        <?php echo $this->translate('txt_login_google_va_mua_hang') ?>
+                                    </a>
+                                </div>
+                                <?php } ?>
+
+                                <?php if( $this->Websites()->hasLoginTwister() ){ ?>
+                                <div class="form-element-payment" >
+                                    <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-twister coz-btn-flat-block" data-btn="loginTwister" rel="nofollow" >
+                                        <?php echo $this->translate('txt_login_twister_va_mua_hang') ?>
+                                    </a>
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

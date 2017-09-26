@@ -876,6 +876,30 @@ coz.checkBuyByEmail = function(el){
     return true;
 };
 
+coz.checkComment = function(el){
+    if($('[data-input="title"]', el).val().length<=0){
+        coz.toast(language.translate('txt_chua_nhap_title_comment'));
+        $('[data-input="title"]', el).focus();
+        return false;
+    }
+    if($('[data-input="email"]', el).val().length<=0){
+        coz.toast(language.translate('txt_chua_nhap_email'));
+        $('[data-input="email"]', el).focus();
+        return false;
+    }
+    if(!coz.isEmail($('[data-input="email"]', el).val())){
+        coz.toast(language.translate('txt_email_chua_dung'));
+        $('[data-input="email"]', el).focus();
+        return false;
+    }
+    if($('[data-input="noidung"]', el).val().length<=0){
+        coz.toast(language.translate('txt_chua_nhap_noidung_comment'));
+        $('[data-input="noidung"]', el).focus();
+        return false;
+    }
+    return true;
+};
+
 coz.updateWards = function(districts_id, el_cities, el_districts, el_wards){
     el_wards.html('');
     coz.loadWard(districts_id, function(data){
@@ -1157,6 +1181,36 @@ coz.addFeaturesModelSort = function( features, type ){
                 }
             }catch(e){}
         })(features);
+    }
+}
+
+coz.addManufacturersModel = function( manufacturers, type ){
+    if( typeof coz.model == 'undefined' ){
+        coz.model = {};
+    }
+
+    if( typeof coz.model.manufacturers == 'undefined' ){
+        coz.model.manufacturers = {};
+    }
+
+    if( typeof manufacturers != 'undefined'
+        && manufacturers.length > 0 ){
+        (function(_pl){
+            try{
+                for ( _i=0; _i < _pl.length; _i++ ) {
+                    _p = _pl[_i];
+                    if( typeof _p.manufacturers_id != 'undefined'
+                        && typeof coz.model.manufacturers[_p.manufacturers_id] == 'undefined' ){
+                        coz.model.manufacturers[_p.manufacturers_id] = _p;
+                    }
+                    if( _i >= _pl.length-1 ){
+                        coz.updateSelectFilter(function(){
+                            coz.updateFilter();
+                        });
+                    }
+                }
+            }catch(e){}
+        })(manufacturers);
     }
 }
 
@@ -4795,13 +4849,17 @@ coz.google = {
         _this.el = el;
         if( typeof coz.google_client_id != 'undefined' 
             && $.trim(coz.google_client_id).length > 0 ){
-            gapi.load('auth2', function(){
-                auth2 = gapi.auth2.init({
-                    client_id: coz.google_client_id,
-                    cookiepolicy: 'single_host_origin'
+            try{
+                gapi.load('auth2', function(){
+                    auth2 = gapi.auth2.init({
+                        client_id: coz.google_client_id,
+                        cookiepolicy: 'single_host_origin'
+                    });
+                    coz.google.customBtn();
                 });
-                coz.google.customBtn();
-            });
+            }catch(e){
+                console.log(e);
+            }
         }
     }
 }
@@ -7906,7 +7964,52 @@ coz.owlCarousel.init();
     };
 })(jQuery);
 $('[data-controller="product"]').not('.pjax-init').coz();
-
+coz.manufacturer = {
+    hasManufacturer : function(){
+        if( typeof coz.model != 'undefined'
+            && typeof coz.model.manufacturers != 'undefined' ){
+            return true;
+        }
+        return false;
+    },
+    getManufacturersId : function(){
+        if( coz.manufacturer.hasManufacturer() ){
+            return Object.keys(coz.model.manufacturers);
+        }
+        return [];
+    },
+    getManufacturers : function(){
+        if( coz.manufacturer.hasManufacturer() ){
+            return coz.model.manufacturers;
+        }
+        return [];
+    },
+    getID : function( key_ ){
+        if( coz.manufacturer.hasManufacturer()
+            && typeof  key_ != 'undefined'
+            && typeof  coz.model.manufacturers[key_] != 'undefined' ){
+            return coz.model.manufacturers[key_].manufacturers_id;
+        }
+        return '';
+    },
+    getName : function( key_ ){
+        if( coz.manufacturer.hasManufacturer()
+            && typeof  key_ != 'undefined'
+            && typeof  coz.model.manufacturers[key_] != 'undefined' ){
+            return coz.model.manufacturers[key_].manufacturers_name;
+        }
+        return '';
+    },
+    isChecked : function( key_ ){
+        if( coz.manufacturer.hasManufacturer()
+            && typeof  key_ != 'undefined'
+            && typeof  coz.model.manufacturers[key_] != 'undefined' 
+            && typeof  coz.model.manufacturers[key_].is_checked != 'undefined' ){
+            return coz.model.manufacturers[key_].is_checked;
+        }
+        return false;
+    }
+};
 coz.feature = {
     hasFeature : function(){
         if( typeof coz.model.fillter != undefined
@@ -8022,6 +8125,25 @@ coz.model.fillter.sort = {
         return '';
     }
 };
+coz.model.fillter.switchview = {
+    val : 'list',
+    is_close : false,
+    isClose : function(){
+        return coz.model.fillter.price.is_close;
+    },
+    isList : function( ){
+        if( 'list' ==  coz.model.fillter.switchview.val ){
+            return true;
+        }
+        return false;
+    },
+    isBox : function( ){
+        if( 'box' ==  coz.model.fillter.switchview.val ){
+            return true;
+        }
+        return false;
+    }
+};
 coz.model.fillter.price = {
     min : 0,
     max : 2000000,
@@ -8104,10 +8226,29 @@ coz.urlForFilters = function(){
         url_ = url_.slice(0, -1);
     }
 
+    if( coz.manufacturer.hasManufacturer()  ){
+        url_ += '&manufacturer=';
+        for ( _i=0; _i < Object.keys(coz.model.manufacturers).length; _i++ ) {
+            _key = Object.keys(coz.model.manufacturers)[_i];
+            _p = coz.model.manufacturers[_key];
+            if( typeof coz.model.manufacturers[_key]['is_checked'] != 'undefined'
+                && coz.model.manufacturers[_key]['is_checked'] == true ){
+                url_ += coz.model.manufacturers[_key]['manufacturers_id']+';';
+            }
+        }
+        url_ = url_.slice(0, -1);
+    }
+
     if( $('[data-place="fillterSort"]').length > 0
         && typeof coz.model.fillter.sort.val != 'undefined'
         && $.trim(coz.model.fillter.sort.val).length >0  ){
         url_ += '&sort='+coz.model.fillter.sort.val;
+    }
+
+    if( $('[data-place="fillterSwitchView"]').length > 0
+        && typeof coz.model.fillter.switchview.val != 'undefined'
+        && $.trim(coz.model.fillter.switchview.val).length >0  ){
+        url_ += '&swview='+coz.model.fillter.switchview.val;
     }
 
     if( $('[data-place="itemFillter"][data-id="price"]').length > 0 ){
@@ -8124,7 +8265,9 @@ coz.urlForFilters = function(){
                 && ku != 'partial' 
                 && ku != 'feature' 
                 && ku != 'sort' 
-                && ku != 'price' ){
+                && ku != 'price'
+                && ku != 'manufacturer'
+                && ku != 'swview' ){
                 url_ += '&'+ku+'='+pv[ku];
             }
         }
@@ -8153,11 +8296,26 @@ coz.updateSelectFeature = function( fe ){
 coz.updateSelectSort = function( sort_ ){
     coz.model.fillter.sort.val = sort_;
 };
+coz.updateSelectSwitchView = function( sort_ ){
+    coz.model.fillter.switchview.val = sort_;
+};
 coz.updateSelectPrice = function( price_ ){
     ap = price_.split(';');
     if( ap.length > 1 ){
         coz.model.fillter.price.from = ap[0];
         coz.model.fillter.price.to = ap[1];
+    }
+};
+coz.updateSelectManufacturer = function( manu_ ){
+    amanu = manu_.split(';');
+    if( amanu.length > 0 
+        && coz.manufacturer.hasManufacturer() ){
+        for ( _i=0; _i < Object.keys(coz.model.manufacturers).length; _i++ ) {
+            _key = Object.keys(coz.model.manufacturers)[_i];
+            if( _key == manu_ || amanu.indexOf(_key) >=0 ){
+                coz.model.manufacturers[_key]['is_checked'] = true;
+            }
+        }
     }
 };
 coz.updateSelectFilter = function( callback ){
@@ -8175,6 +8333,14 @@ coz.updateSelectFilter = function( callback ){
             if( typeof pv.price != 'undefined'
                 && $.trim(pv.price).length >0 ){
                 coz.updateSelectPrice(pv.price);
+            }
+            if( typeof pv.manufacturer != 'undefined'
+                && $.trim(pv.manufacturer).length >0 ){
+                coz.updateSelectManufacturer(pv.manufacturer);
+            }
+            if( typeof pv.swview != 'undefined'
+                && $.trim(pv.swview).length >0 ){
+                coz.updateSelectSwitchView(pv.swview);
             }
             if( k>= Object.keys(pv).length-1 ){
                 callback(pv);
@@ -8235,6 +8401,32 @@ coz.updateFilter = function(){
                         }
                     }
                 });
+                $('[data-input="manufacturer"]', el).off('change').on('change', function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var id_ = $(this).val();
+                    if( $.trim(id_).length > 0
+                        && coz.manufacturer.hasManufacturer() ){
+                        for ( _i=0; _i < Object.keys(coz.model.manufacturers).length; _i++ ) {
+                            _key = Object.keys(coz.model.manufacturers)[_i];
+                            _p = coz.model.manufacturers[_key];
+                            if( typeof coz.model.manufacturers[_key]['manufacturers_id'] != 'undefined'
+                                && _key == id_ ){
+                                if( typeof coz.model.manufacturers[_key]['is_checked'] == 'undefined' ){
+                                    coz.model.manufacturers[_key]['is_checked'] = true;
+                                }else{
+                                    coz.model.manufacturers[_key]['is_checked'] = !coz.model.manufacturers[_key]['is_checked'];
+                                }
+                            }else{
+                                coz.model.manufacturers[_key]['is_checked'] = false;
+                            }
+                            if( _i >= Object.keys(coz.model.manufacturers).length-1){
+                                coz.model.fillter.is_pjax = true;
+                                coz.updateFilter();
+                            }
+                        }
+                    }
+                });
             });
         }
 
@@ -8244,6 +8436,19 @@ coz.updateFilter = function(){
                 $(el).html(_html);
                 $('select[name="sort"]', el).off('change').on('change', function(){
                     coz.model.fillter.sort.val = $(this).val();
+                    coz.model.fillter.is_pjax = true;
+                    coz.updateFilter();
+                });
+            });
+        }
+
+        if( $('[data-place="fillterSwitchView"]').length > 0 ){
+            _html = $("#tmplFillterSwitchView").tmpl(coz.model.fillter).html();
+            $('[data-place="fillterSwitchView"]').each(function(k, el){
+                $(el).html(_html);
+                $('[data-btn="switchView"]', el).off('click').on('click', function(){
+                    va_ = $(this).data('value');
+                    coz.model.fillter.switchview.val = va_;
                     coz.model.fillter.is_pjax = true;
                     coz.updateFilter();
                 });
@@ -8377,7 +8582,7 @@ coz.common = {
         }
 
         if( coz.confirm_location == 0 ){
-            coz.whereAreYou.init();
+            //coz.whereAreYou.init();
         }
         
         try{
@@ -8955,37 +9160,46 @@ coz.common = {
         $(document).on('click', '[data-btn="anythingContact"]', function(e){
             e.preventDefault();
             e.stopPropagation();
-            anythingContact = $(this).parents('[data-form="anythingContact"]').eq(0);
-            var emptyBoxes = $('[data-required="true"]', anythingContact).filter(function() { return $(this).val() == ""; });
-            if( emptyBoxes.length <=0 ){
-                var formdata = anythingContact.serialize();
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: coz.baseUrl+'/contact/anything',
-                    data: formdata,
-                    cache: false,
-                    success: function(data)
-                    {
-                        if(data.constructor === String){
-                            data = $.parseJSON(data);
-                        }
-                        coz.toast(data.msg);
-                        anythingContact.find('input, select').val('');
-                        if( data.flag == true || data.flag == 'true'){
-                            if( (data.has_payment == true || data.has_payment == 'true')
-                                && data.payments.length > 0 ){
-                                coz.showPopupPayment( data.id, 'contact');
+            var btsef = $(this);
+            if( !$(this).hasClass('btn-loading') ){
+                anythingContact = $(this).parents('[data-form="anythingContact"]').eq(0);
+                var emptyBoxes = $('[data-required="true"]', anythingContact).filter(function() { return $(this).val() == ""; });
+                if( emptyBoxes.length <=0 ){
+                    btsef.addClass('btn-loading');
+                    var formdata = anythingContact.serialize();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: coz.baseUrl+'/contact/anything',
+                        data: formdata,
+                        cache: false,
+                        success: function(data)
+                        {
+                            if(data.constructor === String){
+                                data = $.parseJSON(data);
                             }
+                            coz.toast(data.msg);
+                            anythingContact.find('input:not(:hidden), select, textarea').val('');
+                            if( data.flag == true || data.flag == 'true'){
+                                if( (data.has_payment == true || data.has_payment == 'true')
+                                    && data.payments.length > 0 ){
+                                    coz.showPopupPayment( data.id, 'contact');
+                                }
+                            }
+                            btsef.removeClass('btn-loading');
+                        },
+                        error: function(e)
+                        {
+                            console.log(e);
+                            btsef.removeClass('btn-loading');
+                            coz.toast(language.translate('txt_co_loi_xay_ra'));
                         }
-                    },
-                    error: function(e)
-                    {
-                        console.log(e);
-                    }
-                });
+                    });
+                }else{
+                    coz.toast(language.translate('txt_chua_dien_day_du_thong_tin'));
+                }
             }else{
-                coz.toast(language.translate('txt_chua_dien_day_du_thong_tin'));
+                coz.toast(language.translate('txt_dang_xu_ly_vui_long_doi'));
             }
         });
 
@@ -9272,6 +9486,46 @@ coz.common = {
                 $('body').append('<div class="clearfix" data-place="bodyprint" ><div class="container" >'+html+'</div></div>');
             }
             window.print();
+        });
+
+        $(document).on('click', '[data-btn="commentProduct"]', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var btsef = $(this);
+            var formcm = $(this).parents('[data-form="commentProduct"]').eq(0);
+            if( !$(this).hasClass('btn-loading') ){
+                if( coz.checkComment(formcm) ){
+                    btsef.addClass('btn-loading');
+                    var formdata = formcm.serialize();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: coz.baseUrl+'/product/post-fqa',
+                        data: formdata,
+                        cache: false,
+                        success: function(data)
+                        {
+                            if(data.constructor === String){
+                                data = $.parseJSON(data);
+                            }
+                            console.log(data);
+                            if( data.flag == 'true' || data.flag == true ){
+                                $('[data-input]', formcm).val('');
+                            }
+                            coz.toast(data.msg);
+                            btsef.removeClass('btn-loading');
+                        },
+                        error: function(e)
+                        {
+                            console.log(e);
+                            btsef.removeClass('btn-loading');
+                            coz.toast(language.translate('txt_co_loi_xay_ra'));
+                        }
+                    });
+                }
+            }else{
+                coz.toast(language.translate('txt_dang_xu_ly_vui_long_doi'));
+            }
         });
 
         $(window).scroll(function(){
