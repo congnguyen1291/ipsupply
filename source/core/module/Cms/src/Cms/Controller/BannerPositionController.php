@@ -59,7 +59,7 @@ class BannerPositionController extends BackEndController
             $g = new BannerPosition();
             $form->setInputFilter($g->getInputFilter());
             $form->setData($request->getPost());
-            if ($form->isValid()) {
+            if ( $form->isValid() ) {
                 $g->exchangeArray($request->getPost());
                 try {
                     if( empty($g->position_alias) ){
@@ -78,7 +78,7 @@ class BannerPositionController extends BackEndController
 
                     return $this->redirect()->toRoute('cms/BannerPosition');
                 } catch (\Exception $ex) {
-                    die($ex->getMessage());
+                    //die($ex->getMessage());
                 }
 
             }

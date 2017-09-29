@@ -39,4 +39,13 @@ class Faq  extends App
         }
         return '';
     }
+
+    public function getContentAnswer( $answer )
+    {
+        if( !empty($answer)
+            && !empty($answer['answer_content']) ){
+            return $answer['answer_content'];
+        }
+        return '';
+    }
 }

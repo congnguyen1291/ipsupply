@@ -105,16 +105,25 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                             <form class="form-horizontal" data-form="anythingContact" >
                                 <input type="hidden" name="type" value="request_quote" >
                                 <div class="form-group" >
-                                    <input type="text" name="fullname" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_name'); ?>'" data-required="true" >
+                                    <div class="lb-error fullname" data-place="error" data-input="fullname" >
+                                        <?php echo $this->translate('txt_request_quote_ban_chua_nhap_ten'); ?>
+                                    </div>
+                                    <input type="text" name="fullname" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_name'); ?>'" data-required="true" data-title="<?php echo $this->translate('txt_request_quote_ban_chua_nhap_ten'); ?>" data-input="fullname" >
                                 </div>
                                 <div class="form-group" >
-                                    <input type="text" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_email'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_email'); ?>'" data-required="true" >
+                                    <div class="lb-error email" data-place="error" data-input="email" >
+                                        <?php echo $this->translate('txt_request_quote_ban_chua_nhap_email'); ?>
+                                    </div>
+                                    <input type="text" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_email'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_email'); ?>'" data-required="true" data-title="<?php echo $this->translate('txt_request_quote_ban_chua_nhap_email'); ?>" data-input="email" >
                                 </div>
                                 <div class="form-group" >
-                                    <input type="text" name="telephone" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_phone'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_phone'); ?>'" data-required="true" >
+                                    <div class="lb-error telephone" data-place="error" data-input="telephone" >
+                                        <?php echo $this->translate('txt_request_quote_ban_chua_nhap_phone'); ?>
+                                    </div>
+                                    <input type="text" name="telephone" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_phone'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_phone'); ?>'" data-required="true"  data-error="<?php echo $this->translate('txt_request_quote_ban_chua_nhap_phone'); ?>" data-input="telephone" >
                                 </div>
                                 <div class="form-group" >
-                                    <textarea type="text" name="title" class="form-control product-name" placeholder="<?php echo $this->translate('txt_request_quote_product_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_product_name'); ?>'" data-required="true" ></textarea>
+                                    <textarea type="text" name="title" class="form-control product-name" placeholder="<?php echo $this->translate('txt_request_quote_product_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_product_name'); ?>'" data-required="true" data-title="<?php echo $this->translate('txt_request_quote_ban_chua_nhap_product_name'); ?>" ></textarea>
                                 </div>
                                 <div class="form-group" >
                                     <textarea name="description" class="form-control" placeholder="<?php echo $this->translate('txt_request_quote_message'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_request_quote_message'); ?>'" ></textarea>

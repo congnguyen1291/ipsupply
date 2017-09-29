@@ -102,50 +102,42 @@ class QuestionAnswerController extends BackEndController
 	
 	public function publishedAction(){
 		$request = $this->getRequest();
-		if($request->isPost()){
-			$ids = $request->getPost('cid');
+		$ids = array();
+		if( $request->isPost() ){
+			$ids = $request->getPost('cid', '');
 		}else{
-			$id = $this->params()->fromRoute('id', NULL);
-			if(!$id){
-				$this->redirect()->toRoute('cms/fqa');
-			}
-			try{
-				$question = $this->getModelTable('SettingTable')->getQuestion($id);
-				$ids = array($id);
-			}catch(\Exception $ex){
-				$this->redirect()->toRoute('cms/fqa');
+			$id = $this->params()->fromRoute('id', '');
+			if( !empty($id) ){
+				$ids[] = $id;
 			}
 		}
-		if(count($ids)){
+		if( !empty($ids) ){
 			$data = array(
                 'is_published' => 1
             );
-            $this->getModelTable('SettingTable')->softUpdateData($ids, $data);
+			try{
+				$this->getModelTable('SettingTable')->softUpdateData($ids, $data);
 
-            /*strigger change namespace cached*/
-            $this->updateNamespaceCached();
+				/*strigger change namespace cached*/
+                $this->updateNamespaceCached();
 
+			}catch(\Exception $ex){}
 		}
 		$this->redirect()->toRoute('cms/fqa');
 	}
 	
 	public function unpublishedAction(){
 		$request = $this->getRequest();
-		if($request->isPost()){
-			$ids = $request->getPost('cid');
+		$ids = array();
+		if( $request->isPost() ){
+			$ids = $request->getPost('cid', '');
 		}else{
-			$id = $this->params()->fromRoute('id', NULL);
-			if(!$id){
-				$this->redirect()->toRoute('cms/fqa');
-			}
-			try{
-				$question = $this->getModelTable('SettingTable')->getQuestion($id);
-				$ids = array($id);
-			}catch(\Exception $ex){
-				$this->redirect()->toRoute('cms/fqa');
+			$id = $this->params()->fromRoute('id', '');
+			if( !empty($id) ){
+				$ids[] = $id;
 			}
 		}
-		if(count($ids)){
+		if( !empty($ids) ){
 			$data = array(
                 'is_published' => 0
             );
@@ -179,6 +171,54 @@ class QuestionAnswerController extends BackEndController
 			return $this->redirect()->toRoute('cms/fqa', array('action' => 'answer', 'id' => $answer['fqa_id']));
 		}catch(\Exception $ex){}
 		return $this->redirect()->toRoute('cms/fqa');
+	}
+
+	public function publishedAnswerAction(){
+		$request = $this->getRequest();
+		$ids = array();
+		if( $request->isPost() ){
+			$ids = $request->getPost('cid', '');
+		}else{
+			$id = $this->params()->fromRoute('id', '');
+			if( !empty($id) ){
+				$ids[] = $id;
+			}
+		}
+		if( !empty($ids) ){
+			$data = array(
+                'is_published' => 1
+            );
+			try{
+				$this->getModelTable('SettingTable')->updateAnswer($ids, $data);
+				/*strigger change namespace cached*/
+                $this->updateNamespaceCached();
+			}catch(\Exception $ex){}
+		}
+		$this->redirect()->toRoute('cms/fqa');
+	}
+	
+	public function unpublishedAnswerAction(){
+		$request = $this->getRequest();
+		$ids = array();
+		if( $request->isPost() ){
+			$ids = $request->getPost('cid', '');
+		}else{
+			$id = $this->params()->fromRoute('id', '');
+			if( !empty($id) ){
+				$ids[] = $id;
+			}
+		}
+		if( !empty($ids) ){
+			$data = array(
+                'is_published' => 0
+            );
+			try{
+				$this->getModelTable('SettingTable')->updateAnswer($ids, $data);
+				/*strigger change namespace cached*/
+                $this->updateNamespaceCached();
+			}catch(\Exception $ex){}
+		}
+		$this->redirect()->toRoute('cms/fqa');
 	}
 	
     public function filterAction()

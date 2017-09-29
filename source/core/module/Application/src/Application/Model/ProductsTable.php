@@ -345,7 +345,7 @@ class ProductsTable extends AppTable{
             $adapter = $this->tableGateway->getAdapter();
             $sql = new Sql($adapter);
             $select = $sql->select();
-            $select->columns(array('*','total_child'=> new Expression('(SELECT COUNT(*) FROM fqa AS t1 WHERE t1.id_parent =  fqa.id )')));
+            $select->columns(array('*','total_answer'=> new Expression('(SELECT COUNT(*) FROM answer_questions AS t1 WHERE t1.fqa_id =  fqa.id )')));
             $select->from('fqa');
             $select->join('users', 'users.users_id=fqa.users_id', array('full_name', 'user_name', 'avatar'), 'left');
             $select->where(array(
@@ -353,6 +353,45 @@ class ProductsTable extends AppTable{
                 'fqa.is_published' => 1,
                 'fqa.id_parent' => 0,
                 //'users.website_id'=>$this->getWebsiteId()
+            ));
+            $select->limit($intPageSize);
+            $select->offset($intPage);
+            try {
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $results = $results->toArray();
+                $cache->setItem($key, $results);
+            } catch (\Exception $ex) {
+                $results = array();
+            }
+        }
+        return $results;
+    }
+
+    public function getAnswers($id, $intPage, $intPageSize){
+        $cache = $this->getServiceLocator()->get('cache');
+        $stri_key = '';
+        if(is_array($id)){
+            $stri_key = $this->createKeyCacheFromArray($id);
+        }else{
+            $stri_key = $id;
+        }
+        $key = md5($this->getNamspaceCached().':ProductsTable:getAnswers('.$stri_key.';'.$intPage.';'.$intPageSize.')');
+        $results = $cache->getItem($key);
+        if(!$results) {
+            if ($intPage <= 1) {
+                $intPage = 0;
+            } else {
+                $intPage = ($intPage - 1) * $intPageSize;
+            }
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select->from('answer_questions');
+            $select->join('users', 'users.users_id=answer_questions.users_id', array('full_name', 'user_name', 'avatar'), 'left');
+            $select->where(array(
+                'answer_questions.fqa_id' => $id,
+                'answer_questions.is_published' => 1
             ));
             $select->limit($intPageSize);
             $select->offset($intPage);

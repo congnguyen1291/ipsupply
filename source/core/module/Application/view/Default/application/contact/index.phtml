@@ -1,12 +1,12 @@
 <?php 
     $branches = $this->Branches()->getAllBranches();
     $bran = $this->Branches()->getMainBranches();
+    $sliders = $this->Banners()->getBannerWithPositionAlias('CONTACT');
 ?>
 <script type="text/javascript" >
     var latitude = <?php echo $this->Branches()->getLatitude($bran); ?>;
     var longitude = <?php echo $this->Branches()->getLongitude($bran); ?>;
 </script>
-
 <div class="wrap-breadcrumbs clearfix" >
     <div class="container" >
         <div class="row">
@@ -32,120 +32,149 @@
     </div>
 </div>
 
+<?php if( !empty($sliders) ){ ?>
+<div class="banner-contact clearfix" >
+    <?php echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
+    <h2 class="title-contact" >
+        <?php echo $this->translate('txt_lien_he') ?>
+    </h2>
+</div>
+<?php } ?>
 
 <div class="container">
     <div class="row">                
-        <div class="col-sm-12">
-            <h1 class="title-contact" >
-                <?php echo $this->translate('txt_lien_he') ?>
-            </h1>
+        <div class="col-sm-10 col-sm-offset-1" >
+            <div class="row" >
+                <div class="col-md-4" >
+                    <div class="info-contact" >
+                        <h2 class="name-global-company" >
+                            <?php echo $this->translate('txt_name_company_global') ?>
+                        </h2>
+                        <div class="inner-info-contact" >
+
+                            <div class="item-info-contact" >
+                                <span class="ico-info-contact" >
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                </span>
+                                <span class="iinner-info-contact" >
+                                    <div class="name-com-contact" >
+                                        <?php echo $this->translate('txt_name_com_contact') ?>
+                                    </div>
+                                    <div class="address-com-contact" >
+                                        <?php echo $this->translate('txt_dia_chi_contact') ?>
+                                    </div>
+                                </span>
+                            </div>
+
+                            <div class="item-info-contact" >
+                                <span class="ico-info-contact" >
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </span>
+                                <span class="iinner-info-contact" >
+                                    <div class="email-contact" >
+                                        <?php echo $this->translate('txt_email_contact') ?>
+                                    </div>
+                                </span>
+                            </div>
+
+                            <div class="item-info-contact" >
+                                <span class="ico-info-contact" >
+                                    <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                                </span>
+                                <span class="iinner-info-contact" >
+                                    <div>
+                                        <?php echo $this->translate('txt_worktime_open') ?>
+                                    </div>
+                                    <div>
+                                        <?php echo $this->translate('txt_worktime_close') ?>
+                                    </div>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8" >
+                    <form accept-charset='UTF-8' action='/contact' id='contactform' method='post' class="form-horizontal form-contact-page" data-form="contact" >
+                        <h1 class="title-form-contact" >
+                            <?php echo $this->translate('txt_thong_tin_cua_ban') ?>
+                        </h1>
+                        <div class="des-contact" >
+                            <?php echo $this->translate('txt_des_info_contact') ?>
+                        </div>
+                        <div class="form-group form-group-contact">
+                            <div class="row" >
+                                <div class="col-sm-2">
+                                    <label class="lb-ctact">
+                                        <?php echo $this->translate('txt_ho_va_ten') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="fullname" value="" id="ifullname" class="form-control fullname" data-input="fullname" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-contact">
+                            <div class="row" >
+                                <div class="col-sm-2">
+                                    <label class="lb-ctact">
+                                        <?php echo $this->translate('txt_dia_chi_email') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="email" value="" id="email" class="form-control email" data-input="email" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-contact rspecte">
+                            <div class="row" >
+                                <div class="col-sm-2">
+                                    <label class="lb-ctact">
+                                        <?php echo $this->translate('txt_tieu_de') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="title" value="" id="title" class="form-control title" data-input="title" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-contact form-ip-nd" >
+                            <div class="row" >
+                                <div class="col-sm-2">
+                                    <label class="lb-ctact">
+                                        <?php echo $this->translate('txt_noi_dung') ?>
+                                    </label>
+                                </div>
+                                <div class="col-sm-10" >
+                                    <textarea name="description" rows="10" id="content" class="form-control content" data-input="content" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix last" >
+                            <div class="text-xs-center" >
+                                <button class="btn btn-send-contact" type="submit" >
+                                    <?php echo $this->translate('txt_send_messager'); ?>
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12" >
             <div id="google_map_div_0">
                 <div class="clearfix map-canvas" >
                     <div id="map_canvas" class="text-center" data-neo="mapContact" data-latitude="<?php echo $this->Branches()->getLatitude($bran); ?>" data-longitude="<?php echo $this->Branches()->getLongitude($bran); ?>" ></div>
                 </div>
             </div>
-
-            <div class="info-contact" >
-                <div class="row" >
-
-                    <div class="col-md-3" >
-                        <div class="item-info-contact" >
-                            <div class="iinner-info-contact" >
-                                <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), '', 43); ?>" alt="<?php echo $this->translate('title_site') ?>" title="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3" >
-                        <div class="item-info-contact" >
-                            <div class="iinner-info-contact" >
-                                <?php echo $this->translate('txt_dia_chi_contact') ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3" >
-                        <div class="item-info-contact" >
-                            <div class="iinner-info-contact" >
-                                <div>
-                                    <?php echo $this->translate('txt_email_contact') ?>
-                                </div>
-                                <div>
-                                    <?php echo $this->translate('txt_hotline_contact') ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3" >
-                        <div class="item-info-contact" >
-                            <div class="iinner-info-contact" >
-                                <div>
-                                    <?php echo $this->translate('txt_worktime_contact') ?>
-                                </div>
-                                <div>
-                                    <?php echo $this->translate('txt_worktime_speacial_contact') ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>       
-
-            <form accept-charset='UTF-8' action='/contact' id='contact' method='post' class="form-horizontal form-contact-page" data-form="contact" >
-                <h3 class="title-form-contact" >
-                    <?php echo $this->translate('txt_thong_tin_cua_ban') ?>
-                </h3>
-                <div class="form-group required">
-                    <div class="row" >
-                        <label class="col-md-2  col-sm-3 control-label" for="fullname">
-                            <?php echo $this->translate('txt_ho_va_ten') ?>
-                        </label>
-                        <div class="col-md-10 col-sm-9">
-                            <input type="text" name="fullname" value="" id="ifullname" class="form-control fullname" data-input="fullname" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group required">
-                    <div class="row" >
-                        <label class="col-md-2  col-sm-3 control-label" for="email">
-                            <?php echo $this->translate('txt_dia_chi_email') ?>
-                        </label>
-                        <div class="col-md-10 col-sm-9">
-                            <input type="text" name="email" value="" id="email" class="form-control email" data-input="email" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group required">
-                    <div class="row" >
-                        <label class="col-md-2  col-sm-3 control-label" for="title">
-                            <?php echo $this->translate('txt_tieu_de') ?>
-                        </label>
-                        <div class="col-md-10 col-sm-9">
-                            <input type="text" name="title" value="" id="title" class="form-control title" data-input="title" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group required">
-                    <div class="row" >
-                        <label class="col-md-2  col-sm-3 control-label" for="content">
-                            <?php echo $this->translate('txt_noi_dung') ?>
-                        </label>
-                        <div class="col-md-10 col-sm-9">
-                            <textarea name="description" rows="10" id="content" class="form-control content" data-input="content" ></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group clearfix" >
-                    <div class="pull-right">
-                        <input class="btn btn-style" type="submit" value="<?php echo $this->translate('gui_tin_nhan'); ?>" />
-                    </div>
-                </div>
-            </form>
         </div>
+
     </div>
 </div>

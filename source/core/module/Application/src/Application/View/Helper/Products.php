@@ -232,6 +232,23 @@ class Products extends App
         return $results;
     }
 
+    public function getAnswers($id, $offset = 0, $limit = 5)
+    {
+        $stri_key = '';
+        if(is_array($id)){
+            $stri_key = $this->createKeyCacheFromArray($id);
+        }else{
+            $stri_key = $id;
+        }
+        $key = md5($this->getNamspaceCached().':ProductsTable:getAnswers('.$stri_key.';'.$offset.';'.$limit.')');
+        $results = $this->view->Datas()->popIDataHashMap($key);
+        if( !$results ) {
+            $results = $this->getModelTable('ProductsTable')->getAnswers($id, $offset, $limit);
+            $this->view->Datas()->pushIDataHashMap($key, $results);
+        }
+        return $results;
+    }
+
     public function getExtensionsRequireForProduct($products_id)
     {
         $stri_key = '';

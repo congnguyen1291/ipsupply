@@ -154,7 +154,7 @@ class FrontEndController extends AbstractActionController {
             $this->addJS('//cdn.coz.vn/jquery-html5-upload/jquery.html5_upload.js');
         }
 
-        if( in_array($full_module, array('APPLICATION_PROFILE_INDEX', 'APPLICATION_CONTACT_INDEX', 'APPLICATION_PROFILE_EDIT')) ) {
+        if( in_array($full_module, array('APPLICATION_PROFILE_INDEX', 'APPLICATION_CONTACT_INDEX', 'APPLICATION_CONTACT_THANKS', 'APPLICATION_PROFILE_EDIT')) ) {
             $this->addJS('http://maps.google.com/maps/api/js?key=AIzaSyAHa_nwcjR0pfJ6w0S0SGA7MG9jMzNm_K0');
             $this->addJS('//cdn.coz.vn/gmaps/gmaps.min.js');
         }

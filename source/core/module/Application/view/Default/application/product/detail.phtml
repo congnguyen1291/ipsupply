@@ -558,9 +558,9 @@ $item_cum = array();
                                     </h3>
                                     <div class="list-faq clearfix" >
                                         <?php foreach ($faqs as $key => $faq) {
-                                            $faqcs = array();
-                                            if( !empty($faq['total_child']) ){
-                                                $faqcs = $this->Products()->getFqaChild($this->Faq()->getId($faq), 0, 5);
+                                            $answers = array();
+                                            if( !empty($faq['total_answer']) ){
+                                                $answers = $this->Products()->getAnswers($this->Faq()->getId($faq), 0, 5);
                                             }
                                         ?>
                                         <div class="item-faq clearfix" data-place="listComment" data-id="0" >
@@ -578,22 +578,19 @@ $item_cum = array();
                                                         <?php echo $this->Faq()->getContent($faq); ?>
                                                     </div>
                                                 </div>
-                                                <?php if( !empty($faqcs) ){ ?>
+                                                <?php if( !empty($answers) ){ ?>
                                                 <div class="list-faq clearfix" data-place="listComment" data-id="<?php echo $this->Faq()->getId($faq); ?>" >
-                                                    <?php foreach ($faqcs as $key => $faqc) { ?>
+                                                    <?php foreach ($answers as $key => $answer) { ?>
                                                     <div class="item-faq clearfix" >
                                                         <div class="ava-comment" >
-                                                            <a href="" title="" rel="nofollow" >
-                                                                <img src="<?php echo $this->Images()->getUrlImage($this->Faq()->getAvatar($faqc), 60, 60); ?>" class="img-fluid" >
+                                                            <a href="javascript:void(0);" title="" rel="nofollow" >
+                                                                <img src="<?php echo $this->Images()->getUrlImage($this->Faq()->getAvatar($answer), 60, 60); ?>" class="img-fluid" >
                                                             </a>
                                                         </div>
                                                         <div class="nava-comment" >
                                                             <div class="mana-comment" >
-                                                                <div class="tie-comment" >
-                                                                    <?php echo $this->Faq()->getTitle($faqc); ?>
-                                                                </div>
                                                                 <div class="mcom-comment" >
-                                                                    <?php echo $this->Faq()->getContent($faqc); ?>
+                                                                    <?php echo $this->Faq()->getContentAnswer($answer); ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -601,7 +598,7 @@ $item_cum = array();
                                                     <?php } ?>
                                                 </div>
 
-                                                <?php if( $faq['total_child'] > 5 ){ ?>
+                                                <?php if( $faq['total_answer'] > 5 ){ ?>
                                                 <div class="text-xs-center" >
                                                     <a href="javascript:void(0);" class="btn-more-comment" data-bnt="moreComment" data-id="<?php echo $this->Faq()->getId($faq); ?>"  data-page="1" data-size="5" >
                                                         <?php echo $this->translate('txt_view_more_comment') ?>

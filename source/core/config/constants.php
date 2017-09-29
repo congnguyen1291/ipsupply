@@ -93,14 +93,17 @@ if (!function_exists('mergeTranslateForCms')) {
         }catch(\Exception $ex){}
         
         try{
+            $main_langs = $results;
             if( is_file(LANG_PATH . '/'.$type.'.php') ){
                 require_once LANG_PATH . '/'.$type.'.php';
-                $main_langs = $$type;
-                foreach ($results as $key => $lang) {
-                    $main_langs[$key] = $lang;
+                if( isset($$type) ){
+                    $main_langs = $$type;
+                    foreach ($results as $key => $lang) {
+                        $main_langs[$key] = $lang;
+                    }
                 }
-                return $main_langs;
             }
+            return $main_langs;
         }catch(\Exception $ex){}
         return $results;
     };
@@ -235,6 +238,8 @@ define ('link_redirect','');
 
 define ( 'EMAIL_ADMIN_RECEIVE', 'richard@ipsupply.com.au' );
 define ( 'EMAIL_ADMIN_SEND', 'richard@ipsupply.com.au' );
+//define ( 'EMAIL_ADMIN_RECEIVE', 'net_xua@yahoo.com.vn' );
+//define ( 'EMAIL_ADMIN_SEND', 'net_xua@yahoo.com.vn' );
 
 define ( 'HOST_MAIL', 'mail.coz.vn' );
 define ( 'NAME_HOST', 'mail.coz.vn' );

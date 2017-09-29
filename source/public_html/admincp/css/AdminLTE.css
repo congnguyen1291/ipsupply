@@ -3641,7 +3641,7 @@ img.coz-ico-menu {
 }
 .sumary-dashboard .row, .lang-status .row{margin-left: 0;margin-right: 0}
 .bg-login{
-    background: url(../img/bg-login.jpg) no-repeat center center #333;
+    background: url(../img/bg-login.png) no-repeat center center #333;
     background-size: cover;
 }
 .bg-login body{

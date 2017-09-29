@@ -653,7 +653,8 @@ coz.QueryString = function () {
     return query_string;
 }
 coz.toast = function(ttl, msg, delay,x,y){
-    if(typeof x == 'undefined' ){
+    alert(ttl);
+    /*if(typeof x == 'undefined' ){
         x = 'right';
     }
     if(typeof y == 'undefined' ){
@@ -673,7 +674,7 @@ coz.toast = function(ttl, msg, delay,x,y){
             x:    x,
             y:    y
         }
-    });
+    });*/
 };
 coz.loadContryForWebsite = function(callback) {
     $.ajax({
@@ -895,6 +896,36 @@ coz.checkComment = function(el){
     if($('[data-input="noidung"]', el).val().length<=0){
         coz.toast(language.translate('txt_chua_nhap_noidung_comment'));
         $('[data-input="noidung"]', el).focus();
+        return false;
+    }
+    return true;
+};
+
+coz.checkAnythingContact = function(el){
+    var hasError = $('[data-required="true"]', el).filter(function() { return $(this).val() == ""; });
+    (function(el){
+        var listCheck = $('[data-required="true"]', el);
+        $('[data-place="error"]', el).removeClass('active');
+        listCheck.each(function(i, eli){
+            ninput = $(eli).data('input');
+            nerror = $(eli).data('error');
+            if( $.trim($(eli).val()).length<=0 ){
+                if( $('[data-place="error"][data-input="'+ninput+'"]', el).length > 0 ){
+                    $('[data-place="error"][data-input="'+ninput+'"]', el).addClass('active');
+                    $(eli).focus();
+                }else if( typeof nerror != 'undefined' 
+                    && $.trim(nerror).length >0 ){
+                    coz.toast(nerror);
+                }else{
+                    coz.toast(language.translate('txt_chua_dien_day_du_thong_tin'));
+                }
+                return false;
+            }else{
+                $('[data-place="error"][data-input="'+ninput+'"]', el).removeClass('active');
+            }
+        });
+    })(el);
+    if( hasError.length > 0 ){
         return false;
     }
     return true;
@@ -9162,11 +9193,10 @@ coz.common = {
             e.stopPropagation();
             var btsef = $(this);
             if( !$(this).hasClass('btn-loading') ){
-                anythingContact = $(this).parents('[data-form="anythingContact"]').eq(0);
-                var emptyBoxes = $('[data-required="true"]', anythingContact).filter(function() { return $(this).val() == ""; });
-                if( emptyBoxes.length <=0 ){
+                fany = $(this).parents('[data-form="anythingContact"]').eq(0);
+                if( coz.checkAnythingContact(fany) ){
                     btsef.addClass('btn-loading');
-                    var formdata = anythingContact.serialize();
+                    var formdata = fany.serialize();
                     $.ajax({
                         type: "POST",
                         dataType: "json",
@@ -9179,7 +9209,7 @@ coz.common = {
                                 data = $.parseJSON(data);
                             }
                             coz.toast(data.msg);
-                            anythingContact.find('input:not(:hidden), select, textarea').val('');
+                            fany.find('input:not(:hidden), select, textarea').val('');
                             if( data.flag == true || data.flag == 'true'){
                                 if( (data.has_payment == true || data.has_payment == 'true')
                                     && data.payments.length > 0 ){
@@ -9195,8 +9225,6 @@ coz.common = {
                             coz.toast(language.translate('txt_co_loi_xay_ra'));
                         }
                     });
-                }else{
-                    coz.toast(language.translate('txt_chua_dien_day_du_thong_tin'));
                 }
             }else{
                 coz.toast(language.translate('txt_dang_xu_ly_vui_long_doi'));

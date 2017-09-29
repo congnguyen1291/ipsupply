@@ -842,6 +842,8 @@ $vi_VN = array (
     'txt_xoa_email_newsletter' => 'Trả lời',
     'txt_ngay_tao' => 'Trả lời',
     'txt_chua_co_email' => 'Trả lời',
+    'txt_an_cau_tra_loi' => 'Trả lời',
+    'txt_hien_cau_tra_loi' => 'Trả lời',
 ); 
 return mergeTranslateForCms($vi_VN, 'vi_VN');
 

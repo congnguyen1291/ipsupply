@@ -163,14 +163,14 @@ class LanguageController extends BackEndController{
                 if(is_file(PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php')){
                     require_once PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php';
                     $array_lang = $$lang['languages_file'];
-                    //$this->data_view[$lang['languages_file']] = $array_lang;
+                    $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                     $all_keywords = array_merge($all_keywords, $array_lang);
                 }
             }else{
                 if(is_file(LANG_PATH.'/'.$lang['languages_file'].'.php')){
                     require_once LANG_PATH.'/'.$lang['languages_file'].'.php';
                     $array_lang = $$lang['languages_file'];
-                    //$this->data_view[$lang['languages_file']] = $array_lang;
+                    $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                     $all_keywords = array_merge($all_keywords, $array_lang);
                 }
             } 
@@ -197,6 +197,7 @@ class LanguageController extends BackEndController{
             $keyword = array('keyword'=>$kw);
             foreach($languages as $lang){
                 $array_lang = $$lang['languages_file'];
+                $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                 $keyword[$lang['languages_file']] = isset($array_lang[$kw]) ? $array_lang[$kw] : '';
             }
             $keywords[] = $keyword;
@@ -296,6 +297,7 @@ class LanguageController extends BackEndController{
                     if(is_file(PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php')){
                         require_once PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php';
                         $array_lang = $$lang['languages_file'];
+                        $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                         if(isset($array_lang[$word])){
                             $keyword[$lang['languages_id']] = $array_lang[$word];
                         }
@@ -304,6 +306,7 @@ class LanguageController extends BackEndController{
                     if(is_file(LANG_PATH.'/'.$lang['languages_file'].'.php')){
                         require_once LANG_PATH.'/'.$lang['languages_file'].'.php';
                         $array_lang = $$lang['languages_file'];
+                        $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                         if(isset($array_lang[$word])){
                             $keyword[$lang['languages_id']] = $array_lang[$word];
                         }
@@ -430,6 +433,7 @@ class LanguageController extends BackEndController{
                     if(is_file(PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php')){
                         require_once PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php';
                         $array_lang = $$lang['languages_file'];
+                        $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                         foreach ($array_lang as $key => $value) {
                             if(strpos(strtolower($value), strtolower($keyword))  !== false || strpos(strtolower($key), strtolower($keyword))  !== false ){
                                 if(!isset($keywords[$key])){
@@ -444,6 +448,7 @@ class LanguageController extends BackEndController{
                     if(is_file(LANG_PATH.'/'.$lang['languages_file'].'.php')){
                         require_once LANG_PATH.'/'.$lang['languages_file'].'.php';
                         $array_lang = $$lang['languages_file'];
+                        $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                         foreach ($array_lang as $key => $value) {
                             if(strpos(strtolower($value), strtolower($keyword))  !== false  || strpos(strtolower($key), strtolower($keyword))  !== false){
                                 if(!isset($keywords[$key])){
@@ -486,6 +491,7 @@ class LanguageController extends BackEndController{
                         if(is_file(PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php')){
                             require_once PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php';
                             $array_lang = $$lang['languages_file'];
+                            $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                             if(isset($array_lang[$word])){
                                 $keyword['keyword'] = $word;
                                 $keyword[$lang['languages_id']] = $array_lang[$word];
@@ -495,6 +501,7 @@ class LanguageController extends BackEndController{
                         if(is_file(LANG_PATH.'/'.$lang['languages_file'].'.php')){
                             require_once LANG_PATH.'/'.$lang['languages_file'].'.php';
                             $array_lang = $$lang['languages_file'];
+                            $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                             if(isset($array_lang[$word])){
                                 $keyword['keyword'] = $word;
                                 $keyword[$lang['languages_id']] = $array_lang[$word];
@@ -536,11 +543,13 @@ class LanguageController extends BackEndController{
                         if(is_file(PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php')){
                             require_once PATH_BASE_ROOT . '/templates/Websites/'.$name_folder.'/lang/'.$lang['languages_file'].'.php';
                             $array_lang = $$lang['languages_file'];
+                            $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                         }
                     }else{
                         if(is_file(LANG_PATH.'/'.$lang['languages_file'].'.php')){
                             require_once LANG_PATH.'/'.$lang['languages_file'].'.php';
                             $array_lang = $$lang['languages_file'];
+                            $array_lang = swapTranslateForAdmin($array_lang, $lang['languages_file']);
                         }
                     }
                 }

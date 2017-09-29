@@ -91,7 +91,8 @@ class BannerPosition implements InputFilterAwareInterface
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'image_preview'
+                'name' => 'image_preview',
+                'required' => FALSE,
             ));
             $this->inputFilter = $inputFilter;
         }

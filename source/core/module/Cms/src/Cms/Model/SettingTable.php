@@ -246,9 +246,25 @@ class SettingTable extends AppTable{
 	}
 	
 	public function softUpdateData($ids, $data){
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new Sql($adapter);
+        $update = $sql->update('fqa');
+        $update->set($data);
+        $update->where(array(
+            'id' => $ids,
+        ));
+        try{
+            $updateString = $sql->getSqlStringForSqlObject($update);
+            $adapter->query($updateString, $adapter::QUERY_MODE_EXECUTE);
+        }catch(\Exception $ex){
+            throw new \Exception($ex->getMessage());
+        }
+    }
+
+    public function updateAnswer($ids, $data){
 		$adapter = $this->tableGateway->getAdapter();
 		$sql = new Sql($adapter);
-		$update = $sql->update('fqa');
+		$update = $sql->update('answer_questions');
 		$update->set($data);
 		$update->where(array(
 			'id' => $ids,

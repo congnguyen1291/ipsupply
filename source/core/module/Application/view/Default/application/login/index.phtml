@@ -27,159 +27,228 @@
 <!-- Main Content -->
 <div class="login-content">
     <div class="container">
-        <div class="unit-login clearfix" >
-            <div class="row tb-bx" >
-                <div class="col-lg-6 tbc-bx" >
-                    <div class="row" >
-                        <div class="col-lg-11">
-                            <div class="form-style form-login">
-                                <form accept-charset='UTF-8' accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/login' id='loginform' method='post' data-form="signin" >
-                                    <h3 class="form-heading">
-                                        <?php echo $this->translate('txt_dang_nhap') ?>
-                                    </h3>
+        <div class="clearfix" id='loginform' method='post' data-form="signin"  >
+            <div class="row" >
+                <div class="col-lg-8">
+                    <h3 class="form-heading">
+                        <?php echo $this->translate('txt_dang_nhap') ?>
+                    </h3>
+                </div>
+            </div>
 
-                                    <p class="form-description text-xs-right" >
-                                        <?php echo $this->translate('txt_thong_tin_dang_nhap') ?>
-                                    </p>
+            <div class="unit-login clearfix" >
+                <div class="row tb-bx" >
+                    <div class="col-lg-8 tbc-bx" >
+                        <div class="row" >
+                            <div class="col-lg-11">
+                                <div class="form-style form-login">
+                                    <form accept-charset='UTF-8' accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/login' >
 
-                                    <div class="form-group" >
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>Email*</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <input type="email" value="" name="email" class="form-control user_name" name="user_name" placeholder="<?php echo $this->translate('txt_dia_chi_email') ?>" id="user_name" data-input="email" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <p class="form-description text-xs-right hidden-xs-up" >
+                                            <?php echo $this->translate('txt_thong_tin_dang_nhap') ?>
+                                        </p>
 
-                                    <div class="form-group" >
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>Password*</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <input type="password" value="" class="form-control password" name="password" placeholder="<?php echo $this->translate('txt_mat_khau') ?>" id="password" data-input="password"  />
+                                        <div class="form-group" >
+                                            <div class="row">
+                                                <div class="col-md-2 text-xs-right">
+                                                    <label style="padding: 5px 0 0" >Email*</label>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input type="email" value="" name="email" class="form-control user_name" name="user_name" placeholder="<?php echo $this->translate('txt_dia_chi_email') ?>" id="user_name" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_dia_chi_email'); ?>'" data-input="email" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group clearfix" >
-                                        <div class="row">
-                                            <div class="col-md-10 col-md-offset-2" >
-                                                <a href="javascript:void(0);" data-neo="silling" data-from="#loginform" data-to="#recover_customer_password" >
-                                                    <?php echo $this->translate('txt_ban_quyen_mat_khau') ?>
-                                                </a>
+                                        <div class="form-group" >
+                                            <div class="row">
+                                                <div class="col-md-2 text-xs-right">
+                                                    <label style="padding: 5px 0 0" >Password*</label>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input type="password" value="" class="form-control password" name="password" placeholder="<?php echo $this->translate('txt_mat_khau') ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_mat_khau'); ?>'" id="password" data-input="password"  />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group" >
-                                        <div class="row">
-                                            <div class="col-md-10 col-md-offset-2" >
-                                                <button class="btn btn-style-b" type="submit" >
-                                                    <?php echo $this->translate('txt_login')?>
-                                                </button>
+                                        <div class="form-group clearfix" >
+                                            <div class="row">
+                                                <div class="col-md-10 col-md-offset-2" >
+                                                    <a href="javascript:void(0);" data-neo="silling" data-from="#loginform" data-to="#recover_customer_password" >
+                                                        <?php echo $this->translate('txt_ban_quyen_mat_khau') ?>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group clearfix" >
-                                        <div class="row">
-                                            <div class="col-md-10 col-md-offset-2" >
-                                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up">
-                                                    <?php echo $this->translate('txt_tao_tai_khoan') ?>
-                                                </a>
+                                        <div class="form-group" >
+                                            <div class="row">
+                                                <div class="col-md-10 col-md-offset-2" >
+                                                    <button class="btn btn-style-b" type="submit" >
+                                                        <?php echo $this->translate('txt_login')?>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </form>
-                            </div>
+                                        <div class="form-group clearfix" >
+                                            <div class="row">
+                                                <div class="col-md-10 col-md-offset-2" >
+                                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up">
+                                                        <?php echo $this->translate('txt_tao_tai_khoan') ?>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="form-style form-login">
-                                <form accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/recover' id='recover_customer_password' method='post' data-form="recoverPassword" style="display: none;"  >
-                                    <h3 class="form-heading">
-                                        <?php echo $this->translate('txt_quyen_mat_khau')?>
-                                    </h3>
+                                    </form>
+                                </div>
 
-                                    <p class="form-description">
-                                        <?php echo $this->translate('txt_des_khoi_phuc_mat_khau')?>
-                                    </p>
-
-                                    <p>
-                                        <?php echo $this->translate('txt_nhap_thong_tin') ?>
-                                    </p>
-
-                                    <div class="form-group" >
-                                        <label>Email*</label>
-                                        <input type="email" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_dia_chi_email')?>" data-input="email" />
-                                    </div>
-
-                                    <div class="form-group clearfix" >
-                                        <a href="javascript:void(0);" data-neo="silling" data-from="#recover_customer_password" data-to="#loginform" >
-                                            <?php echo $this->translate('txt_ban_muon_dang_nhap') ?>
-                                        </a>
-                                    </div>
-
-                                    <div class="form-group" >
-                                        <button class="btn btn-style-b" type="submit" >
-                                            <?php echo $this->translate('txt_gui_thuong_tin')?>
-                                        </button>
-                                    </div>
-
-                                    <div class="form-group clearfix" >
-                                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up">
-                                            <?php echo $this->translate('txt_tao_tai_khoan') ?>
-                                        </a>
-                                    </div>
-
-                                </form>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="or-divider" >
-                    <span>
-                        <?php echo $this->translate('txt_or_login') ?>
-                    </span>
-                </div>
+                    <div class="or-divider" >
+                        <span>
+                            <?php echo $this->translate('txt_or_login') ?>
+                        </span>
+                    </div>
 
-                <div class="col-lg-6 tbc-bx" >
-                    <div class="login-social" data-place="authCart" >
-                        <div class="clearfix row" data-place="loginSocial" >
-                            <div class="clearfix col-lg-6 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0" >
-                                <?php if( $this->Websites()->hasLoginFacebook() ){ ?>
-                                <div class="form-element-payment" >
-                                    <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-facebook coz-btn-flat-block" data-btn="loginFacebook" rel="nofollow" >
-                                        <?php echo $this->translate('txt_login_face_va_mua_hang') ?>
-                                    </a>
+                    <div class="col-lg-4 tbc-bx" >
+                        <div class="login-social" data-place="authCart" >
+                            <div class="clearfix row" data-place="loginSocial" >
+                                <div class="clearfix col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0" >
+                                    <?php if( $this->Websites()->hasLoginFacebook() ){ ?>
+                                    <div class="form-element-payment" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-facebook coz-btn-flat-block" data-btn="loginFacebook" rel="nofollow" >
+                                            <?php echo $this->translate('txt_login_face_va_mua_hang') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
+
+                                    <?php if( $this->Websites()->hasLoginGoogle() ){ ?>
+                                    <div class="form-element-payment" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-google coz-btn-flat-block" id="loginGoogle" data-btn="loginGoogle" rel="nofollow" >
+                                            <?php echo $this->translate('txt_login_google_va_mua_hang') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
+
+                                    <?php if( $this->Websites()->hasLoginTwister() ){ ?>
+                                    <div class="form-element-payment" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-twister coz-btn-flat-block" data-btn="loginTwister" rel="nofollow" >
+                                            <?php echo $this->translate('txt_login_twister_va_mua_hang') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
                                 </div>
-                                <?php } ?>
-
-                                <?php if( $this->Websites()->hasLoginGoogle() ){ ?>
-                                <div class="form-element-payment" >
-                                    <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-google coz-btn-flat-block" id="loginGoogle" data-btn="loginGoogle" rel="nofollow" >
-                                        <?php echo $this->translate('txt_login_google_va_mua_hang') ?>
-                                    </a>
-                                </div>
-                                <?php } ?>
-
-                                <?php if( $this->Websites()->hasLoginTwister() ){ ?>
-                                <div class="form-element-payment" >
-                                    <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-twister coz-btn-flat-block" data-btn="loginTwister" rel="nofollow" >
-                                        <?php echo $this->translate('txt_login_twister_va_mua_hang') ?>
-                                    </a>
-                                </div>
-                                <?php } ?>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
+
+        <div class="clearfix" id='recover_customer_password' method='post' data-form="recoverPassword" style="display: none;"  >
+            <div class="row" >
+                <div class="col-lg-8">
+                    <h3 class="form-heading">
+                        <?php echo $this->translate('txt_quyen_mat_khau')?>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="unit-login clearfix" >
+                <div class="row tb-bx" >
+                    <div class="col-lg-8 tbc-bx" >
+                        <div class="row" >
+                            <div class="col-lg-11">
+                                <div class="form-style form-login">
+                                    <form accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/recover'  >
+
+                                        <p class="form-description">
+                                            <?php echo $this->translate('txt_des_khoi_phuc_mat_khau')?>
+                                        </p>
+
+                                        <p class="hidden-xs-up" >
+                                            <?php echo $this->translate('txt_nhap_thong_tin') ?>
+                                        </p>
+
+                                        <div class="form-group" >
+                                            <div class="row" >
+                                                <div class="col-md-7" >
+                                                    <label>Email*</label>
+                                                    <input type="email" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_dia_chi_email')?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_dia_chi_email'); ?>'" data-input="email" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clearfix" >
+                                            <a href="javascript:void(0);" data-neo="silling" data-from="#recover_customer_password" data-to="#loginform" >
+                                                <?php echo $this->translate('txt_ban_muon_dang_nhap') ?>
+                                            </a>
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <button class="btn btn-style-b" type="submit" >
+                                                <?php echo $this->translate('txt_gui_thuong_tin')?>
+                                            </button>
+                                        </div>
+
+                                        <div class="form-group clearfix" >
+                                            <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up">
+                                                <?php echo $this->translate('txt_tao_tai_khoan') ?>
+                                            </a>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="or-divider" >
+                        <span>
+                            <?php echo $this->translate('txt_or_login') ?>
+                        </span>
+                    </div>
+
+                    <div class="col-lg-4 tbc-bx" >
+                        <div class="login-social" data-place="authCart" >
+                            <div class="clearfix row" data-place="loginSocial" >
+                                <div class="clearfix col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0" >
+                                    <?php if( $this->Websites()->hasLoginFacebook() ){ ?>
+                                    <div class="form-element-payment" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-facebook coz-btn-flat-block" data-btn="loginFacebook" rel="nofollow" >
+                                            <?php echo $this->translate('txt_login_face_va_mua_hang') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
+
+                                    <?php if( $this->Websites()->hasLoginGoogle() ){ ?>
+                                    <div class="form-element-payment" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-google coz-btn-flat-block" id="loginGoogle" data-btn="loginGoogle" rel="nofollow" >
+                                            <?php echo $this->translate('txt_login_google_va_mua_hang') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
+
+                                    <?php if( $this->Websites()->hasLoginTwister() ){ ?>
+                                    <div class="form-element-payment" >
+                                        <a href="javascript:void(0);" class="coz-btn-flat coz-btn-flat-twister coz-btn-flat-block" data-btn="loginTwister" rel="nofollow" >
+                                            <?php echo $this->translate('txt_login_twister_va_mua_hang') ?>
+                                        </a>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <!-- End Main Content -->

@@ -9,16 +9,16 @@
                     <?php echo $this->translate('txt_let_us_know'); ?>
                 </h4>
                 <div class="form-group" >
-                    <input type="text" name="fullname" class="form-control" placeholder="<?php echo $this->translate('txt_contact_name'); ?>" data-required="true" >
+                    <input type="text" name="fullname" class="form-control" placeholder="<?php echo $this->translate('txt_contact_name'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_contact_name'); ?>'" data-required="true" >
                 </div>
                 <div class="form-group" >
-                    <input type="text" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_contact_email'); ?>" data-required="true" >
+                    <input type="text" name="email" class="form-control" placeholder="<?php echo $this->translate('txt_contact_email'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_contact_email'); ?>'" data-required="true" >
                 </div>
                 <div class="form-group" >
-                    <input type="text" name="telephone" class="form-control" placeholder="<?php echo $this->translate('txt_contact_phone'); ?>" data-required="true" >
+                    <input type="text" name="telephone" class="form-control" placeholder="<?php echo $this->translate('txt_contact_phone'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_contact_phone'); ?>'" data-required="true" >
                 </div>
                 <div class="form-group" >
-                    <textarea name="description" class="form-control" placeholder="<?php echo $this->translate('txt_item_i_looking_for'); ?>" data-required="true" ></textarea>
+                    <textarea name="description" class="form-control" placeholder="<?php echo $this->translate('txt_item_i_looking_for'); ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<?php echo $this->translate('txt_item_i_looking_for'); ?>'" data-required="true" ></textarea>
                 </div>
                 <div class="form-group" >
                     <button type="button" class="btn btn-style-c btn-style-sm" data-btn="anythingContact" >

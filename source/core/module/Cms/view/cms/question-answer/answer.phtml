@@ -104,6 +104,16 @@
                         <?php echo $answer['answer_content'] ?>
                     </div>
                     <div class="clearfix text-right" >
+                        <?php if( !empty($answer['is_published']) ){ ?>
+                        <a href="<?php echo $this->url('cms/fqa', array('action' => 'unpublished-answer', 'id' => $answer['id'])) ?>" class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_an_cau_tra_loi'); ?>" >
+                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                        </a>
+                        <?php }else{ ?>
+                        <a href="<?php echo $this->url('cms/fqa', array('action' => 'published-answer', 'id' => $answer['id'])) ?>" class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_hien_cau_tra_loi'); ?>" >
+                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        </a>
+                        <?php } ?>
+
                         <a href="<?php echo $this->url('cms/fqa', array('action' => 'delete-answer', 'id' => $answer['id'])) ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_cau_tra_loi_fqa'); ?>" data-confirm="<?php echo $this->translate('txt_ban_muon_xoa'); ?>" >
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>
