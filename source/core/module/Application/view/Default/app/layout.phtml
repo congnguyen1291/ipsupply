@@ -2,6 +2,8 @@
     $children = $this->viewModel()->getCurrent()->getChildren();
     $datas = $children[0];
     $favicon = $datas->favicon;
+    $has_header = $datas->has_header;
+    $has_footer = $datas->has_footer;
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js ie6 oldie" lang="en"><![endif]-->
@@ -35,8 +37,13 @@
                                         ->setContentview( $this )
                                         ->setDatas( $datas )
                                         ->getClassConten(); ?>" >
-            <?php   echo $this->partial('app/header', array('datas' => $datas) );
-                    echo '<div class="clearfix" data-pjax-container="Main" role="main" itemprop="mainContentOfPage" >'.$this->content. '</div>';
+            <?php
+                if( $has_header )   
+                    echo $this->partial('app/header', array('datas' => $datas) );
+
+                echo '<div class="clearfix" data-pjax-container="Main" role="main" itemprop="mainContentOfPage" >'.$this->content. '</div>';
+                
+                if( $has_footer )
                     echo $this->partial('app/footer', array('datas' => $datas) );
             ?>
         </div>

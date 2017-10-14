@@ -117,7 +117,7 @@ class ContactController extends BackEndController{
 			            $size = $files['size'];//max 20M
 			            if($size > 20971520)
 			            {
-			                @unlink($attachmentFile['tmp_name']);
+			                @unlink($files['tmp_name']);
 			            }else{
 			            	$temp = preg_split ( '/[\/\\\\]+/', $files["name"] );
 			                $filename = $temp [count ( $temp ) - 1];

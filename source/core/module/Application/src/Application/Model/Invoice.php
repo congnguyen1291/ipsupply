@@ -77,6 +77,7 @@ class Invoice  implements InputFilterAwareInterface{
     public $payment_code;
     public $pay_date;
     public $transactionid;
+    public $has_ship;
     public $is_view;
     protected $inputFilter;
 
@@ -149,6 +150,7 @@ class Invoice  implements InputFilterAwareInterface{
         $this->payment_code = (!empty($data['payment_code'])) ? $data['payment_code'] : 0;
         $this->pay_date = (!empty($data['pay_date'])) ? $data['pay_date'] : date('Y-m-d H:i:s');
         $this->transactionid = (!empty($data['transactionid'])) ? $data['transactionid'] : 0;
+        $this->has_ship = (!empty($data['has_ship'])) ? $data['has_ship'] : 0;
         $this->is_view = (!empty($data['is_view'])) ? $data['is_view'] : 0;
     }
 

@@ -1,0 +1,118 @@
+<div class="profile-breadcrumbs clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <span class="bc-dr" >
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </span>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <span itemprop="item name" >
+                            <?php echo $this->translate('txt_account_summary'); ?>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper-profile clearfix" >
+	<div class="container">
+	    <div class="row">
+			<div class="col-md-3">
+				<?php echo $this->partial('application/profile/menu', array('active' => 'index') ); ?>
+			</div>
+			<div class="col-md-9">
+	            <h1 class="title-profile">
+	            	<?php echo $this->translate('txt_edit_billing_infomation'); ?>
+	            </h1>
+	            <div class="row" >
+	            	<div class="col-md-9" >
+			            <form accept-charset='UTF-8' action="/profile/edit-billing" method='post' class="form-edit-profile-use" data-form="editProfile" >
+
+                            <div class="form-group" >
+                                <div class="row">
+                                    <div class="col-md-3 text-xs-right">
+                                        <label style="padding: 5px 0 0" >
+                                            <?php echo $this->translate('txt_email_user_profile'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" name="email" spellcheck="false" class="form-control" value="<?php echo $billing->email; ?>" data-input="email" >
+                                    </div>
+                                </div>
+                            </div>
+
+			            	<div class="form-group" >
+		                        <div class="row">
+		                            <div class="col-md-3 text-xs-right">
+		                                <label style="padding: 5px 0 0" >
+		                                    <?php echo $this->translate('txt_ten_user'); ?>
+		                                </label>
+		                            </div>
+		                            <div class="col-md-5">
+		                                <input type="text" value="<?php echo $billing->full_name; ?>" name="full_name" spellcheck="false" class="form-control" aria-invalid="true" data-input="full_name" >
+		                            </div>
+		                        </div>
+		                    </div>
+
+		                    <div class="form-group" >
+		                        <div class="row">
+		                            <div class="col-md-3 text-xs-right">
+		                                <label style="padding: 5px 0 0" >
+		                                    <?php echo $this->translate('txt_phone_user_profile'); ?>
+		                                </label>
+		                            </div>
+		                            <div class="col-md-5">
+		                                <input type="text" name="phone" spellcheck="false" class="form-control" value="<?php echo $billing->phone; ?>" data-input="phone" >
+		                            </div>
+		                        </div>
+		                    </div>
+
+                            <div class="form-group" >
+                                <div class="row">
+                                    <div class="col-md-3 text-xs-right">
+                                        <label style="padding: 5px 0 0" >
+                                            <?php echo $this->translate('txt_address_user_profile'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" name="address" spellcheck="false" class="form-control" value="<?php echo $billing->address; ?>" data-input="address" >
+                                    </div>
+                                </div>
+                            </div>
+
+		                    <div class="form-group clearfix last" >
+                                <div class="row" >
+                                    <div class="col-md-5 col-md-offset-3">
+                                        <div class="row" >
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <button class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block" type="submit" >
+                                                    <span>
+                                                    	<?php echo $this->translate('txt_save_edit_profile') ?>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+				        </form>
+			        </div>
+		        </div>
+			</div>
+		</div>
+	</div>
+</div>

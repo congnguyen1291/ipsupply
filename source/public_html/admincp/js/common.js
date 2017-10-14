@@ -3022,13 +3022,16 @@ $('input.bulid-alias').on('blur', function (e) {console.log('A');
 $('.payment_code #code').on('change', function(e){
     var code = $(this).val();
     $('.payment_atm').hide();
-    $('.payment_paypal').hide();
+    $('.paypal_web').hide();
+    $('.paypal_api').hide();
     $('.payment_onepay').hide();
 	$('.payment_vnpay').hide();
     if(code == 'ATM'){
         $('.payment_atm').show();
-    }else if(code == 'PAYPAL'){
-        $('.payment_paypal').show();
+    }else if(code == 'PAYPAL' ){
+        $('.paypal_web').show();
+    }else if( code == 'VISA' ){
+        $('.paypal_api').show();
     }else if(code == 'ONEPAY'){
         $('.payment_onepay').show();
     }else if(code == 'VNPAY'){
@@ -7040,6 +7043,29 @@ $(document).on('change', 'select#coz-language-global', function(e){
             console.log(e);
         }
     });
+});
+
+/*INVSEBAR = null;
+$(document).on('focus', '.coz-search-bar [data-input="q"], .coz-search-bar [data-input="type"]', function(){
+    clearInterval(INVSEBAR);
+    clearTimeout(INVSEBAR);
+    INVSEBAR = setTimeout(function(){
+        $('.coz-search-bar').eq(0).addClass('active');
+    }, 1000);
+});
+$(document).on('blur', '.coz-search-bar [data-input="q"], .coz-search-bar [data-input="type"]', function(){
+    clearInterval(INVSEBAR);
+    clearTimeout(INVSEBAR);
+    INVSEBAR = setTimeout(function(){
+        $('.coz-search-bar').eq(0).removeClass('active');
+    }, 1000);
+});*/
+$(document).on('click',function(e){
+    if( $(e.target).closest('.coz-search-bar').length >0 ){
+        $('.coz-search-bar').eq(0).addClass('active');
+    }else{
+        $('.coz-search-bar').eq(0).removeClass('active');
+    }
 });
 
 

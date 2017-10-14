@@ -1,0 +1,406 @@
+<script type="text/javascript" >
+	var shipping = <?php echo json_encode($shipping); ?>;
+	var billing = <?php echo json_encode($billing); ?>;
+</script>
+<div class="header-cart clearfix" >
+	<div class="container" >
+        <div class="row" >
+            <div class="col-lg-4 col-md-3 col-sm-7 col-xs-7" >
+                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>" class="logo-navi" >
+                    <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 250); ?>" alt="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
+                </a>
+            </div>
+            <div class="col-lg-8 col-md-9 col-sm-5 col-xs-5" >
+            	<div class="mini-step pull-xs-right" >
+            		<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/checkout/address" title="<?php echo $this->translate('txt_step_number_01') ?>" class="item-mini-step active" >
+            			<span class="stus-step" >
+            				<i class="fa fa-check-circle" aria-hidden="true"></i>
+            			</span>
+            			<span class="riin-step" >
+	            			<span class="iriin-step" >
+		            			<span class="name-step" >
+		            				<?php echo $this->translate('txt_step_number_01') ?>
+		            			</span>
+		            			<span class="des-step" >
+		            				<?php echo $this->translate('txt_des_step_number_01') ?>
+		            			</span>
+	            			</span>
+            			</span>
+            		</a>
+
+            		<a href="<?php echo (empty($_SESSION['PAYMENT_BUYER']) && empty($_SESSION['PAYMENT_SHIPPER']) ) ? 'javascript:void(0);' : $this->Websites()->getUrlPrefixLang().'/checkout/payment' ?>" title="<?php echo $this->translate('txt_step_number_02') ?>" class="item-mini-step" >
+            			<span class="stus-step" >
+            				<i class="fa fa-check-circle" aria-hidden="true"></i>
+            			</span>
+            			<span class="riin-step" >
+            				<span class="iriin-step" >
+		            			<span class="name-step" >
+		            				<?php echo $this->translate('txt_step_number_02') ?>
+		            			</span>
+		            			<span class="des-step" >
+		            				<?php echo $this->translate('txt_des_step_number_02') ?>
+		            			</span>
+	            			</span>
+            			</span>
+            		</a>
+
+            		<a href="javascript:void(0);" title="<?php echo $this->translate('txt_step_finish') ?>" class="item-mini-step last" >
+            			<span class="stus-step" >
+            				<i class="fa fa-check-circle" aria-hidden="true"></i>
+            			</span>
+            			<span class="riin-step" >
+            				<span class="iriin-step" >
+		            			<span class="name-step" >
+		            				<?php echo $this->translate('txt_step_finish') ?>
+		            			</span>
+	            			</span>
+            			</span>
+            		</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php 
+$carts = $this->Cart()->getCart();
+if( !empty($carts) ){ 
+	$caculator = $this->Cart()->sumSubTotalPriceInCart();
+	$numberProduct = $this->Cart()->getNumberProductInCart();
+	$countries = $this->Contries()->getContryForWebsite();
+?>
+<div class="coz-wrap-cart-address coz-wrap-payment clearfix" >
+	<form name="payment" method="post" class="clearfix" action="" enctype="multipart/form-data" data-form="addressPayment" >
+	    <div class="container" >
+	        <div class="row">
+	        	<div class="clearfix" data-place="hasContainCart" >
+
+		            <div class="col-md-8" >
+		                <div class="collap-address" >
+		                	<div class="hcollap-address clearfix" >
+		                		<?php echo $this->translate('txt_shipping_address') ?>
+		                		<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in?redirect=<?php echo urlencode($baseUrl.'/checkout/address'); ?>" title="<?php echo $this->translate('txt_login_to_save_history') ?>" class="pull-xs-right" >
+		                			<?php echo $this->translate('txt_login_to_save_history') ?>
+		                		</a>
+		                	</div>
+		                	<div class="bcollap-address clearfix" >
+		                		<div class="ship-cart clearfix" >
+		                			<div class="row" >
+		                				<div class="col-md-8 col-md-offset-2" >
+				                			<h2 class="title-ship-cart" >
+				                				<?php echo $this->translate('txt_do_you_want_pick_up') ?>
+				                			</h2>
+				                			<h3 class="title-sub-ship-cart" >
+				                				<?php echo $this->translate('txt_des_do_you_want_pick_up') ?>
+				                			</h3>
+				                			<div class="clearfix text-xs-center list-opt-ship" >
+				                				<label class="it-opt-ship" >
+				                					<input type="radio" name="trans[has_ship]" value="0" <?php echo empty($buyer['has_ship']) ? 'checked="checked"' : '' ?>  data-input="has_ship" >
+				                					<?php echo $this->translate('txt_no_ship') ?>
+				                				</label>
+				                				<label class="it-opt-ship" >
+				                					<input type="radio" name="trans[has_ship]" value="1" <?php echo !empty($buyer['has_ship']) ? 'checked="checked"' : '' ?> data-input="has_ship" >
+				                					<?php echo $this->translate('txt_has_ship') ?>
+				                				</label>
+				                			</div>
+				                			<div class="error-shiping" neo-place="errorShipping" ></div>
+				                			<div class="coz-wrap-shipng" style="display: none;" >
+				                                <h2 class="coz-title-payment" >
+				                                    <?php echo $this->translate('txt_lb_hinh_thuc_van_chuyen_payment'); ?>
+				                                </h2>
+				                                <div neo-place="Shipping" ></div>
+				                            </div>
+			                			</div>
+		                			</div>
+		                		</div>
+
+		                		<div class="info-user-buy clearfix" >
+			                		<p class="note-form" >
+			                			<?php echo $this->translate('txt_note_shipping_address') ?>
+			                		</p>
+			                		<div class="form-address-cart" >
+			                			<div class="form-group" >
+					                		<div class="row" >
+					                			<div class="col-sm-4 text-xs-right" >
+					                				<label class="lb-ctrol" >
+					                					<?php echo $this->translate('txt_lb_your_name_payment') ?>
+					                				</label>
+					                			</div>
+					                			<div class="col-sm-8" >
+					                				<input type="text" name="trans[full_name]" class="form-control" placeholder="<?php echo $this->translate('txt_lb_placeholder_ten_payment') ?>" value="<?php echo ( !empty($buyer['full_name'])) ? $buyer['full_name'] : (empty($shipping->full_name) ? $shipping->full_name : $this->User()->getFullName()) ?>" >
+					                			</div>
+					                		</div>
+				                		</div>
+
+				                		<div class="form-group" >
+					                		<div class="row" >
+					                			<div class="col-sm-4 text-xs-right" >
+					                				<label class="lb-ctrol" >
+					                					<?php echo $this->translate('txt_lb_email_payment') ?>
+					                				</label>
+					                			</div>
+					                			<div class="col-sm-8" >
+					                				<input type="text" name="trans[email]" class="form-control" value="<?php echo ( !empty($buyer['email'])) ? $buyer['email'] : (empty($shipping->email) ? $shipping->email : $this->User()->getUserName()) ?>" placeholder="<?php echo $this->translate('txt_lb_placeholder_email_payment') ?>" data-input="trans[email]" >
+					                			</div>
+					                		</div>
+				                		</div>
+
+				                		<div class="form-group" >
+					                		<div class="row" >
+					                			<div class="col-sm-4 text-xs-right" >
+					                				<label class="lb-ctrol" >
+					                					<?php echo $this->translate('txt_lb_phone_payment') ?>
+					                				</label>
+					                			</div>
+					                			<div class="col-sm-8" >
+					                				<input type="text" name="trans[phone]" class="form-control" placeholder="<?php echo $this->translate('txt_lb_placeholder_phone_payment') ?>" value="<?php echo ( !empty($buyer['phone'])) ? $buyer['phone'] : (empty($shipping->phone) ? $shipping->phone : $this->User()->getPhone()) ?>"  data-input="trans[phone]" >
+					                			</div>
+					                		</div>
+				                		</div>
+
+				                		<div class="form-group" >
+					                		<div class="row" >
+					                			<div class="col-sm-4 text-xs-right" >
+					                				<label class="lb-ctrol" >
+					                					<?php echo $this->translate('txt_lb_address_payment') ?>
+					                				</label>
+					                			</div>
+					                			<div class="col-sm-8" >
+					                				<?php if( count($countries) > 1 ){ 
+					                					$country_id = ( !empty($buyer['country_id'])) ? $buyer['country_id'] : (empty($shipping->country_id) ? $shipping->country_id : $this->User()->getCountryId());
+					                				?>
+					                				<div class="form-group" >
+					                					<select class="form-control"  name="trans[country_id]" id="country_id"  data-input="trans[country_id]" >
+			                                                <option value="" >
+			                                                    <?php echo $this->translate('chon_country');?>
+			                                                </option>
+			                                                <?php foreach ($countries as $country){ ?>
+			                                                <option value="<?php echo $country['id'] ?>" <?php echo ($country_id == $country['id']) ? 'selected' : ''; ?> >
+			                                                    <?php echo $country['title'] ?>
+			                                                </option>
+			                                                <?php } ?>
+			                                            </select>
+					                				</div>
+					                				<?php }else if( !empty($countries) ) { ?>
+		                                            <input type="hidden" id="country_id" name="trans[country_id]" value="<?php echo $countries[0]['id']; ?>" class="country_id" data-input="trans[country_id]" >
+		                                            <?php } ?>
+		                                            <input type="hidden" id="type_address_delivery" name="trans[type_address_delivery]" value="global" data-input="trans[type_address_delivery]" >
+
+					                				<div class="warp-address-payment" neo-place="addressPayment" ></div>
+
+					                			</div>
+					                		</div>
+				                		</div>
+
+
+			                		</div>
+			                	</div>
+		                	</div>
+		                </div>
+
+		                <label class="box-trigger-address-other" >
+		                	<input type="checkbox" name="ship_to_different_address" value="1" >
+		                	<?php echo $this->translate('txt_ship_different_address') ?>
+		                </label>
+		                <div class="collap-address" style="display: none;" id="ship-different-address" >
+		                	<div class="hcollap-address clearfix" >
+		                		<?php echo $this->translate('txt_billing_address') ?>
+		                	</div>
+		                	<div class="bcollap-address clearfix" >
+		                		<div class="form-address-cart" >
+		                			<div class="form-group" >
+				                		<div class="row" >
+				                			<div class="col-sm-4 text-xs-right" >
+				                				<label class="lb-ctrol" >
+				                					<?php echo $this->translate('txt_lb_your_name_payment') ?>
+				                				</label>
+				                			</div>
+				                			<div class="col-sm-8" >
+				                				<input type="text" name="ships[full_name]" class="form-control" placeholder="<?php echo $this->translate('txt_lb_placeholder_ten_payment') ?>" value="<?php echo ( !empty($shipper['ships_full_name'])) ? $shipper['ships_full_name'] : (( !empty($buyer['full_name'])) ? $buyer['full_name'] : (empty($billing->full_name) ? $billing->full_name : $this->User()->getFullName())) ?>" >
+				                			</div>
+				                		</div>
+			                		</div>
+
+			                		<div class="form-group" >
+				                		<div class="row" >
+				                			<div class="col-sm-4 text-xs-right" >
+				                				<label class="lb-ctrol" >
+				                					<?php echo $this->translate('txt_lb_address_payment') ?>
+				                				</label>
+				                			</div>
+				                			<div class="col-sm-8" >
+				                				<?php if( count($countries) > 1 ){ 
+				                					$country_id = (!empty($shipper['ships_country_id'])) ? $shipper['ships_country_id'] : (( !empty($buyer['country_id'])) ? $buyer['country_id'] : (empty($billing->country_id) ? $billing->country_id : $this->User()->getCountryId()));
+				                				?>
+				                				<div class="form-group" >
+	                                                <select class="coz-select-payment"  name="ships[country_id]" id="country_id_ships" data-input="ships[country_id]" >
+	                                                    <option value="" >
+	                                                        <?php echo $this->translate('chon_country');?>
+	                                                    </option>
+	                                                    <?php foreach ($countries as $country){ ?>
+	                                                    <option value="<?php echo $country['id'] ?>" <?php echo ($country_id == $country['id']) ? 'selected' : ''; ?> >
+	                                                        <?php echo $country['title'] ?>
+	                                                    </option>
+	                                                    <?php } ?>
+	                                                </select>
+		                                        </div>
+		                                        <?php }else if( !empty($countries) ) { ?>
+		                                        <input type="hidden" id="country_id_ships" name="ships[country_id]" value="<?php echo $countries[0]['id']; ?>" class="country_id_ships" data-input="ships[country_id]" >
+		                                        <?php } ?>
+
+		                                        <div class="warp-address-ships" neo-place="addressShip" ></div>
+				                			</div>
+				                		</div>
+			                		</div>
+
+
+		                		</div>
+		                	</div>
+		                </div>
+
+		                <div class="collap-address" style="margin-top: 20px" >
+		                	<div class="bcollap-address clearfix" >
+			                	<div class="form-address-cart clearfix" >
+			                		<div class="form-group" >
+				                		<div class="row" >
+				                			<div class="col-sm-4 text-xs-right" >
+				                				<label class="lb-ctrol" >
+				                					<?php echo $this->translate('txt_not_for_us') ?>
+				                				</label>
+				                			</div>
+				                			<div class="col-sm-8" >
+				                				<textarea name="trans[invoice_description]" id="invoice_description" class="area-payment invoice_description form-control" rows="5" data-input="trans[invoice_description]"  ><?php echo ( !empty($buyer['invoice_description'])) ? $buyer['invoice_description'] : '' ?></textarea>
+				                			</div>
+				                		</div>
+			                		</div>
+			                	</div>
+		                	</div>
+		                </div>
+
+		                <div class="row" style="margin-top: 20px" >
+		                	<div class="col-sm-8 col-sm-offset-2" >
+		                		<button class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block coz-mgb" type="submit" >
+									<span>
+										<?php echo $this->translate('txt_pay_the_order') ?>
+										<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+									</span>
+								</button>
+		                	</div>
+		                </div>
+		            </div>
+
+		            <div class="col-md-4" >
+		            	<table class="tb-order-detail" >
+		            		<tr class="tr-h" >
+		            			<td colspan="3">
+		            				<?php echo $this->translate('txt_order_detail') ?> 
+		            				<span class="small" >
+		            					<?php echo $numberProduct ?> 
+		            					<?php echo $this->translate('txt_item') ?>
+		            				</span>
+		            			</td>
+		            		</tr>
+		            		<tr class="tr-line"><td colspan="3" ></td></tr>
+		            		<tr class="tr-title" >
+		            			<td class="text-xs-center" >
+		            				<b>
+		            					<?php echo $this->translate('txt_san_pham') ?>
+		            				</b>
+		            			</td>
+		            			<td>
+		            				<b>
+		            					<?php echo $this->translate('txt_so_luong') ?>
+		            				</b>
+		            			</td>
+		            			<td>
+		            				<b>
+		            					<?php echo $this->translate('txt_gia') ?>
+		            				</b>
+		            			</td>
+		            		</tr>
+		            		<tr class="tr-line"><td colspan="3" ></td></tr>
+		            		<?php
+		                    foreach ($carts as $id => $product) {
+		                        foreach ($product['product_type'] as $product_type_id => $p) {
+		                    ?>
+		            		<tr>
+		            			<td>
+		            				<a class="pname" data-place="linkProduct"  href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+		                                <span data-place="nameProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+		                                    <?php echo $this->Products()->getName($p) ?>
+		                                </span>
+		                            </a>
+		            			</td>
+		            			<td>
+		            				<span class="pqualyti">
+		            					<?php echo $this->Cart()->getProductsQuantity($p) ?>
+		            				</span>
+		            			</td>
+		            			<td>
+		            				<span class="price">
+		            					<?php echo $this->Currency()->fomatCurrency($p['price_total']) ?>
+		            				</span>
+		            			</td>
+		            		</tr>
+		            		<?php }
+	                    	} ?>
+		            		<tr class="tr-line"><td colspan="3" ></td></tr>
+		            		<tr class="tr-title" >
+		            			<td colspan="2" >
+		            				<?php echo $this->translate('txt_subtotal') ?>
+		            				<span class="nte" >
+		            					<?php echo $this->translate('txt_vat_include');?>
+		            				</span>
+		            			</td>
+		            			<td>
+		            				<span class="price">
+		            					<?php echo $this->Currency()->fomatCurrency($caculator['price_total_orig']) ?>
+		            				</span>
+		            			</td>
+		            		</tr>
+
+		            		<tr class="tr-title" >
+	                            <td colspan="2" >
+	                                <?php echo $this->translate('txt_lb_ship_payment') ?> :
+	                            </td>
+	                            <td>
+	                                <span neo-place="valueFeeTransitions" >
+	                                    0 <?php echo $this->Currency()->getCurrencySymbol() ?>
+	                                </span>
+	                            </td>
+	                        </tr>
+
+		            		<tr class="tr-title" <?php echo ( empty($coupon) ? 'style="display:none"' : '') ?> id="coz-tr-coupon-payment" data-place="hasCoupon" >
+	                            <td colspan="2" >
+	                                <?php echo $this->translate('txt_giam_gia_payment') ?>
+	                            </td>
+	                            <td class="text-xs-right">
+	                                <span class="price" data-place="valueCoupon" >
+	                                    <?php echo $this->Coupons()->getPriceWithCurrency() ?>
+	                                </span>
+	                            </td>
+	                        </tr>
+
+		            		<tr class="tr-line"><td colspan="3" ></td></tr>
+		            		<tr class="tr-title" >
+		            			<td colspan="2" >
+		            				<b>
+		            					<?php echo $this->translate('txt_lb_total_tax_payment') ?>
+		            				</b>
+		            			</td>
+		            			<td>
+		            				<span class="price-total" >
+		            					<?php echo $this->Currency()->fomatCurrency($caculator['price_total_tax']) ?>
+		            				</span>
+		            			</td>
+		            		</tr>
+		            	</table>
+		            </div>
+
+		        </div>
+
+	        </div>
+	    </div>
+	</form>
+</div>
+<?php } ?>

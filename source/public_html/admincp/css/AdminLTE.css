@@ -489,7 +489,8 @@ body > .header .logo .icon {
 .right-side > .content-header h1 {
   margin: 0;
   font-size: 14px;
-  margin-bottom: 20px
+  margin-bottom: 20px;
+  padding: 15px 0 0 0
 }
 .right-side > .content-header h1 > small {
   font-size: 12px;
@@ -537,6 +538,9 @@ body > .header .logo .icon {
   }
   .navbar .navbar-right {
     float: right;
+  }
+  .coz-dropdown-search .dropdown-item label{
+    margin-bottom: 10px !important
   }
 }
 @media screen and (max-width: 560px) {
@@ -3485,13 +3489,77 @@ div#map_canvas {
     margin-right: 0;
     margin-left: 0;
 }
+.tip-search{
+  position: absolute;
+    bottom: 100%;
+    right: 0;
+    display: block;
+    width: 150px;
+    margin-right: 0;
+    z-index: 9999;
+    background: #eeeeee;
+    line-height: normal;
+    text-indent: 0px;
+    font-size: 12px;
+    white-space: initial;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.tip-search:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #eeeeee;
+    position: absolute;
+    top: 100%;
+    right: 10px;
+}
 .col-coz-search {
     padding-left: 0;
     padding-right: 0;
 }
 .coz-search-bar > .input-group{
   border-radius: 20px !important;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
+  background: #FFF;
+}
+.coz-dropdown-search {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    margin-top: 0;
+}
+.coz-dropdown-search .dropdown-label {
+    display: block;
+    padding: 10px 20px;
+    background: #f5f5f5;
+    font-size: 12px;
+    font-weight: bold;
+}
+.coz-dropdown-search .dropdown-item {
+    padding: 10px;
+    font-size: 11px;
+}
+.coz-dropdown-search .dropdown-item+.dropdown-item{
+  border-top: 1px solid #f5f5f5
+}
+.coz-dropdown-search .dropdown-item label{
+  margin-bottom: 0
+}
+.coz-search-bar {
+    position: relative;
+    padding: 10px;
+}
+.coz-search-bar.active {
+    background: #4285f4
+}
+.coz-search-bar.active .coz-dropdown-search{
+  display: block;
 }
 .empty {
     padding: 10px;

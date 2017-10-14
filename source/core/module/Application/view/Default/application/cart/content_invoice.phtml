@@ -314,7 +314,11 @@
                     </td>
                     <td style="padding: 10px;" >
                         <strong>
-                            <?php echo ( $transport_type == 0 ? $this->translate('txt_shipping_normal') : $this->translate('txt_shipping_fast')); ?>
+                            <?php if( empty($data['has_ship']) ){ ?>
+                                <?php echo $this->translate('txt_shipping_at_office') ?>
+                            <?php }else{ ?>
+                                <?php echo $this->translate('txt_no_shipping_at_office') ?>
+                            <?php } ?>
                         </strong>
                     </td>
                 </tr>

@@ -1016,4 +1016,36 @@ class FrontEndController extends AbstractActionController {
         return $lng;
     }
 
+    public function isImage($url){
+        $data = explode('.', $url);
+        $ext = end($data);
+        if(strpos('?', $ext)){
+            $ext = explode('?', $ext);
+            if(count($ext) > 2){
+                $ext = $ext[0];
+            }
+        }
+        $ext = strtolower($ext);
+        $image_ext = array(
+            'jpeg','png','jpg','gif','ico',
+        );
+        if(in_array($ext,$image_ext)){
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    protected function file_name($file_name) {
+        $list = explode ( '.', $file_name );
+        $dot = count ( $list );
+        unset($list [$dot - 1]);
+        return implode('-', $list);
+    }
+    
+    protected function file_extension($file_name) {
+        $list = explode ( '.', $file_name );
+        $file_ext = strtolower(end($list));
+        return $file_ext;
+    }
+
 }

@@ -22,31 +22,31 @@
                             <td align="right" >
                                 <p style="display:block;margin:0;padding:10px 0;text-align:right">
                                     <?php if( !empty($this->Websites()->getUrlFacebook()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlFacebook(); ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                    <a href="<?php echo $this->Websites()->getUrlFacebook(); ?>" target="_blank" style="text-decoration: none;display: inline-block;height: 15px;border-bottom: 1px solid #3b5998;line-height: 15px;color: #3b5998;margin: 0 2px;font-size: 12px;" >
                                         facebook
                                     </a>
                                     <?php } ?>
 
                                     <?php if( !empty($this->Websites()->getUrlTwister()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlTwister(); ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                    <a href="<?php echo $this->Websites()->getUrlTwister(); ?>" target="_blank" style="text-decoration: none;display: inline-block;height: 15px;border-bottom: 1px solid #00aced;line-height: 15px;color: #00aced;margin: 0 2px;font-size: 12px;" >
                                         twister
                                     </a>
                                     <?php } ?>
 
                                     <?php if( !empty($this->Websites()->getUrlGooglePlus()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlGooglePlus(); ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                    <a href="<?php echo $this->Websites()->getUrlGooglePlus(); ?>" target="_blank" style="text-decoration: none;display: inline-block;height: 15px;border-bottom: 1px solid #d34836;line-height: 15px;color: #d34836;margin: 0 2px;font-size: 12px;" >
                                         google+
                                     </a>
                                     <?php } ?>
 
                                     <?php if( !empty($this->Websites()->getUrlRss()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlRss() ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                    <a href="<?php echo $this->Websites()->getUrlRss() ?>" target="_blank" style="text-decoration: none;display: inline-block;height: 15px;border-bottom: 1px solid #f26522;line-height: 15px;color: #f26522;margin: 0 2px;font-size: 12px;" >
                                         rss
                                     </a>
                                     <?php } ?>
 
                                     <?php if( !empty($this->Websites()->getUrlYoutube()) ){ ?>
-                                    <a href="<?php echo $this->Websites()->getUrlYoutube() ?>" target="_blank" style="color:#FFF;text-decoration:none" >
+                                    <a href="<?php echo $this->Websites()->getUrlYoutube() ?>" target="_blank" style="text-decoration: none;display: inline-block;height: 15px;border-bottom: 1px solid #cc181e;line-height: 15px;color: #cc181e;margin: 0 2px;font-size: 12px;" >
                                         youtube
                                     </a>
                                     <?php } ?>
@@ -64,7 +64,7 @@
                         <tr>
                             <td align="center" >
                                 <a href="" style="display:block;padding:20px 0" >
-                                    <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 187, 158); ?>" width="200" alt="" title="" />
+                                    <img src="<?php echo 'http:'.$this->Images()->getUrlImage($this->Websites()->getLogo(), 187); ?>" width="200" alt="" title="" />
                                 </a>
                             </td>
                         </tr>
@@ -110,7 +110,7 @@
 
                         <tr>
                             <td >
-                                <p>
+                                <p style="display: block;padding: 10px" >
                                     <?php echo $this->translate('danh_sach_san_pham');?>
                                 </p>
                                 <table style="width: 100%;border-collapse: collapse;border: 1px solid #f5f5f5;" border="1" >
@@ -395,7 +395,11 @@
                                         </td>
                                         <td style="padding: 10px;" >
                                             <strong>
-                                                <?php echo ( $transport_type == 0 ? $this->translate('txt_shipping_normal') : $this->translate('txt_shipping_fast')); ?>
+                                                <?php if( empty($invoice->has_ship) ){ ?>
+                                                    <?php echo $this->translate('txt_shipping_at_office') ?>
+                                                <?php }else{ ?>
+                                                    <?php echo $this->translate('txt_no_shipping_at_office') ?>
+                                                <?php } ?>
                                             </strong>
                                         </td>
                                     </tr>

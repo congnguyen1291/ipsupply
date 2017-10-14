@@ -36,10 +36,10 @@
                     <div class="input-group">
                         <div class="row row-coz-search" >
                             <div class="col-xs-7 col-coz-search" >
-                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" >
+                                <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate('txt_holder_search'); ?>" value="<?php echo $q ?>" data-input="q" >
                             </div>
                             <div class="col-xs-5 col-coz-search" >
-                                <select name="type" class="form-control" >
+                                <select name="type" class="form-control" data-input="type" >
                                     <option value="0" <?php echo $type == 0 ? 'selected="selected"' : '' ?> >
                                         <?php echo $this->translate('txt_kieu_tim_kiem'); ?> : 
                                         <?php echo $this->translate('txt_theo_ten'); ?>
@@ -60,11 +60,116 @@
                             </div>
                         </div>
                         <span class="input-group-btn">
+                            <span class="tip-search" >
+                                <?php echo $this->translate('txt_nhan_vao_day_de_search'); ?>
+                            </span>
                             <button type="submit" name="seach" id="search-btn" class="btn btn-flat"  data-btn="searchAjax" >
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
                     </div>
+
+                    <div class="dropdown-menu coz-dropdown-search" >
+                        <div class="dropdown-label clearfix" >
+                            <?php echo $this->translate('txt_chon_tieu_chi_search'); ?>
+                            <a href="<?php echo $this->url('cms/product') ?>" class="pull-right" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_xoa_bo_loc'); ?>" data-btn="clearSearch" data-confirm="<?php echo $this->translate('txt_ban_muon_xoa_search'); ?>" >
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="dropdown-item" >
+                            <div class="clearfix" >
+                                <div class="row" >  
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_published" value="1" <?php echo $is_published == 1 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_hien_thi'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_published" value="0" <?php echo $is_published == 0 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_ko_hien_thi'); ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-item" >
+                            <div class="clearfix" >
+                                <div class="row" >  
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_new" value="1" <?php echo $is_new == 1 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_la_san_pham_moi'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_new" value="0" <?php echo $is_new == 0 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_ko_la_san_pham_moi'); ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-item" >
+                            <div class="clearfix" >
+                                <div class="row" >  
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_hot" value="1" <?php echo $is_hot == 1 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_la_san_pham_hot'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_hot" value="0" <?php echo $is_hot == 0 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_ko_la_san_pham_hot'); ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-item" >
+                            <div class="clearfix" >
+                                <div class="row" >  
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_goingon" value="1" <?php echo $is_goingon == 1 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_la_san_pham_sap_ve'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_goingon" value="0" <?php echo $is_goingon == 0 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_ko_la_san_pham_sap_ve'); ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-item" >
+                            <div class="clearfix" >
+                                <div class="row" >  
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_available" value="1" <?php echo $is_available == 1 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_san_pham_co_quan_ly_kho'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <label class="clearfix">
+                                            <input type="radio" name="is_available" value="0" <?php echo $is_available == 0 ? 'checked="checked"' : '' ?> > 
+                                            <?php echo $this->translate('txt_san_pham_ko_co_quan_ly_kho'); ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+px                  </div>
                 </div>
             </form>
         </div>

@@ -1,312 +1,244 @@
-<div class="coz-wrap-sucess" >
+<div class="header-cart clearfix" >
     <div class="container" >
-        <div class="wrap-cart-page clearfix" >
-            <div class="row" >
-                <div class="col-sm-12" >
-                    <h1 class="coz-title-sucess" >
-                        <?php echo $this->translate('cam_on_da_mua_sam');?>
-                        <b><?php echo $this->invoice_code ?></b>
-                    </h1>
-                    <div class="coz-content-sucess">
-                        <div class="coz-inner-title-sucess" >
-                            <p>
-                                <?php echo $this->translate('don_hang_se_duoc_xu_ly'); ?>
-                            </p>
-                            <p>
-                                <?php echo $this->translate('luu_y_de_dam_bao_cmnd'); ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12" >
-                    <h2 class="coz-title-invoice-summary" >
-                        <?php echo $this->translate('don_hang_ban_da_mua'); ?>
-                    </h2>
-                    <div class="clearfix" >
-                        <table style="width: 100%;border-collapse: collapse;border: 1px solid #f5f5f5;" border="1" >
-                            <tr>
-                                <th style="width:10px;padding: 10px;">
-                                    #
-                                </th>
-                                <th style="width:10px;padding: 10px;white-space: nowrap;" >
-                                    <?php echo $this->translate('ma_hang');?>
-                                </th>
-                                <th colspan="6" style="padding: 10px;" >
-                                    <?php echo $this->translate('ten_hang'); ?>
-                                </th>
-                                <th style="width:10px;padding: 10px;text-align: right;" colspan="2" >
-                                    <?php echo $this->translate('don_gia');?>
-                                </th>
-                                <th style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;" >
-                                    <?php echo $this->translate('so_luong');?>
-                                </th>
-                                <th style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;">
-                                    <?php echo $this->translate('thanh_tien');?>
-                                </th>
-                                <th style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;">
-                                    <?php echo $this->translate('txt_tong_tien');?>
-                                </th>
-                            </tr>
-                            <?php 
-                            $index = 1;
-                            $total_products = 0;
-                            foreach ($cart as $key => $products) {
-                                if($key == 'coupon'  || $key == 'shipping'  ) continue; 
-                                foreach($products['product_type'] as $product_type_id => $row){
-                                    $total_products += $row['price_total'];
-                                    $extentions = array_merge($row['extensions'], $row['extensions_require']);
-                            ?>
-                            <tr>
-                                <td style="padding: 10px;" <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?>  >
-                                    <?php echo $index++ ?>
-                                </td>
+        <div class="row" >
+            <div class="col-lg-4 col-md-3 col-sm-7 col-xs-7" >
+                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('title_site') ?>" class="logo-navi" >
+                    <img src="<?php echo $this->Images()->getUrlImage($this->Websites()->getLogo(), 250); ?>" alt="<?php echo $this->translate('title_site') ?>" class="img-fluid" >
+                </a>
+            </div>
+            <div class="col-lg-8 col-md-9 col-sm-5 col-xs-5" >
+                <div class="mini-step pull-xs-right" >
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/checkout/address" title="<?php echo $this->translate('txt_step_number_01') ?>" class="item-mini-step" >
+                        <span class="stus-step" >
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </span>
+                        <span class="riin-step" >
+                            <span class="iriin-step" >
+                                <span class="name-step" >
+                                    <?php echo $this->translate('txt_step_number_01') ?>
+                                </span>
+                                <span class="des-step" >
+                                    <?php echo $this->translate('txt_des_step_number_01') ?>
+                                </span>
+                            </span>
+                        </span>
+                    </a>
 
-                                <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> style="padding: 10px;white-space: nowrap;" >
-                                    <?php echo $row['code'] ?>
-                                </td>
+                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/checkout/payment" title="<?php echo $this->translate('txt_step_number_02') ?>" class="item-mini-step  prev-active" >
+                        <span class="stus-step" >
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </span>
+                        <span class="riin-step" >
+                            <span class="iriin-step" >
+                                <span class="name-step" >
+                                    <?php echo $this->translate('txt_step_number_02') ?>
+                                </span>
+                                <span class="des-step" >
+                                    <?php echo $this->translate('txt_des_step_number_02') ?>
+                                </span>
+                            </span>
+                        </span>
+                    </a>
 
-                                <td colspan="6" style="padding: 10px;" >
-                                    <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/<?php echo $row['alias'] ?>-<?php echo $row['id'] ?>" title="<?php echo $row['title']; ?>">
-                                        <?php echo $row['title'] ?>
-                                    </a>
-                                </td>
-
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" <?php echo empty($row['extensions_require']) ? 'colspan="2"' : '' ?> >
-                                    <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSaleSimple($row)) ?>
-                                </td>
-
-                                <?php if( !empty($row['extensions_require']) ){ ?>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
-                                    <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)) ?>
-                                </td>
-                                <?php } ?>
-
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
-                                    <?php echo $this->Cart()->getProductsQuantity($row) ?>
-                                </td>
-
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" <?php echo !empty($row['extensions_require']) ? 'rowspan="'.(count($row['extensions_require'])+1).'"' : '' ?> >
-                                    <?php echo $this->Currency()->fomatCurrency($this->Products()->getPriceSale($row)*$this->Cart()->getProductsQuantity($row)) ?>
-                                </td>
-
-                                <td <?php echo !empty($extentions) ? 'rowspan="'.(count($extentions)+1).'"' : '' ?> style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
-                                    <?php echo $this->Currency()->fomatCurrency($row['price_total']) ?>
-                                </td>
-
-                            </tr>
-
-                            <?php
-                            $k_ex = 0; 
-                            if( !empty($row['extensions_require']) ){
-                                foreach ($row['extensions_require'] as $k_ => $ext) {
-                                    $quality = $ext['quantity'];
-                            ?>
-                            <tr>
-                                <?php if($k_ex == 0){ ?>
-                                <td style="padding: 10px;width: 10px;white-space: nowrap;" rowspan="<?php echo count($extentions); ?>" style="padding: 10px" >
-                                    <?php echo $this->translate('txt_sp_dinh_kem');?>
-                                </td>
-                                <?php } ?>
-                                <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                    <?php echo ($k_ex+1); ?>
-                                </td>
-                                <td style="padding: 10px;" colspan="2" >
-                                    <?php echo $ext['ext_name'] ?>
-                                </td>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
-                                    <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
-                                </td>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;"><?php echo $quality; ?></td>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
-                                    <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
-                                </td>
-                            </tr>
-                            <?php $k_ex++; 
-                                }
-                            } ?>
-
-                            <?php 
-                            if( !empty($row['extensions']) ){
-                                foreach ($row['extensions'] as $k_ => $ext) {
-                                    $quality = $ext['quantity'];
-                            ?>
-                            <tr>
-                                <td style="text-align:center;padding: 10px;" >
-                                    <?php echo ($k_ex+1); ?>
-                                </td>
-                                <td style="padding: 10px;" colspan="5" >
-                                    <?php echo $ext['ext_name'] ?>
-                                </td>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
-                                    <?php echo $this->Currency()->fomatCurrency($ext['price']) ?>
-                                </td>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;" ><?php echo $quality; ?></td>
-                                <td style="width: 10px;padding: 10px;text-align: right;white-space: nowrap;color: #e10000;" >
-                                    <?php echo $this->Currency()->fomatCurrency($ext['price']*$quality) ?>
-                                </td>
-                            </tr>
-                            <?php $k_ex++; 
-                                }
-                            } ?>
-
-                            <?php }
-                            } ?>
-
-                            <tr>
-                                <td colspan="12" style="text-align:right;padding: 10px;" >
-                                    <strong><?php echo $this->translate('txt_tong_phu');?></strong>
-                                </td>
-                                <td style="padding: 10px;text-align: right;color: #e10000;" >
-                                    <strong><?php echo $this->Currency()->fomatCurrency($total_orig) ?></strong>
-                                </td>
-                            </tr>
-
-                            <?php if ( !empty($cart['coupon']) ) { ?>
-                            <tr>
-                                <td colspan="12" style="text-align:right;padding: 10px;" >
-                                    <strong><?php echo $this->translate('txt_gia_tri_giam_gia'); ?></strong>
-                                </td>
-                                <td style="padding: 10px;text-align: right;color: #e10000;" >
-                                    <strong>
-                                        <?php echo $this->Currency()->fomatCurrency($cart['coupon']['coupon_price']) ?>
-                                    </strong>
-                                </td>
-                            </tr>
-                            <?php } ?>
-
-                            <tr>
-                                <td colspan="12" style="text-align:right;padding: 10px;" >
-                                    <strong><?php echo $this->translate('txt_phi_van_chuyen'); ?></strong>
-                                </td>
-                                <td style="padding: 10px;text-align: right;color: #e10000;" >
-                                    <strong>
-                                        <?php echo $this->Currency()->fomatCurrency($fee, 'txt_mien_phi_ship') ?>
-                                    </strong>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="12" style="text-align:right;padding: 10px;" >
-                                    <strong><?php echo $this->translate('tong_cong'); ?></strong>
-                                </td>
-                                <td style="padding: 10px;text-align: right;color: #e10000;" >
-                                    <strong>
-                                        <?php echo $this->Currency()->fomatCurrency($total + $fee) ?>
-                                    </strong>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="12" style="text-align:right;padding: 10px;" >
-                                    <strong><?php echo $this->translate('tong_cong_tax'); ?></strong>
-                                </td>
-                                <td style="padding: 10px;text-align: right;color: #e10000;" >
-                                    <strong>
-                                        <?php echo $this->Currency()->fomatCurrency($total_tax + $fee) ?>
-                                    </strong>
-                                </td>
-                            </tr>
-
-                        </table>
-                    </div>
-
-                    <h3 class="coz-title-subinvoice-summary" >
-                        <?php echo $this->translate('txt_thong_tin_nguoi_mua'); ?>
-                    </h3>
-                    <table style="width: 100%;border-collapse: collapse;border: 1px solid #f5f5f5;" border="1"  >
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >    
-                                <?php echo $this->translate('khach_hang');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong><?php echo $invoice->full_name ?></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('so_dien_thoai');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong></strong><?php echo $invoice->phone ?></strong>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('txt_email');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong></strong><?php echo $invoice->email ?></strong>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('txt_dia_chi');?> 
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong>
-                                    <?php echo $this->Invoice()->getAddress($invoice); ?>
-                                </strong>
-                            </td>
-                        </tr>
-
-                    </table>
-
-                    <h3 class="coz-title-subinvoice-summary" >
-                        <?php echo $this->translate('txt_thong_tin_van_chuyen'); ?>
-                    </h3>
-                    <table style="width: 100%;border-collapse: collapse;border: 1px solid #f5f5f5;" border="1" >
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('khach_hang');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong><?php echo $invoice->ships_full_name ?></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('so_dien_thoai');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong></strong><?php echo $invoice->ships_phone ?></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('txt_email');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong><?php echo $invoice->ships_email ?></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('txt_dia_chi');?>
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong>
-                                    <?php echo $this->Invoice()->getAddress($invoice, 1); ?>
-                                </strong>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="padding: 10px;width: 10px;white-space: nowrap;" >
-                                <?php echo $this->translate('txt_kieu_van_chuyen');?> 
-                            </td>
-                            <td style="padding: 10px;" >
-                                <strong>
-                                    <?php echo ( $transport_type == 0 ? $this->translate('txt_shipping_normal') : $this->translate('txt_shipping_fast')); ?>
-                                </strong>
-                            </td>
-                        </tr>
-
-                    </table>
-
+                    <a href="javascript:void(0);" title="<?php echo $this->translate('txt_step_finish') ?>" class="item-mini-step last active" >
+                        <span class="stus-step" >
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </span>
+                        <span class="riin-step" >
+                            <span class="iriin-step" >
+                                <span class="name-step" >
+                                    <?php echo $this->translate('txt_step_finish') ?>
+                                </span>
+                            </span>
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php
+if( !empty($cart) ){ 
+    $caculator = $this->Cart()->sumSubTotalPriceFromArray($cart);
+    $numberProduct = $this->Cart()->getNumberProductInArray($cart);
+?>
+<div class="coz-wrap-cart-thanks coz-wrap-payment clearfix" >
+    <div class="clearfix" >
+        <div class="container" >
+            <div class="row">
+                <div class="clearfix" >
+
+                    <div class="col-md-8" >
+                        <div class="collap-address " >
+                            <div class="hcollap-address clearfix" >
+                                <?php echo $this->translate('txt_order_confirmation') ?>
+                            </div>
+                            <div class="bcollap-address clearfix" >
+                                <?php echo $this->Html()->mapMacroTranslate('txt_thank_for_shooping', array('{FULL_NAME}'=> $invoice->full_name) ); ?>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 20px" >
+                            <div class="col-sm-6 col-sm-offset-3" >
+                                <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block coz-mgb" >
+                                    <span><?php echo $this->translate('txt_continue_shopping') ?></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" >
+                        <table class="tb-order-detail" >
+                            <tr class="tr-h" >
+                                <td colspan="3">
+                                    <?php echo $this->translate('txt_order_detail') ?> 
+                                    <span class="small" >
+                                        <?php echo $numberProduct ?> 
+                                        <?php echo $this->translate('txt_item') ?>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="tr-line"><td colspan="3" ></td></tr>
+                            <tr class="tr-title" >
+                                <td class="text-xs-center" >
+                                    <b>
+                                        <?php echo $this->translate('txt_san_pham') ?>
+                                    </b>
+                                </td>
+                                <td>
+                                    <b>
+                                        <?php echo $this->translate('txt_so_luong') ?>
+                                    </b>
+                                </td>
+                                <td>
+                                    <b>
+                                        <?php echo $this->translate('txt_gia') ?>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr class="tr-line"><td colspan="3" ></td></tr>
+                            <?php
+                            foreach ($cart as $id => $product) {
+                                if($id == 'coupon'  || $id == 'shipping'  ) continue;
+                                foreach ($product['product_type'] as $product_type_id => $p) {
+                            ?>
+                            <tr>
+                                <td>
+                                    <a class="pname" data-place="linkProduct"  href="<?php echo $this->Products()->getLink($p) ?>" <?php echo $this->Products()->getTypeView($p) ?> title="<?php echo $this->Products()->getTitle($p) ?>" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                        <span data-place="nameProduct" data-cartid="<?php echo $id.'-'.$product_type_id ?>" data-product_id="<?php echo $id ?>" data-product_type_id="<?php echo $product_type_id ?>" >
+                                            <?php echo $this->Products()->getName($p) ?>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="pqualyti">
+                                        <?php echo $this->Cart()->getProductsQuantity($p) ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="price">
+                                        <?php echo $this->Currency()->fomatCurrency($p['price_total']) ?>
+                                    </span>
+                                </td>
+                            </tr>
+                            <?php }
+                            } ?>
+                            <tr class="tr-line"><td colspan="3" ></td></tr>
+                            <tr class="tr-title" >
+                                <td colspan="2" >
+                                    <?php echo $this->translate('txt_subtotal') ?>
+                                    <span class="nte" >
+                                        <?php echo $this->translate('txt_vat_include');?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="price">
+                                        <?php echo $this->Currency()->fomatCurrency($caculator['price_total_orig']) ?>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr class="tr-title" >
+                                <td colspan="2" >
+                                    <?php echo $this->translate('txt_lb_ship_payment') ?> :
+                                </td>
+                                <td>
+                                    <span neo-place="valueFeeTransitions" >
+                                        0 <?php echo $this->Currency()->getCurrencySymbol() ?>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr class="tr-title" <?php echo ( empty($coupon) ? 'style="display:none"' : '') ?> id="coz-tr-coupon-payment" data-place="hasCoupon" >
+                                <td colspan="2" >
+                                    <?php echo $this->translate('txt_giam_gia_payment') ?>
+                                </td>
+                                <td class="text-xs-right">
+                                    <span class="price" data-place="valueCoupon" >
+                                        <?php echo $this->Coupons()->getPriceWithCurrency() ?>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr class="tr-line"><td colspan="3" ></td></tr>
+                            <tr class="tr-title" >
+                                <td colspan="2" >
+                                    <b>
+                                        <?php echo $this->translate('txt_lb_total_tax_payment') ?>
+                                    </b>
+                                </td>
+                                <td>
+                                    <b>
+                                        <?php echo $this->Currency()->fomatCurrency($caculator['price_total_tax']) ?>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr class="tr-line"><td colspan="3" ></td></tr>
+                            <tr>
+                                <td colspan="3" >
+                                    <div class="summary-buyer-pay" >
+                                        <h2 class="title-summary-buyer-pay" >
+                                            <?php echo $this->translate('txt_shipping_address') ?>
+                                        </h2>
+                                        <div class="mi-summary-buyer-pay" >
+                                            <?php if( empty($invoice->has_ship) ){ ?>
+                                                <?php echo $this->translate('txt_shipping_at_office') ?><br />
+                                            <?php }else{ ?>
+                                                <?php echo $this->translate('txt_no_shipping_at_office') ?><br />
+                                            <?php } ?>
+
+                                            <?php echo $this->translate('txt_name_buyer') ?>
+                                            <?php echo $invoice->full_name ?><br />
+
+                                            <?php echo $this->translate('txt_phone_buyer') ?>
+                                            <?php echo $invoice->phone ?><br />
+
+                                            <?php echo $this->translate('txt_email_buyer') ?>
+                                            <?php echo $invoice->email ?>
+                                        </div>
+                                    </div>
+                                    <div class="summary-buyer-pay" >
+                                        <h2 class="title-summary-buyer-pay" >
+                                            <?php echo $this->translate('txt_billing_address') ?>
+                                        </h2>
+                                        <div class="mi-summary-buyer-pay" >
+                                            <?php echo $this->translate('txt_name_shipper') ?>
+                                            <?php echo $invoice->ships_full_name ?><br />
+                                            
+                                            <?php echo $this->translate('txt_address_shipper') ?>
+                                            <?php echo $this->Invoice()->getAddress($invoice, 1); ?><br />
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>

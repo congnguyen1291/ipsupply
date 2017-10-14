@@ -1,0 +1,150 @@
+<div class="wrap-breadcrumbs clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <span itemprop="item name" >
+                            <?php echo $this->translate('txt_sell_your_cisco') ?>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrap-sell-your-cisco" >
+    <div class="container">
+        <div class="row">                
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0" >
+                <div class="sell-your-cisco" >
+                    <div class="header-sell-your-cisco" >
+                        <span class="nav-link active" >
+                            <?php echo $this->translate('txt_sell_your_cisco') ?>
+                        </span>
+                    </div>
+                    <div class="form-sell-your-cisco" >
+                        <form accept-charset="UTF-8" method="post" enctype="multipart/form-data" class="form-horizontal" data-form="sellCisco" >
+                            <input type="hidden" name="type" value="sell_cisco" >
+                            <div class="des-sell-your-cisco" >
+                                <?php echo $this->translate('txt_des_sell_your_cisco') ?>
+                            </div>
+
+                            <div class="row" >
+                                <div class="col-md-10 col-md-offset-1" >
+                                    <div class="form-group" >
+                                        <div class="row" >
+                                            <div class="col-md-4 text-md-right">
+                                                <label class="lb-ctact">
+                                                    <?php echo $this->translate('txt_your_name_sell_cisco') ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" name="fullname" value="" class="form-control fullname" data-input="fullname" placeholder="<?php echo $this->translate('txt_placeholder_your_name_sell_cisco') ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+                                        <div class="row" >
+                                            <div class="col-md-4 text-md-right">
+                                                <label class="lb-ctact">
+                                                    <?php echo $this->translate('txt_email_sell_cisco') ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" name="email" value="" class="form-control" data-input="email" placeholder="<?php echo $this->translate('txt_placeholder_email_sell_cisco') ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+                                        <div class="row" >
+                                            <div class="col-md-4 text-md-right">
+                                                <label class="lb-ctact">
+                                                    <?php echo $this->translate('txt_phone_sell_cisco') ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" name="telephone" value="" class="form-control" data-input="telephone" placeholder="<?php echo $this->translate('txt_placeholder_phone_sell_cisco') ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+                                        <div class="row" >
+                                            <div class="col-md-4 text-md-right">
+                                                <label class="lb-ctact">
+                                                    <?php echo $this->translate('txt_address_sell_cisco') ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" name="address" value="" class="form-control" data-input="address" placeholder="<?php echo $this->translate('txt_placeholder_address_sell_cisco') ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+                                        <div class="row" >
+                                            <div class="col-md-4 text-md-right">
+                                                <label class="lb-ctact">
+                                                    <?php echo $this->translate('txt_description_sell_cisco') ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <textarea name="description" rows="10" id="title" class="form-control content" data-input="description" placeholder="<?php echo $this->translate('txt_placeholder_description_sell_cisco') ?>" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+                                        <div class="row" >
+                                            <div class="col-md-4 text-md-right">
+                                                <label class="lb-ctact">
+                                                    <?php echo $this->translate('txt_photo_sell_cisco') ?>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8 text-xs-center">
+                                                <span class="btn-upload-photo" >
+                                                    <i class="fa fa-camera" aria-hidden="true"></i>
+                                                    <?php echo $this->translate('txt_upload_your_photo') ?>
+                                                    <input type="file" name="image" accept="image/*" >
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clearfix last" >
+                                        <div class="row" >
+                                            <div class="col-md-8 col-md-offset-4">
+                                                <div class="row" >
+                                                    <div class="col-md-10 col-md-offset-1">
+                                                        <button class="coz-btn-flat coz-btn-flat-active coz-btn-flat-block" type="submit" >
+                                                            <span><?php echo $this->translate('txt_submit_sell_cisco') ?></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

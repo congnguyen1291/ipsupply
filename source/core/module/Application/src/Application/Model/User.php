@@ -19,6 +19,7 @@ class User implements InputFilterAwareInterface{
     public $password;
     public $full_name;
     public $users_alias;
+    public $gender;
     public $birthday;
     public $phone;
     public $country_id;
@@ -50,6 +51,7 @@ class User implements InputFilterAwareInterface{
         $this->password = (isset($data['password'])) ? $data['password'] : null;
         $this->full_name = (isset($data['full_name'])) ? $data['full_name'] : null;
         $this->users_alias = (isset($data['users_alias'])) ? $data['users_alias'] : null;
+        $this->gender = (isset($data['gender'])) ? $data['gender'] : 0;
         $this->birthday = (isset($data['birthday'])) ? $data['birthday'] : null;
         $this->phone = (isset($data['phone'])) ? $data['phone'] : null;
         $this->country_id = (isset($data['country_id'])) ? $data['country_id'] : 0;

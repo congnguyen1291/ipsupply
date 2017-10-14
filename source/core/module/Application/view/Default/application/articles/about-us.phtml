@@ -1,0 +1,125 @@
+<?php
+    $sliders = $this->Banners()->getBannerWithPositionAlias('ABOUTUS');
+?>
+<div class="wrap-breadcrumbs clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <meta itemprop="position" content="1" />
+                    </li>
+
+                    <li itemprop="itemListElement" itemtype="http://schema.org/ListItem"  >
+                        <span itemprop="item name" >
+                            <?php echo $this->translate('txt_about_us') ?>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrap-aboutus" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" > 
+                <div class="aboutus-box" >
+                    <h1 class="title-aboutus" >
+                        <?php echo $this->translate('txt_title_about_us') ?>
+                    </h1>
+                    <div class="body-aboutus" >
+                        <div class="row" >
+                            <div class="col-sm-8" >
+                                <?php if( !empty($sliders) ){ ?>
+                                <div class="slider-contact" >
+                                    <div class="islider-contact" >
+                                        <div class="iislider-contact" >
+                                            <?php echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
+                                        </div>
+                                        <span class="tags-team">
+                                            <span class="itags-team">
+                                                <?php echo $this->translate('txt_we_are_a_team') ?>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <div class="conten-contatus" >
+                                    <?php echo $this->translate('txt_content_about_us') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" >
+                                <div class="short-aboutus" >
+                                    <?php echo $this->translate('txt_description_about_us') ?>
+                                </div>
+
+                                <div class="report-feedback" >
+                                    <h2 class="num-txt" >
+                                        <?php echo $this->translate('txt_number_feddback_about') ?>
+                                    </h2>
+                                    <div class="des-txt" >
+                                        <?php echo $this->translate('txt_des_feddback_about') ?>
+                                    </div>
+                                </div>
+
+                                <div class="report-partner" >
+                                    <h2 class="num-txt" >
+                                        <?php echo $this->translate('txt_number_partner_about') ?>
+                                    </h2>
+                                    <div class="des-txt" >
+                                        <?php echo $this->translate('txt_des_partner_about') ?>
+                                    </div>
+                                </div>
+
+                                <div class="report-year" >
+                                    <h2 class="num-txt" >
+                                        <?php echo $this->translate('txt_number_year_about') ?>
+                                    </h2>
+                                    <div class="des-txt" >
+                                        <?php echo $this->translate('txt_des_year_about') ?>
+                                    </div>
+                                </div>
+
+                                <div class="sgin-own" >
+                                    <img src="/styles/dataimages/sign-own.png" class="img-fluid" >
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ceo-say" >
+                    <div class="row" >
+                        <div class="col-sm-12">
+                            <div class="inner-ceo-say" >
+                                <div class="img-ceo" >
+                                    <img src="/styles/dataimages/ceo.png" class="img-fluid" >
+                                </div>
+                                <div class="text-ceo-say" >
+                                    <div class="quote-say-ceo" >
+                                        <?php echo $this->translate('txt_say_ceo_about') ?>
+                                    </div>
+                                    <div class="name-ceo" >
+                                        <?php echo $this->translate('txt_name_ceo_about') ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

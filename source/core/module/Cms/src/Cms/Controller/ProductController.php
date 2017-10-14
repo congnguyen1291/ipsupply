@@ -37,7 +37,12 @@ class ProductController extends BackEndController
         $id = $this->params()->fromRoute('id', 0);
         $q = $this->params()->fromQuery('q', '');
         $type = $this->params()->fromQuery('type', 0);
-
+        $is_published = $this->params()->fromQuery('is_published', -1);
+        $is_new = $this->params()->fromQuery('is_new', -1);
+        $is_hot = $this->params()->fromQuery('is_hot', -1);
+        $is_goingon = $this->params()->fromQuery('is_goingon', -1);
+        $is_available = $this->params()->fromQuery('is_available', -1);
+        
         $params = array();
         $params['page'] = $page;
         $params['limit'] = $limit;
@@ -56,6 +61,26 @@ class ProductController extends BackEndController
             }
         }
 
+        if( $is_published == 0 || $is_published == 1 ){
+            $params['is_published'] = $is_published;
+        }
+
+        if( $is_new == 0 || $is_new == 1 ){
+            $params['is_new'] = $is_new;
+        }
+
+        if( $is_hot == 0 || $is_hot == 1 ){
+            $params['is_hot'] = $is_hot;
+        }
+
+        if( $is_goingon == 0 || $is_goingon == 1 ){
+            $params['is_goingon'] = $is_goingon;
+        }
+
+        if( $is_available == 0 || $is_available == 1 ){
+            $params['is_available'] = $is_available;
+        }
+
         $category = array();
         if( !empty($id) ){
             $params['categories_id'] = $id;
@@ -65,7 +90,7 @@ class ProductController extends BackEndController
         $total = $this->getModelTable('ProductTable')->countAll($params);
         $products = $this->getModelTable('ProductTable')->fetchAll($params);
 
-        $link = '/cms/product' .( !empty($id) ? '/index/'.$id : ''). '?page=(:num)'.( !empty($q) ? '&q='.$q.'&type='.$type : '');
+        $link = '/cms/product' .( !empty($id) ? '/index/'.$id : ''). '?page=(:num)'.(!empty($q) ? '&q='.$q : '').(!empty($type) ? '&type='.$type : '').(($is_published == 0 || $is_published == 1)  ? '&is_published='.$is_published : '').(($is_new == 0 || $is_new == 1)  ? '&is_new='.$is_new : '').(($is_hot == 0 || $is_hot == 1)  ? '&is_hot='.$is_hot : '').(($is_goingon == 0 || $is_goingon == 1)  ? '&is_goingon='.$is_goingon : '').(($is_available == 0 || $is_available == 1)  ? '&is_available='.$is_available : '');
         $paginator = new Paginator($total, $limit, $page, $link);
 
         $this->data_view['category'] = $category;
@@ -73,7 +98,12 @@ class ProductController extends BackEndController
         $this->data_view['paging'] = $paginator->toHtml();
         $this->data_view['languages'] = $languages;
         $this->data_view['q'] = $q;
-		$this->data_view['type'] = $type;
+        $this->data_view['type'] = $type;
+        $this->data_view['is_published'] = $is_published;
+        $this->data_view['is_new'] = $is_new;
+        $this->data_view['is_hot'] = $is_hot;
+        $this->data_view['is_goingon'] = $is_goingon;
+		$this->data_view['is_available'] = $is_available;
         return $this->data_view;
     }
 

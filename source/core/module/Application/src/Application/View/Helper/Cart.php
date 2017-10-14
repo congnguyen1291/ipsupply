@@ -86,7 +86,21 @@ class Cart extends App
         $number = 0;
         $carts = $this->getCart();
         if( !empty($carts) ){
+            foreach ($carts as $products_id => $product) {
+                foreach ($product['product_type'] as $product_type_id => $product_type) {
+                    $number += $product_type['quantity'];
+                }
+            }
+        }
+        return $number;
+    }
+
+    public function getNumberProductInArray($carts)
+    {
+        $number = 0;
+        if( !empty($carts) ){
 			foreach ($carts as $products_id => $product) {
+                if($products_id == 'coupon'  || $products_id == 'shipping'  ) continue;
 				foreach ($product['product_type'] as $product_type_id => $product_type) {
 					$number += $product_type['quantity'];
 				}

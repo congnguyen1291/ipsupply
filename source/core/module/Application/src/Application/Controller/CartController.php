@@ -3217,6 +3217,10 @@ class CartController extends FrontEndController
             $this->data_view['products'] = $products;
             unset($_SESSION['invoice_id']);
             unset($_SESSION['PAYMENT_ERROR']);
+            $this->has_header = FALSE;
+            $this->has_footer = TRUE;
+            $this->setDataView('has_header', $this->has_header);
+            $this->setDataView('has_footer', $this->has_footer);
             return $this->data_view;
         }
     }

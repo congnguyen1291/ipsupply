@@ -73,17 +73,17 @@ jQuery(document).ready(function(){
 		}
 	});
 	$(document).on('click', '[data-btn="downQuantity"]', function(){
-		elq = $(this).parents('[data-plugin="quantity"]').eq(0).find('input[name="quantity"]');
+		elq = $(this).parents('[data-plugin="quantity"]').eq(0).find('input[data-input="quantity"]');
 		var qlt =  elq.val();
 		qlt = coz.getInt(qlt);
-		elq.val( Math.max((qlt - 1), 1));
+		elq.val( Math.max((qlt - 1), 1)).trigger('change');
 	});
 
 	$(document).on('click', '[data-btn="upQuantity"]', function(){
-		elq = $(this).parents('[data-plugin="quantity"]').eq(0).find('input[name="quantity"]');
+		elq = $(this).parents('[data-plugin="quantity"]').eq(0).find('input[data-input="quantity"]');
 		var qlt =  elq.val();
 		qlt = coz.getInt(qlt);
-		elq.val(qlt + 1);
+		elq.val(qlt + 1).trigger('change');
 	});
 
 	$(document).on('click', '.rm-general', function(){
@@ -156,10 +156,46 @@ jQuery(document).ready(function(){
 		$('.btn-more-product-description').show();
 	});
 
+	$(document).on('shown.bs.tab', '.payment-tabs a[data-toggle="tab"]', function (e) {
+		$(e.target).find('input[name="trans[payment_id]"]').attr('checked', true);
+		$(e.target).find('input[name="trans[payment_code]"]').attr('checked', true);
+	});
+
+	$(document).on('submit', '[data-form="sellCisco"]', function(e){
+        if( $('[data-form="sellCisco"] input[name="fullname"]').val().length<=0){
+            coz.toast(language.translate('txt_chua_nhap_fullname'));
+            $('[data-form="sellCisco"] input[name="fullname"]').focus();
+            return false;
+        }
+        if( $('[data-form="sellCisco"] input[name="email"]').val().length<=0){
+            coz.toast(language.translate('txt_chua_nhap_email'));
+            $('[data-form="sellCisco"] input[name="email"]').focus();
+            return false;
+        }
+        if( $('[data-form="sellCisco"] input[name="telephone"]').val().length<=0){
+            coz.toast(language.translate('txt_chua_nhap_telephone'));
+            $('[data-form="sellCisco"] input[name="telephone"]').focus();
+            return false;
+        }
+        if( $('[data-form="sellCisco"] input[name="address"]').val().length<=0){
+            coz.toast(language.translate('txt_chua_nhap_address'));
+            $('[data-form="sellCisco"] input[name="address"]').focus();
+            return false;
+        }
+        if( $('[data-form="sellCisco"] input[name="description"]').val().length<=0){
+            coz.toast(language.translate('txt_chua_nhap_description'));
+            $('[data-form="sellCisco"] input[name="description"]').focus();
+            return false;
+        }
+        return true;
+    });
+
 	pjaxComplete();
 });
 $(window).scroll(function(){
-    fixedHeader();
+	if( $('#pinForFixed').length >0 ){
+	    fixedHeader();
+	}
 });
 $(window).resize(function(){
     if( $('header#header').hasClass('fixed') ){

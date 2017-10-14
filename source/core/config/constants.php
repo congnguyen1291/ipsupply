@@ -57,6 +57,22 @@ if (!function_exists('swapTranslateForAdmin')) {
         return $results;
     };
 }
+if (!function_exists('mergeTranslateForRootAdmin')) {
+    function mergeTranslateForRootAdmin($langs, $type='vi_VN'){
+        $results = $langs;
+        try{
+            $langsRoot = getArrayLangsRoot($type);
+            foreach ($langsRoot as $key => $lang) {
+                if( !isset($langs[$key]) ){
+                    $langs[$key] = $lang;
+                }
+            }
+            $results = $langs;
+        }catch(\Exception $ex){}
+
+        return $results;
+    };
+}
 if (!function_exists('megeTranslate')) {
     function megeTranslate($langs, $type){
         $results = $langs;

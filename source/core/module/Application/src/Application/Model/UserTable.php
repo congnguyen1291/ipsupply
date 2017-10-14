@@ -612,6 +612,9 @@ class UserTable extends AppTable {
                 'is_delete' => 0,
                 'website_id'=>$this->getWebsiteId()
             ));
+            $select->order(array(
+                'payment_method.ordering' => 'ASC'
+            ));
             try{
                 $selectString = $sql->getSqlStringForSqlObject($select);
                 $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE)->toArray();
@@ -649,6 +652,154 @@ class UserTable extends AppTable {
         }
         return $results;
 
+    }
+
+    public function getShippingAddress( $users_id ){
+        $cache = $this->getServiceLocator()->get('cache');
+        $key = md5($this->getNamspaceCached().':UserTable:getShippingAddress');
+        $results = $cache->getItem($key);
+        //if(!$results){
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select->from('log_shipping_user');
+            $select->where(array(
+                'users_id' => $users_id,
+            ));
+            try{
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $results = $results->current();
+                $cache->setItem($key,$results);
+            }catch(\Exception $ex){
+                $results = array();
+            }
+        //}
+        return $results;
+
+    }
+
+    public function getBillingAddress( $users_id ){
+        $cache = $this->getServiceLocator()->get('cache');
+        $key = md5($this->getNamspaceCached().':UserTable:getBillingAddress');
+        $results = $cache->getItem($key);
+        //if(!$results){
+            $adapter = $this->tableGateway->getAdapter();
+            $sql = new Sql($adapter);
+            $select = $sql->select();
+            $select->from('log_billing_user');
+            $select->where(array(
+                'users_id' => $users_id,
+            ));
+            try{
+                $selectString = $sql->getSqlStringForSqlObject($select);
+                $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+                $results = $results->current();
+                $cache->setItem($key,$results);
+            }catch(\Exception $ex){
+                $results = array();
+            }
+        //}
+        return $results;
+
+    }
+
+    public function updateShippingAddress( $row )
+    {
+        if( !empty($row) ){
+            $adapter = $this->tableGateway->getAdapter();
+            $adapter->getDriver()->getConnection()->beginTransaction();
+            try {
+                $sql = new Sql($adapter);
+
+                $delete = $sql->delete('log_shipping_user');
+                $delete->where(array(
+                        'users_id' => $row['users_id'],
+                        'website_id' => $row['website_id'],
+                    ));
+                $deleteString = $sql->getSqlStringForSqlObject($delete);
+                $adapter->query($deleteString, $adapter::QUERY_MODE_EXECUTE);
+
+                $insert = $sql->insert('log_shipping_user');
+                $insert->columns(array('users_id', 'website_id', 'email', 'full_name', 'phone', 'address', 'address01', 'zipcode', 'country_id', 'city', 'state', 'suburb', 'region', 'province', 'cities_id', 'districts_id', 'wards_id'));
+                $insert->values(array(
+                    'users_id' => $row['users_id'],
+                    'website_id' => $row['website_id'],
+                    'email' => $row['email'],
+                    'full_name' => $row['full_name'],
+                    'phone' => $row['phone'],
+                    'address' => $row['address'],
+                    'address01' => $row['address01'],
+                    'zipcode' => $row['zipcode'],
+                    'country_id' => $row['country_id'],
+                    'city' => $row['city'],
+                    'state' => $row['state'],
+                    'suburb' => $row['suburb'],
+                    'region' => $row['region'],
+                    'province' => $row['province'],
+                    'cities_id' => $row['cities_id'],
+                    'districts_id' => $row['districts_id'],
+                    'wards_id' => $row['wards_id'],
+                ));
+                $insertString = $sql->getSqlStringForSqlObject($insert);
+                $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
+
+                $adapter->getDriver()->getConnection()->commit();
+                return TRUE;
+            } catch (\Exception $e) {
+                $adapter->getDriver()->getConnection()->rollback();
+            }
+        }
+        return FALSE;
+    }
+
+    public function updateBillingAddress( $row )
+    {
+        if( !empty($row) ){
+            $adapter = $this->tableGateway->getAdapter();
+            $adapter->getDriver()->getConnection()->beginTransaction();
+            try {
+                $sql = new Sql($adapter);
+
+                $delete = $sql->delete('log_billing_user');
+                $delete->where(array(
+                        'users_id' => $row['users_id'],
+                        'website_id' => $row['website_id'],
+                    ));
+                $deleteString = $sql->getSqlStringForSqlObject($delete);
+                $adapter->query($deleteString, $adapter::QUERY_MODE_EXECUTE);
+
+                $insert = $sql->insert('log_billing_user');
+                $insert->columns(array('users_id', 'website_id', 'email', 'full_name', 'phone', 'address', 'address01', 'zipcode', 'country_id', 'city', 'state', 'suburb', 'region', 'province', 'cities_id', 'districts_id', 'wards_id'));
+                $insert->values(array(
+                    'users_id' => $row['users_id'],
+                    'website_id' => $row['website_id'],
+                    'email' => $row['email'],
+                    'full_name' => $row['full_name'],
+                    'phone' => $row['phone'],
+                    'address' => $row['address'],
+                    'address01' => $row['address01'],
+                    'zipcode' => $row['zipcode'],
+                    'country_id' => $row['country_id'],
+                    'city' => $row['city'],
+                    'state' => $row['state'],
+                    'suburb' => $row['suburb'],
+                    'region' => $row['region'],
+                    'province' => $row['province'],
+                    'cities_id' => $row['cities_id'],
+                    'districts_id' => $row['districts_id'],
+                    'wards_id' => $row['wards_id'],
+                ));
+                $insertString = $sql->getSqlStringForSqlObject($insert);
+                $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
+
+                $adapter->getDriver()->getConnection()->commit();
+                return TRUE;
+            } catch (\Exception $e) {
+                $adapter->getDriver()->getConnection()->rollback();
+            }
+        }
+        return FALSE;
     }
 
     public function getLanguageByCode($code){
@@ -865,14 +1016,4 @@ class UserTable extends AppTable {
         return $results->current();
 
     }
-
-    /*
-     CREATE TABLE `users_point` (
-     		`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     		`users_id` int NOT NULL,
-     		`point_rule_id` int NOT NULL,
-     		`date_create` datetime NOT NULL,
-     		`point` int NOT NULL
-     ) COMMENT='' ENGINE='MyISAM' COLLATE 'utf8_unicode_ci';
-    */
 } 

@@ -31,6 +31,27 @@ class User extends App
         return '';
     }
 
+    public function getStringGender()
+    {
+        $translator = $this->getTranslator ();
+        $gender = '';
+        if( $this->hasLogin()
+            && isset($_SESSION['MEMBER']['gender']) ){
+            return $translator->translate('txt_gender_'.$_SESSION['MEMBER']['gender']);
+        }
+        return $gender;
+    }
+
+    public function getGender()
+    {
+        $gender = 0;
+        if( $this->hasLogin()
+            && !empty($_SESSION['MEMBER']['gender']) ){
+            return $_SESSION['MEMBER']['gender'];
+        }
+        return $gender;
+    }
+
     public function getUsersId()
     {
         if( $this->hasLogin()
@@ -54,6 +75,15 @@ class User extends App
         if( $this->hasLogin()
             && !empty($_SESSION['MEMBER']['user_name']) ){
             return $_SESSION['MEMBER']['user_name'];
+        }
+        return '';
+    }
+
+    public function getEmail()
+    {
+        if( $this->hasLogin()
+            && !empty($_SESSION['MEMBER']['email']) ){
+            return $_SESSION['MEMBER']['email'];
         }
         return '';
     }
@@ -101,6 +131,36 @@ class User extends App
             return $_SESSION['MEMBER']['birthday'];
         }
         return date('Y-m-d', strtotime('-4745 days'));
+    }
+
+    public function getDayBirthday()
+    {
+        if( $this->hasLogin()
+            && !empty($_SESSION['MEMBER']['birthday']) ){
+            $date = \DateTime::createFromFormat("Y-m-d", $_SESSION['MEMBER']['birthday']);
+            return $date->format("d");
+        }
+        return 0;
+    }
+
+    public function getMonthBirthday()
+    {
+        if( $this->hasLogin()
+            && !empty($_SESSION['MEMBER']['birthday']) ){
+            $date = \DateTime::createFromFormat("Y-m-d", $_SESSION['MEMBER']['birthday']);
+            return $date->format("m");
+        }
+        return 0;
+    }
+
+    public function getYearBirthday()
+    {
+        if( $this->hasLogin()
+            && !empty($_SESSION['MEMBER']['birthday']) ){
+            $date = \DateTime::createFromFormat("Y-m-d", $_SESSION['MEMBER']['birthday']);
+            return $date->format("Y");
+        }
+        return 0;
     }
 
     public function getPhone()

@@ -125,11 +125,7 @@
                             <?php } ?>
                         </td>
                         <td class="text-center col-lim" >
-                            <?php if( $row['type'] == 'request_quote' ){ ?>
-                                <?php echo $this->translate('txt_kieu_request_quote_lien_he'); ?>
-                            <?php }else{ ?>
-                                <?php echo $this->translate('txt_kieu_contact_lien_he'); ?>
-                            <?php } ?>
+                            <?php echo $this->translate('txt_kieu_'.$row['type'].'_lien_he'); ?>
                         </td>
                         <td class="text-center col-lim" >
                             <?php echo $row['date_send'] ?>
@@ -140,6 +136,16 @@
                             <?php }else{ ?>
                                 <?php echo $row['total_relay']; ?>
                                 <?php echo $this->translate('txt_cau_tra_loi_lien_he'); ?>
+                            <?php } ?>
+
+                            <?php if( !empty($row['file']) ){ ?>
+                                <span class="coz-color-ative" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_co_file_dinh_kem'); ?>" >
+                                    <i class="fa fa-link" aria-hidden="true"></i>
+                                </span>
+                            <?php }else{ ?>
+                                <span class="coz-color-disable" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('txt_ko_co_file_dinh_kem'); ?>" >
+                                    <i class="fa fa-link" aria-hidden="true"></i>
+                                </span>
                             <?php } ?>
 
                             <?php if( !empty($row['readed']) ){ ?>

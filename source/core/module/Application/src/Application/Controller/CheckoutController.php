@@ -44,8 +44,243 @@ class CheckoutController extends FrontEndController
         $calculate = $helper->sumSubTotalPriceInCart();
         $price_total = $calculate['price_total'];
         $price_total_old = $calculate['price_total_old'];
+
+        $this->has_header = FALSE;
+        $this->has_footer = TRUE;
+        $this->setDataView('has_header', $this->has_header);
+        $this->setDataView('has_footer', $this->has_footer);
         $this->data_view['price_total'] = $price_total;
         $this->data_view['price_total_old'] = $price_total_old;
+        return $this->data_view;
+    }
+
+    public function addressAction()
+    {
+        if ( $this->getVersionCart() != $this->version ) {
+            return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+                'action' => 'auth'
+            ));
+        }
+
+        $script = $this->getServiceLocator()->get('viewhelpermanager')->get('inlineScript');
+        $translator = $this->getServiceLocator()->get('translator');
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->headTitle('Cart');
+        $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
+        $hPUser = $this->getServiceLocator()->get('viewhelpermanager')->get('User');
+
+        $cart = $cartHelper->getCart();
+        if( empty($cart) ){
+            return $this->redirect()->toRoute($this->getUrlRouterLang().'home');
+        }
+
+        $error = array();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $trans = $request->getPost("trans");
+            $ships = $request->getPost("ships");
+            if ( empty($trans['full_name']) ) {
+                $error['full_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+            }
+            if ( empty($trans['email']) || !filter_var($trans['email'], FILTER_VALIDATE_EMAIL)) {
+                $error['email'] = $translator->translate('txt_email_khong_hop_le');
+            }
+            if ( empty($trans['phone']) || !is_numeric($trans['phone'])) {
+                $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
+            }
+            if ( empty($trans['country_id']) ) {
+                $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+            }else{
+                $country = $this->getModelTable('CountryTable')->getOne($trans['country_id']);
+                $err = $this->validateInputContryPayment($trans, $country);
+                $error = array_merge($error, $err);
+            }
+            $ship_to_different_address = 0;
+            if ( !empty($trans['ship_to_different_address']) ) {
+                $ship_to_different_address = 1;
+                if ( empty($ships['full_name']) ) {
+                    $error['full_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+                }
+                if ( empty($ships['country_id']) ) {
+                    $error['ship_country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    $country = $this->getModelTable('CountryTable')->getOne($ships['country_id']);
+                    $err = $this->validateInputContryPayment($ships, $country);
+                    $error = array_merge($error, $err);
+                }
+            }
+
+            if ( !empty($trans['has_ship']) && 
+                (empty($trans['shipping_id']) && $trans['shipping_id'] != 0) ) {
+                $error['shipping_id'] = $translator->translate('txt_chua_chon_transportation');
+            }
+
+            $buyer = array();
+            $buyer['has_ship'] = empty($trans['has_ship']) ? 0 : $trans['has_ship'];
+            $buyer['full_name'] = $trans['full_name'];
+            $buyer['phone'] = $trans['phone'];
+            $buyer['email'] = $trans['email'];
+            $buyer['type_address_delivery'] = $trans['type_address_delivery'];
+            $buyer['country_id'] = $trans['country_id'];
+            $buyer['address'] = $trans['address'];
+            $buyer['address01'] = empty($trans['address01']) ? '' : $trans['address01'];
+            $buyer['city'] = empty($trans['city']) ? '' : $trans['city'];
+            $buyer['state'] = empty($trans['state']) ? '' : $trans['state'];
+            $buyer['suburb'] = empty($trans['suburb']) ? '' : $trans['suburb'];
+            $buyer['region'] = empty($trans['region']) ? '' : $trans['region'];
+            $buyer['province'] = empty($trans['province']) ? '' : $trans['province'];
+            $buyer['zipcode'] = empty($trans['zipcode']) ? '' : $trans['zipcode'];
+            $buyer['cities_id'] = empty($trans['cities_id']) ? 0 : $trans['cities_id'];
+            $buyer['districts_id'] = empty($trans['districts_id']) ? 0 : $trans['districts_id'];
+            $buyer['wards_id'] = empty($trans['wards_id']) ? 0 : $trans['wards_id'];
+            $buyer['users_id'] = (!empty($_SESSION['MEMBER']['users_id'])) ? $_SESSION['MEMBER']['users_id'] : NULL;
+            $buyer['invoice_description'] = empty($trans['invoice_description']) ? '' : strip_tags($trans['invoice_description']);
+
+            $shipper = array();
+            if ( !empty($ship_to_different_address) ) {
+                $ship_to_different_address = 1;
+                $shipper = array();
+                $shipper['ships_full_name'] = $ships['full_name'];
+                $shipper['ships_email'] = $trans['email'];
+                $shipper['ships_phone'] = $trans['phone'];
+                $shipper['ships_country_id'] = $ships['country_id'];
+                $shipper['ships_address'] = $ships['address'];
+                $shipper['ships_address01'] = empty($ships['address01']) ? '' : $ships['address01'];
+                $shipper['ships_city'] = empty($ships['city']) ? '' : $ships['city'];
+                $shipper['ships_state'] = empty($ships['state']) ? '' : $ships['state'];
+                $shipper['ships_suburb'] = empty($ships['suburb']) ? '' : $ships['suburb'];
+                $shipper['ships_region'] = empty($ships['region']) ? '' : $ships['region'];
+                $shipper['ships_province'] = empty($ships['province']) ? '' : $ships['province'];
+                $shipper['ships_zipcode'] = empty($ships['zipcode']) ? '' : $ships['zipcode'];
+                $shipper['ships_cities_id'] = empty($ships['cities_id']) ? 0 : $ships['cities_id'];
+                $shipper['ships_districts_id'] = empty($ships['districts_id']) ? 0 : $ships['districts_id'];
+                $shipper['ships_wards_id'] = empty($ships['wards_id']) ? 0 : $ships['wards_id'];
+            }else{
+                $shipper = array();
+                $shipper['ships_full_name'] = $trans['full_name'];
+                $shipper['ships_email'] = $trans['email'];
+                $shipper['ships_phone'] = $trans['phone'];
+                $shipper['ships_country_id'] = $trans['country_id'];
+                $shipper['ships_address'] = $trans['address'];
+                $shipper['ships_address01'] = empty($trans['address01']) ? '' : $trans['address01'];
+                $shipper['ships_city'] = empty($trans['city']) ? '' : $trans['city'];
+                $shipper['ships_state'] = empty($trans['state']) ? '' : $trans['state'];
+                $shipper['ships_suburb'] = empty($trans['suburb']) ? '' : $trans['suburb'];
+                $shipper['ships_region'] = empty($trans['region']) ? '' : $trans['region'];
+                $shipper['ships_province'] = empty($trans['province']) ? '' : $trans['province'];
+                $shipper['ships_zipcode'] = empty($trans['zipcode']) ? '' : $trans['zipcode'];
+                $shipper['ships_cities_id'] = empty($trans['cities_id']) ? 0 : $trans['cities_id'];
+                $shipper['ships_districts_id'] = empty($trans['districts_id']) ? 0 : $trans['districts_id'];
+                $shipper['ships_wards_id'] = empty($trans['wards_id']) ? 0 : $trans['wards_id'];
+            }
+
+            $shipping_id = 0;
+            $transport_type = 0;
+            if ( !empty($trans['has_ship']) ) {
+                $country_id = 0;
+                if( !empty($shipper['ships_country_id']) ){
+                    $country_id = $shipper['ships_country_id'];
+                }
+                $cities_id = 0;
+                $districts_id = 0;
+                if( !empty($trans['transport_type']) ){
+                    $transport_type = $trans['transport_type'];
+                }
+                if( !empty($trans['shipping_id']) ){
+                    $shipping_id = $trans['shipping_id'];
+                }
+
+                $country = $this->getModelTable('CountryTable')->getOne($country_id);
+                if( empty($country) ){
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    if( $country->country_type == 2 ){
+                        $cities_id = $shipper['ships_state'];
+                    }else if( $country->country_type == 5 ){
+                        $cities_id = $shipper['ships_region'];
+                    }else if( $country->country_type == 6 ){
+                        $cities_id = $shipper['ships_province'];
+                    }else if( $country->country_type == 7 ){
+                        $cities_id = $shipper['ships_cities_id'];
+                        $districts_id = $shipper['ships_districts_id'];
+                    }
+                }
+
+                $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
+                if( empty($cities) ){
+                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
+                }else{
+                    $city = $this->getModelTable('CitiesTable')->getCityOfCountry($cities_id, $country_id);
+                    if( !empty($city) ){
+                        $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
+                    }
+                }
+
+                if( !empty($shipping) ){
+                    if( empty($cities) ){
+                        $fee = $this->getFeeShip($shipping, $transport_type);
+                        if( empty($fee) ){
+                            $is_free = TRUE;
+                        }
+                    }else{
+                        if( !($shipping['no_shipping'] == 1 
+                            && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                            && $this->isAvaiableShip($shipping) ){
+                            $isFreeShip = $this->isFreeShip($shipping);
+                            $fee = $this->getFeeShip($shipping, $transport_type);
+                            if( empty($fee) ){
+                                $is_free = TRUE;
+                            }
+                        }else{
+                            $no_shipping = TRUE;
+                            $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                        }
+                    }
+                }else{
+                    $lsShips = $this->getModelTable('ShippingTable')->getShippings();
+                    if( empty($lsShips) ){
+                        $is_free = TRUE;
+                    }else{
+                        $no_shipping = TRUE;
+                        $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                    }
+                }
+            }
+
+            $member = isset($_SESSION['MEMBER']) ? $_SESSION['MEMBER'] : array();
+            
+            if( empty($error) ){
+                $buyer['shipping_id'] = $shipping_id;
+                $buyer['transport_type'] = $transport_type;
+                $buyer['ship_to_different_address'] = $ship_to_different_address;
+                $_SESSION['PAYMENT_BUYER'] = $buyer;
+                $_SESSION['PAYMENT_SHIPPER'] = $shipper;
+                return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array(
+                    'action' => 'payment'
+                ));
+            }
+        }
+        $shipper = (!empty($_SESSION['PAYMENT_SHIPPER']) ? $_SESSION['PAYMENT_SHIPPER'] : array());
+        $buyer = (!empty($_SESSION['PAYMENT_BUYER']) ? $_SESSION['PAYMENT_BUYER'] : array());
+
+        $shipping = array();
+        $billing = array();
+        if( $hPUser->hasLogin() ){
+            $member = $hPUser->getMember();
+            $shipping = $this->getModelTable('UserTable')->getShippingAddress($member['users_id']);
+            $billing = $this->getModelTable('UserTable')->getBillingAddress($member['users_id']);
+        }
+
+        $this->data_view['shipping'] = $shipping;
+        $this->data_view['billing'] = $billing;
+
+        $this->has_header = FALSE;
+        $this->has_footer = TRUE;
+        $this->setDataView('has_header', $this->has_header);
+        $this->setDataView('has_footer', $this->has_footer);
+        $this->data_view['error'] = $error;
+        $this->data_view['buyer'] = $buyer;
+        $this->data_view['shipper'] = $shipper;
         return $this->data_view;
     }
 
@@ -553,22 +788,19 @@ class CheckoutController extends FrontEndController
             unset($_SESSION['PAYMENT_BUYER']);
             unset($_SESSION['PAYMENT_SHIPPER']);
             return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array(
-                'action' => 'process'
+                'action' => 'address'
             ));
         }
         $buyer = $_SESSION['PAYMENT_BUYER'];
         $shipper = $_SESSION['PAYMENT_SHIPPER'];
-        $invoice = array_merge( $buyer, $shipper);
         $error = array();
         $request = $this->getRequest();
         if ($request->isPost()) {
             $trans = $request->getPost("trans");
             $order = $request->getPost("order");
-            if ( empty($buyer['first_name']) ) {
-                $error['first_name'] = $translator->translate('txt_ban_phai_nhap_ten');
-            }
-            if ( empty($buyer['last_name']) ) {
-                $error['last_name'] = $translator->translate('txt_ban_phai_nhap_ten');
+            $visa = $request->getPost("visa");
+            if ( empty($buyer['full_name']) ) {
+                $error['full_name'] = $translator->translate('txt_ban_phai_nhap_ten');
             }
             if ( empty($buyer['email']) || !filter_var($buyer['email'], FILTER_VALIDATE_EMAIL)) {
                 $error['email'] = $translator->translate('txt_email_khong_hop_le');
@@ -585,17 +817,8 @@ class CheckoutController extends FrontEndController
             }
 
             if ( !empty($buyer['ship_to_different_address']) && $buyer['ship_to_different_address'] == 1){
-                if ( empty($shipper['ships_first_name']) ) {
-                    $error['first_name'] = $translator->translate('txt_ban_phai_nhap_ten');
-                }
-                if ( empty($shipper['ships_last_name']) ) {
-                    $error['last_name'] = $translator->translate('txt_ban_phai_nhap_ten');
-                }
-                if ( empty($shipper['ships_email']) || !filter_var($shipper['ships_email'], FILTER_VALIDATE_EMAIL)) {
-                    $error['email'] = $translator->translate('txt_email_khong_hop_le');
-                }
-                if ( empty($shipper['ships_phone']) || !is_numeric($shipper['ships_phone'])) {
-                    $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
+                if ( empty($shipper['ships_full_name']) ) {
+                    $error['full_name'] = $translator->translate('txt_ban_phai_nhap_ten');
                 }
                 if ( empty($shipper['ships_country_id']) ) {
                     $error['country_id'] = $translator->translate('txt_chua_chon_contry');
@@ -605,90 +828,107 @@ class CheckoutController extends FrontEndController
                     $error = array_merge($error, $err);
                 }
             }
-            if ( empty($buyer['shipping_id']) && $buyer['shipping_id'] != 0 ) {
+
+            if ( !empty($buyer['has_ship']) && 
+                (empty($buyer['shipping_id']) && $buyer['shipping_id'] != 0) ) {
                 $error['shipping_id'] = $translator->translate('txt_chua_chon_transportation');
             }
-            if ( empty($buyer['payment_id']) ) {
-                $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
-            }
 
-            $payment = $this->getModelTable('PaymentTable')->getPayment($buyer['payment_id']);
-            if ( empty($payment) ) {
+            $payment_id = 0;
+            if ( empty($trans['payment_id']) ) {
                 $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
             }else{
-                if( $payment->code == 'ONEPAY' 
-                    && empty($payment->is_local)
-                    && (    empty($buyer['avs_street01']) || empty($buyer['avs_city']) 
-                            || empty($buyer['avs_stateprov']) || empty($buyer['avs_postCode']) || empty($buyer['avs_country'])) ){
-                    $error['payment_id'] = $translator->translate('txt_chua_nhap_day_du_thong_tin_payment_method');
+                $buyer['payment_id'] = $trans['payment_id'];
+                $payment = $this->getModelTable('PaymentTable')->getPayment($buyer['payment_id']);
+                if ( empty($payment) ) {
+                    $error['payment_id'] = $translator->translate('txt_chua_chon_payment_method');
+                }else{
+                    if( $payment->code == 'ONEPAY' 
+                        && empty($payment->is_local)
+                        && (    empty($buyer['avs_street01']) || empty($buyer['avs_city']) 
+                                || empty($buyer['avs_stateprov']) || empty($buyer['avs_postCode']) || empty($buyer['avs_country'])) ){
+                        $error['payment_id'] = $translator->translate('txt_chua_nhap_day_du_thong_tin_payment_method');
+                    }else if(   $payment->code == 'VISA' 
+                                && empty($payment->is_local)
+                                && ( empty($visa['name']) || empty($visa['number']) || empty($visa['month']) 
+                            || empty($visa['year']) || empty($visa['ccv']) ) ){
+                        $error['payment_id'] = $translator->translate('txt_chua_nhap_day_du_thong_tin_payment_method');
+                    }
+                    $payment_id = $payment->payment_id;
                 }
             }
 
-            $payment_id = $payment->payment_id;
             $no_shipping = FALSE;
             $shipping = array();
             $is_free = FALSE;
             $fee = 0;
-
-            $country_id = $shipper['ships_country_id'];
+            $transport_type = 0;
+            $shipping_id = 0;
+            $country_id = 0;
             $cities_id = 0;
             $districts_id = 0;
-            $transport_type = $buyer['transport_type'];
-            $shipping_id = $buyer['shipping_id'];
 
-            $country = $this->getModelTable('CountryTable')->getOne($country_id);
-            if( empty($country) ){
-                $error['country_id'] = $translator->translate('txt_chua_chon_contry');
-            }else{
-                if( $country->country_type == 2 ){
-                    $cities_id = $shipper['ships_state'];
-                }else if( $country->country_type == 5 ){
-                    $cities_id = $shipper['ships_region'];
-                }else if( $country->country_type == 6 ){
-                    $cities_id = $shipper['ships_province'];
-                }else if( $country->country_type == 7 ){
-                    $cities_id = $shipper['ships_cities_id'];
-                    $districts_id = $shipper['ships_districts_id'];
-                }
-            }
+            if( !empty($buyer['has_ship']) ){
+                $country_id = $shipper['ships_country_id'];
+                $cities_id = 0;
+                $districts_id = 0;
+                $transport_type = $buyer['transport_type'];
+                $shipping_id = $buyer['shipping_id'];
 
-            $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
-            if( empty($cities) ){
-                $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
-            }else{
-                $city = $this->getModelTable('CitiesTable')->getCityOfCountry($cities_id, $country_id);
-                if( !empty($city) ){
-                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
-                }
-            }
-
-            if( !empty($shipping) ){
-                if( empty($cities) ){
-                    $fee = $this->getFeeShip($shipping, $transport_type);
-                    if( empty($fee) ){
-                        $is_free = TRUE;
-                    }
+                $country = $this->getModelTable('CountryTable')->getOne($country_id);
+                if( empty($country) ){
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
                 }else{
-                    if( !($shipping['no_shipping'] == 1 
-                        && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
-                        && $this->isAvaiableShip($shipping) ){
-                        $isFreeShip = $this->isFreeShip($shipping);
+                    if( $country->country_type == 2 ){
+                        $cities_id = $shipper['ships_state'];
+                    }else if( $country->country_type == 5 ){
+                        $cities_id = $shipper['ships_region'];
+                    }else if( $country->country_type == 6 ){
+                        $cities_id = $shipper['ships_province'];
+                    }else if( $country->country_type == 7 ){
+                        $cities_id = $shipper['ships_cities_id'];
+                        $districts_id = $shipper['ships_districts_id'];
+                    }
+                }
+
+                $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
+                if( empty($cities) ){
+                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
+                }else{
+                    $city = $this->getModelTable('CitiesTable')->getCityOfCountry($cities_id, $country_id);
+                    if( !empty($city) ){
+                        $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
+                    }
+                }
+
+                if( !empty($shipping) ){
+                    if( empty($cities) ){
                         $fee = $this->getFeeShip($shipping, $transport_type);
                         if( empty($fee) ){
                             $is_free = TRUE;
                         }
                     }else{
+                        if( !($shipping['no_shipping'] == 1 
+                            && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                            && $this->isAvaiableShip($shipping) ){
+                            $isFreeShip = $this->isFreeShip($shipping);
+                            $fee = $this->getFeeShip($shipping, $transport_type);
+                            if( empty($fee) ){
+                                $is_free = TRUE;
+                            }
+                        }else{
+                            $no_shipping = TRUE;
+                            $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
+                        }
+                    }
+                }else{
+                    $lsShips = $this->getModelTable('ShippingTable')->getShippings();
+                    if( empty($lsShips) ){
+                        $is_free = TRUE;
+                    }else{
                         $no_shipping = TRUE;
                         $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
                     }
-                }
-            }else{
-                $lsShips = $this->getModelTable('ShippingTable')->getShippings();
-                if( empty($lsShips) ){
-                    $is_free = TRUE;
-                }else{
-                    $no_shipping = TRUE;
-                    $error['shipping_id'] = $translator->translate('txt_khong_van_chuyen');
                 }
             }
             
@@ -701,21 +941,9 @@ class CheckoutController extends FrontEndController
             }
 
             $member = $hPUser->getMember();
-            $step_content = array(
-                    'datas' => $trans,
-                    'error' => $error
-                );
-            $rowLog = array(
-                    'session_id' => session_id(),
-                    'users_id' => (!empty($member['users_id']) ? $member['users_id'] : 0),
-                    'email' => (!empty($buyer['email']) ? $buyer['email'] : ''),
-                    'step_sign' => 4,
-                    'step_name' => 'payment',
-                    'step_content' => json_encode($step_content)
-                );
-            $this->getModelTable('InvoiceTable')->saveLog($rowLog);
             
             if( empty($error) ){
+                $invoice = array_merge( $buyer, $shipper);
                 $extensions = array();
                 $dataCart = $_SESSION['cart'];
                 unset($dataCart['shipping']);
@@ -807,7 +1035,6 @@ class CheckoutController extends FrontEndController
                 $html = $viewRender->render($viewModel);
                 
                 $invoice['invoice_title'] = $this->website['website_order_code_prefix'] . strtotime(date("Y-m-d H:i:s")) . $this->website['website_order_code_suffix'];
-                $invoice['invoice_description'] = empty($trans['invoice_description']) ? '' : strip_tags($trans['invoice_description']);
                 $invoice['is_published'] = 1;
                 $invoice['is_delete'] = 0;
                 $invoice['payment_id'] = $payment_id;
@@ -852,14 +1079,93 @@ class CheckoutController extends FrontEndController
                 if( !empty($shipping) ){
                     $shipping['shipping_fee'] = $fee;
                 }
+                $id = 0;
                 try{
-                    $id = $this->getModelTable('InvoiceTable')->saveInvoice($invoice, $dataCart, $shipping, $extensions);
-                    session_regenerate_id();
+                    if( $payment->code == 'VISA' ){
+                        $paypal = new Paypal( );
+                        $is_sandbox = TRUE;
+                        if( $payment->is_sandbox == 0 ){
+                            $is_sandbox = FALSE;
+                        }
+                        $paypal->setIsSandbox( $is_sandbox );
+                        $creditCard = array(
+                                'username' => $payment->api_username,
+                                'password' => $payment->api_password,
+                                'signature' => $payment->api_signature,
+                                'creditcardtype' => 'Visa',//Visa, MasterCard, và Discover, American Express
+                                'acct' => $visa['number'],
+                                'expdate' => $visa['month'].''.$visa['year'],
+                                'cvv' => $visa['ccv'],
+                                'amount' => $total_tax,
+                                'currency' => $currencyHelper->getCurrencySymbol()
+                            );
+                        $query_string = $paypal->getQueryStringCreditCardPaypal($creditCard);
+                        $resultCCD = $paypal->processCreditCardPaypal($query_string);
+                        $resultCCD = $paypal->NVPToArray($resultCCD);
+                        if( !empty($resultCCD) 
+                            && !empty($resultCCD['ACK'])
+                            && strtolower($resultCCD['ACK']) == 'success' ){
+                            $invoice['payment'] = 'paid';
+                            $id = $this->getModelTable('InvoiceTable')->saveInvoice($invoice, $dataCart, $shipping, $extensions);
+                            session_regenerate_id();
+                        }else{
+                            return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array('action' => 'payment'));
+                        }
+                    }else{
+                        $id = $this->getModelTable('InvoiceTable')->saveInvoice($invoice, $dataCart, $shipping, $extensions);
+                        session_regenerate_id();
+                    }
+                    if( empty($id) ){
+                        return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array('action' => 'payment'));
+                    }
                 }catch(\Exception $e ){
-                    //die($e->getMessage());
-                    return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array('action' => 'process'));
+                    return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array('action' => 'address'));
                 }
 
+                if( $hPUser->hasLogin() ){
+                    $member = $hPUser->getMember();
+                    $row = array(
+                            'users_id' => $member['users_id'],
+                            'website_id' => $this->website->website_id,
+                            'email' => $invoice['ships_email'],
+                            'full_name' => $invoice['ships_full_name'],
+                            'phone' => $invoice['ships_phone'],
+                            'address' => $invoice['ships_address'],
+                            'address01' => $invoice['ships_address01'],
+                            'zipcode' => $invoice['ships_zipcode'],
+                            'country_id' => $invoice['ships_country_id'],
+                            'city' => $invoice['ships_city'],
+                            'state' => $invoice['ships_state'],
+                            'suburb' => $invoice['ships_suburb'],
+                            'region' => $invoice['ships_region'],
+                            'province' => $invoice['ships_province'],
+                            'cities_id' => $invoice['ships_cities_id'],
+                            'districts_id' => $invoice['ships_districts_id'],
+                            'wards_id' => $invoice['ships_wards_id'],
+                        );
+                    $this->getModelTable('UserTable')->updateShippingAddress($row);
+                    $row = array(
+                            'users_id' => $member['users_id'],
+                            'website_id' => $this->website->website_id,
+                            'email' => $invoice['email'],
+                            'full_name' => $invoice['full_name'],
+                            'phone' => $invoice['phone'],
+                            'address' => $invoice['address'],
+                            'address01' => $invoice['address01'],
+                            'zipcode' => $invoice['zipcode'],
+                            'country_id' => $invoice['country_id'],
+                            'city' => $invoice['city'],
+                            'state' => $invoice['state'],
+                            'suburb' => $invoice['suburb'],
+                            'region' => $invoice['region'],
+                            'province' => $invoice['province'],
+                            'cities_id' => $invoice['cities_id'],
+                            'districts_id' => $invoice['districts_id'],
+                            'wards_id' => $invoice['wards_id'],
+                        );
+                    $this->getModelTable('UserTable')->updateBillingAddress($row);
+                }
+                
                 unset($_SESSION['cart']);
                 unset($_SESSION['PAYMENT_BUYER']);
                 unset($_SESSION['PAYMENT_SHIPPER']);
@@ -872,12 +1178,20 @@ class CheckoutController extends FrontEndController
                     && (    $payment->code == 'HOME'
                             || $payment->code == 'ATM'
                             || ($payment->code == 'PAYPAL' && !empty($payment->sale_account))
+                            || ($payment->code == 'VISA' && !empty($payment->api_username) && !empty($payment->api_password) && !empty($payment->api_signature))
                             || ($payment->code == 'ONEPAY' && !empty($payment->vpc_merchant) 
                                 && !empty($payment->vpc_accesscode) 
                                 && !empty($payment->vpc_hashcode) )
                             || ($payment->code == 'VNPAY' && !empty($payment->vnp_merchant) && !empty($payment->vnp_tmncode) && !empty($payment->vnp_hashsecret))  ) ){
                     switch ( $payment->code ) {
                         case 'HOME':
+                        {
+                            $_SESSION['invoice_id'] = $id;
+                            return $this->redirect()->toRoute($this->getUrlRouterLang().'cart', array('action' => 'success'));
+                            break;
+                        }
+
+                        case 'VISA':
                         {
                             $_SESSION['invoice_id'] = $id;
                             return $this->redirect()->toRoute($this->getUrlRouterLang().'cart', array('action' => 'success'));
@@ -1083,10 +1397,13 @@ class CheckoutController extends FrontEndController
                 return $this->redirect()->toRoute('cart', array('action' => 'success'));
             }
         }
-        
-        return $this->redirect()->toRoute($this->getUrlRouterLang().'checkout', array(
-            'action' => 'index'
-        ));
+        $this->has_header = FALSE;
+        $this->has_footer = TRUE;
+        $this->setDataView('has_header', $this->has_header);
+        $this->setDataView('has_footer', $this->has_footer);
+        $this->data_view['buyer'] = $buyer;
+        $this->data_view['shipper'] = $shipper;
+        return $this->data_view;
     }
 
     public function updateCartAction()

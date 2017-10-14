@@ -42,7 +42,7 @@
                         <div class="row" >
                             <div class="col-lg-11">
                                 <div class="form-style form-login">
-                                    <form accept-charset='UTF-8' accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/login' >
+                                    <form accept-charset='UTF-8' accept-charset='UTF-8' action='<?php echo $this->Websites()->getUrlPrefixLang() ?>/login<?php echo (empty($redirect) ? '' : '?redirect='.urlencode($redirect)) ?>' method='post' >
 
                                         <p class="form-description text-xs-right hidden-xs-up" >
                                             <?php echo $this->translate('txt_thong_tin_dang_nhap') ?>

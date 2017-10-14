@@ -12,10 +12,10 @@ $aboutUs = $this->Articles()->getRow( $aboutus_id );
                             <?php if( !empty($aboutUs) ){ ?>
                             <div class="info-quote" >
                                 <h2 class="title-quote" >
-                                    <?php echo $this->Articles()->getTitle($aboutUs); ?>
+                                    <?php echo $this->translate('txt_title_about_us_home') ?>
                                 </h2>
                                 <div class="description-quote" >
-                                    <?php echo $this->Articles()->getDescription($aboutUs); ?>
+                                    <?php echo $this->translate('txt_description_about_us_home') ?>
                                 </div>
 
                                 <div class="rating-quote" >
@@ -38,7 +38,7 @@ $aboutUs = $this->Articles()->getRow( $aboutus_id );
                                 </div>
 
                                 <div class="more-quote" >
-                                    <a class="btn btn-style-a" href="<?php echo $this->Articles()->getUrl($aboutUs); ?>" title="<?php echo $this->Articles()->getTitle($aboutUs); ?>" data-pjax="true" data-container="Main" >
+                                    <a class="btn btn-style-a" href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/about-us.html" title="<?php echo $this->translate('txt_discover_more'); ?>" data-pjax="true" data-container="Main" >
                                         <?php echo $this->translate('txt_discover_more'); ?>
                                     </a>
                                 </div>

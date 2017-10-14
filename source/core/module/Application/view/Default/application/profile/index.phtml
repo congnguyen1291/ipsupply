@@ -1,141 +1,218 @@
-<div class="coz-wrapper-profile" >
+<div class="profile-breadcrumbs clearfix" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-xs-12" >
+                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList" >
+                    <li class="home" itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>" title="<?php echo $this->translate('txt_trang_chu') ?>"  data-pjax="true" data-container="Main" itemprop="item name" >
+                            <?php echo $this->translate('txt_trang_chu') ?>
+                        </a>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem" >
+                        <span itemprop="item name" >
+                            <?php echo $this->translate('txt_account_summary'); ?>
+                        </span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper-profile clearfix" >
 	<div class="container">
-	    <div class="row coz-profile">
+	    <div class="row">
 			<div class="col-md-3">
-				<?php echo $this->partial('application/profile/menu', array('active' => 'index', 'point' => $point) ); ?>
+				<?php echo $this->partial('application/profile/menu', array('active' => 'index') ); ?>
 			</div>
 			<div class="col-md-9">
-	            <div class="coz-profile-content">
-				   
-	            	<div class="coz-user-info-block" >
-		                <div class="coz-user-heading">
-		                    <h3><?php echo $this->translate('txt_profile_overflow') ?></h3>
-		                    <span class="help-block"><?php echo $this->User()->getUserName(); ?></span>
-		                </div>
+	            <h1 class="title-profile">
+	            	<?php echo $this->translate('txt_account_summary'); ?>
+	            </h1>
+	            <div class="list-sumad" >
+		            <div class="row" >
+		            	<div class="col-md-4" >
+		            		<div class="item-sumad" >
+		            			<h3 class="title-sumad" >
+		            				<?php echo $this->translate('txt_persion_info'); ?>
+		            			</h3>
+		            			<div class="tb-info-profile" >
+		            				<table class="tb-iprofile">
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_name_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo $this->User()->getFullName(); ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_gender_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo $this->User()->getStringGender(); ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_dob_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo $this->User()->getBirthday(); ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_phone_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo $this->User()->getPhone(); ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_email_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo $this->User()->getUserName(); ?>
+		            						</td>
+		            					</tr>
+		            				</table>
+		            			</div>
+		            			<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/edit" class="btn-edit-profile-use" >
+		            				<i class="fa fa-pencil" aria-hidden="true"></i>
+		            				<?php echo $this->translate('txt_edit_infomation'); ?>
+		            			</a>
+		            		</div>
+		            	</div>
 
-		                <div class="coz-dasboad-navi" >
-		                	<div class="row" >
+		            	<div class="col-md-4" >
+		            		<div class="item-sumad" >
+		            			<h3 class="title-sumad" >
+		            				<?php echo $this->translate('txt_shipping_address'); ?>
+		            			</h3>
+		            			<?php if( !empty($shipping) ){ ?>
+		            			<div class="tb-info-profile" >
+		            				<table class="tb-iprofile">
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_name_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo !empty($shipping->full_name) ? $shipping->full_name : ''; ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_phone_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo !empty($shipping->phone) ? $shipping->phone : ''; ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_address_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo !empty($shipping->address) ? $shipping->address : ''; ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>&nbsp;</th>
+		            						<td>&nbsp;</td>
+		            					</tr>
+		            					<tr>
+		            						<th>&nbsp;</th>
+		            						<td>&nbsp;</td>
+		            					</tr>
+		            				</table>
+		            			</div>
+		            			<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/edit-shipping" class="btn-edit-profile-use" >
+		            				<i class="fa fa-pencil" aria-hidden="true"></i>
+		            				<?php echo $this->translate('txt_edit_address'); ?>
+		            			</a>
+		            			<?php }else{ ?>
+		            			<p>
+		            				<?php echo $this->translate('txt_chua_co_shipping_address'); ?>
+		            			</p>
+		            			<?php } ?>
+		            		</div>
+		            	</div>
 
-		                		<div class="col-xs-3" >
-		                			<div class="coz-item-nav-dasboad invoice" >
-		                				<span class="coz-value-nav-dasboad" >
-		                					<?php echo $total_invoice ?>
-		                				</span>
-		                				<span class="coz-des-nav-dasboad" >
-		                					<?php echo $this->translate('txt_total_don_hang_profile') ?>
-		                				</span>
-		                			</div>
-		                		</div>
-
-		                		<div class="col-xs-3" >
-		                			<div class="coz-item-nav-dasboad product" >
-		                				<span class="coz-value-nav-dasboad" >
-		                					<?php echo $total_product ?>
-		                				</span>
-		                				<span class="coz-des-nav-dasboad" >
-		                					<?php echo $this->translate('txt_total_san_pham_profile') ?>
-		                				</span>
-		                			</div>
-		                		</div>
-
-		                		<div class="col-xs-3" >
-		                			<div class="coz-item-nav-dasboad comment" >
-		                				<span class="coz-value-nav-dasboad" >
-		                					<?php echo $total_comments ?>
-		                				</span>
-		                				<span class="coz-des-nav-dasboad" >
-		                					<?php echo $this->translate('txt_total_danh_gia_profile') ?>
-		                				</span>
-		                			</div>
-		                		</div>
-
-		                		<div class="col-xs-3" >
-		                			<div class="coz-item-nav-dasboad point" >
-		                				<span class="coz-value-nav-dasboad" >
-		                					<?php echo $point ?>
-		                				</span>
-		                				<span class="coz-des-nav-dasboad" >
-		                					<?php echo $this->translate('txt_la_diem_cua_ban_profile') ?>
-		                				</span>
-		                			</div>
-		                		</div>
-
-		                	</div>
-		                </div>
-
-		                <div class="row" >
-		                	<div class="col-sm-7" >
-		                		<h4>
-	                            	<?php echo $this->translate('txt_lich_su_mua_hang') ?>
-	                            </h4>
-		                		<div class="coz-wrap-chart-profile-history" >
-		                			<canvas id="profileHistoryChart" data-neo="profileHistoryChart" ></canvas>
-		                		</div>
-		                	</div>
-		                	<div class="col-sm-5" >
-		                		<h4>
-	                            	<?php echo $this->translate('txt_vi_tri_cua_ban') ?>
-	                            </h4>
-		                		<div class="wrap-profile-map-canvas" >
-									<div id="profile_map_canvas" data-neo="profileMap" data-longitude="<?php echo $this->User()->getLongitude(); ?>"  data-latitude="<?php echo $this->User()->getLatitude(); ?>" ></div>
-									<input type="hidden" value="<?php echo $this->User()->getLongitude(); ?>" name="longitude"  data-input="longitude" >
-									<input type="hidden" value="<?php echo $this->User()->getLatitude(); ?>" name="latitude" data-input="latitude" >
-								</div>
-		                	</div>
-		                </div>
-
-                        <div id="information" >
-                        	<h4>
-                            	<?php echo $this->translate('txt_account_settings') ?>
-                            </h4>
-                        	<div class="table-responsive">
-	                            <table class="coz-table-cart" >
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-right" width="100" >
-                                            	<?php echo $this->translate('txt_profile_name') ?>
-                                            </td>
-                                            <td>
-                                            	<b><?php echo $this->User()->getFullName(); ?></b>
-                                            </td>
-                                        </tr>
-                                        <tr style="display:none">
-                                            <td class="text-right" width="100" >
-                                            	<?php echo $this->translate('txt_profile_birthday') ?>
-                                            </td>
-                                            <td>
-                                            	<b><?php echo $this->User()->getBirthday(); ?></b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" width="100" >
-                                            	<?php echo $this->translate('txt_profile_phone') ?>
-                                            </td>
-                                            <td>
-                                            	<b><?php echo $this->User()->getPhone(); ?></b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" width="100" >
-                                            	<?php echo $this->translate('txt_profile_address') ?>
-                                            </td>
-                                            <td>
-                                            	<b><?php echo $this->User()->getAddress(); ?></b>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <p class="coz-wrap-edit-profile coz-text-right" >
-                            	<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/edit" title="<?php echo $this->translate('txt_edit_profile_here') ?>" class="coz-btn coz-btn-active" >
-                            		<?php echo $this->translate('txt_chinh_sua_thong_tin') ?>
-                            	</a>
-                            </p>
-                        </div>
-
+		            	<div class="col-md-4" >
+		            		<div class="item-sumad last" >
+		            			<h3 class="title-sumad" >
+		            				<?php echo $this->translate('txt_billing_address'); ?>
+		            			</h3>
+		            			<?php if( !empty($billing) ){ ?>
+		            			<div class="tb-info-profile" >
+		            				<table class="tb-iprofile">
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_name_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo !empty($billing->full_name) ? $billing->full_name : ''; ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_phone_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo !empty($billing->phone) ? $billing->phone : ''; ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>
+		            							<?php echo $this->translate('txt_address_user_profile'); ?>
+		            						</th>
+		            						<td>
+		            							<?php echo !empty($billing->address) ? $billing->address : ''; ?>
+		            						</td>
+		            					</tr>
+		            					<tr>
+		            						<th>&nbsp;</th>
+		            						<td>&nbsp;</td>
+		            					</tr>
+		            					<tr>
+		            						<th>&nbsp;</th>
+		            						<td>&nbsp;</td>
+		            					</tr>
+		            				</table>
+		            			</div>
+		            			<a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile/edit-billing" class="btn-edit-profile-use" >
+		            				<i class="fa fa-pencil" aria-hidden="true"></i>
+		            				<?php echo $this->translate('txt_edit_address'); ?>
+		            			</a>
+		            			<?php }else{ ?>
+		            			<p>
+		            				<?php echo $this->translate('txt_chua_co_billing_address'); ?>
+		            			</p>
+		            			<?php } ?>
+		            		</div>
+		            	</div>
 		            </div>
-				   
-	            </div>
+		        </div>
+
+		        <div class="quist-info-use" >
+		        	<span class="it-quist-info-use" >
+		        		<?php echo $this->translate('txt_register_date'); ?>
+		        		<b><?php echo $this->User()->getDateCreate(); ?></b>
+		        	</span>
+		        	<span class="it-quist-info-use" >
+		        		<?php echo $this->translate('txt_puchase'); ?>
+		        		<b>
+		        			<?php echo $total_invoice ?> order -
+		        			<?php echo $total_product ?> items</b>
+		        	</span>
+		        </div>
 			</div>
 		</div>
 	</div>

@@ -1391,16 +1391,33 @@ coz.payment = {
             $('input[name="ship_to_different_address"]', _this.el).on('change', function(){
                 if($(this).is(':checked')){
                     country_id = $('[name="trans[country_id]"]', _this.el).val();
+                    console.log(country_id);
+                    $('[name="ships[country_id]"]', _this.el).val(country_id).trigger("change");
                     _this.showScreenShipsAddressPayment();
-                    _this.updateAddress(country_id, 'ships');
+                    //_this.updateAddress(country_id, 'ships');
+                }else{
+                    country_id = $('[name="ships[country_id]"]', _this.el).val();
+                    $('[name="trans[country_id]"]', _this.el).val(country_id).trigger("change");
+                    _this.showScreenAddressPayment();
+                    //_this.updateAddress(country_id, 'trans');
                 }
+            });
+
+            $('input[name="trans[has_ship]"]', _this.el).on('change', function(){
+                _this.getShipping();
             });
 
             $('input#ship-diff-visual', _this.el).on('change', function(){
                 if( !$(this).is(':checked') ){
                     country_id = $('[name="ships[country_id]"]', _this.el).val();
+                    $('[name="trans[country_id]"]', _this.el).val(country_id);
                     _this.showScreenAddressPayment();
                     _this.updateAddress(country_id, 'trans');
+                }else{
+                    country_id = $('[name="trans[country_id]"]', _this.el).val();
+                    $('[name="ships[country_id]"]', _this.el).val(country_id);
+                    _this.showScreenShipsAddressPayment();
+                    _this.updateAddress(country_id, 'ships');
                 }
             });
 
@@ -1512,6 +1529,14 @@ coz.payment = {
                 }, coz.DELAY);
             });
             
+            $('form[data-form="addressPayment"]', _this.el).on('submit', function(e){
+                if( _this.checkFormAddressPayment() ){
+                    coz.showLoading();
+                    return true;
+                }
+                return false;
+            });
+
             $('form[data-form="payment"]', _this.el).on('submit', function(e){
                 if( _this.checkForm() ){
                     coz.showLoading();
@@ -1528,22 +1553,102 @@ coz.payment = {
     },
     checkForm: function(){
         _this = this;
-        if($.trim($('input[name="trans[first_name]"]', _this.el).val()).length <=0 ){
-            coz.toast(language.translate('txt_ban_phai_nhap_ten'));
-            $('input[name="trans[first_name]"]', _this.el).addClass('ui-form-error').focus();
-            _this.showScreenAddressPayment();
+        if( $('input[name="trans[payment_id]"]:checked', _this.el).length<=0 
+            || $.trim($('input[name="trans[payment_id]"]:checked', _this.el).val()).length <=0 ){
+            coz.toast(language.translate('txt_chua_chon_payment_method'));
+            $('input[name="trans[payment_id]"]', _this.el).addClass('ui-form-error').focus();
             return false;
         }else{
-            $('input[name="trans[first_name]"]', _this.el).removeClass('ui-form-error');
+            $('input[name="trans[payment_id]"]', _this.el).removeClass('ui-form-error');
         }
 
-        if($.trim($('input[name="trans[last_name]"]', _this.el).val()).length <=0 ){
+        if( $('input[name="trans[payment_code]"]:checked', _this.el).val() == 'VISA'){
+            if($.trim($('input[name="visa[name]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_ban_phai_nhap_name_on_card_visa'));
+                $('input[name="visa[name]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[name]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if($.trim($('input[name="visa[number]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_ban_phai_nhap_cart_number_visa'));
+                $('input[name="visa[number]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[number]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if( !coz.isInt($('input[name="visa[number]"]', _this.el).val()) ){
+                coz.toast(language.translate('txt_ban_nhap_cart_number_visa_chua_dung'));
+                $('input[name="visa[number]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[number]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if($.trim($('input[name="visa[month]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_ban_phai_nhap_expiratation_month_visa'));
+                $('input[name="visa[month]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[month]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if( !coz.isInt($('input[name="visa[month]"]', _this.el).val())
+                || $.trim($('input[name="visa[month]"]', _this.el).val()).length >2 ){
+                coz.toast(language.translate('txt_ban_nhap_expiratation_month_visa_chua_dung'));
+                $('input[name="visa[month]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[month]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if($.trim($('input[name="visa[year]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_ban_phai_nhap_expiratation_year_visa'));
+                $('input[name="visa[year]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[year]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if( !coz.isInt($('input[name="visa[year]"]', _this.el).val())
+                || $.trim($('input[name="visa[year]"]', _this.el).val()).length >4 ){
+                coz.toast(language.translate('txt_ban_nhap_expiratation_year_visa_chua_dung'));
+                $('input[name="visa[month]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[year]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if($.trim($('input[name="visa[ccv]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_ban_phai_nhap_ccv_visa'));
+                $('input[name="visa[ccv]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[ccv]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if( !coz.isInt($('input[name="visa[ccv]"]', _this.el).val()) ){
+                coz.toast(language.translate('txt_ban_nhap_ccv_visa_chua_dung'));
+                $('input[name="visa[ccv]"]', _this.el).addClass('ui-form-error').focus();
+                return false;
+            }else{
+                $('input[name="visa[ccv]"]', _this.el).removeClass('ui-form-error');
+            }
+        }
+
+        return true;
+    },
+    checkFormAddressPayment: function(){
+        _this = this;
+        if($.trim($('input[name="trans[full_name]"]', _this.el).val()).length <=0 ){
             coz.toast(language.translate('txt_ban_phai_nhap_ten'));
-            $('input[name="trans[last_name]"]', _this.el).addClass('ui-form-error').focus();
+            $('input[name="trans[full_name]"]', _this.el).addClass('ui-form-error').focus();
             _this.showScreenAddressPayment();
             return false;
         }else{
-            $('input[name="trans[last_name]"]', _this.el).removeClass('ui-form-error');
+            $('input[name="trans[full_name]"]', _this.el).removeClass('ui-form-error');
         }
 
         if( !coz.isEmail($('input[name="trans[email]"]', _this.el).val()) ){
@@ -1684,40 +1789,13 @@ coz.payment = {
         }
 
         if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
-            if($.trim($('input[name="ships[first_name]"]', _this.el).val()).length <=0 ){
+            if($.trim($('input[name="ships[full_name]"]', _this.el).val()).length <=0 ){
                 coz.toast(language.translate('txt_ban_phai_nhap_ten'));
-                $('input[name="ships[first_name]"]', _this.el).addClass('ui-form-error').focus();
+                $('input[name="ships[full_name]"]', _this.el).addClass('ui-form-error').focus();
                 _this.showScreenShipsAddressPayment();
                 return false;
             }else{
-                $('input[name="ships[first_name]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if($.trim($('input[name="ships[last_name]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_ban_phai_nhap_ten'));
-                $('input[name="ships[last_name]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenShipsAddressPayment();
-                return false;
-            }else{
-                $('input[name="ships[last_name]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if( !coz.isEmail($('input[name="ships[email]"]', _this.el).val()) ){
-                coz.toast(language.translate('txt_email_khong_hop_le'));
-                $('input[name="ships[email]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenShipsAddressPayment();
-                return false;
-            }else{
-                $('input[name="ships[email]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if( !coz.isPhone($('input[name="ships[phone]"]', _this.el).val()) ){
-                coz.toast(language.translate('txt_so_dien_thoai_khong_hop_le'));
-                $('input[name="ships[phone]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenShipsAddressPayment();
-                return false;
-            }else{
-                $('input[name="ships[phone]"]', _this.el).removeClass('ui-form-error');
+                $('input[name="ships[full_name]"]', _this.el).removeClass('ui-form-error');
             }
 
             if($('[name="ships[country_id]"]', _this.el).length<=0 
@@ -1839,66 +1917,15 @@ coz.payment = {
             }
         }
         
-        if($('input[name="trans[shipping_id]"]:checked', _this.el).length<=0 
-            || $.trim($('input[name="trans[shipping_id]"]:checked', _this.el).val()).length <=0 ){
-            coz.toast(language.translate('txt_chua_chon_transportation'));
-            $('input[name="trans[shipping_id]"]', _this.el).addClass('ui-form-error').focus();
-            return false;
-        }else{
-            $('input[name="trans[shipping_id]"]', _this.el).removeClass('ui-form-error');
-        }
-
-        if($.trim($('select[name="trans[payment_id]"]', _this.el).val()).length <=0 ){
-            coz.toast(language.translate('txt_chua_chon_payment_method'));
-            $('select[name="trans[payment_id]"]', _this.el).addClass('ui-form-error').focus();
-            return false;
-        }else{
-            $('select[name="trans[payment_id]"]', _this.el).removeClass('ui-form-error');
-        }
-        if( $('[data-place="Onepay"]', _this.el).hasClass('active') ){
-            if( $('select[name="trans[avs_country]"]', _this.el).length>0 
-                && $.trim($('select[name="trans[avs_country]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_chua_chon_dat_nuoc_phat_hanh_the'));
-                $('select[name="trans[avs_country]"]', _this.el).addClass('ui-form-error').focus();
+        if( $('input[name="trans[has_ship]"]', _this.el).length <=0 
+            || $('input[name="trans[has_ship]"]:checked', _this.el).val() == 1 ){
+            if($('input[name="trans[shipping_id]"]:checked', _this.el).length<=0 
+                || $.trim($('input[name="trans[shipping_id]"]:checked', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_chua_chon_transportation'));
+                $('input[name="trans[shipping_id]"]', _this.el).addClass('ui-form-error').focus();
                 return false;
             }else{
-                $('select[name="trans[avs_country]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if( $('input[name="trans[avs_street01]"]', _this.el).length>0 
-                && $.trim($('input[name="trans[avs_street01]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_chua_nhap_dia_chi_phat_hanh_the'));
-                $('input[name="trans[avs_street01]"]', _this.el).addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('input[name="trans[avs_street01]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if( $('input[name="trans[avs_city]"]', _this.el).length>0 
-                &&  $.trim($('input[name="trans[avs_city]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_chua_nhap_thanh_pho_phat_hanh_the'));
-                $('input[name="trans[avs_city]"]', _this.el).addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('input[name="trans[avs_city]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if( $('input[name="trans[avs_stateprov]"]', _this.el).length>0 
-                && $.trim($('input[name="trans[avs_stateprov]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_chua_nhap_quan_huyen_phat_hanh_the'));
-                $('input[name="trans[avs_stateprov]"]', _this.el).addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('input[name="trans[avs_stateprov]"]', _this.el).removeClass('ui-form-error');
-            }
-
-            if( $('input[name="trans[avs_postCode]"]', _this.el).length>0 
-                && $.trim($('input[name="trans[avs_postCode]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_chua_nhap_ma_vung_phat_hanh_the'));
-                $('input[name="trans[avs_postCode]"]', _this.el).addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('input[name="trans[avs_postCode]"]', _this.el).removeClass('ui-form-error');
+                $('input[name="trans[shipping_id]"]', _this.el).removeClass('ui-form-error');
             }
         }
 
@@ -1921,15 +1948,48 @@ coz.payment = {
             }else{
                 $('[neo-place="addressPayment"]', _this.el).html(data.html);
             }
-            _this.updateEvent();
-            _this.getShipping();
+            _this.updateEvent( type );
+            _this.getShipping( type );
         });
     },
-    updateEvent: function(){
+    updateEvent: function( type ){
         _this = this;
+        _name = '';
+        _el = '';
+        if( type == 'trans' ){
+            _name = 'trans';
+        }else if( type == 'ships' ){
+            _name = 'ships';
+        }else if( type == 'user' ){
+            _name = 'user';
+        }
+        _address = '';
+        if( _name == 'trans' 
+            && typeof coz.buyer != 'undefined' ){
+            _address = coz.buyer.address;
+        }else if( _name == 'ships' ){
+            if( typeof coz.shipper != 'undefined' ){
+                _address = coz.shipper.ships_address;
+            }else if( typeof coz.buyer != 'undefined' ){
+                _address = coz.buyer.address;
+            }
+        }
+        if( $.trim(_address).length <= 0
+            && coz.hasLogin()
+            && typeof coz.member.address != 'undefined'
+            && $.trim(coz.member.address).length >0 ){
+            _address = coz.member.address;
+        }
+        $('input[name="'+_name+'[address]"]', _this.el).val(_address);
+
         $('[neo-place="addressPayment"] select[name="trans[cities_id]"]', _this.el).off('change').on('change', function(){
             $('[neo-place="addressPayment"] select[name="trans[districts_id]"]', _this.el).html('');
             $('[neo-place="addressPayment"] select[name="trans[wards_id]"]', _this.el).html('');
+            _districts_id = 0;
+            if( typeof coz.buyer != 'undefined' ){
+                _districts_id = coz.buyer.districts_id;
+            }
+
             cities_id = $(this).val();
             if( typeof cities_id != 'undefined' 
                 && $.trim(cities_id).length > 0 ){
@@ -1938,7 +1998,7 @@ coz.payment = {
                         &&  (datas.success == 'true' || datas.success == true) ){
                         if(datas.results.length>0){
                             $.each(datas.results, function(i, row){
-                                $('[neo-place="addressPayment"] select[name="trans[districts_id]"]', _this.el).append($("<option></option>").attr('value', row.districts_id).text(row.districts_title));
+                                $('[neo-place="addressPayment"] select[name="trans[districts_id]"]', _this.el).append($("<option "+ (row.districts_id == _districts_id ? 'selected' : '' ) +" ></option>").attr('value', row.districts_id).text(row.districts_title));
                                 if(i>=datas.results.length-1){
                                     $('[neo-place="addressPayment"] select[name="trans[districts_id]"]', _this.el).trigger('change');
                                 }
@@ -1956,6 +2016,10 @@ coz.payment = {
         });
         $('[neo-place="addressPayment"] select[name="trans[districts_id]"]', _this.el).off('change').on('change', function(){
             $('[neo-place="addressPayment"] select[name="trans[wards_id]"]', _this.el).html('');
+            _wards_id = 0;
+            if( typeof coz.buyer != 'undefined' ){
+                _wards_id = coz.buyer.wards_id;
+            }
             districts_id = $(this).val();
             if( typeof districts_id != 'undefined' 
                 && $.trim(districts_id).length > 0 ){
@@ -1964,7 +2028,7 @@ coz.payment = {
                         &&  (datas.success == 'true' || datas.success == true) ){
                         if(datas.results.length>0){
                             $.each(datas.results, function(i, row){
-                                $('[neo-place="addressPayment"] select[name="trans[wards_id]"]', _this.el).append($("<option></option>").attr('value', row.wards_id).text(row.wards_title));
+                                $('[neo-place="addressPayment"] select[name="trans[wards_id]"]', _this.el).append($("<option "+ (row.wards_id == _wards_id ? 'selected' : '' ) +"  ></option>").attr('value', row.wards_id).text(row.wards_title));
                                 if(i>=datas.results.length-1){
                                     $('[neo-place="addressPayment"] select[name="trans[wards_id]"]', _this.el).trigger('change');
                                 }
@@ -1988,6 +2052,10 @@ coz.payment = {
         $('[neo-place="addressShip"] select[name="ships[cities_id]"]', _this.el).off('change').on('change', function(){
             $('[neo-place="addressShip"] select[name="ships[districts_id]"]', _this.el).html('');
             $('[neo-place="addressShip"] select[name="ships[wards_id]"]', _this.el).html('');
+            _districts_id = 0;
+            if( typeof coz.shipper != 'undefined' ){
+                _districts_id = coz.shipper.ships_districts_id;
+            }
             cities_id = $(this).val();
             if( typeof cities_id != 'undefined' 
                 && $.trim(cities_id).length > 0 ){
@@ -1996,7 +2064,7 @@ coz.payment = {
                         &&  (datas.success == 'true' || datas.success == true) ){
                         if(datas.results.length>0){
                             $.each(datas.results, function(i, row){
-                                $('[neo-place="addressShip"] select[name="ships[districts_id]"]', _this.el).append($("<option></option>").attr('value', row.districts_id).text(row.districts_title));
+                                $('[neo-place="addressShip"] select[name="ships[districts_id]"]', _this.el).append($("<option  "+ (row.districts_id == _districts_id ? 'selected' : '' ) +"  ></option>").attr('value', row.districts_id).text(row.districts_title));
                                 if(i>=datas.results.length-1){
                                     $('[neo-place="addressShip"] select[name="ships[districts_id]"]', _this.el).trigger('change');
                                 }
@@ -2015,6 +2083,10 @@ coz.payment = {
 
         $('[neo-place="addressShip"] select[name="ships[districts_id]"]', _this.el).off('change').on('change', function(){
             $('[neo-place="addressShip"] select[name="ships[wards_id]"]', _this.el).html('');
+            _wards_id = 0;
+            if( typeof coz.shipper != 'undefined' ){
+                _wards_id = coz.shipper.ships_wards_id;
+            }
             districts_id = $(this).val();
             if( typeof districts_id != 'undefined' 
                 && $.trim(districts_id).length > 0 ){
@@ -2023,7 +2095,7 @@ coz.payment = {
                         &&  (datas.success == 'true' || datas.success == true) ){
                         if(datas.results.length>0){
                             $.each(datas.results, function(i, row){
-                                $('[neo-place="addressShip"] select[name="ships[wards_id]"]', _this.el).append($("<option></option>").attr('value', row.wards_id).text(row.wards_title));
+                                $('[neo-place="addressShip"] select[name="ships[wards_id]"]', _this.el).append($("<option "+ (row.wards_id == _wards_id ? 'selected' : '' ) +" ></option>").attr('value', row.wards_id).text(row.wards_title));
                                 if(i>=datas.results.length-1){
                                     $('[neo-place="addressShip"] select[name="ships[wards_id]"]', _this.el).trigger('change');
                                 }
@@ -2051,193 +2123,230 @@ coz.payment = {
         $('input[name="trans[shipping_id]"], input[name="trans[transport_type]"]', _this.el).off('change').on('change', function(){
             _this.getFeeTransitions();
         });
+        $('input[name="trans[has_ship]"]', _this.el).off('change').on('change', function(){
+            _this.getShipping();
+        });
+        if( _name == 'trans'
+            && typeof coz.buyer != 'undefined' ){
+            _cities_id = coz.buyer.cities_id;
+            $('select[name="'+_name+'[cities_id]"]', _this.el).val(_cities_id);
+            $('select[name="'+_name+'[cities_id]"]', _this.el).trigger('change');
+            $('input[name="'+_name+'[city]"]', _this.el).val(coz.buyer.city);
+            $('input[name="'+_name+'[zipcode]"]', _this.el).val(coz.buyer.zipcode);
+            $('input[name="'+_name+'[state]"]', _this.el).val(coz.buyer.state);
+            $('input[name="'+_name+'[suburb]"]', _this.el).val(coz.buyer.suburb);
+            $('input[name="'+_name+'[state]"]', _this.el).val(coz.buyer.state);
+            $('input[name="'+_name+'[address01]"]', _this.el).val(coz.buyer.address01);
+            $('input[name="'+_name+'[province]"]', _this.el).val(coz.buyer.province);
+        }else if( _name == 'ships' ){
+            if( typeof coz.shipper != 'undefined' ){
+                _cities_id = coz.shipper.ships_cities_id;
+                $('select[name="'+_name+'[cities_id]"]', _this.el).val(_cities_id);
+                $('select[name="'+_name+'[cities_id]"]', _this.el).trigger('change');
+                $('input[name="'+_name+'[city]"]', _this.el).val(coz.shipper.ships_city);
+                $('input[name="'+_name+'[zipcode]"]', _this.el).val(coz.shipper.ships_zipcode);
+                $('input[name="'+_name+'[state]"]', _this.el).val(coz.shipper.ships_state);
+                $('input[name="'+_name+'[suburb]"]', _this.el).val(coz.shipper.ships_suburb);
+                $('input[name="'+_name+'[state]"]', _this.el).val(coz.shipper.ships_state);
+                $('input[name="'+_name+'[address01]"]', _this.el).val(coz.shipper.ships_address01);
+                $('input[name="'+_name+'[province]"]', _this.el).val(coz.shipper.ships_province);
+            }else if( coz.buyer != 'undefined' ){
+                _cities_id = coz.buyer.cities_id;
+                $('select[name="'+_name+'[cities_id]"]', _this.el).val(_cities_id);
+                $('select[name="'+_name+'[cities_id]"]', _this.el).trigger('change');
+                $('input[name="'+_name+'[city]"]', _this.el).val(coz.buyer.city);
+                $('input[name="'+_name+'[zipcode]"]', _this.el).val(coz.buyer.zipcode);
+                $('input[name="'+_name+'[state]"]', _this.el).val(coz.buyer.state);
+                $('input[name="'+_name+'[suburb]"]', _this.el).val(coz.buyer.suburb);
+                $('input[name="'+_name+'[state]"]', _this.el).val(coz.buyer.state);
+                $('input[name="'+_name+'[address01]"]', _this.el).val(coz.buyer.address01);
+                $('input[name="'+_name+'[province]"]', _this.el).val(coz.buyer.province);
+            }
+        }
     },
     getFeeTransitions : function(callback){
         _this = this;
         clearInterval(coz.INTERVAL);
         clearTimeout(coz.INTERVAL);
-        coz.INTERVAL = setTimeout( function(){
-            var country_id = 0;
-            var cities_id = 0;
-            var districts_id = 0;
-            var wards_id = 0;
-            var transport_type = 0;
-            var shipping_id = 0;
-            if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
-                if( $('[name="ships[country_id]"]', _this.el).length > 0){
-                    country_id = $('[name="ships[country_id]"]', _this.el).val();
-                }
-                if($('select[name="ships[cities_id]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[cities_id]"]', _this.el).val();
-                }else if($('select[name="ships[state]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[state]"]', _this.el).val();
-                }else if($('select[name="ships[region]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[region]"]', _this.el).val();
-                }else if($('select[name="ships[province]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[province]"]', _this.el).val();
-                }
-                if($('select[name="ships[districts_id]"]', _this.el).length>0){
-                    districts_id = $('select[name="ships[districts_id]"]', _this.el).val();
-                }
-                if( $('select[name="ships[wards_id]"]', _this.el).length > 0){
-                    wards_id = $('select[name="ships[wards_id]"]', _this.el).val();
-                }
-            }else{
-                if( $('[name="trans[country_id]"]', _this.el).length > 0){
-                    country_id = $('[name="trans[country_id]"]', _this.el).val();
-                }
-                if($('select[name="trans[cities_id]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[cities_id]"]', _this.el).val();
-                }else if($('select[name="trans[state]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[state]"]', _this.el).val();
-                }else if($('select[name="trans[region]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[region]"]', _this.el).val();
-                }else if($('select[name="trans[province]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[province]"]', _this.el).val();
-                }
-                if($('select[name="trans[districts_id]"]', _this.el).length>0){
-                    districts_id = $('select[name="trans[districts_id]"]', _this.el).val();
-                }
-                if( $('select[name="trans[wards_id]"]', _this.el).length > 0){
-                    wards_id = $('select[name="trans[wards_id]"]', _this.el).val();
-                }
-            }
-            if( $('input[name="trans[transport_type]"]:checked', _this.el).length >0 ){
-                transport_type = $('input[name="trans[transport_type]"]:checked', _this.el).val();
-            }
-            if( $('input[name="trans[shipping_id]"]:checked', _this.el).length >0 ){
-                shipping_id = $('input[name="trans[shipping_id]"]:checked', _this.el).val();
-            }
-            $.ajax({
-                type: "GET",
-                dataType: "html",
-                url: coz.baseUrl+'/cart/getFeeTransitions?_AJAX=1',
-                data: 'shipping_id='+shipping_id+'&country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&transport_type='+transport_type,
-                cache: false,
-                success: function(data)
-                {
-                    if(data.constructor === String){
-                        data = $.parseJSON(data);
+        if( $('input[name="trans[has_ship]"]', _this.el).length <=0 
+            || $('input[name="trans[has_ship]"]:checked', _this.el).val() == 1 ){
+            coz.INTERVAL = setTimeout( function(){
+                var country_id = 0;
+                var cities_id = 0;
+                var districts_id = 0;
+                var wards_id = 0;
+                var transport_type = 0;
+                var shipping_id = 0;
+                if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
+                    if( $('[name="ships[country_id]"]', _this.el).length > 0){
+                        country_id = $('[name="ships[country_id]"]', _this.el).val();
                     }
-                    if(data.flag == true || data.flag == 'true'){
-                        coz.payment.updateMoney(data);
+                    if($('select[name="ships[cities_id]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[cities_id]"]', _this.el).val();
+                    }else if($('select[name="ships[state]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[state]"]', _this.el).val();
+                    }else if($('select[name="ships[region]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[region]"]', _this.el).val();
+                    }else if($('select[name="ships[province]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[province]"]', _this.el).val();
                     }
-                    if( typeof callback == 'function'){
-                        callback(data);
+                    if($('select[name="ships[districts_id]"]', _this.el).length>0){
+                        districts_id = $('select[name="ships[districts_id]"]', _this.el).val();
                     }
-                },
-                error: function(e)
-                {
-                    coz.toast('Error ! OoO .please trying');
-                    console.log(e);
+                    if( $('select[name="ships[wards_id]"]', _this.el).length > 0){
+                        wards_id = $('select[name="ships[wards_id]"]', _this.el).val();
+                    }
+                }else{
+                    if( $('[name="trans[country_id]"]', _this.el).length > 0){
+                        country_id = $('[name="trans[country_id]"]', _this.el).val();
+                    }
+                    if($('select[name="trans[cities_id]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[cities_id]"]', _this.el).val();
+                    }else if($('select[name="trans[state]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[state]"]', _this.el).val();
+                    }else if($('select[name="trans[region]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[region]"]', _this.el).val();
+                    }else if($('select[name="trans[province]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[province]"]', _this.el).val();
+                    }
+                    if($('select[name="trans[districts_id]"]', _this.el).length>0){
+                        districts_id = $('select[name="trans[districts_id]"]', _this.el).val();
+                    }
+                    if( $('select[name="trans[wards_id]"]', _this.el).length > 0){
+                        wards_id = $('select[name="trans[wards_id]"]', _this.el).val();
+                    }
                 }
-            });
-        }, coz.DELAY);
+                if( $('input[name="trans[transport_type]"]:checked', _this.el).length >0 ){
+                    transport_type = $('input[name="trans[transport_type]"]:checked', _this.el).val();
+                }
+                if( $('input[name="trans[shipping_id]"]:checked', _this.el).length >0 ){
+                    shipping_id = $('input[name="trans[shipping_id]"]:checked', _this.el).val();
+                }
+                $.ajax({
+                    type: "GET",
+                    dataType: "html",
+                    url: coz.baseUrl+'/cart/getFeeTransitions?_AJAX=1',
+                    data: 'shipping_id='+shipping_id+'&country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&transport_type='+transport_type,
+                    cache: false,
+                    success: function(data)
+                    {
+                        if(data.constructor === String){
+                            data = $.parseJSON(data);
+                        }
+                        if(data.flag == true || data.flag == 'true'){
+                            coz.payment.updateMoney(data);
+                        }
+                        if( typeof callback == 'function'){
+                            callback(data);
+                        }
+                    },
+                    error: function(e)
+                    {
+                        coz.toast('Error ! OoO .please trying');
+                        console.log(e);
+                    }
+                });
+            }, coz.DELAY);
+        }
     },
     getShipping : function(callback){
         _this = this;
         clearInterval(coz.INTERVAL);
         clearTimeout(coz.INTERVAL);
-        coz.INTERVAL = setTimeout( function(){
-            var country_id = 0;
-            var cities_id = 0;
-            var districts_id = 0;
-            var wards_id = 0;
-            var transport_type = 0;
-            if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
-                if( $('[name="ships[country_id]"]', _this.el).length > 0){
-                    country_id = $('[name="ships[country_id]"]', _this.el).val();
-                }
-                if($('select[name="ships[cities_id]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[cities_id]"]', _this.el).val();
-                }else if($('select[name="ships[state]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[state]"]', _this.el).val();
-                }else if($('select[name="ships[region]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[region]"]', _this.el).val();
-                }else if($('select[name="ships[province]"]', _this.el).length>0){
-                    cities_id = $('select[name="ships[province]"]', _this.el).val();
-                }
-                if($('select[name="ships[districts_id]"]', _this.el).length>0){
-                    districts_id = $('select[name="ships[districts_id]"]', _this.el).val();
-                }
-                if( $('select[name="ships[wards_id]"]', _this.el).length > 0){
-                    wards_id = $('select[name="ships[wards_id]"]', _this.el).val();
-                }
-            }else{
-                if( $('[name="trans[country_id]"]', _this.el).length > 0){
-                    country_id = $('[name="trans[country_id]"]', _this.el).val();
-                }
-                if($('select[name="trans[cities_id]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[cities_id]"]', _this.el).val();
-                }else if($('select[name="trans[state]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[state]"]', _this.el).val();
-                }else if($('select[name="trans[region]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[region]"]', _this.el).val();
-                }else if($('select[name="trans[province]"]', _this.el).length>0){
-                    cities_id = $('select[name="trans[province]"]', _this.el).val();
-                }
-                if($('select[name="trans[districts_id]"]', _this.el).length>0){
-                    districts_id = $('select[name="trans[districts_id]"]', _this.el).val();
-                }
-                if( $('select[name="trans[wards_id]"]', _this.el).length > 0){
-                    wards_id = $('select[name="trans[wards_id]"]', _this.el).val();
-                }
-            }
-            if( $('input[name="trans[transport_type]"]:checked', _this.el).length >0 ){
-                transport_type = $('input[name="trans[transport_type]"]:checked', _this.el).val();
-            }
-            $.ajax({
-                type: "GET",
-                dataType: "html",
-                url: coz.baseUrl+'/cart/getShipping',
-                data: 'country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&wards_id='+wards_id+'&transport_type='+transport_type+'&ajax=1&_AJAX=1',
-                cache: false,
-                success: function(data)
-                {
-                    if(data.constructor === String){
-                        data = $.parseJSON(data);
+        console.log($('input[name="trans[has_ship]"]:checked', _this.el).val());
+        if( $('input[name="trans[has_ship]"]', _this.el).length <=0 
+            || $('input[name="trans[has_ship]"]:checked', _this.el).val() == 1 ){
+            coz.INTERVAL = setTimeout( function(){
+                var country_id = 0;
+                var cities_id = 0;
+                var districts_id = 0;
+                var wards_id = 0;
+                var transport_type = 0;
+                if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
+                    if( $('[name="ships[country_id]"]', _this.el).length > 0){
+                        country_id = $('[name="ships[country_id]"]', _this.el).val();
                     }
-                    _this = coz.payment;
-                    if(data.flag == true || data.flag == 'true'){
-                        $('[neo-place="Shipping"]').html(data.html);
-                    }else{
-                        $('[neo-place="Shipping"]').html('<p class="coz-note-payment" >'+data.html+'</div>');
+                    if($('select[name="ships[cities_id]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[cities_id]"]', _this.el).val();
+                    }else if($('select[name="ships[state]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[state]"]', _this.el).val();
+                    }else if($('select[name="ships[region]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[region]"]', _this.el).val();
+                    }else if($('select[name="ships[province]"]', _this.el).length>0){
+                        cities_id = $('select[name="ships[province]"]', _this.el).val();
                     }
-                    _this.getFeeTransitions();
-                    if( typeof callback == 'function'){
-                        callback(data);
+                    if($('select[name="ships[districts_id]"]', _this.el).length>0){
+                        districts_id = $('select[name="ships[districts_id]"]', _this.el).val();
                     }
-                },
-                error: function(e)
-                {
-                    coz.toast('Error ! OoO .please trying');
+                    if( $('select[name="ships[wards_id]"]', _this.el).length > 0){
+                        wards_id = $('select[name="ships[wards_id]"]', _this.el).val();
+                    }
+                }else{
+                    if( $('[name="trans[country_id]"]', _this.el).length > 0){
+                        country_id = $('[name="trans[country_id]"]', _this.el).val();
+                    }
+                    if($('select[name="trans[cities_id]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[cities_id]"]', _this.el).val();
+                    }else if($('select[name="trans[state]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[state]"]', _this.el).val();
+                    }else if($('select[name="trans[region]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[region]"]', _this.el).val();
+                    }else if($('select[name="trans[province]"]', _this.el).length>0){
+                        cities_id = $('select[name="trans[province]"]', _this.el).val();
+                    }
+                    if($('select[name="trans[districts_id]"]', _this.el).length>0){
+                        districts_id = $('select[name="trans[districts_id]"]', _this.el).val();
+                    }
+                    if( $('select[name="trans[wards_id]"]', _this.el).length > 0){
+                        wards_id = $('select[name="trans[wards_id]"]', _this.el).val();
+                    }
                 }
-            });
-        }, coz.DELAY);
+                if( $('input[name="trans[transport_type]"]:checked', _this.el).length >0 ){
+                    transport_type = $('input[name="trans[transport_type]"]:checked', _this.el).val();
+                }
+                $.ajax({
+                    type: "GET",
+                    dataType: "html",
+                    url: coz.baseUrl+'/cart/getShipping',
+                    data: 'country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&wards_id='+wards_id+'&transport_type='+transport_type+'&ajax=1&_AJAX=1',
+                    cache: false,
+                    success: function(data)
+                    {
+                        if(data.constructor === String){
+                            data = $.parseJSON(data);
+                        }
+                        _this = coz.payment;
+                        if( data.flag == true || data.flag == 'true' ){
+                            $('[neo-place="Shipping"]').html(data.html);
+                            if( data.no_shipping == true || data.no_shipping == 'true' ){
+                                $('[neo-place="errorShipping"]').html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'+data.msg);
+                            }else{
+                                $('[neo-place="errorShipping"]').html('');
+                            }
+                        }else{
+                            $('[neo-place="Shipping"]').html('<p class="coz-note-payment" >'+data.html+'</div>');
+                        }
+                        _this.getFeeTransitions();
+                        if( typeof callback == 'function'){
+                            callback(data);
+                        }
+                    },
+                    error: function(e)
+                    {
+                        coz.toast('Error ! OoO .please trying');
+                    }
+                });
+            }, coz.DELAY);
+        }
     },
     showScreenAddressPayment: function(){
         var _this = this;
-        $('.coz-payment-from', _this.el).parent().removeClass('diff-ship');
-        $('input[name="ship_to_different_address"]', _this.el).attr({checked : false});
-        if(!$('input[name="ship-diff-visual"]', _this.el).is(':checked')){
-            $('input[name="ship-diff-visual"]', _this.el).attr('checked', true);
-        }
+        $('#ship-different-address', _this.el).hide();
     },
     showScreenShipsAddressPayment: function (){
         var _this = this;
-        $('.coz-payment-from', _this.el).parent().addClass('diff-ship');
-        $('input#ship-diff-visual', _this.el).attr({checked : true});
-        first_name = $('input[name="trans[first_name]"]', _this.el).val();
-        last_name = $('input[name="trans[last_name]"]', _this.el).val();
-        email = $('input[name="trans[email]"]', _this.el).val();
-        phone = $('input[name="trans[phone]"]', _this.el).val();
-        var str = '';
-        str += 'First Name : <b>'+($.trim(first_name).length > 0 ? first_name : '...')+'</b></br>';
-        str += 'Last Name : <b>'+($.trim(last_name).length > 0 ? last_name : '...')+'</b></br>';
-        str += 'Email : <b>'+($.trim(email).length > 0 ? email : '...')+'</b></br>';
-        str += 'Phone : <b>'+($.trim(phone).length > 0 ? phone : '...')+'</b>';
-        $('[data-neo="summaryAddressPayment"]', _this.el).html(str);
-        if(!$('input[name="ship_to_different_address"]', _this.el).is(':checked')){
+        $('#ship-different-address', _this.el).show();
+        if( !$('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
             $('input[name="ship_to_different_address"]', _this.el).attr('checked', true);
         }
     }
@@ -3346,20 +3455,12 @@ coz.profile = {
         });
     },
     checkProfile: function(){
-        if($.trim($('[data-form="editProfile"] input[name="first_name"]').val()).length <=0 ){
+        if($.trim($('[data-form="editProfile"] input[name="full_name"]').val()).length <=0 ){
             coz.toast(language.translate('txt_ban_phai_nhap_ten'));
-            $('[data-form="editProfile"] input[name="name="first_name"]').addClass('ui-form-error').focus();
+            $('[data-form="editProfile"] input[name="name="full_name"]').addClass('ui-form-error').focus();
             return false;
         }else{
-            $('[data-form="editProfile"] input[name="first_name"]').removeClass('ui-form-error');
-        }
-
-        if($.trim($('[data-form="editProfile"] input[name="last_name"]').val()).length <=0 ){
-            coz.toast(language.translate('txt_ban_phai_nhap_ten'));
-            $('[data-form="editProfile"] input[name="last_name"]').addClass('ui-form-error').focus();
-            return false;
-        }else{
-            $('[data-form="editProfile"] input[name="last_name"]').removeClass('ui-form-error');
+            $('[data-form="editProfile"] input[name="full_name"]').removeClass('ui-form-error');
         }
 
         if($.trim($('[data-form="editProfile"] input[name="phone"]').val()).length <=0 ){
@@ -3368,114 +3469,6 @@ coz.profile = {
             return false;
         }else{
             $('[data-form="editProfile"] input[name="phone"]').removeClass('ui-form-error');
-        }
-
-        if($('[data-form="editProfile"] [name="country_id"]').length<=0 
-          || $.trim($('[data-form="editProfile"] [name="country_id"]').val()).length <=0 ){
-            coz.toast(language.translate('txt_chua_chon_contry'));
-            $('[data-form="editProfile"] [name="country_id"]').addClass('ui-form-error').focus();
-            return false;
-        }else{
-            $('[data-form="editProfile"] [name="country_id"]').removeClass('ui-form-error');
-        }
-
-        if($('[data-form="editProfile"] input[name="address"]').length <=0 
-            || $.trim($('[data-form="editProfile"] input[name="address"]').val()).length <=0 ){
-            coz.toast(language.translate('txt_dia_chi_khong_duoc_bo_trong'));
-            $('[data-form="editProfile"] input[name="address"]').addClass('ui-form-error').focus();
-            return false;
-        }else{
-            $('[data-form="editProfile"] input[name="address"]').removeClass('ui-form-error');
-        }
-
-        if($('[data-form="editProfile"] input[name="city"]').length>0){
-            if($.trim($('[data-form="editProfile"] input[name="city"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] input[name="city"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] input[name="city"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] input[name="zipcode"]').length>0){
-            if($.trim($('[data-form="editProfile"] input[name="zipcode"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_zipcode_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] input[name="zipcode"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] input[name="zipcode"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] input[name="state"]').length>0){
-            if($.trim($('[data-form="editProfile"] input[name="state"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_state_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] input[name="state"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] input[name="state"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] input[name="suburb"]').length>0){
-            if($.trim($('[data-form="editProfile"] input[name="suburb"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_suburb_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] input[name="suburb"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] input[name="suburb"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] input[name="region"]').length>0){
-            if($.trim($('[data-form="editProfile"] input[name="region"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_region_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] input[name="region"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] input[name="region"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] input[name="province"]').length>0){
-            if($.trim($('[data-form="editProfile"] input[name="province"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_province_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] input[name="province"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] input[name="province"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] select[name="cities_id"]').length>0){
-            if($.trim($('[data-form="editProfile"] select[name="cities_id"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] select[name="cities_id"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] select[name="cities_id"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] select[name="districts_id"]').length>0){
-            if($.trim($('select[name="districts_id"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_districts_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] select[name="districts_id"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] select[name="districts_id"]').removeClass('ui-form-error');
-            }
-        }
-
-        if($('[data-form="editProfile"] select[name="wards_id"]').length>0){
-            if($.trim($('select[name="wards_id"]').val()).length <=0 ){
-                coz.toast(language.translate('txt_wards_khong_duoc_bo_trong'));
-                $('[data-form="editProfile"] select[name="wards_id"]').addClass('ui-form-error').focus();
-                return false;
-            }else{
-                $('[data-form="editProfile"] select[name="wards_id"]').removeClass('ui-form-error');
-            }
         }
 
         return true;
@@ -6005,6 +5998,41 @@ coz.view.carts = {
             $(document).on('click', function(e){
                 if( $(e.target).closest('.popover-edit-product-cart').length <=0 ){
                     $('.popover-edit-product-cart').remove();
+                }
+            });
+
+            $(document).on('change', '[data-plugin="quantity"][data-cart="true"] [data-input="quantity"]', function(e){
+                _product_id = $(this).data('product_id');
+                _product_type_id = $(this).data('product_type_id');
+                _quantity = $(this).val();
+                if( coz.isInt(_product_id) && coz.isInt(_product_type_id) ){
+                    clearInterval(coz.INTERVAL);
+                    clearTimeout(coz.INTERVAL);
+                    coz.INTERVAL = setTimeout( function(){
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: coz.baseUrl+'/cart/updateProduct?_AJAX=1',
+                            data: {products_id:_product_id, product_type_id:_product_type_id, quantity: _quantity},
+                            cache: false,
+                            success: function(data)
+                            {
+                                if(data.constructor === String){
+                                    data = $.parseJSON(data);
+                                }
+                                if( data.flag == true || data.flag == 'true' ){
+                                    _carts = data.cart;
+                                    coz.carts = _carts;
+                                    coz.view.carts.update();
+                                    coz.view.product.update(data.product, _product_id, _product_type_id);
+                                }
+                            },
+                            error: function(e)
+                            {
+                                coz.toast('Error ! OoO .please trying');
+                            }
+                        });
+                    }, coz.DELAY);
                 }
             }); 
         }
@@ -8642,41 +8670,31 @@ coz.common = {
         });
 
         $(document).on('submit', '#registerform', function(e){
-            if($('#registerform .full_name').val().length<=0){
-                coz.toast(language.translate('txt_chua_nhap_full_name'));
-                $('#registerform .full_name').focus();
-                return false;
-            }
+
             if($('#registerform .user_name').val().length<=0){
                 coz.toast(language.translate('txt_chua_nhap_username'));
                 $('#registerform .user_name').focus();
                 return false;
             }
-            if(!coz.isEmail($('#registerform .user_name').val())){
-                coz.toast(language.translate('txt_username_chua_dung'));
-                $('#registerform .user_name').focus();
+
+            if($('#registerform .full_name').val().length<=0){
+                coz.toast(language.translate('txt_chua_nhap_full_name'));
+                $('#registerform .full_name').focus();
                 return false;
             }
-            if($('#registerform .phone').val().length<=0){
-                coz.toast(language.translate('txt_chua_nhap_phone'));
-                $('#registerform .phone').focus();
-                return false;
-            }
-            if(!coz.isPhone($('#registerform .phone').val())){
-                coz.toast(language.translate('txt_phone_chua_dung'));
-                $('#registerform .phone').focus();
-                return false;
-            }
+
             if($('#registerform .password').val().length<=0){
                 coz.toast(language.translate('txt_chua_nhap_mat_khau'));
                 $('#registerform .password').focus();
                 return false;
             }
+
             if($('#registerform .password').val() != $('#registerform .repassword').val()){
                 coz.toast(language.translate('txt_nhap_mat_khau_chua_dung'));
                 $('#registerform .repassword').focus();
                 return false;
             }
+
             return true;
         });
 

@@ -19,7 +19,8 @@ class PaymentController extends BackEndController
             "ATM"=>"ATM",
             "PAYPAL"=>"PAYPAL",
             "ONEPAY"=>"ONEPAY",
-    		"VNPAY"=>"VNPAY",
+            "VNPAY"=>"VNPAY",
+    		"VISA"=>"VISA",
         );
 
     public function __construct()
@@ -254,7 +255,7 @@ class PaymentController extends BackEndController
 
     public function autoOrderAction()
     {
-        $payments = $this->getModelTable('PaymentTable')->fetchAll();
+        $payments = $this->getModelTable('PaymentTable')->getAll();
         foreach ($payments as $key => $payment) {
             $row = array();
             $row['ordering'] = $key;

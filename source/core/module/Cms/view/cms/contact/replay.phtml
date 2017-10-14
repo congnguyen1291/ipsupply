@@ -92,11 +92,7 @@
                             <?php echo $this->translate('txt_kieu_lien_he'); ?>
                         </th>
                         <td>
-                            <?php if( $contact['type'] == 'request_quote' ){ ?>
-                                <?php echo $this->translate('txt_kieu_request_quote_lien_he'); ?>
-                            <?php }else{ ?>
-                                <?php echo $this->translate('txt_kieu_contact_lien_he'); ?>
-                            <?php } ?>
+                            <?php echo $this->translate('txt_kieu_'.$contact['type'].'_lien_he'); ?>
                         </td>
                     </tr>
 
@@ -122,6 +118,19 @@
                     <tr>
                         <td colspan="2" >
                             <?php echo $contact['description'] ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if( !empty(trim($contact['file'])) ){ ?>
+                    <tr>
+                        <th colspan="2" >
+                            <?php echo $this->translate('txt_file_lien_he'); ?>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2" >
+                            <img src="<?php echo $contact['file'] ?>" class="img-reponsive" >
                         </td>
                     </tr>
                     <?php } ?>

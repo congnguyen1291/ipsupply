@@ -38,6 +38,7 @@ class AnythingContact
     public $date_send;
     public $readed;
     public $reply;
+    public $file;
 
     public function bin( $datas )
     {
@@ -80,6 +81,7 @@ class AnythingContact
         $this->date_send                = (!empty($data['date_send'])) ? $data['date_send'] : '';
         $this->readed                   = (!empty($data['readed'])) ? $data['readed'] : '';
         $this->reply                    = (!empty($data['reply'])) ? $data['reply'] : '';
+        $this->file                    = (!empty($data['file'])) ? $data['file'] : '';
     }
 
     public function getArrayCopy()

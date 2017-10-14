@@ -29,6 +29,8 @@ class LoginController extends FrontEndController {
         $renderer->headTitle($this->website['seo_title']);
         $renderer->headMeta()->appendName('description', $this->website['seo_description']);
         $renderer->headMeta()->appendName('keywords', $this->website['seo_keywords']);
+        $redirect = $this->params()->fromQuery('redirect', '');
+
         $form = new LoginForm ();
         $request = $this->getRequest ();
         if ($request->isPost ()) {
@@ -41,11 +43,11 @@ class LoginController extends FrontEndController {
                 $result = $this->getModelTable('UserTable')->login ( $username, $password );
                 if ( !empty($result) ) {
                     $_SESSION ['MEMBER'] = $result;                    
-                    if ( !empty($_GET ['redirect']) ) {
-                        $url = urldecode ( $_GET ['redirect'] );
+                    if ( !empty($redirect) ) {
+                        $url = urldecode ( $redirect );
                         return $this->redirect ()->toUrl ( $url );
                     } else {
-                        return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile', array ('action' => 'index' ) );
+                        return $this->redirect ()->toRoute ($this->getUrlRouterLang().'profile');
                     }
                 } else {
                     return $this->redirect ()->toUrl ( $_SERVER['HTTP_REFERER'] );
@@ -53,9 +55,10 @@ class LoginController extends FrontEndController {
                 
             }
         }
+        $this->data_view['redirect'] = $redirect;
         $this->data_view['form'] = $form;
 
-        $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/sign-in' );
+        $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/sign-in'.(empty($redirect) ? '' : '?redirect='.urlencode($redirect)) );
         $is_pjax = $this->params()->fromHeader('X-PJAX', '');
         if( !empty($is_pjax) ){
             $viewModel = new ViewModel();
@@ -90,9 +93,10 @@ class LoginController extends FrontEndController {
         $renderer->headTitle($this->website['seo_title']);
         $renderer->headMeta()->appendName('description', $this->website['seo_description']);
         $renderer->headMeta()->appendName('keywords', $this->website['seo_keywords']);
+        $redirect = $this->params()->fromQuery('redirect', '');
+
         $form = new LoginForm ();
         $request = $this->getRequest ();
-
         if ($request->isPost ()) {
             $username = $request->getPost ('email', '');
             if( empty($username) ){
@@ -103,8 +107,8 @@ class LoginController extends FrontEndController {
                 $result = $this->getModelTable('UserTable')->login ( $username, $password );
                 if ( !empty($result) ) {
                     $_SESSION ['MEMBER'] = $result;
-                    if ( !empty($_GET ['redirect']) ) {
-                        $url = urldecode ( $_GET ['redirect'] );
+                    if ( !empty($redirect) ) {
+                        $url = urldecode ( $redirect );
                         return $this->redirect ()->toUrl ( $url );
                     } else {
                         return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile', array ('action' => 'index' ) );
@@ -114,9 +118,10 @@ class LoginController extends FrontEndController {
                 }
             }
         }
+        $this->data_view['redirect'] = $redirect;
         $this->data_view['form'] = $form;
 
-        $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/sign-in' );
+        $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/sign-in'.(empty($redirect) ? '' : '?redirect='.urlencode($redirect)) );
         $is_pjax = $this->params()->fromHeader('X-PJAX', '');
         if( !empty($is_pjax) ){
             $viewModel = new ViewModel();
@@ -151,6 +156,8 @@ class LoginController extends FrontEndController {
         $renderer->headTitle($this->website['seo_title']);
         $renderer->headMeta()->appendName('description', $this->website['seo_description']);
         $renderer->headMeta()->appendName('keywords', $this->website['seo_keywords']);
+
+        $redirect = $this->params()->fromQuery('redirect', '');
         
         $form = new RegisterForm ();
         $request = $this->getRequest ();
@@ -164,6 +171,17 @@ class LoginController extends FrontEndController {
             $repassword = $request->getPost ( 'repassword', '' );
             $phone = $request->getPost ( 'phone', '' );
             $address = $request->getPost ( 'address', '' );
+            $gender = $request->getPost ( 'gender', 0 );
+            $bidy = $request->getPost ( 'birthday', array() );
+            $birthday = date('Y-m-d');
+            if( !empty($bidy) ){
+                if( !empty($bidy['day']) 
+                    && !empty($bidy['month']) 
+                    && !empty($bidy['year']) ){
+                    $birthday = $bidy['year'].'-'.$bidy['month'].'-'.$bidy['day'];
+                }
+            }
+
             if( empty($full_name) 
                 && !empty($first_name)
                 && !empty($last_name) ){
@@ -171,8 +189,7 @@ class LoginController extends FrontEndController {
             }
             $user = $this->getModelTable('UserTable')->getUserByUserame($user_name);
             if( empty($user)
-                && !empty($full_name) && !empty($user_name) 
-                && !empty($phone) && !empty($address) 
+                && !empty($full_name) && !empty($user_name)
                 && !empty($password) && !empty($repassword)
                 && $password == $repassword ){
                 $alias = $this->toAlias($full_name);
@@ -183,6 +200,8 @@ class LoginController extends FrontEndController {
                     'last_name'         => $last_name,
                     'full_name'         => $full_name,
                     'user_name'  => $user_name,
+                    'gender'  => $gender,
+                    'birthday'  => $birthday,
                     'password'      => md5($password),
                     'users_alias'      => $alias.'.'.$total['total'],
                     'phone'      => $phone,
@@ -195,9 +214,9 @@ class LoginController extends FrontEndController {
                 $users_id = $this->getModelTable('UserTable')->createUser($row);
                 if (!empty($users_id)) {
                     $_SESSION ['MEMBER'] = $this->getModelTable('UserTable')->login( $user_name, $password);
-                    if(!empty($_GET['redirect']) || $redirect!=""){
+                    if( !empty($redirect) ){
 						if( $redirect==''){
-							$redirect = urldecode ($_GET['redirect']);
+							$redirect = urldecode ($redirect);
 						}
                         return $this->redirect ()->toUrl( $redirect );
                     } else {
@@ -206,9 +225,10 @@ class LoginController extends FrontEndController {
                 }
             }
         }
+        $this->data_view['redirect'] = $redirect;
         $this->data_view['form'] = $form;
 
-        $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/sign-up' );
+        $this->addLinkPageInfo($this->baseUrl .$this->getUrlPrefixLang().'/sign-up'.(empty($redirect) ? '' : '?redirect='.urlencode($redirect)) );
         $is_pjax = $this->params()->fromHeader('X-PJAX', '');
         if( !empty($is_pjax) ){
             $viewModel = new ViewModel();

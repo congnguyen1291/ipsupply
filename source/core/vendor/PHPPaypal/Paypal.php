@@ -421,7 +421,11 @@ class Paypal {
         return $proArray;
     }
 
-    public function processCreditCardPaypal($api, $nvp_string){
+    public function processCreditCardPaypal($nvp_string){
+    	$api='https://api-3t.paypal.com/nvp';
+    	if( $this->getIsSandbox() ){
+    		$api='https://api-3t.sandbox.paypal.com/nvp';
+    	}
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -435,12 +439,12 @@ class Paypal {
         return $result;
     }
 
-    public function getQueryStringCreditCardPaypal($payment, $carts, $amount, $currency_code, $desc){
+    public function getQueryStringCreditCardPaypal($carts){
         $query = array();
         $query['METHOD'] = 'DoDirectPayment';
-        $query['USER'] = $payment['username'];
-        $query['PWD'] = $payment['password'];
-        $query['SIGNATURE'] = $payment['signature'];
+        $query['USER'] = $carts['username'];
+        $query['PWD'] = $carts['password'];
+        $query['SIGNATURE'] = $carts['signature'];
         $query['VERSION'] = '85.0';
         $query['PAYMENTACTION'] = 'Sale';
         $query['IPADDRESS'] = $_SERVER['REMOTE_ADDR'];
@@ -448,27 +452,87 @@ class Paypal {
         $query['CREDITCARDTYPE'] = $carts['creditcardtype'];
         $query['ACCT'] = $carts['acct'];
         $query['EXPDATE'] = $carts['expdate'];
-        $query['CVV2'] = $carts['cw2'];
+        $query['CVV2'] = $carts['cvv'];
 
-        $query['FIRSTNAME'] = $carts['first_name'];
-        $query['LASTNAME'] = $carts['last_name'];
-        $query['EMAIL'] = $carts['email'];
+        if( !empty($carts['first_name']) ){
+	        $query['FIRSTNAME'] = $carts['first_name'];
+	    }
 
-        $query['STREET'] = $carts['address'];
-        $query['CITY'] = $carts['city'];
-        $query['STATE'] = $carts['districts'];
-        $query['COUNTRYCODE'] = $carts['country_code'];
-        $query['ZIP'] = $carts['zipcode'];
+	    if( !empty($carts['last_name']) ){
+	        $query['LASTNAME'] = $carts['last_name'];
+	    }
 
-        $query['AMT'] = $amount;
-        $query['CURRENCYCODE'] = $currency_code;
-        $query['DESC'] = $desc;
+	    if( !empty($carts['email']) ){
+	        $query['EMAIL'] = $carts['email'];
+	    }
+
+	    if( !empty($carts['desc']) ){
+	        $query['DESC'] = $carts['desc'];
+	    }
+
+	    if( !empty($carts['street']) ){
+	        $query['STREET'] = $carts['street'];
+	    }
+
+	    if( !empty($carts['city']) ){
+	        $query['CITY'] = $carts['city'];
+	    }
+
+	    if( !empty($carts['state']) ){
+	        $query['STATE'] = $carts['state'];
+	    }
+
+	    if( !empty($carts['country_code']) ){
+	        $query['COUNTRYCODE'] = $carts['country_code'];
+	    }
+
+	    if( !empty($carts['zipcode']) ){
+	        $query['ZIP'] = $carts['zipcode'];
+	    }
+
+        $query['AMT'] = $carts['amount'];
+        $query['CURRENCYCODE'] = $carts['currency'];
 
         $query_string = http_build_query($query);
         return $query_string;
     }
 
     /*
+
+    $paypal = new Paypal( );
+    $is_sandbox = TRUE;
+    $paypal->setIsSandbox( $is_sandbox );
+    $creditCard = array(
+            'username' => 'dieplac7494_api1.gmail.com',
+            'password' => '55W7C6BF8YKF4ZCU',
+            'signature' => 'AKrx410tk16ZxXUkAA4vgll9MiDPAjLEsZ9cuTQxNSYj2ZEYa3TPoHc4',
+            'creditcardtype' => 'Visa',//Visa, MasterCard, và Discover, American Express
+            'acct' => '4032035898982020',
+            'expdate' => '082020',
+            'cvv' => '020',
+            'first_name' => 'Yang',
+            'last_name' => 'Ling',
+            //'email' => 'test@coz.vn',
+            'street' => '1 Main St',
+            'city' => 'San Jose',
+            'state' => 'CA',
+            'country_code' => 'US',
+            'zipcode' => '95131',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'desc' => 'Testing Payments Pro'
+        );
+    $query_string = $paypal->getQueryStringCreditCardPaypal($creditCard);
+    $result = $paypal->processCreditCardPaypal($query_string);
+    $result = $paypal->NVPToArray($result);
+    print_r($result);
+    if( !empty($result) 
+        && !empty($result['ACK'])
+        && strtolower($result['ACK']) == 'success' ){
+        die('thanh cong');
+    }
+    die('that bai');
+
 	case 'ATM':
         {
             $rate_exchange = 1;

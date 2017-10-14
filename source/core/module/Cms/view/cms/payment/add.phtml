@@ -61,14 +61,14 @@
                     <?php echo $this->formRow($form->get('code')); ?>
                 </div>
 
-                <div class="form-group payment_atm payment_paypal" style="display:none" >
+                <div class="form-group payment_atm payment_paypal paypal_web" style="display:none" >
                     <label for="sale_account">
                         <?php echo $this->translate('txt_tai_khoan_nhan_tien'); ?>
                     </label>
                     <?php echo $this->formRow($form->get('sale_account')); ?>
                 </div>
 
-                <div class="clearfix payment_paypal" style="display:none" >
+                <div class="clearfix payment_paypal paypal_api" style="display:none" >
                     <div class="row" >
                         <div class="col-sm-4" >
                             <div class="form-group" >

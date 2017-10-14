@@ -1285,7 +1285,31 @@ $router = array(
                 'action' => 'index',
             ),
         ),
-    )
+    ),
+
+    'aboutus' => array(
+        'type' => 'Zend\Mvc\Router\Http\Literal',
+        'priority' => 133, 
+        'options' => array(
+            'route' => '/about-us.html',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Articles',
+                'action' => 'about-us',
+            ),
+        )
+    ),
+
+    'sellyourcisco' => array(
+        'type' => 'Zend\Mvc\Router\Http\Literal',
+        'priority' => 133, 
+        'options' => array(
+            'route' => '/sell-your-cisco.html',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Contact',
+                'action' => 'sell-your-cisco',
+            ),
+        )
+    ),
 );
 $all_router = $router;
 $all_router['router_vi']  = array(

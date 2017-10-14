@@ -151,19 +151,30 @@ class ProductTable extends AppTable
 
         if(isset($where['is_published'])){
             $select->where(array(
-                'products.is_published' => 1,
+                'products.is_published' => $where['is_published'],
             ));
         }
         if(isset($where['is_available'])){
             $select->where(array(
-                'products.is_available' => 1,
+                'products.is_available' => $where['is_available'],
             ));
         }
-		if(isset($where['is_hot'])){
+        if(isset($where['is_new'])){
             $select->where(array(
-                'products.is_hot' => 1,
+                'products.is_new' => $where['is_new'],
             ));
         }
+        if(isset($where['is_hot'])){
+            $select->where(array(
+                'products.is_hot' => $where['is_hot'],
+            ));
+        }
+        if(isset($where['is_goingon'])){
+            $select->where(array(
+                'products.is_goingon' => $where['is_goingon'],
+            ));
+        }
+        
 		$select->where(array(
             'products.is_delete' => 0,
         ));
@@ -279,17 +290,27 @@ class ProductTable extends AppTable
         }
         if(isset($where['is_published'])){
             $select->where(array(
-                'products.is_published' => 1,
+                'products.is_published' => $where['is_published'],
             ));
         }
         if(isset($where['is_available'])){
             $select->where(array(
-                'products.is_available' => 1,
+                'products.is_available' => $where['is_available'],
             ));
         }
-		if(isset($where['is_hot'])){
+		if(isset($where['is_new'])){
             $select->where(array(
-                'products.is_hot' => 1,
+                'products.is_new' => $where['is_new'],
+            ));
+        }
+        if(isset($where['is_hot'])){
+            $select->where(array(
+                'products.is_hot' => $where['is_hot'],
+            ));
+        }
+        if(isset($where['is_goingon'])){
+            $select->where(array(
+                'products.is_goingon' => $where['is_goingon'],
             ));
         }
         $select->where(array(

@@ -46,12 +46,14 @@ class ProfileController extends FrontEndController
 		$total_invoice = $this->getModelTable('InvoiceTable')->countInvoiceMember($member['users_id']);
         $total_comments = $this->getModelTable ( 'CommentsTable' )->countCommentOfUser($member['users_id']);
 		$total_product = $this->getModelTable ( 'InvoiceTable' )->countProductsOfUser($member['users_id']);
-		$point = $this->getModelTable( 'UserTable')->getTotalPoint($member['users_id']);
+        $shipping = $this->getModelTable('UserTable')->getShippingAddress($member['users_id']);
+        $billing = $this->getModelTable('UserTable')->getBillingAddress($member['users_id']);
 
         $this->data_view['total_invoice'] = $total_invoice;
         $this->data_view['total_comments'] = $total_comments;
         $this->data_view['total_product'] = $total_product;
-        $this->data_view['point'] = $point;
+        $this->data_view['shipping'] = $shipping;
+        $this->data_view['billing'] = $billing;
 
         return $this->data_view;
     }
@@ -129,12 +131,14 @@ class ProfileController extends FrontEndController
         $paginator = new Paginator($total, $page_size, $page, $link);
 
         $point = $this->getModelTable( 'UserTable')->getTotalPoint($member['users_id']);
+        $total_product = $this->getModelTable ( 'InvoiceTable' )->countProductsOfUser($member['users_id']);
 
         $this->data_view['invoices'] = $invoices;
         $this->data_view['paging'] = $paginator->toHtml();
         $this->data_view['page'] = $page;
         $this->data_view['page_size'] = $page_size;
         $this->data_view['total'] = $total;
+        $this->data_view['total_product'] = $total_product;
         $this->data_view['point'] = $point;
 
         return $this->data_view;
@@ -481,64 +485,138 @@ class ProfileController extends FrontEndController
         }
         $member = $hPUser->getMember();
 
-        $point = $this->getModelTable( 'UserTable')->getTotalPoint($member['users_id']);
-
     	$request = $this->getRequest ();
     	if ($request->isPost ()) {
-            $first_name = $request->getPost ('first_name', '');
-            $last_name = $request->getPost ('last_name', '');
             $full_name = $request->getPost ('full_name', '');
             $phone = $request->getPost ('phone', '');
-            $birthday = $request->getPost ('birthday', '');
+            $gender = $request->getPost ( 'gender', 0 );
             $address = $request->getPost ('address', '');
-            $country_id = $request->getPost ('country_id', '');
-            $address01 = $request->getPost ('address01', '');
-            $address01 = $request->getPost ('address01', '');
-            $city = $request->getPost ('city', '');
-            $state = $request->getPost ('state', '');
-            $suburb = $request->getPost ('suburb', '');
-            $region = $request->getPost ('region', '');
-            $province = $request->getPost ('province', '');
-            $zipcode = $request->getPost ('zipcode', '');
-            $cities_id = $request->getPost ('cities_id', '');
-            $districts_id = $request->getPost ('districts_id', '');
-            $wards_id = $request->getPost ('wards_id', '');
 
-            $longitude = $request->getPost ('longitude', 0);
-    		$latitude = $request->getPost ('latitude', 0);
-            
-            if( empty($full_name) 
-                && !empty($first_name)
-                && !empty($last_name) ){
-                $full_name = $first_name.' '.$last_name;
+            $bidy = $request->getPost ( 'birthday', array() );
+            $birthday = date('Y-m-d');
+            if( !empty($bidy) ){
+                if( !empty($bidy['day']) 
+                    && !empty($bidy['month']) 
+                    && !empty($bidy['year']) ){
+                    $birthday = $bidy['year'].'-'.$bidy['month'].'-'.$bidy['day'];
+                }
             }
 
-    		if( !empty($first_name) && !empty($last_name)
-                && !empty($phone) && !empty($address) ){
-                $row = array(   'first_name' => $first_name,
-                                'last_name' => $last_name,
-                                'full_name' => $full_name,
-                                'phone' => $phone,
-                                'birthday' => $birthday,
-                                'country_id' => $country_id,
-                                'address' => $address,
-                                'address01' => $address01,
-                                'city' => $city,
-                                'state' => $state,
-                                'suburb' => $suburb,
-                                'region' => $region,
-                                'province' => $province,
-                                'zipcode' => $zipcode,
-                                'cities_id' => $cities_id,
-                                'districts_id' => $districts_id,
-                                'wards_id' => $wards_id,
-                                'longitude' => $longitude,
-                                'latitude' => $latitude );
+    		if( !empty($full_name) && !empty($phone) ){
+                $row = array(
+                        'full_name' => $full_name,
+                        'phone' => $phone,
+                        'birthday' => $birthday,
+                        'gender' => $gender 
+                    );
 				$this->getModelTable ( 'UserTable' )->editUserByArray ( $row, $_SESSION['MEMBER']['users_id'] );
 				return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
     		}
     	}
-        $this->data_view['point'] = $point;
+        return $this->data_view;
+    }
+
+    public function editShippingAction(){
+        $hPUser = $this->getServiceLocator()->get('viewhelpermanager')->get('User');
+        $script = $this->getServiceLocator()->get('viewhelpermanager')->get('inlineScript');
+        $translator = $this->getServiceLocator()->get('translator'); 
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->headTitle($this->website['seo_title']);
+        $renderer->headMeta()->appendName('description', $this->website['seo_keywords']);
+        $renderer->headMeta()->appendName('keywords', $this->website['seo_description']);
+        
+        if( !$hPUser->hasLogin() ){
+            return $this->redirect()->toRoute($this->getUrlRouterLang().'login');
+        }
+        $member = $hPUser->getMember();
+        $shipping = $this->getModelTable('UserTable')->getShippingAddress($member['users_id']);
+        if( empty($shipping) ){
+            return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
+        }
+        $request = $this->getRequest ();
+        if ($request->isPost ()) {
+            $email = $request->getPost ('email', '');
+            $full_name = $request->getPost ('full_name', '');
+            $phone = $request->getPost ('phone', '');
+            $address = $request->getPost ('address', '');
+
+            if( !empty($email) && !empty($full_name) && !empty($phone) ){
+               $row = array(
+                    'users_id' => $member['users_id'],
+                    'website_id' => $this->website->website_id,
+                    'email' => $email,
+                    'full_name' => $full_name,
+                    'phone' => $phone,
+                    'address' => $address,
+                    'address01' => $shipping->address01,
+                    'zipcode' => $shipping->zipcode,
+                    'country_id' => $shipping->country_id,
+                    'city' => $shipping->city,
+                    'state' => $shipping->state,
+                    'suburb' => $shipping->suburb,
+                    'region' => $shipping->region,
+                    'province' => $shipping->province,
+                    'cities_id' => $shipping->cities_id,
+                    'districts_id' => $shipping->districts_id,
+                    'wards_id' => $shipping->wards_id,
+                );
+                $this->getModelTable('UserTable')->updateShippingAddress($row);
+                return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
+            }
+        }
+        $this->data_view['shipping'] = $shipping;
+        return $this->data_view;
+    }
+
+    public function editBillingAction(){
+        $hPUser = $this->getServiceLocator()->get('viewhelpermanager')->get('User');
+        $script = $this->getServiceLocator()->get('viewhelpermanager')->get('inlineScript');
+        $translator = $this->getServiceLocator()->get('translator'); 
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->headTitle($this->website['seo_title']);
+        $renderer->headMeta()->appendName('description', $this->website['seo_keywords']);
+        $renderer->headMeta()->appendName('keywords', $this->website['seo_description']);
+        
+        if( !$hPUser->hasLogin() ){
+            return $this->redirect()->toRoute($this->getUrlRouterLang().'login');
+        }
+        $member = $hPUser->getMember();
+        $billing = $this->getModelTable('UserTable')->getBillingAddress($member['users_id']);
+        if( empty($billing) ){
+            return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
+        }
+        $request = $this->getRequest ();
+        if ($request->isPost ()) {
+            $email = $request->getPost ('email', '');
+            $full_name = $request->getPost ('full_name', '');
+            $phone = $request->getPost ('phone', '');
+            $address = $request->getPost ('address', '');
+
+            if( !empty($email) && !empty($full_name) && !empty($phone) ){
+               $row = array(
+                    'users_id' => $member['users_id'],
+                    'website_id' => $this->website->website_id,
+                    'email' => $email,
+                    'full_name' => $full_name,
+                    'phone' => $phone,
+                    'address' => $address,
+                    'address01' => $billing->address01,
+                    'zipcode' => $billing->zipcode,
+                    'country_id' => $billing->country_id,
+                    'city' => $billing->city,
+                    'state' => $billing->state,
+                    'suburb' => $billing->suburb,
+                    'region' => $billing->region,
+                    'province' => $billing->province,
+                    'cities_id' => $billing->cities_id,
+                    'districts_id' => $billing->districts_id,
+                    'wards_id' => $billing->wards_id,
+                );
+                $this->getModelTable('UserTable')->updateBillingAddress($row);
+                return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
+            }
+        }
+        $this->data_view['billing'] = $billing;
         return $this->data_view;
     }
     
