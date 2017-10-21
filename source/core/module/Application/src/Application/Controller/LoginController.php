@@ -13,7 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Application\Form\RegisterForm;
 use Application\Form\LoginForm;
 use Zend\View\Model\JsonModel;
-//use Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 //use Openid\Google;
 
@@ -255,7 +255,15 @@ class LoginController extends FrontEndController {
 
     public function logoutAction() {
         unset ($_SESSION ['MEMBER']);
-        return $this->redirect ()->toUrl ( $_SERVER ['HTTP_REFERER'] );
+        $request = $this->getRequest();
+        $referer = $request->getHeader('referer', '');
+        if( !empty($referer) ){
+            $url = $referer->getUri();
+            if( !(strpos($url, 'logout') !== false) ){
+                return $this->redirect ()->toUrl ( $url );
+            }
+        }
+        return $this->redirect()->toRoute($this->getUrlRouterLang().'home');
     }
 
     public function facebookAction() {

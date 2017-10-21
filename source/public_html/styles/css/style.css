@@ -844,7 +844,7 @@ select.form-control {
     position: absolute;
     top: 50%;
     right: 10px;
-    display: block;
+    display: none;
     transform: translateY(-50%);
     color: #FFF;
 }
@@ -915,7 +915,8 @@ select.form-control {
     border-bottom: 1px solid #eee;
 }
 .group-heading .title-box{
-    margin-bottom: 0
+    margin-bottom: 0;
+    font-weight: bolder;
 }
 .owl-carousel .product-sm{
     border-right: 1px solid #eee
@@ -966,7 +967,7 @@ select.form-control {
     border:1px solid #f1f2f2;
     color: #231f20;
     position: relative;
-    font-size: 120%;
+    font-size: 160%;
 }
 .nav-tab-detail .nav-link.active{
     background: #009be0;
@@ -997,6 +998,7 @@ select.form-control {
 .details-product .product-code {
     color: #a7a9ac;
     margin-bottom: 20px;
+    text-transform: uppercase;
 }
 .details-product .product-name {
     margin-bottom: 20px;
@@ -1004,6 +1006,22 @@ select.form-control {
 
 .details-product .rating-product{
     margin-bottom: 20px;
+    font-size: 120%
+}
+.title-shipping-rule {
+    font-size: 140%;
+    padding: 0 5px 5px 5px
+}
+.title-shipping-rule span{
+    display: inline-block;
+    padding-bottom: 0;
+    border-bottom: 1px solid #7a797a
+}
+.title-shipping-rule a{
+    color: #e40314;
+    display: inline-block;
+    padding-bottom: 0;
+    border-bottom: 1px solid #e87176
 }
 
 .details-product .star-product{
@@ -1093,6 +1111,12 @@ select.form-control {
 .itype-product {
     margin-bottom: 0;
     color: #6d6e71;
+    font-size: 160%;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+.itype-product input:checked+span{
+    color: #e21836
 }
 .product-arside {
     margin-bottom: 70px;
@@ -1318,6 +1342,7 @@ select.form-control {
 .details-product .product-description {
     margin-bottom: 20px;
     color: #6d6e71;
+    font-size: 120%
 }
 .btn-more-product-description {
     display: inline-block;
@@ -1755,7 +1780,7 @@ header#header {
 .unit-login .or-divider{
     position: absolute;
     top: 0;
-    left: 66.666667%;
+    left: 41.666667%;
     bottom: 0;
     width: 1px;
     z-index: 9;
@@ -2083,10 +2108,9 @@ header#header {
 }
 .bcollap-address .note-form {
     position: absolute;
-    top: 50%;
+    top: 15px;
     right: 0;
     width: 30%;
-    transform: translateY(-50%);
     color: #ccc;
 }
 .form-address-cart {
@@ -2118,8 +2142,12 @@ header#header {
 .tb-order-detail .tr-h .small {
     color: #999;
 }
-.tb-order-detail td {
+.tb-order-detail td,
+.tb-order-detail th {
     padding: 10px;
+}
+.tb-order-detail th {
+    font-weight: bold;
 }
 .tb-order-detail .tr-line td {
     height: 1px;
@@ -2169,7 +2197,9 @@ header#header {
 .payment-tabs.nav-inline .nav-link {
     display: block;
     padding: 10px;
-    border: 1px dotted transparent
+    border: 1px dotted transparent;
+    position: relative;
+    z-index: 99
 }
 .payment-tabs.nav-inline .nav-link.active {
     background: #fff9af;
@@ -2179,8 +2209,12 @@ header#header {
     padding: 30px 15%;
     border-top: 2px solid #eee;
     position: relative;
+    margin-top: 20px
 }
-.form-payment-visa:before {
+.form-payment-visa.tab-pay-atm {
+    padding: 30px 0;
+}
+.payment-tabs.nav-inline .nav-link.active:before {
     content: "";
     display: block;
     width: 0;
@@ -2189,11 +2223,11 @@ header#header {
     border-right: 15px solid transparent;
     border-top: 15px solid #eee;
     position: absolute;
-    top: 0px;
+    bottom: -37px;
     left: 50%;
     margin-left: -15px;
 }
-.form-payment-visa:after {
+.payment-tabs.nav-inline .nav-link.active:after {
     content: "";
     display: block;
     width: 0;
@@ -2202,7 +2236,7 @@ header#header {
     border-right: 15px solid transparent;
     border-top: 15px solid #FFF;
     position: absolute;
-    top: -2px;
+    bottom: -35px;
     left: 50%;
     margin-left: -15px;
 }
@@ -2571,6 +2605,25 @@ table.coz-table-invoice td.col-lm {
     width: 10px;
     white-space: nowrap;
 }
+.zoomWindowContainer .zoomWindow {
+    border: none !important;
+    box-shadow: 0 0 15px 0 rgba(0,0,0,.3);
+}
+.list-product-mobile .item+.item {
+    display: none;
+}
+.list-product-mobile .product-sm .info-product {
+    border-bottom: none
+}
+.list-product-mobile .item + .item .product-sm {
+    border-top: 1px solid #eee;
+}
+.group-product.view-all .list-product-mobile .item+.item {
+    display: block;
+}
+.lb-ctrol {
+    font-weight: bold;
+}
 @media (max-width: 991px){
     .container {
         max-width: 98%;
@@ -2807,6 +2860,7 @@ table.coz-table-invoice td.col-lm {
     .group-body {
         border: 1px solid #eee;
         border-top: none;
+        border-bottom: none;
     }
     .select-filter{
         display: block;

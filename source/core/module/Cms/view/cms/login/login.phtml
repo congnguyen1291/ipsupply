@@ -16,9 +16,20 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
+        <style type="text/css" >
+            .canvas-wrap {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1
+            }
+        </style>
     </head>
     <body>
-        <div class="form-box" id="login-box">
+        <section class="canvas-wrap" ><div id="canvas" class="gradient" ></div></section>
+        <div class="form-box" id="login-box" style="position: relative;z-index: 9" >
             <div class="header">
                 <?php echo $this->translate('txt_sign_in'); ?>
             </div>
@@ -31,15 +42,15 @@
             
             ?>
             <input type='hidden' value="<?php echo !empty($_SERVER["HTTP_REFERER"]) ? urlencode($_SERVER["HTTP_REFERER"]) : '';?>" name="redirect_refer" />
-            <div class="body bg-gray">
+            <div class="body">
                 <div class="form-group">
                     <?php echo $this->formRow($form->get('username')); ?>
                 </div>
                 <div class="form-group">
                     <?php echo $this->formRow($form->get('password')); ?>
                 </div>
-                <div class="form-group">
-                    <label for="rememberme">
+                <div class="form-group" >
+                    <label for="rememberme" style="font-weight: normal;" >
                         <?php echo $this->formRow($form->get('rememberme')); ?> 
                         <?php echo $this->translate('txt_remember_me'); ?>
                     </label>
@@ -50,7 +61,7 @@
                     <?php echo $this->translate('txt_sign_me_in'); ?>
                 </button>
                 <p class="text-center" >
-                    <a href="/cms/login/forgot" style="color: #ccc" >
+                    <a href="/cms/login/forgot" style="color: #333" >
                         <?php echo $this->translate('txt_i_forgot_my_password'); ?>
                     </a>
                 </p>
@@ -60,6 +71,11 @@
         <?php echo $this->headScript()
             ->appendFile($this->basePath() . '/admincp/js/jquery.min.js')
             ->appendFile($this->basePath() . '/admincp/js/bootstrap.min.js')
+            ->appendFile('//cdn.coz.vn/threejs-bg-line/three.min.js')
+            ->appendFile('//cdn.coz.vn/threejs-bg-line/projector.js')
+            ->appendFile('//cdn.coz.vn/threejs-bg-line/canvas-renderer.js')
+            ->appendFile('//cdn.coz.vn/threejs-bg-line/3d-lines-animation.js')
+            ->appendFile('//cdn.coz.vn/threejs-bg-line/color.js')
         ?>
     </body>
 </html>

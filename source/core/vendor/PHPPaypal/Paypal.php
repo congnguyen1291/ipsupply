@@ -36,6 +36,7 @@ class Paypal {
 	private $state = '';
 	private $zip = '';
 
+	private $tax = 0;
 	private $shipping = 0;
 	private $shipping2 = 0;
 	private $handling = 0;
@@ -193,6 +194,15 @@ class Paypal {
 
 	private function getZip() {
 		return $this->zip;
+	}
+
+	public function setTax( $tax ) {
+		$this->tax = $tax;
+		return $this;
+	}
+
+	private function getTax() {
+		return $this->tax;
 	}
 
 	public function setShipping( $shipping ) {
@@ -361,6 +371,7 @@ class Paypal {
     //$paypal->setAmount( 30000 );
     $paypal->setRateExchange( 1 );
     $url = $paypal->getUrlPay();
+    https://www.paypal.com/cgi-bin/webscr?cmd=_cart&charset=utf-8&upload=1&business=sales%40ipsupply.com.au&invoice=49&currency_code=AUD&return=http%3A%2F%2Fipsupply.coz.vn%2Fau%2Fpaypal%2Freturn%2F49&cancel_return=http%3A%2F%2Fipsupply.coz.vn%2Fau%2Fpaypal%2Fcancel%2F49¬ify_url=http%3A%2F%2Fipsupply.coz.vn%2Fau%2Fpaypal%2Fnotifi%2F49&rm=2&lc=2&cbt=Continue+Paypal+payments&item_name_1=Cisco+1800+Series+Integrated+Router%2C+Model+1811%2FK9%28%29&quantity_1=1&amount_1=135.95&shipping_1=15&tax_1=20
 	*/
         
 	public function getUrlPay() {
@@ -368,9 +379,8 @@ class Paypal {
 			"cmd" => $this->getCmd(),
 		    "charset" => $this->getCharset(),
 		    "upload" => $this->getUpload(),
-		    "invoice" => $this->getInvoice(),
 		    "business" => $this->getBusiness(),
-
+		    "invoice" => $this->getInvoice(),
 		    "currency_code" => $this->getCurrencyCode(),
 		    "return" => $this->getReturn(),
 		    "cancel_return" => $this->getCancelReturn(),
@@ -380,6 +390,10 @@ class Paypal {
 		    "cbt" => $this->getCbt(),
 		);
 		$products = $this->getProducts();
+		$shipping = $this->getShipping();
+		$shipping = $shipping/$this->getRateExchange();
+		$tax = $this->getTax();
+		$tax = $tax/$this->getRateExchange();
 		if( !empty($products) ){
 			$i=1;
 			foreach ( $products as $key => $p) {
@@ -389,10 +403,22 @@ class Paypal {
 	            $row['amount_'.$i] = number_format((float)$price_usd, 2, '.', '');
 	            $i++;
 	        }
+	        if( !empty($shipping) ){
+	        	$row['shipping_1'] = $shipping;
+	        }
+	        if( !empty($tax) ){
+	        	$row['tax_1'] = $tax;
+	        }
 	    }else{
 	    	$row['item_name'] = $this->getItemName();
 	    	$price_usd = $this->getAmount()/$this->getRateExchange();
 	    	$row['amount'] = number_format((float)$price_usd, 2, '.', '');
+	    	if( !empty($shipping) ){
+	        	$row['shipping'] = $shipping;
+	        }
+	        if( !empty($tax) ){
+	        	$row['tax'] = $tax;
+	        }
 	    }
 	    $query = http_build_query($row);
 		$url = '';

@@ -69,7 +69,7 @@ $item_cum = array();
         <div class="top-detail clearfix" >
             <div class="container">
                 <div class="row" >
-                    <div class="col-sm-10 col-sm-offset-1" >
+                    <div class="col-sm-12" >
                         <div class="row" >
                             <?php $images = $this->Images()->getImages($this->Products()->getProductsId($product)); 
                                 if ( !empty($images) ){ ?>
@@ -77,7 +77,7 @@ $item_cum = array();
                                 <div class="slider-detail clearfix" >
                                     <div class="main-slider-detail" >
                                         <div class="box-image-featured pd5" >
-                                            <img class="product-image-feature" src="<?php echo $this->Images()->getUrlImage($images[0]['images'], 470); ?>" alt="<?php echo $this->Products()->getTitle($product); ?>" >
+                                            <img class="product-image-feature img-fluid" src="<?php echo $this->Images()->getUrlImage($images[0]['images'], 600); ?>" data-zoom-image="<?php echo $this->Images()->getUrlImage($images[0]['images'], 750); ?>" alt="<?php echo $this->Products()->getTitle($product); ?>" >
                                             <div class="lazy-load-ball lazy-product-featured">
                                                 <div class="uil-ring-css">
                                                     <div></div>
@@ -89,7 +89,7 @@ $item_cum = array();
                                         <div class="owl-carousel owl-theme slideshow" data-neo="owlCarousel" data-own-name="owlDetailSlider" data-wow-delay="0.2s" data-dots="true" data-loop="false" data-nav = "true" data-margin = "10" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":2}, "678":{"items":2}, "1000":{"items":4}}' >
                                             <?php foreach ($images as $image){ ?>
                                             <div class="img-item-thumb" >
-                                                <a href="javascript:void(0);" title="<?php echo $this->Products()->getTitle($product); ?>" data-image="<?php echo $this->Images()->getUrlImage($image['images'], 470); ?>" >
+                                                <a href="javascript:void(0);" title="<?php echo $this->Products()->getTitle($product); ?>" data-image="<?php echo $this->Images()->getUrlImage($image['images'], 600); ?>" data-zoom-image="<?php echo $this->Images()->getUrlImage($image['images'], 750); ?>" >
                                                     <img src="<?php echo $this->Images()->getUrlImage($image['images'], 100); ?>" alt="<?php echo $this->Products()->getName($product) ?>" itemprop="image" class="img-fluid" />
                                                 </a>
                                             </div>
@@ -164,7 +164,9 @@ $item_cum = array();
                                                         <div class="col-sm-7" >
                                                             <label class="itype-product" >
                                                                 <input type="radio" checked="checked" >
-                                                                <?php echo $this->Currency()->fomatCurrency($price_sale) ?>
+                                                                <span>
+                                                                    <?php echo $this->Currency()->fomatCurrency($price_sale) ?>
+                                                                </span>
                                                             </label>
                                                         </div>
                                                         <?php } ?>
@@ -650,14 +652,30 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductNearPrice" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($product_near_price as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductNearPrice" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                    <?php foreach ($product_near_price as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
                                 </div>
-                                <?php } ?>
-
+                            </div>
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($product_near_price as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -673,14 +691,33 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductRecommends" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($product_recommends as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
-                                </div>
-                                <?php } ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductRecommends" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                
+                                    <?php foreach ($product_recommends as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
 
+                                </div>
+                            </div>
+
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($product_recommends as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -694,14 +731,32 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductHot" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($productsHot as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
-                                </div>
-                                <?php } ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductHot" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                
+                                    <?php foreach ($productsHot as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
 
+                                </div>
+                            </div>
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($productsHot as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -715,14 +770,32 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductHot" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($productsNew as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
-                                </div>
-                                <?php } ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductHot" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                
+                                    <?php foreach ($productsNew as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
 
+                                </div>
+                            </div>
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($productsNew as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -736,14 +809,33 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductSale" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($productsSale as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
-                                </div>
-                                <?php } ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductSale" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                
+                                    <?php foreach ($productsSale as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
 
+                                </div>
+                            </div>
+
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($productsSale as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -757,14 +849,33 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductBuyMost" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($productsBuyMost as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
-                                </div>
-                                <?php } ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductBuyMost" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                
+                                    <?php foreach ($productsBuyMost as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
 
+                                </div>
+                            </div>
+
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($productsBuyMost as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -778,14 +889,34 @@ $item_cum = array();
                             </h2>
                         </div>
                         <div class="group-body" >
-                            <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductBestseller" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
-                            
-                                <?php foreach ($productsBestseller as $key => $p) { ?>                
-                                <div class="item" >
-                                    <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
-                                </div>
-                                <?php } ?>
+                            <div class="hidden-sm-down" >
+                                <div class="content-sec owl-carousel owl-theme coz-owl-nav" data-neo="owlCarousel" data-own-name="owlProductBestseller" data-margin="0" data-dots="false" data-loop="false" data-nav = "true" data-margin = "0" data-autoplayTimeout="1000" data-autoPlay="5000" data-autoplayHoverPause = "true" data-navTextLeft='<i class="fa fa-chevron-left" aria-hidden="true"></i>' data-navTextRight='<i class="fa fa-chevron-right" aria-hidden="true"></i>' data-responsive='{"0":{"items":1}, "678":{"items":2}, "992":{"items":3}, "1000":{"items":4}}' >
+                                
+                                    <?php foreach ($productsBestseller as $key => $p) { ?>                
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
 
+                                </div>
+                            </div>
+
+                            <div class="hidden-md-up" >
+                                <div class="list-product-mobile" >
+                                    <?php foreach ($productsBuyMost as $key => $p) { ?>
+                                    <div class="item" >
+                                        <?php   echo $this->partial('app/item-product', array('product' => $p, 'index' => $key , 'notSchema' => TRUE) ); ?>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden-md-up" >
+                            <div class="text-xs-center" >
+                                <a href="javascript:void(0);" class="btn btn-block btn-style-b btn-view-more-mm-product" data-btn="viewAllProductMobile" >
+                                    <?php echo $this->translate('txt_view_all') ?>
+                                </a>
                             </div>
                         </div>
                     </div>

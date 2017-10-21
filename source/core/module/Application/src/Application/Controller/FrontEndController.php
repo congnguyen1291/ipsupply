@@ -174,6 +174,7 @@ class FrontEndController extends AbstractActionController {
                 && $_SESSION['CMSMEMBER']['website_id'] == ID_MASTERPAGE)
                 || (isset($_SESSION['CMSMEMBER']['permissions']) 
                     && isset($_SESSION['CMSMEMBER']['permissions']['cms']['language']['manage-keywords']) ) ){
+                $this->addJS('//cdn.coz.vn/nicEdit/nicEdit.js');
                 $this->addJS($this->baseUrl.'/styles/js/translate.js');
             }
         }

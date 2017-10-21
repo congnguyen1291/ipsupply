@@ -8,7 +8,6 @@
 
 namespace Application\Controller;
 
-
 //use Zend\View\Helper\ViewModel;
 use Application\Model\User;
 use Zend\View\Model\ViewModel;
@@ -21,10 +20,6 @@ use Zend\Mime\Part as MimePart;
 
 class PaypalController extends FrontEndController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function returnAction()
     {

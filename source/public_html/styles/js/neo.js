@@ -835,14 +835,14 @@ coz.checkFormFqa = function(el){
 };
 
 coz.checkRegisterMailNewLetter = function(el){
-    if($('.email', el).val().length<=0){
+    if($('input[name="email"]', el).val().length<=0){
         coz.toast(language.translate('txt_chua_nhap_email'));
-        $('.email', el).focus();
+        $('input[name="email"]', el).focus();
         return false;
     }
-    if(!coz.isEmail($('.email', el).val())){
+    if(!coz.isEmail($('input[name="email"]', el).val())){
         coz.toast(language.translate('txt_email_chua_dung'));
-        $('.email', el).focus();
+        $('input[name="email"]', el).focus();
         return false;
     }
     return true;
@@ -1388,22 +1388,33 @@ coz.payment = {
                 }
             });
 
-            $('input[name="ship_to_different_address"]', _this.el).on('change', function(){
+            $('input[name="trans[ship_to_different_address]"]', _this.el).on('change', function(){
                 if($(this).is(':checked')){
                     country_id = $('[name="trans[country_id]"]', _this.el).val();
-                    console.log(country_id);
-                    $('[name="ships[country_id]"]', _this.el).val(country_id).trigger("change");
+                    ships_country_id = $('[name="ships[country_id]"]', _this.el).val();
+                    if( ships_country_id == 0
+                        || $.trim(ships_country_id).length <=0 ){
+                        $('[name="ships[country_id]"]', _this.el).val(country_id).trigger("change");
+                    }
                     _this.showScreenShipsAddressPayment();
                     //_this.updateAddress(country_id, 'ships');
                 }else{
-                    country_id = $('[name="ships[country_id]"]', _this.el).val();
-                    $('[name="trans[country_id]"]', _this.el).val(country_id).trigger("change");
+                    //country_id = $('[name="ships[country_id]"]', _this.el).val();
+                    //$('[name="trans[country_id]"]', _this.el).val(country_id).trigger("change");
                     _this.showScreenAddressPayment();
                     //_this.updateAddress(country_id, 'trans');
                 }
             });
 
             $('input[name="trans[has_ship]"]', _this.el).on('change', function(){
+                if( $('input[name="trans[has_ship]"]:checked', _this.el).val() == 0 ){
+                    $('[data-neo="hideWhenShip"]', _this.el).show();
+                }else{
+                    $('[data-neo="hideWhenShip"]', _this.el).hide();
+                    if( !$('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
+                        $('input[name="trans[ship_to_different_address]"]', _this.el).attr('checked', true).trigger('change');
+                    }
+                }
                 _this.getShipping();
             });
 
@@ -1549,6 +1560,21 @@ coz.payment = {
                 country_id = $('[name="trans[country_id]"]', _this.el).val();
                 _this.updateAddress(country_id, 'trans');
             }
+
+            if( $('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') 
+                && $('[name="ships[country_id]"]', _this.el).length>0 ){
+                country_id = $('[name="ships[country_id]"]', _this.el).val();
+                _this.updateAddress(country_id, 'ships');
+            }
+
+            if( $('input[name="trans[has_ship]"]:checked', _this.el).val() == 0 ){
+                $('[data-neo="hideWhenShip"]', _this.el).show();
+            }else{
+                $('[data-neo="hideWhenShip"]', _this.el).hide();
+                if( !$('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
+                    $('input[name="trans[ship_to_different_address]"]', _this.el).attr('checked', true).trigger('change');
+                }
+            }
         }
     },
     checkForm: function(){
@@ -1645,7 +1671,7 @@ coz.payment = {
         if($.trim($('input[name="trans[full_name]"]', _this.el).val()).length <=0 ){
             coz.toast(language.translate('txt_ban_phai_nhap_ten'));
             $('input[name="trans[full_name]"]', _this.el).addClass('ui-form-error').focus();
-            _this.showScreenAddressPayment();
+            //_this.showScreenAddressPayment();
             return false;
         }else{
             $('input[name="trans[full_name]"]', _this.el).removeClass('ui-form-error');
@@ -1654,7 +1680,7 @@ coz.payment = {
         if( !coz.isEmail($('input[name="trans[email]"]', _this.el).val()) ){
             coz.toast(language.translate('txt_email_khong_hop_le'));
             $('input[name="trans[email]"]', _this.el).addClass('ui-form-error').focus();
-            _this.showScreenAddressPayment();
+            //_this.showScreenAddressPayment();
             return false;
         }else{
             $('input[name="trans[email]"]', _this.el).removeClass('ui-form-error');
@@ -1663,136 +1689,138 @@ coz.payment = {
         if( !coz.isPhone($('input[name="trans[phone]"]', _this.el).val()) ){
             coz.toast(language.translate('txt_so_dien_thoai_khong_hop_le'));
             $('input[name="trans[phone]"]', _this.el).addClass('ui-form-error').focus();
-            _this.showScreenAddressPayment();
+            //_this.showScreenAddressPayment();
             return false;
         }else{
             $('input[name="trans[phone]"]', _this.el).removeClass('ui-form-error');
         }
-
-        if($('[name="ships[country_id]"]', _this.el).length<=0 
-          || $.trim($('[name="trans[country_id]"]', _this.el).val()).length <=0 ){
-            coz.toast(language.translate('txt_chua_chon_contry'));
-            $('[name="trans[country_id]"]', _this.el).addClass('ui-form-error').focus();
-            _this.showScreenAddressPayment();
-            return false;
-        }else{
-            $('[name="trans[country_id]"]', _this.el).removeClass('ui-form-error');
-        }
-
-        if($('input[name="trans[address]"]', _this.el).length <=0 
-            || $.trim($('input[name="trans[address]"]', _this.el).val()).length <=0 ){
-            coz.toast(language.translate('txt_dia_chi_khong_duoc_bo_trong'));
-            $('input[name="trans[address]"]', _this.el).addClass('ui-form-error').focus();
-            _this.showScreenAddressPayment();
-            return false;
-        }else{
-            $('input[name="trans[address]"]', _this.el).removeClass('ui-form-error');
-        }
-
-        if($('input[name="trans[city]"]', _this.el).length>0){
-            if($.trim($('input[name="trans[city]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
-                $('input[name="trans[city]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
+        if( $('input[name="trans[has_ship]"]', _this.el).length <=0 
+            || $('input[name="trans[has_ship]"]:checked', _this.el).val() == 0 ){
+            if($('[name="ships[country_id]"]', _this.el).length<=0 
+              || $.trim($('[name="trans[country_id]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_chua_chon_contry'));
+                $('[name="trans[country_id]"]', _this.el).addClass('ui-form-error').focus();
+                //_this.showScreenAddressPayment();
                 return false;
             }else{
-                $('input[name="trans[city]"]', _this.el).removeClass('ui-form-error');
+                $('[name="trans[country_id]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if($('input[name="trans[address]"]', _this.el).length <=0 
+                || $.trim($('input[name="trans[address]"]', _this.el).val()).length <=0 ){
+                coz.toast(language.translate('txt_dia_chi_khong_duoc_bo_trong'));
+                $('input[name="trans[address]"]', _this.el).addClass('ui-form-error').focus();
+                //_this.showScreenAddressPayment();
+                return false;
+            }else{
+                $('input[name="trans[address]"]', _this.el).removeClass('ui-form-error');
+            }
+
+            if($('input[name="trans[city]"]', _this.el).length>0){
+                if($.trim($('input[name="trans[city]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
+                    $('input[name="trans[city]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('input[name="trans[city]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('input[name="trans[zipcode]"]', _this.el).length>0){
+                if($.trim($('input[name="trans[zipcode]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_zipcode_khong_duoc_bo_trong'));
+                    $('input[name="trans[zipcode]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('input[name="trans[zipcode]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('input[name="trans[state]"]', _this.el).length>0){
+                if($.trim($('input[name="trans[state]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_state_khong_duoc_bo_trong'));
+                    $('input[name="trans[state]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('input[name="trans[state]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('input[name="trans[suburb]"]', _this.el).length>0){
+                if($.trim($('input[name="trans[suburb]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_suburb_khong_duoc_bo_trong'));
+                    $('input[name="trans[suburb]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('input[name="trans[suburb]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('input[name="trans[region]"]', _this.el).length>0){
+                if($.trim($('input[name="trans[region]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_region_khong_duoc_bo_trong'));
+                    $('input[name="trans[region]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('input[name="trans[region]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('input[name="trans[province]"]', _this.el).length>0){
+                if($.trim($('input[name="trans[province]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_province_khong_duoc_bo_trong'));
+                    $('input[name="trans[province]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('input[name="trans[province]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('select[name="trans[cities_id]"]', _this.el).length>0){
+                if($.trim($('select[name="trans[cities_id]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
+                    $('select[name="trans[cities_id]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('select[name="trans[cities_id]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('select[name="trans[districts_id]"]', _this.el).length>0){
+                if($.trim($('select[name="trans[districts_id]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_districts_khong_duoc_bo_trong'));
+                    $('select[name="trans[districts_id]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('select[name="trans[districts_id]"]', _this.el).removeClass('ui-form-error');
+                }
+            }
+
+            if($('select[name="trans[wards_id]"]', _this.el).length>0){
+                if($.trim($('select[name="trans[wards_id]"]', _this.el).val()).length <=0 ){
+                    coz.toast(language.translate('txt_wards_khong_duoc_bo_trong'));
+                    $('select[name="trans[wards_id]"]', _this.el).addClass('ui-form-error').focus();
+                    //_this.showScreenAddressPayment();
+                    return false;
+                }else{
+                    $('select[name="trans[wards_id]"]', _this.el).removeClass('ui-form-error');
+                }
             }
         }
 
-        if($('input[name="trans[zipcode]"]', _this.el).length>0){
-            if($.trim($('input[name="trans[zipcode]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_zipcode_khong_duoc_bo_trong'));
-                $('input[name="trans[zipcode]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('input[name="trans[zipcode]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('input[name="trans[state]"]', _this.el).length>0){
-            if($.trim($('input[name="trans[state]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_state_khong_duoc_bo_trong'));
-                $('input[name="trans[state]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('input[name="trans[state]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('input[name="trans[suburb]"]', _this.el).length>0){
-            if($.trim($('input[name="trans[suburb]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_suburb_khong_duoc_bo_trong'));
-                $('input[name="trans[suburb]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('input[name="trans[suburb]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('input[name="trans[region]"]', _this.el).length>0){
-            if($.trim($('input[name="trans[region]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_region_khong_duoc_bo_trong'));
-                $('input[name="trans[region]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('input[name="trans[region]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('input[name="trans[province]"]', _this.el).length>0){
-            if($.trim($('input[name="trans[province]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_province_khong_duoc_bo_trong'));
-                $('input[name="trans[province]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('input[name="trans[province]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('select[name="trans[cities_id]"]', _this.el).length>0){
-            if($.trim($('select[name="trans[cities_id]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
-                $('select[name="trans[cities_id]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('select[name="trans[cities_id]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('select[name="trans[districts_id]"]', _this.el).length>0){
-            if($.trim($('select[name="trans[districts_id]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_districts_khong_duoc_bo_trong'));
-                $('select[name="trans[districts_id]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('select[name="trans[districts_id]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if($('select[name="trans[wards_id]"]', _this.el).length>0){
-            if($.trim($('select[name="trans[wards_id]"]', _this.el).val()).length <=0 ){
-                coz.toast(language.translate('txt_wards_khong_duoc_bo_trong'));
-                $('select[name="trans[wards_id]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenAddressPayment();
-                return false;
-            }else{
-                $('select[name="trans[wards_id]"]', _this.el).removeClass('ui-form-error');
-            }
-        }
-
-        if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
+        if( $('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
             if($.trim($('input[name="ships[full_name]"]', _this.el).val()).length <=0 ){
                 coz.toast(language.translate('txt_ban_phai_nhap_ten'));
                 $('input[name="ships[full_name]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenShipsAddressPayment();
+                //_this.showScreenShipsAddressPayment();
                 return false;
             }else{
                 $('input[name="ships[full_name]"]', _this.el).removeClass('ui-form-error');
@@ -1802,7 +1830,7 @@ coz.payment = {
               || $.trim($('[name="ships[country_id]"]', _this.el).val()).length <=0 ){
                 coz.toast(language.translate('txt_chua_chon_contry'));
                 $('[name="ships[country_id]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenShipsAddressPayment();
+                //_this.showScreenShipsAddressPayment();
                 return false;
             }else{
                 $('[name="ships[country_id]"]', _this.el).removeClass('ui-form-error');
@@ -1811,7 +1839,7 @@ coz.payment = {
             if($.trim($('input[name="ships[address]"]', _this.el).val()).length <=0 ){
                 coz.toast(language.translate('txt_dia_chi_khong_duoc_bo_trong'));
                 $('input[name="ships[address]"]', _this.el).addClass('ui-form-error').focus();
-                _this.showScreenShipsAddressPayment();
+                //_this.showScreenShipsAddressPayment();
                 return false;
             }else{
                 $('input[name="ships[address]"]', _this.el).removeClass('ui-form-error');
@@ -1821,7 +1849,7 @@ coz.payment = {
                 if($.trim($('input[name="ships[city]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
                     $('input[name="ships[city]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('input[name="ships[city]"]', _this.el).removeClass('ui-form-error');
@@ -1832,7 +1860,7 @@ coz.payment = {
                 if($.trim($('input[name="ships[zipcode]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_zipcode_khong_duoc_bo_trong'));
                     $('input[name="ships[zipcode]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('input[name="ships[zipcode]"]', _this.el).removeClass('ui-form-error');
@@ -1843,7 +1871,7 @@ coz.payment = {
                 if($.trim($('input[name="ships[state]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_state_khong_duoc_bo_trong'));
                     $('input[name="ships[state]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('input[name="ships[state]"]', _this.el).removeClass('ui-form-error');
@@ -1854,7 +1882,7 @@ coz.payment = {
                 if($.trim($('input[name="ships[suburb]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_suburb_khong_duoc_bo_trong'));
                     $('input[name="ships[suburb]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('input[name="ships[suburb]"]', _this.el).removeClass('ui-form-error');
@@ -1865,7 +1893,7 @@ coz.payment = {
                 if($.trim($('input[name="ships[region]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_region_khong_duoc_bo_trong'));
                     $('input[name="ships[region]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('input[name="ships[region]"]', _this.el).removeClass('ui-form-error');
@@ -1876,7 +1904,7 @@ coz.payment = {
                 if($.trim($('input[name="ships[province]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_province_khong_duoc_bo_trong'));
                     $('input[name="ships[province]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('input[name="ships[province]"]', _this.el).removeClass('ui-form-error');
@@ -1887,7 +1915,7 @@ coz.payment = {
                 if($.trim($('select[name="ships[cities_id]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_city_khong_duoc_bo_trong'));
                     $('select[name="ships[cities_id]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('select[name="ships[cities_id]"]', _this.el).removeClass('ui-form-error');
@@ -1898,7 +1926,7 @@ coz.payment = {
                 if($.trim($('select[name="ships[districts_id]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_districts_khong_duoc_bo_trong'));
                     $('select[name="ships[districts_id]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('select[name="ships[districts_id]"]', _this.el).removeClass('ui-form-error');
@@ -1909,7 +1937,7 @@ coz.payment = {
                 if($.trim($('select[name="ships[wards_id]"]', _this.el).val()).length <=0 ){
                     coz.toast(language.translate('txt_wards_khong_duoc_bo_trong'));
                     $('select[name="ships[wards_id]"]', _this.el).addClass('ui-form-error').focus();
-                    _this.showScreenShipsAddressPayment();
+                    //_this.showScreenShipsAddressPayment();
                     return false;
                 }else{
                     $('select[name="ships[wards_id]"]', _this.el).removeClass('ui-form-error');
@@ -2124,6 +2152,14 @@ coz.payment = {
             _this.getFeeTransitions();
         });
         $('input[name="trans[has_ship]"]', _this.el).off('change').on('change', function(){
+            if( $('input[name="trans[has_ship]"]:checked', _this.el).val() == 0 ){
+                $('[data-neo="hideWhenShip"]', _this.el).show();
+            }else{
+                $('[data-neo="hideWhenShip"]', _this.el).hide();
+                if( !$('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
+                    $('input[name="trans[ship_to_different_address]"]', _this.el).attr('checked', true).trigger('change');
+                }
+            }
             _this.getShipping();
         });
         if( _name == 'trans'
@@ -2150,7 +2186,7 @@ coz.payment = {
                 $('input[name="'+_name+'[state]"]', _this.el).val(coz.shipper.ships_state);
                 $('input[name="'+_name+'[address01]"]', _this.el).val(coz.shipper.ships_address01);
                 $('input[name="'+_name+'[province]"]', _this.el).val(coz.shipper.ships_province);
-            }else if( coz.buyer != 'undefined' ){
+            }else if( typeof coz.buyer != 'undefined' ){
                 _cities_id = coz.buyer.cities_id;
                 $('select[name="'+_name+'[cities_id]"]', _this.el).val(_cities_id);
                 $('select[name="'+_name+'[cities_id]"]', _this.el).trigger('change');
@@ -2177,7 +2213,7 @@ coz.payment = {
                 var wards_id = 0;
                 var transport_type = 0;
                 var shipping_id = 0;
-                if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
+                if( $('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
                     if( $('[name="ships[country_id]"]', _this.el).length > 0){
                         country_id = $('[name="ships[country_id]"]', _this.el).val();
                     }
@@ -2226,7 +2262,34 @@ coz.payment = {
                     type: "GET",
                     dataType: "html",
                     url: coz.baseUrl+'/cart/getFeeTransitions?_AJAX=1',
-                    data: 'shipping_id='+shipping_id+'&country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&transport_type='+transport_type,
+                    data: 'has_ship=1&shipping_id='+shipping_id+'&country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&transport_type='+transport_type,
+                    cache: false,
+                    success: function(data)
+                    {
+                        if(data.constructor === String){
+                            data = $.parseJSON(data);
+                        }
+                        if(data.flag == true || data.flag == 'true'){
+                            coz.payment.updateMoney(data);
+                        }
+                        if( typeof callback == 'function'){
+                            callback(data);
+                        }
+                    },
+                    error: function(e)
+                    {
+                        coz.toast('Error ! OoO .please trying');
+                        console.log(e);
+                    }
+                });
+            }, coz.DELAY);
+        }else{
+            coz.INTERVAL = setTimeout( function(){
+                $.ajax({
+                    type: "GET",
+                    dataType: "html",
+                    url: coz.baseUrl+'/cart/getFeeTransitions?_AJAX=1',
+                    data: 'has_ship=0&ajax=1&_AJAX=1',
                     cache: false,
                     success: function(data)
                     {
@@ -2253,7 +2316,6 @@ coz.payment = {
         _this = this;
         clearInterval(coz.INTERVAL);
         clearTimeout(coz.INTERVAL);
-        console.log($('input[name="trans[has_ship]"]:checked', _this.el).val());
         if( $('input[name="trans[has_ship]"]', _this.el).length <=0 
             || $('input[name="trans[has_ship]"]:checked', _this.el).val() == 1 ){
             coz.INTERVAL = setTimeout( function(){
@@ -2262,7 +2324,7 @@ coz.payment = {
                 var districts_id = 0;
                 var wards_id = 0;
                 var transport_type = 0;
-                if( $('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
+                if( $('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
                     if( $('[name="ships[country_id]"]', _this.el).length > 0){
                         country_id = $('[name="ships[country_id]"]', _this.el).val();
                     }
@@ -2308,7 +2370,42 @@ coz.payment = {
                     type: "GET",
                     dataType: "html",
                     url: coz.baseUrl+'/cart/getShipping',
-                    data: 'country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&wards_id='+wards_id+'&transport_type='+transport_type+'&ajax=1&_AJAX=1',
+                    data: 'has_ship=1&country_id='+country_id+'&cities_id='+cities_id+'&districts_id='+districts_id+'&wards_id='+wards_id+'&transport_type='+transport_type+'&ajax=1&_AJAX=1',
+                    cache: false,
+                    success: function(data)
+                    {
+                        if(data.constructor === String){
+                            data = $.parseJSON(data);
+                        }
+                        _this = coz.payment;
+                        if( data.flag == true || data.flag == 'true' ){
+                            $('[neo-place="Shipping"]').html(data.html);
+                            if( data.no_shipping == true || data.no_shipping == 'true' ){
+                                $('[neo-place="errorShipping"]').html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'+data.msg);
+                            }else{
+                                $('[neo-place="errorShipping"]').html('');
+                            }
+                        }else{
+                            $('[neo-place="Shipping"]').html('<p class="coz-note-payment" >'+data.html+'</div>');
+                        }
+                        _this.getFeeTransitions();
+                        if( typeof callback == 'function'){
+                            callback(data);
+                        }
+                    },
+                    error: function(e)
+                    {
+                        coz.toast('Error ! OoO .please trying');
+                    }
+                });
+            }, coz.DELAY);
+        }else{
+            coz.INTERVAL = setTimeout( function(){
+                $.ajax({
+                    type: "GET",
+                    dataType: "html",
+                    url: coz.baseUrl+'/cart/getShipping',
+                    data: 'has_ship=0&ajax=1&_AJAX=1',
                     cache: false,
                     success: function(data)
                     {
@@ -2346,8 +2443,8 @@ coz.payment = {
     showScreenShipsAddressPayment: function (){
         var _this = this;
         $('#ship-different-address', _this.el).show();
-        if( !$('input[name="ship_to_different_address"]', _this.el).is(':checked') ){
-            $('input[name="ship_to_different_address"]', _this.el).attr('checked', true);
+        if( !$('input[name="trans[ship_to_different_address]"]', _this.el).is(':checked') ){
+            $('input[name="trans[ship_to_different_address]"]', _this.el).attr('checked', true);
         }
     }
 };
@@ -4624,7 +4721,7 @@ coz.facebook = {
     loginFacebook: function( response ){
         if( !coz.hasLogin() ){
             if( !coz.hasSyncFaceBook() ){
-                if( coz.hasQuestionSyncFaceBook() ){
+                /*if( coz.hasQuestionSyncFaceBook() ){
                     $.iGrowl({
                             type: 'notice',
                             title: 'Bạn có muôn login facebook',
@@ -4638,7 +4735,7 @@ coz.facebook = {
                                 class: 'example-image'
                             }
                         });
-                }
+                }*/
                 coz.menuMega.addMenu( 'coz.facebook.sync()' , language.translate('txt_ket_noi_facebook'), '<i class="fa fa-facebook" aria-hidden="true"></i>' );
                 coz.menuMega.addMenu( 'coz.notSyncFacebook()' , language.translate('txt_tat_tu_dong_ket_noi_facebook'), '<i class="fa fa-toggle-off" aria-hidden="true"></i>' );
             }else{
@@ -4803,7 +4900,7 @@ coz.google = {
             && !coz.hasLogin() ){
             var profile = googleUser.getBasicProfile();
             if( !coz.hasSyncGoogle() ){
-                if( coz.hasQuestionSyncGoogle() ){
+                /*if( coz.hasQuestionSyncGoogle() ){
                     $.iGrowl({
                             type: 'notice',
                             title: 'Bạn có muôn login google',
@@ -4817,7 +4914,7 @@ coz.google = {
                                 class: 'example-image'
                             }
                         });
-                }
+                }*/
                 coz.menuMega.addMenu( 'coz.google.sync()' , language.translate('txt_ket_noi_google'), '<i class="fa fa-google" aria-hidden="true"></i>' );
                 coz.menuMega.addMenu( 'coz.notSyncGoogle()' , language.translate('txt_tat_tu_dong_ket_noi_google'), '<i class="fa fa-toggle-off" aria-hidden="true"></i>' );
             }else{
@@ -6560,7 +6657,7 @@ coz.paymentStep = {
                         $('input[name="'+_name+'[state]"]', _el).val(coz.shipper.ships_state);
                         $('input[name="'+_name+'[address01]"]', _el).val(coz.shipper.ships_address01);
                         $('input[name="'+_name+'[province]"]', _el).val(coz.shipper.ships_province);
-                    }else if( coz.buyer != 'undefined' ){
+                    }else if( typeof coz.buyer != 'undefined' ){
                         _cities_id = coz.buyer.cities_id;
                         $('select[name="'+_name+'[cities_id]"]', _el).val(_cities_id);
                         $('select[name="'+_name+'[cities_id]"]', _el).trigger('change');
@@ -8269,33 +8366,38 @@ coz.getFeatureForPage = function( callback ){
     }
 };
 coz.urlForFilters = function(){
+    console.log('urlForFilters');
     var url_ = 'partial=1';
     if( coz.feature.hasFeature()  ){
-        url_ += '&feature=';
+        urlFeature_ = '';
         for ( _i=0; _i < Object.keys(coz.model.fillter.features).length; _i++ ) {
             _key = Object.keys(coz.model.fillter.features)[_i];
             _p = coz.model.fillter.features[_key];
             for(j=0; j< _p.length; j++){
                 if( typeof coz.model.fillter.features[_key][j]['is_checked'] != 'undefined'
                     && coz.model.fillter.features[_key][j]['is_checked'] == true ){
-                    url_ += coz.model.fillter.features[_key][j]['feature_id']+';';
+                    urlFeature_ += coz.model.fillter.features[_key][j]['feature_id']+';';
                 }
             }
         }
-        url_ = url_.slice(0, -1);
+        if( $.trim(urlFeature_).length > 0 ){
+            url_ += '&feature='+urlFeature_;
+        }
     }
 
     if( coz.manufacturer.hasManufacturer()  ){
-        url_ += '&manufacturer=';
+        urlManufacturer_ = '';
         for ( _i=0; _i < Object.keys(coz.model.manufacturers).length; _i++ ) {
             _key = Object.keys(coz.model.manufacturers)[_i];
             _p = coz.model.manufacturers[_key];
             if( typeof coz.model.manufacturers[_key]['is_checked'] != 'undefined'
                 && coz.model.manufacturers[_key]['is_checked'] == true ){
-                url_ += coz.model.manufacturers[_key]['manufacturers_id']+';';
+                urlManufacturer_ += coz.model.manufacturers[_key]['manufacturers_id']+';';
             }
         }
-        url_ = url_.slice(0, -1);
+        if( $.trim(urlManufacturer_).length > 0 ){
+            url_ += '&manufacturer='+urlManufacturer_;
+        }
     }
 
     if( $('[data-place="fillterSort"]').length > 0
@@ -8310,7 +8412,8 @@ coz.urlForFilters = function(){
         url_ += '&swview='+coz.model.fillter.switchview.val;
     }
 
-    if( $('[data-place="itemFillter"][data-id="price"]').length > 0 ){
+    if( $('[data-place="fillterPrice"]').length > 0
+        || $('[data-place="fillterFeature"] [data-input="price"]').length > 0 ){
         url_ += '&price='+coz.model.fillter.price.getVal();
     }
 
@@ -8408,6 +8511,7 @@ coz.updateSelectFilter = function( callback ){
     }
 };
 coz.updateFilter = function(){
+    console.log('coz.updateFilter');
     if( coz.hasFillter() ){
         if( $('[data-place="fillterFeature"]').length > 0 ){
             _html = $("#tmplFillterFeature").tmpl(coz.model.fillter).html();
@@ -8430,6 +8534,7 @@ coz.updateFilter = function(){
                                 coz.model.fillter.price.from = data.from;
                                 coz.model.fillter.price.to = data.to;
                                 coz.model.fillter.is_pjax = true;
+                                console.log(coz.model.fillter.price);
                                 coz.updateFilter();
                             },
                             onUpdate: function (data) {}
@@ -8514,9 +8619,9 @@ coz.updateFilter = function(){
             });
         }
 
-        if (    $.support.pjax
-                && typeof coz.model.fillter.is_pjax != 'undefined'
-                && coz.model.fillter.is_pjax ) {
+        if ($.support.pjax
+            && typeof coz.model.fillter.is_pjax != 'undefined'
+            && coz.model.fillter.is_pjax ) {
             var url = coz.urlForFilters();
             $.pjax({url: url, container: '[data-pjax-container="ProductCategory"]'});
             coz.model.fillter.is_pjax = false;
@@ -8739,8 +8844,9 @@ coz.common = {
         $(document).on('click', '.neo-sent-newsletter', function(e){
             e.preventDefault();
             e.stopPropagation();
-            if(coz.checkRegisterMailNewLetter()){
+            if(coz.checkRegisterMailNewLetter("#newsletterform")){
                 var formdata = $("#newsletterform").serialize();
+                $('input[name="email"]', "#newsletterform").attr('disabled','disabled');
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -8754,7 +8860,7 @@ coz.common = {
                         }
                         coz.toast(data.html);
                         if(data.flag == true || data.flag == 'true'){
-                            $('#newsletter').val();
+                            $('input[name="email"]', "#newsletterform").removeAttr('disabled').val();
                         }
                     },
                     error: function(e)

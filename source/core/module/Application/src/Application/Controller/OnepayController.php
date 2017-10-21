@@ -21,11 +21,7 @@ use Zend\Mime\Part as MimePart;
 
 class OnepayController extends FrontEndController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
+    
     public function returnAction()
     {
         if( !empty($_SERVER['HTTP_REFERER']) ){

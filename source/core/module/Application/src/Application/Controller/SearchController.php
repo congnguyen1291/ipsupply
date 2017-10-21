@@ -69,6 +69,9 @@ class SearchController extends FrontEndController {
             $params['page'] = '(:num)';
             $link = $this->baseUrl .$this->getUrlPrefixLang().'/search?'. $helper->buildParamsForUrlFromArray($params);
             $paginator = new Paginator($total, $page_size, $page, $link);
+            $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+            $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+            $paginator->setMaxPagesToShow(7);
             
             $this->data_view['price'] = $price;
             $this->data_view['type'] = $categories_id;
@@ -174,6 +177,9 @@ class SearchController extends FrontEndController {
             $params['page'] = '(:num)';
             $link = $this->baseUrl .$this->getUrlPrefixLang().'/tags/'.$tag.'?'. $helper->buildParamsForUrlFromArray($params);
             $paginator = new Paginator($total, $page_size, $page, $link);
+            $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+            $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+            $paginator->setMaxPagesToShow(7);
 
             $this->data_view['manufacturer'] = $manufacturer;
             $this->data_view['filter'] = $filter;

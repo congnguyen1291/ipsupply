@@ -21,10 +21,6 @@ use Zend\Mime\Part as MimePart;
 
 class VnpayController extends FrontEndController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function returnAction()
     {

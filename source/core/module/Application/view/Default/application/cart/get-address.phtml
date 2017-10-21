@@ -1,70 +1,33 @@
 <?php if(!empty($country)){ ?>
-
-    <?php if($country->country_type == 0){ ?>
-    <div class="form-element-payment" >
+    <div class="form-element-payment" style="display:none" >
         <div class="row" >
             <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>"  >
-                </div>
-                <div class="ui-input-payment" style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
+                <div class="ui-input-payment" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
                 </div>
             </div>
         </div>
     </div>
-
+    <?php if($country->country_type == 0){ ?>
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_town_city') ?>                                 
-                </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" placeholder="<?php echo $this->translate('txt_town_city') ?>" >
                 </div>
             </div>
-            <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_postcode_zip') ?>                              
-                </label>
+            <div class="col-sm-6" >
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" placeholder="<?php echo $this->translate('txt_postcode_zip') ?>" >
                 </div>
             </div>
         </div>
     </div>
     <?php }elseif ($country->country_type == 1) { ?>
     <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" >
-                </div>
-                <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>"  data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-element-payment" >
-        <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" class="ui-lb-payment" >
-            <?php echo $this->translate('txt_town_city') ?>                                 
-        </label>
         <div class="col-sm-12" >
             <div class="ui-input-payment" >
-                <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>"  >
+                <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>"  placeholder="<?php echo $this->translate('txt_town_city') ?>" >
             </div>
         </div>
     </div>
@@ -72,19 +35,13 @@
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_state_county') ?>                                 
-                </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state"  data-input="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state"  data-input="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" placeholder="<?php echo $this->translate('txt_state_county') ?>" >
                 </div>
             </div>
             <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_postcode_zip') ?>                              
-                </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" placeholder="<?php echo $this->translate('txt_postcode_zip') ?>" >
                 </div>
             </div>
         </div>
@@ -94,43 +51,18 @@
         $cities = $this->Cities()->loadCitiesByCountry($country_id);
     ?>
     <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" >
-                </div>
-                <div class="ui-input-payment"  style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-element-payment" >
-        <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" class="ui-lb-payment" >
-            <?php echo $this->translate('txt_town_city') ?>                                 
-        </label>
         <div class="ui-input-payment" >
-            <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" >
+            <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" placeholder="<?php echo $this->translate('txt_town_city') ?>" >
         </div>
     </div>
 
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_state_county') ?>                                 
-                </label>
                 <div class="ui-select-payment" >
                     <select id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" class="coz-select-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" name="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" >
-                        <?php if(empty($cities)){ ?>
-                        <option>Disabled select</option>
-                        <?php }else{
+                        <option><?php echo $this->translate('txt_state_county') ?></option>
+                        <?php if( !empty($cities) ){ 
                             foreach ($cities as $key => $citi) {
                         ?>
                             <option value="<?php echo $citi['cities_id']; ?>" <?php echo $key == 0 ? 'selected' : '' ?> >
@@ -142,35 +74,13 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_postcode_zip') ?>                              
-                </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" placeholder="<?php echo $this->translate('txt_postcode_zip') ?>" >
                 </div>
             </div>
         </div>
     </div>
     <?php }elseif ($country->country_type == 3) { ?>
-    <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" >
-                </div>
-
-                <div class="ui-input-payment"  style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6">
@@ -178,7 +88,7 @@
                     <?php echo $this->translate('txt_postcode_zip') ?>                              
                 </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" placeholder="<?php echo $this->translate('txt_postcode_zip') ?>" >
                 </div>
             </div>
             <div class="col-sm-6">
@@ -186,30 +96,12 @@
                     <?php echo $this->translate('txt_suburb_zip') ?>                              
                 </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[suburb]' : 'suburb'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>suburb" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>suburb" data-input="<?php echo (!empty($nsp) ? $nsp.'[suburb]' : 'suburb'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[suburb]' : 'suburb'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>suburb" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>suburb" data-input="<?php echo (!empty($nsp) ? $nsp.'[suburb]' : 'suburb'); ?>" placeholder="<?php echo $this->translate('txt_suburb_zip') ?>" >
                 </div>
             </div>
         </div>
     </div>
     <?php }elseif ($country->country_type == 4) { ?>
-    <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" >
-                </div>
-                <div class="ui-input-payment"  style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6">
@@ -217,7 +109,7 @@
                     <?php echo $this->translate('txt_town_city') ?>                                 
                 </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" placeholder="<?php echo $this->translate('txt_town_city') ?>" >
                 </div>
             </div>
             <div class="col-sm-6">
@@ -225,7 +117,7 @@
                     <?php echo $this->translate('txt_state_county') ?>                                 
                 </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" data-input="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>state" data-input="<?php echo (!empty($nsp) ? $nsp.'[state]' : 'state'); ?>" placeholder="<?php echo $this->translate('txt_state_county') ?>" >
                 </div>
             </div>
         </div>
@@ -234,43 +126,18 @@
         $cities = $this->Cities()->loadCitiesByCountry($country_id);
     ?>
     <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>"  >
-                </div>
-                <div class="ui-input-payment"  style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-element-payment" >
-        <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" class="ui-lb-payment" >
-            <?php echo $this->translate('txt_town_city') ?>                                 
-        </label>
         <div class="ui-input-payment" >
-            <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" >
+            <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" placeholder="<?php echo $this->translate('txt_town_city') ?>" >
         </div>
     </div>
 
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>region" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_region') ?>                                 
-                </label>
                 <div class="ui-select-payment" >
                     <select id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>region" class="coz-select-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>region" name="<?php echo (!empty($nsp) ? $nsp.'[region]' : 'region'); ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[region]' : 'region'); ?>" >
-                        <?php if(empty($cities)){ ?>
-                        <option>Disabled select</option>
-                        <?php }else{
+                        <option><?php echo $this->translate('txt_region') ?></option>
+                        <?php if( !empty($cities) ){ 
                             foreach ($cities as $key => $citi) {
                         ?>
                             <option value="<?php echo $citi['cities_id']; ?>" <?php echo $key == 0 ? 'selected' : '' ?> >
@@ -282,11 +149,8 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_postcode_zip') ?>                              
-                </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" placeholder="<?php echo $this->translate('txt_postcode_zip') ?>" >
                 </div>
             </div>
         </div>
@@ -295,43 +159,21 @@
         $cities = $this->Cities()->loadCitiesByCountry($country_id);
     ?>
     <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="col-sm-3 control-label" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" >
-                </div>
-                <div class="ui-input-payment"  style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-element-payment" >
         <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" class="ui-lb-payment" >
             <?php echo $this->translate('txt_town_city') ?>                                 
         </label>
         <div class="ui-input-payment" >
-            <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" >
+            <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>city" data-input="<?php echo (!empty($nsp) ? $nsp.'[city]' : 'city'); ?>" placeholder="<?php echo $this->translate('txt_town_city') ?>" >
         </div>
     </div>
 
     <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-6" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>province" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_province') ?>                                 
-                </label>
                 <div class="ui-select-payment" >
                     <select id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>province" class="coz-select-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>province" name="<?php echo (!empty($nsp) ? $nsp.'[province]' : 'province'); ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[province]' : 'province'); ?>" >
-                        <?php if(empty($cities)){ ?>
-                        <option>Disabled select</option>
-                        <?php }else{
+                        <option><?php echo $this->translate('txt_province') ?></option>
+                        <?php if( !empty($cities) ){ 
                             foreach ($cities as $key => $citi) {
                         ?>
                             <option value="<?php echo $citi['cities_id']; ?>" <?php echo $key == 0 ? 'selected' : '' ?> >
@@ -343,11 +185,8 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_postcode_zip') ?>                              
-                </label>
                 <div class="ui-input-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" >
+                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>zipcode" data-input="<?php echo (!empty($nsp) ? $nsp.'[zipcode]' : 'zipcode'); ?>" placeholder="<?php echo $this->translate('txt_postcode_zip') ?>" >
                 </div>
             </div>
         </div>
@@ -366,34 +205,12 @@
         }
     ?>
     <div class="form-element-payment" >
-        <div class="row" >
-            <div class="col-sm-12" >
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_address') ?>    
-                </label>
-            </div>
-            <div class="col-sm-12" >
-                <div class="ui-input-payment address-payment" >
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" value="" class="input-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>address" placeholder="<?php echo $this->translate('txt_plaholder_address') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address]' : 'address'); ?>" >
-                </div>
-                <div class="ui-input-payment"  style="display:none">
-                    <input type="text" name="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" value="" class="input-payment address01" placeholder="<?php echo $this->translate('txt_plaholder_address01') ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[address01]' : 'address01'); ?>" >
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-element-payment" >
         <div class="row">
             <div class="col-sm-4">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>cities_id" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_cities') ?>                                 
-                </label>
                 <div class="ui-select-payment" >
                     <select id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>cities_id" class="coz-select-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>cities_id" name="<?php echo (!empty($nsp) ? $nsp.'[cities_id]' : 'cities_id'); ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[cities_id]' : 'cities_id'); ?>" >
-                        <?php if(empty($cities)){ ?>
-                        <option>Disabled select</option>
-                        <?php }else{
+                        <option><?php echo $this->translate('txt_cities') ?></option>
+                        <?php if( !empty($cities) ){
                             foreach ($cities as $key => $citi) {
                         ?>
                             <option value="<?php echo $citi['cities_id']; ?>" <?php echo $key == 0 ? 'selected' : '' ?> >
@@ -405,14 +222,10 @@
                 </div>
             </div>
             <div class="col-sm-4">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>districts_id" class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_districts') ?>                                 
-                </label>
                 <div class="ui-select-payment" >
                     <select id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>districts_id" class="coz-select-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>districts_id" name="<?php echo (!empty($nsp) ? $nsp.'[districts_id]' : 'districts_id'); ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[districts_id]' : 'districts_id'); ?>" >
-                        <?php if(empty($district)){ ?>
-                        <option>Disabled select</option>
-                        <?php }else{
+                        <option><?php echo $this->translate('txt_districts') ?></option>
+                        <?php if( !empty($district) ){
                             foreach ($district as $key => $dis) {
                         ?>
                             <option value="<?php echo $dis['districts_id']; ?>" <?php echo $key == 0 ? 'selected' : '' ?> >
@@ -423,15 +236,11 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <label for="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>wards_id"  class="ui-lb-payment" >
-                    <?php echo $this->translate('txt_wards') ?>                                 
-                </label>
+            <div class="col-sm-4" >
                 <div class="ui-select-payment" >
                     <select id="<?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>wards_id" class="coz-select-payment <?php echo (!empty($nsp) ? $nsp.'_' : ''); ?>wards_id" name="<?php echo (!empty($nsp) ? $nsp.'[wards_id]' : 'wards_id'); ?>" data-input="<?php echo (!empty($nsp) ? $nsp.'[wards_id]' : 'wards_id'); ?>" >
-                        <?php if(empty($ward)){ ?>
-                        <option>Disabled select</option>
-                        <?php }else{
+                        <option><?php echo $this->translate('txt_wards') ?></option>
+                        <?php if(empty($ward)){
                             foreach ($ward as $key => $war) {
                         ?>
                             <option value="<?php echo $war['wards_id']; ?>" <?php echo $key == 0 ? 'selected' : '' ?> >

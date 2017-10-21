@@ -381,6 +381,7 @@ class CartController extends FrontEndController
         $transport_type = $this->params()->fromQuery('transport_type', 0);
         $shipping_id = $this->params()->fromQuery('shipping_id', 0);
         $ajax = $this->params()->fromQuery('ajax', 0);
+        $has_ship = $this->params()->fromQuery('has_ship', 0);
         $translator = $this->getServiceLocator()->get('translator');
         $row = array(
             'type' => 'getShipping',
@@ -389,108 +390,122 @@ class CartController extends FrontEndController
             'msg' => $translator->translate('txt_shipping_available'),
         );
         $msg = '';
-        if( !empty($country_id) ){
-            $lsShippings = array();
-            $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
-            if( empty($cities) ){
-                $lsShippings = $this->getModelTable('ShippingTable')->getShippingOfCountry($country_id);
-            }else{
-                $city = $this->getModelTable('CitiesTable')->getRow($cities_id);
-                if( !empty($city) ){
-                    $lsShippings = $this->getModelTable('ShippingTable')->getShippingOfCityAndDistricts($cities_id, $districts_id);
+        if( !empty($has_ship) ){
+            if( !empty($country_id) ){
+                $lsShippings = array();
+                $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
+                if( empty($cities) ){
+                    $lsShippings = $this->getModelTable('ShippingTable')->getShippingOfCountry($country_id);
+                }else{
+                    $city = $this->getModelTable('CitiesTable')->getRow($cities_id);
+                    if( !empty($city) ){
+                        $lsShippings = $this->getModelTable('ShippingTable')->getShippingOfCityAndDistricts($cities_id, $districts_id);
+                    }
                 }
-            }
 
-            $no_shipping = FALSE;
-            $free_shipping = array();
-            $is_free = FALSE;
-            $choose = 0;
-            $shippings = array();
-            $transports = array();
-            if( !empty($lsShippings) ){
-                $transports[0] = $translator->translate('txt_shipping_normal');
-                foreach ($lsShippings as $key => $shipping) {
-                    $fee = $this->getFeeShip($shipping, $transport_type);
-                    if( !(empty($fee) && $transport_type == 1) ){
-                        if( !($shipping['no_shipping'] == 1 
-                            && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
-                            && $this->isAvaiableShip($shipping) ){
-                            if( empty($shippings) ){
-                                $choose = $shipping['shipping_id'];
-                            }
-                            $shippings[$shipping['shipping_id']] = $shipping;
-                            if( empty($fee) ){
-                                $free_shipping = $shipping;
-                                $is_free = TRUE;
-                                $choose = $shipping['shipping_id'];
-                                break;
-                            }else if( $shipping['shipping_id'] ==  $shipping_id) {
-                                $choose = $shipping['shipping_id'];
+                $no_shipping = FALSE;
+                $free_shipping = array();
+                $is_free = FALSE;
+                $choose = 0;
+                $shippings = array();
+                $transports = array();
+                if( !empty($lsShippings) ){
+                    $transports[0] = $translator->translate('txt_shipping_normal');
+                    foreach ($lsShippings as $key => $shipping) {
+                        $fee = $this->getFeeShip($shipping, $transport_type);
+                        if( !(empty($fee) && $transport_type == 1) ){
+                            if( !($shipping['no_shipping'] == 1 
+                                && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                                && $this->isAvaiableShip($shipping) ){
+                                if( empty($shippings) ){
+                                    $choose = $shipping['shipping_id'];
+                                }
+                                $shippings[$shipping['shipping_id']] = $shipping;
+                                if( empty($fee) ){
+                                    $free_shipping = $shipping;
+                                    $is_free = TRUE;
+                                    $choose = $shipping['shipping_id'];
+                                    break;
+                                }else if( $shipping['shipping_id'] ==  $shipping_id) {
+                                    $choose = $shipping['shipping_id'];
+                                }
                             }
                         }
-                    }
 
-                    if( !($shipping['no_shipping'] == 1 
-                        && !empty($districts_id) && $shipping['districts_id'] == $districts_id) 
-                        && !empty($this->getFeeShipFast($shipping)) ){
-                        $transports[1] = $translator->translate('txt_shipping_fast');
+                        if( !($shipping['no_shipping'] == 1 
+                            && !empty($districts_id) && $shipping['districts_id'] == $districts_id) 
+                            && !empty($this->getFeeShipFast($shipping)) ){
+                            $transports[1] = $translator->translate('txt_shipping_fast');
+                        }
                     }
-                }
-                if( empty($shippings) ){
-                    $no_shipping = TRUE;
-                    $msg = $translator->translate('txt_don_hang_khong_van_chuyen_den_dia_diem_nay_hoac_hoa_don_chua_phu_hop');
-                }
-            }else{
-                $ships = $this->getModelTable('ShippingTable')->getShippings();
-                if( empty($ships) ){
-                    $no_shipping = FALSE;
-                    $is_free = TRUE;
+                    if( empty($shippings) ){
+                        $no_shipping = TRUE;
+                        $msg = $translator->translate('txt_don_hang_khong_van_chuyen_den_dia_diem_nay_hoac_hoa_don_chua_phu_hop');
+                    }
                 }else{
-                    $no_shipping = TRUE;
-                    $msg = $translator->translate('txt_don_hang_khong_van_chuyen_den_dia_diem_nay');
-                    $is_free = FALSE;
+                    $ships = $this->getModelTable('ShippingTable')->getShippings();
+                    if( empty($ships) ){
+                        $no_shipping = FALSE;
+                        $is_free = TRUE;
+                    }else{
+                        $no_shipping = TRUE;
+                        $msg = $translator->translate('txt_don_hang_khong_van_chuyen_den_dia_diem_nay');
+                        $is_free = FALSE;
+                    }
                 }
-            }
 
-            $result = new ViewModel();
-            $result->setTerminal(true);
-            $result->setTemplate("application/cart/get-shipping");
-            $this->data_view['shipping'] = $shippings;
-            $this->data_view['free_shipping'] = $free_shipping;
-            $this->data_view['cities_id'] = $cities_id;
-            $this->data_view['districts_id'] = $districts_id;
-            $this->data_view['is_free'] = $is_free;
-            $this->data_view['no_shipping'] = $no_shipping;
-            $this->data_view['transports'] = $transports;
-            $this->data_view['transport_type'] = $transport_type;
-            $this->data_view['country_id'] = $country_id;
-            $this->data_view['cities_id'] = $cities_id;
-            $this->data_view['districts_id'] = $districts_id;
-            $this->data_view['shipping_id'] = $shipping_id;
-            $this->data_view['choose'] = $choose;
-            $result->setVariables($this->data_view);
-            $viewRender = $this->getServiceLocator()->get('ViewRenderer');
-            $html = $viewRender->render($result);
+                $result = new ViewModel();
+                $result->setTerminal(true);
+                $result->setTemplate("application/cart/get-shipping");
+                $this->data_view['shipping'] = $shippings;
+                $this->data_view['free_shipping'] = $free_shipping;
+                $this->data_view['cities_id'] = $cities_id;
+                $this->data_view['districts_id'] = $districts_id;
+                $this->data_view['is_free'] = $is_free;
+                $this->data_view['no_shipping'] = $no_shipping;
+                $this->data_view['transports'] = $transports;
+                $this->data_view['transport_type'] = $transport_type;
+                $this->data_view['country_id'] = $country_id;
+                $this->data_view['cities_id'] = $cities_id;
+                $this->data_view['districts_id'] = $districts_id;
+                $this->data_view['shipping_id'] = $shipping_id;
+                $this->data_view['choose'] = $choose;
+                $result->setVariables($this->data_view);
+                $viewRender = $this->getServiceLocator()->get('ViewRenderer');
+                $html = $viewRender->render($result);
+                $row = array(
+                    'type' => 'getShipping',
+                    'flag' => true,
+                    'msg' => $msg,
+                    'html' => $html,
+                    'cart' => (!empty($_SESSION['cart']) ? $_SESSION['cart'] : array()),
+                    'shipping' => $shippings,
+                    'free_shipping' => $free_shipping,
+                    'is_free' => $is_free,
+                    'no_shipping' => $no_shipping,
+                    'transport_type' => $transport_type,
+                    'country_id' => $country_id,
+                    'cities_id' => $cities_id,
+                    'districts_id' => $districts_id,
+                    'shipping_id' => $shipping_id,
+                    'choose' => $choose,
+                );
+            }
+        }else{
             $row = array(
                 'type' => 'getShipping',
                 'flag' => true,
-                'msg' => $msg,
-                'html' => $html,
+                'msg' => '',
+                'html' => '',
                 'cart' => (!empty($_SESSION['cart']) ? $_SESSION['cart'] : array()),
-                'shipping' => $shippings,
-                'free_shipping' => $free_shipping,
-                'is_free' => $is_free,
-                'no_shipping' => $no_shipping,
-                'transport_type' => $transport_type,
-                'country_id' => $country_id,
-                'cities_id' => $cities_id,
-                'districts_id' => $districts_id,
-                'shipping_id' => $shipping_id,
-                'choose' => $choose,
+                'shipping' => array(),
+                'free_shipping' => FALSE,
+                'is_free' => FALSE,
+                'no_shipping' => FALSE
             );
         }
 
-        if(!empty($ajax)){
+        if( !empty($ajax) ){
             echo json_encode($row);
             die;
         }
@@ -582,10 +597,11 @@ class CartController extends FrontEndController
         $districts_id = $this->params()->fromQuery('districts_id', 0);
         $transport_type = $this->params()->fromQuery('transport_type', 0);
         $shipping_id = $this->params()->fromQuery('shipping_id', '');
+        $has_ship = $this->params()->fromQuery('has_ship', 0);
         $ajax = $this->params()->fromQuery('ajax', 0);
 
         $is_free = false;
-        $no_shipping = TRUE;
+        $no_shipping = FALSE;
         $fee = 0;
         $shipping = array();
         $subtotal = 0;
@@ -598,44 +614,48 @@ class CartController extends FrontEndController
             $subtotal_tax = $calculate['price_total_tax'];
         }
 
-        if( !empty($shipping_id) && !empty($country_id) ){
-            $shipping = array();
-            $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
-            if( empty($cities) ){
-                $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
-            }else{
-                $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
-            }
-            if( !empty($shipping) ){
+        if( !empty($has_ship) ){
+            $no_shipping = TRUE;
+            if( !empty($shipping_id) && !empty($country_id) ){
+                $shipping = array();
+                $cities = $this->getModelTable('CitiesTable')->getCitiesOfCountry($country_id);
                 if( empty($cities) ){
-                    $fee = $this->getFeeShip($shipping, $transport_type);
-                    $no_shipping = FALSE;
-                    if( empty($fee) ){
-                        $is_free = TRUE;
-                    }
+                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCountry($shipping_id, $country_id);
                 }else{
-                    if( !($shipping['no_shipping'] == 1 
-                        && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
-                        && $this->isAvaiableShip($shipping) ){
+                    $shipping = $this->getModelTable('ShippingTable')->getShippingWithCityAndDistricts($shipping_id, $cities_id, $districts_id);
+                }
+                if( !empty($shipping) ){
+                    if( empty($cities) ){
                         $fee = $this->getFeeShip($shipping, $transport_type);
                         $no_shipping = FALSE;
                         if( empty($fee) ){
                             $is_free = TRUE;
                         }
+                    }else{
+                        if( !($shipping['no_shipping'] == 1 
+                            && !empty($districts_id) && $shipping['districts_id'] == $districts_id)
+                            && $this->isAvaiableShip($shipping) ){
+                            $fee = $this->getFeeShip($shipping, $transport_type);
+                            $no_shipping = FALSE;
+                            if( empty($fee) ){
+                                $is_free = TRUE;
+                            }
+                        }
                     }
                 }
-            }
-        }else{
-            $ships = $this->getModelTable('ShippingTable')->getShippings();
-            if( empty($ships) ){
-                $no_shipping = FALSE;
-                $is_free = TRUE;
             }else{
-                $no_shipping = TRUE;
-                $is_free = FALSE;
+                $ships = $this->getModelTable('ShippingTable')->getShippings();
+                if( empty($ships) ){
+                    $no_shipping = FALSE;
+                    $is_free = TRUE;
+                }else{
+                    $no_shipping = TRUE;
+                    $is_free = FALSE;
+                }
             }
         }
         $_SESSION['cart']['shipping'] = array(  
+                                                'has_ship' => $has_ship, 
                                                 'no_shipping' => $no_shipping, 
                                                 'is_free' => $is_free,
                                                 'fee' => $fee,
@@ -3205,6 +3225,7 @@ class CartController extends FrontEndController
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
         $renderer->headTitle($translator->translate('txt_title_site_sucess_payment'));
         $request = $this->getRequest();
+        //$_SESSION['invoice_id'] = '1508402836';
         if( empty($_SESSION['invoice_id']) ){
             return $this->redirect()->toRoute($this->getUrlRouterLang().'home');
         }else{

@@ -90,22 +90,22 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
             {{/each}}
         {{/if}}
 
-        <?php if( !empty($manufacturers) ){ ?>
+        {{if coz.manufacturer.hasManufacturer() }}
         <div class="sub-general clearfix" >
             <h4 class="sub-title-general" >
                 <?php echo $this->translate('txt_manufacturers'); ?>
             </h4>
 
             <div class="form-group" >
-                <select name="manus[]" class="form-control" data-input="manus" >
+                <select name="manufacturer" class="form-control" data-input="manufacturer" >
                     <option value="0" >
                         <?php echo $this->translate('txt_select_your_brand'); ?>
                     </option>
-                    <?php foreach ($manufacturers as $key => $manufacturer) { ?>
-                        <option value="<?php echo $this->Manufacturers()->getId($manufacturer) ?>" >
-                            <?php echo $this->Manufacturers()->getName($manufacturer) ?>
-                        </option>
-                    <?php } ?>
+                    {{each coz.manufacturer.getManufacturersId() }}
+                    <option value="${coz.manufacturer.getID($value)}" {{if coz.manufacturer.isChecked($value) }}selected="selected"{{/if}} >
+                        ${coz.manufacturer.getName($value)}
+                    </option>
+                    {{/each}}
                 </select>
             </div>
             <div class="form-group" >
@@ -114,7 +114,8 @@ echo $this->partial('app/slider', array('sliders' => $sliders) ); ?>
                 </button>
             </div>
         </div>
-        <?php } ?>
+        {{/if}}
+
     </div>
 </div>
 </script>

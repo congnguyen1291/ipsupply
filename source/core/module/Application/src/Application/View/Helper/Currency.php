@@ -11,7 +11,7 @@ class Currency extends App
 
     public function getPositionCurrencySymbol()
     {
-        $str ='';
+        $str ='left';
         switch ($_SESSION['website']['website_currency']) {
             case 'USD':
             case 'EUR':
@@ -28,7 +28,7 @@ class Currency extends App
                 break;
             
             default:
-                $str = 'right';
+                $str = 'left';
                 break;
         }
 
@@ -96,10 +96,13 @@ class Currency extends App
 					$str = '₩'.number_format($number,$decimals,$decimalpoint,$separator);
 					break;
 				case 'THB':
-					$str = '฿'.number_format($number,$decimals,$decimalpoint,$separator);
+                    $str = '฿'.number_format($number,$decimals,$decimalpoint,$separator);
+                    break;
+                case 'AUD':
+					$str = '$'.number_format($number,$decimals,$decimalpoint,$separator);
 					break;
 				default:
-					$str = number_format($number,$decimals,$decimalpoint,$separator);
+					$str = '$'.number_format($number,$decimals,$decimalpoint,$separator);
 					break;
 			}
 		/*}else{

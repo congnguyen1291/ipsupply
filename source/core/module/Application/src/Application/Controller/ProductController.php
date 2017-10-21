@@ -1109,6 +1109,8 @@ class ProductController extends FrontEndController
 	
 	public function emailNewLetterAction()
     {
+        $websitesHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Websites');
+        $translator = $this->getServiceLocator()->get('translator');
         $email = $this->params()->fromPost('email', null);
         if (!empty($email)) {
             $date = date("y/m/d G.i:s", time());
@@ -1119,19 +1121,70 @@ class ProductController extends FrontEndController
             $lastID = $this->getModelTable('EmailNewLetterTable')->insertEmail($em);
 			
             if (!empty($lastID)) {
-                $result = new JsonModel(array(
-                    'html' => 'Cám ơn bạn đã đăng kí với chúng tôi',
-                    'flag' => true,
+                $html = "<table>
+                            <tr>
+                                <td> 
+                                    {$translator->translate('chao')} Admin , </br>
+                                    <b>{$em->email}</b>
+                                    {$translator->translate('txt_vua_dang_ki_email_newsletter')}
+                                </td>
+                            </tr>
+                        </table>";
+    
+                $html = new MimePart($html);
+                $html->type = "text/html";
+    
+                $body = new MimeMessage();
+                $body->setParts(array($html));
+    
+    
+                $message = new Message();
+                $message->addTo($websitesHelper->getEmailSend())
+                ->addFrom($em->email)
+                ->setSubject($translator->translate('txt_dang_ki_email_newsletter'))
+                ->setBody($body)
+                ->setEncoding("UTF-8");
+                
+                $transport = new SmtpTransport();
+                $options   = new SmtpOptions(array(
+                    'name' => $websitesHelper->getHostMail(),
+                    'host' => $websitesHelper->getHostMail(),
+                    'port' => $websitesHelper->getPortMail(),
+                    'connection_class'  => 'login',
+                    'connection_config' => array(
+                        'username' => $websitesHelper->getUserNameHostMail(),
+                        'password' => $websitesHelper->getPasswordHostMail(),
+                    ),
                 ));
+
+                $transport->setOptions($options);
+
+                try {
+                    $transport->send($message);
+                    $result = new JsonModel(array(
+                        'html' => $translator->translate('txt_thank_for_contact'),
+                        'flag' => true,
+                    ));
+                } catch(\Zend\Mail\Exception $e) {
+                    $result = new JsonModel(array(
+                        'html' => $translator->translate('txt_khong_gui_duoc_email'),
+                        'flag' => false,
+                    ));
+                }catch(\Exception $ex) {
+                    $result = new JsonModel(array(
+                        'html' => $translator->translate('txt_khong_gui_duoc_email'),
+                        'flag' => false,
+                    ));
+                }
             } else {
                 $result = new JsonModel(array(
-                    'html' => 'Có lỗi xảy ra ,bạn vui lòng thử lại',
+                    'html' => $translator->translate('txt_co_loi_xay_ra'),
                     'flag' => false,
                 ));
             }
         } else {
             $result = new JsonModel(array(
-                'html' => 'Có lỗi xảy ra ,bạn vui lòng thử lại',
+                'html' => $translator->translate('txt_co_loi_xay_ra'),
                 'flag' => false,
             ));
         }

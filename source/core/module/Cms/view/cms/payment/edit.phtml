@@ -197,6 +197,10 @@
         </div>
 
         <div class="form-group" >
+            <label for="ordering">
+                <?php echo $this->translate('txt_thu_tu'); ?>
+                <?php echo $this->formRow($form->get('ordering')); ?>
+            </label>
             <label for="is_sandbox">
                 <?php echo $this->formRow($form->get('is_sandbox')); ?>
                 <?php echo $this->translate('txt_che_do_test_pay'); ?>

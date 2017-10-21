@@ -7068,6 +7068,16 @@ $(document).on('click',function(e){
     }
 });
 
+try{
+    $( "form#form-keyword textarea" ).each(function( index ) {
+        $(this).attr("id","txtLangInstance_"+index).css({'width' : '100%'});
+        new nicEditor({fullPanel : true,iconsPath : 'http://cdn.coz.vn/nicEdit/nicEditorIcons.gif'}).panelInstance('txtLangInstance_'+index)
+    });
+    if( $('form#form-keyword').length >0 ){
+        $('form#form-keyword').append('<style>.cke_chrome{display: none !important;}</style>');
+    }
+}catch(e){ console.log(e) }
+
 
 
 

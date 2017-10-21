@@ -67,6 +67,9 @@ class CategoriesController extends FrontEndController
         $params['page'] = '(:num)';
         $link = $this->baseUrl .$this->getUrlPrefixLang().'/category?'. $helper->buildParamsForUrlFromArray($params);
         $paginator = new Paginator($total, $page_size, $page, $link);
+        $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+        $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+        $paginator->setMaxPagesToShow(7);
 
         $this->data_view['manufacturer'] = $manufacturer;
         $this->data_view['filter'] = $filter;
@@ -163,6 +166,9 @@ class CategoriesController extends FrontEndController
         $params['page'] = '(:num)';
         $link = $this->baseUrl .$this->getUrlPrefixLang().'/international'.(!empty($id) ? '/id'.$id : '').'.html?'. $helper->buildParamsForUrlFromArray($params);
         $paginator = new Paginator($total, $page_size, $page, $link);
+        $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+        $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+        $paginator->setMaxPagesToShow(7);
 
         $this->data_view['id'] = $id;
         $this->data_view['manufacturer'] = $manufacturer;
@@ -236,7 +242,7 @@ class CategoriesController extends FrontEndController
             }
 
             $page_size = $this->params()->fromQuery('page_size', 18);
-            $page = $this->params()->fromQuery('page', 0);
+            $page = $this->params()->fromQuery('page', 1);
             $sort = $this->params()->fromQuery('sort', 'new');
             $filter = $this->params()->fromQuery('filter', '');
             $manufacturer = $this->params()->fromQuery('manufacturer', '');
@@ -277,6 +283,9 @@ class CategoriesController extends FrontEndController
             $params['page'] = '(:num)';
             $link = $this->baseUrl .$this->getUrlPrefixLang().'/'.$categories->categories_alias.'-'.$categories->categories_id.'s.html?'. $helper->buildParamsForUrlFromArray($params);
             $paginator = new Paginator($total, $page_size, $page, $link);
+            $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+            $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+            $paginator->setMaxPagesToShow(7);
             
             $this->data_view['id'] = $id;
             $this->data_view['list'] = $list;
@@ -337,6 +346,9 @@ class CategoriesController extends FrontEndController
 
         $link = $this->baseUrl .$this->getUrlPrefixLang().'/category/hots?page=(:num)';
         $paginator = new Paginator($total, $page_size, $page, $link);
+        $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+        $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+        $paginator->setMaxPagesToShow(7);
 
         $this->data_view['page'] = $page;
         $this->data_view['total'] = $total;
@@ -372,6 +384,9 @@ class CategoriesController extends FrontEndController
 
         $link = $this->baseUrl .$this->getUrlPrefixLang().'/category/hots?page=(:num)';
         $paginator = new Paginator($total, $page_size, $page, $link);
+        $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+        $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+        $paginator->setMaxPagesToShow(7);
 
         $this->data_view['page'] = $page;
         $this->data_view['total'] = $total;
@@ -407,6 +422,9 @@ class CategoriesController extends FrontEndController
 
         $link = $this->baseUrl .$this->getUrlPrefixLang().'/category/hots?page=(:num)';
         $paginator = new Paginator($total, $page_size, $page, $link);
+        $paginator->setPreviousText('<i class="fa fa-angle-left" aria-hidden="true"></i>');
+        $paginator->setNextText('<i class="fa fa-angle-right" aria-hidden="true"></i>');
+        $paginator->setMaxPagesToShow(7);
 
         $this->data_view['page'] = $page;
         $this->data_view['total'] = $total;

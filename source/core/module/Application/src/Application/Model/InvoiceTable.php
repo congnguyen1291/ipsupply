@@ -270,8 +270,7 @@ class InvoiceTable extends AppTable {
         } catch (\Exception $ex) {
             $adapter->getDriver()->getConnection()->rollback();
             unset($_SESSION['error_message']);
-			// throw new \Exception($ex->getMessage());
-			//die($ex->getMessage());
+			throw new \Exception($ex->getMessage());
         }
     }
 	
@@ -292,8 +291,7 @@ class InvoiceTable extends AppTable {
 			$insertString = $sql->getSqlStringForSqlObject($insert);
 			$adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
 		}catch(\Exception $ex){
-			// throw new \Exception($ex->getMessage());
-			die();
+			throw new \Exception($ex->getMessage());
 		}
 	}
 
@@ -394,8 +392,7 @@ class InvoiceTable extends AppTable {
                 }
             }
         }catch(\Exception $ex){
-            // throw new \Exception($ex->getMessage()); 
-			die();
+            throw new \Exception($ex->getMessage());
         }
     }
 
@@ -421,8 +418,7 @@ class InvoiceTable extends AppTable {
                 $insertString = $sql->getSqlStringForSqlObject($insert);
                 $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
             }catch(\Exception $ex){
-                // throw new \Exception($ex->getMessage()); 
-				die();
+                throw new \Exception($ex->getMessage());
             }
         }
     }
@@ -452,8 +448,7 @@ class InvoiceTable extends AppTable {
                 }
 			}
 		}catch(\Exception $ex){
-			// throw new \Exception($ex->getMessage()); 
-			die();
+			throw new \Exception($ex->getMessage());
 		}
 	}
 	
@@ -1225,8 +1220,7 @@ class InvoiceTable extends AppTable {
             $insertString = $sql->getSqlStringForSqlObject($insert);
             $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
         }catch(\Exception $ex){
-            // throw new \Exception($ex->getMessage());
-			die();
+            throw new \Exception($ex->getMessage());
         }
     }
 
@@ -1270,8 +1264,7 @@ class InvoiceTable extends AppTable {
             $insertString = $sql->getSqlStringForSqlObject($insert);
             $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
         }catch(\Exception $ex){
-            // throw new \Exception($ex->getMessage());
-			die();
+            throw new \Exception($ex->getMessage());
         }
     }
 
@@ -1310,8 +1303,7 @@ class InvoiceTable extends AppTable {
             $insertString = $sql->getSqlStringForSqlObject($insert);
             $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
         }catch(\Exception $ex){
-            // throw new \Exception($ex->getMessage());
-			die();
+            throw new \Exception($ex->getMessage());
         }
     }
 
@@ -1350,8 +1342,7 @@ class InvoiceTable extends AppTable {
             $insertString = $sql->getSqlStringForSqlObject($insert);
             $adapter->query($insertString, $adapter::QUERY_MODE_EXECUTE);
         }catch(\Exception $ex){
-            // throw new \Exception($ex->getMessage());
-			die();
+            throw new \Exception($ex->getMessage());
         }
     }
 

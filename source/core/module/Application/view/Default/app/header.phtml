@@ -141,14 +141,14 @@ $categoryArticles = $this->CategoriesArticles()->getAllCategoryArticleAndSort();
                     <span class="hidden-sm-down" >
                         <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                         <?php if( !$this->User()->hasLogin() ){ ?>
-                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" title="<?php echo $this->translate('txt_login') ?>" class="nav-link" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-in" title="<?php echo $this->translate('txt_login') ?>" class="nav-link" data-pjax="true" data-container="Main"  >
                             <?php echo $this->translate('txt_login') ?>
                         </a>/
-                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" title="<?php echo $this->translate('txt_sign_up') ?>" class="nav-link" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/sign-up" title="<?php echo $this->translate('txt_sign_up') ?>" class="nav-link" data-pjax="true" data-container="Main" >
                             <?php echo $this->translate('txt_sign_up') ?>
                         </a>
                         <?php }else{ ?>
-                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_profile') ?>" class="nav-link" >
+                        <a href="<?php echo $this->Websites()->getUrlPrefixLang() ?>/profile" title="<?php echo $this->translate('txt_profile') ?>" class="nav-link" data-pjax="true" data-container="Main" >
                             <?php echo $this->translate('txt_xin_chao_ban') ?>
                             <?php echo $this->User()->getFullName() ?>
                         </a>/

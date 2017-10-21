@@ -160,6 +160,18 @@ class PaymentMethodForm extends GeneralForm{
                 'class'       => 'form-control input-sm',
             ),
         ));
+        $this->add(array(
+            'name' => 'ordering',
+            'type' => 'Text',
+            'filters'  => array(
+                array('name' => 'Int'),
+            ),
+            'attributes' => array(
+                'id'          => 'ordering',
+                'class'       => 'form-control  input-sm numberInput input-ordering',
+                'value'       => '0'
+            ),
+        ));
 		//End form
     }
 }

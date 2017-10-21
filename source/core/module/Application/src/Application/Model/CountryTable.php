@@ -57,7 +57,7 @@ class CountryTable extends AppTable {
         if(!$results){
             $sql = "SELECT *
                     FROM `country`
-                    WHERE status=1 ORDER BY ordering ";
+                    WHERE status=1 ORDER BY title ASC ";
             try{
                 $adapter = $this->tableGateway->getAdapter();
                 $result = $adapter->query($sql,$adapter::QUERY_MODE_EXECUTE);
@@ -84,8 +84,9 @@ class CountryTable extends AppTable {
             $select = $sql->select();
             $select->from('country');
 			if(!empty($where)){
-            $select->where($where);
+                $select->where($where);
 			}
+            $select->order('title ASC');
             try{
 				$selectString = $sql->getSqlStringForSqlObject($select);
                 $result = $adapter->query($selectString,$adapter::QUERY_MODE_EXECUTE);

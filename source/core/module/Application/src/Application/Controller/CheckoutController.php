@@ -27,6 +27,9 @@ use PHPPaypal\Paypal;
 class CheckoutController extends FrontEndController
 {
     private $version = '02';
+    private $currencyPaypalAccept = array(
+            'AUD','BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'ILS', 'JPY', 'MYR', 'MXN', 'NOK', 'NZD', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'TWD', 'THB', 'USD'
+        );
     
     public function indexAction()
     {
@@ -58,7 +61,7 @@ class CheckoutController extends FrontEndController
     {
         if ( $this->getVersionCart() != $this->version ) {
             return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
-                'action' => 'auth'
+                'action' => 'index'
             ));
         }
 
@@ -88,13 +91,20 @@ class CheckoutController extends FrontEndController
             if ( empty($trans['phone']) || !is_numeric($trans['phone'])) {
                 $error['phone'] = $translator->translate('txt_so_dien_thoai_khong_hop_le');
             }
-            if ( empty($trans['country_id']) ) {
-                $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+            $has_ship = 0;
+            if ( empty($trans['has_ship']) ) {
+                $has_ship = 1;
+                if ( empty($trans['country_id']) ) {
+                    $error['country_id'] = $translator->translate('txt_chua_chon_contry');
+                }else{
+                    $country = $this->getModelTable('CountryTable')->getOne($trans['country_id']);
+                    $err = $this->validateInputContryPayment($trans, $country);
+                    $error = array_merge($error, $err);
+                }
             }else{
-                $country = $this->getModelTable('CountryTable')->getOne($trans['country_id']);
-                $err = $this->validateInputContryPayment($trans, $country);
-                $error = array_merge($error, $err);
+                $has_ship = 1;
             }
+
             $ship_to_different_address = 0;
             if ( !empty($trans['ship_to_different_address']) ) {
                 $ship_to_different_address = 1;
@@ -116,23 +126,38 @@ class CheckoutController extends FrontEndController
             }
 
             $buyer = array();
-            $buyer['has_ship'] = empty($trans['has_ship']) ? 0 : $trans['has_ship'];
+            $buyer['has_ship'] = $has_ship;
             $buyer['full_name'] = $trans['full_name'];
             $buyer['phone'] = $trans['phone'];
             $buyer['email'] = $trans['email'];
             $buyer['type_address_delivery'] = $trans['type_address_delivery'];
-            $buyer['country_id'] = $trans['country_id'];
-            $buyer['address'] = $trans['address'];
-            $buyer['address01'] = empty($trans['address01']) ? '' : $trans['address01'];
-            $buyer['city'] = empty($trans['city']) ? '' : $trans['city'];
-            $buyer['state'] = empty($trans['state']) ? '' : $trans['state'];
-            $buyer['suburb'] = empty($trans['suburb']) ? '' : $trans['suburb'];
-            $buyer['region'] = empty($trans['region']) ? '' : $trans['region'];
-            $buyer['province'] = empty($trans['province']) ? '' : $trans['province'];
-            $buyer['zipcode'] = empty($trans['zipcode']) ? '' : $trans['zipcode'];
-            $buyer['cities_id'] = empty($trans['cities_id']) ? 0 : $trans['cities_id'];
-            $buyer['districts_id'] = empty($trans['districts_id']) ? 0 : $trans['districts_id'];
-            $buyer['wards_id'] = empty($trans['wards_id']) ? 0 : $trans['wards_id'];
+            if ( empty($has_ship) ) {
+                $buyer['country_id'] = $trans['country_id'];
+                $buyer['address'] = $trans['address'];
+                $buyer['address01'] = empty($trans['address01']) ? '' : $trans['address01'];
+                $buyer['city'] = empty($trans['city']) ? '' : $trans['city'];
+                $buyer['state'] = empty($trans['state']) ? '' : $trans['state'];
+                $buyer['suburb'] = empty($trans['suburb']) ? '' : $trans['suburb'];
+                $buyer['region'] = empty($trans['region']) ? '' : $trans['region'];
+                $buyer['province'] = empty($trans['province']) ? '' : $trans['province'];
+                $buyer['zipcode'] = empty($trans['zipcode']) ? '' : $trans['zipcode'];
+                $buyer['cities_id'] = empty($trans['cities_id']) ? 0 : $trans['cities_id'];
+                $buyer['districts_id'] = empty($trans['districts_id']) ? 0 : $trans['districts_id'];
+                $buyer['wards_id'] = empty($trans['wards_id']) ? 0 : $trans['wards_id'];
+            }else{
+                $buyer['country_id'] = $ships['country_id'];
+                $buyer['address'] = $ships['address'];
+                $buyer['address01'] = empty($ships['address01']) ? '' : $ships['address01'];
+                $buyer['city'] = empty($ships['city']) ? '' : $ships['city'];
+                $buyer['state'] = empty($ships['state']) ? '' : $ships['state'];
+                $buyer['suburb'] = empty($ships['suburb']) ? '' : $ships['suburb'];
+                $buyer['region'] = empty($ships['region']) ? '' : $ships['region'];
+                $buyer['province'] = empty($ships['province']) ? '' : $ships['province'];
+                $buyer['zipcode'] = empty($ships['zipcode']) ? '' : $ships['zipcode'];
+                $buyer['cities_id'] = empty($ships['cities_id']) ? 0 : $ships['cities_id'];
+                $buyer['districts_id'] = empty($ships['districts_id']) ? 0 : $ships['districts_id'];
+                $buyer['wards_id'] = empty($ships['wards_id']) ? 0 : $ships['wards_id'];
+            }
             $buyer['users_id'] = (!empty($_SESSION['MEMBER']['users_id'])) ? $_SESSION['MEMBER']['users_id'] : NULL;
             $buyer['invoice_description'] = empty($trans['invoice_description']) ? '' : strip_tags($trans['invoice_description']);
 
@@ -157,26 +182,27 @@ class CheckoutController extends FrontEndController
                 $shipper['ships_wards_id'] = empty($ships['wards_id']) ? 0 : $ships['wards_id'];
             }else{
                 $shipper = array();
-                $shipper['ships_full_name'] = $trans['full_name'];
-                $shipper['ships_email'] = $trans['email'];
-                $shipper['ships_phone'] = $trans['phone'];
-                $shipper['ships_country_id'] = $trans['country_id'];
-                $shipper['ships_address'] = $trans['address'];
-                $shipper['ships_address01'] = empty($trans['address01']) ? '' : $trans['address01'];
-                $shipper['ships_city'] = empty($trans['city']) ? '' : $trans['city'];
-                $shipper['ships_state'] = empty($trans['state']) ? '' : $trans['state'];
-                $shipper['ships_suburb'] = empty($trans['suburb']) ? '' : $trans['suburb'];
-                $shipper['ships_region'] = empty($trans['region']) ? '' : $trans['region'];
-                $shipper['ships_province'] = empty($trans['province']) ? '' : $trans['province'];
-                $shipper['ships_zipcode'] = empty($trans['zipcode']) ? '' : $trans['zipcode'];
-                $shipper['ships_cities_id'] = empty($trans['cities_id']) ? 0 : $trans['cities_id'];
-                $shipper['ships_districts_id'] = empty($trans['districts_id']) ? 0 : $trans['districts_id'];
-                $shipper['ships_wards_id'] = empty($trans['wards_id']) ? 0 : $trans['wards_id'];
+                $shipper['ships_full_name'] = $buyer['full_name'];
+                $shipper['ships_email'] = $buyer['email'];
+                $shipper['ships_phone'] = $buyer['phone'];
+                $shipper['ships_country_id'] = $buyer['country_id'];
+                $shipper['ships_address'] = $buyer['address'];
+                $shipper['ships_address01'] = empty($buyer['address01']) ? '' : $buyer['address01'];
+                $shipper['ships_city'] = empty($buyer['city']) ? '' : $buyer['city'];
+                $shipper['ships_state'] = empty($buyer['state']) ? '' : $buyer['state'];
+                $shipper['ships_suburb'] = empty($buyer['suburb']) ? '' : $buyer['suburb'];
+                $shipper['ships_region'] = empty($buyer['region']) ? '' : $buyer['region'];
+                $shipper['ships_province'] = empty($buyer['province']) ? '' : $buyer['province'];
+                $shipper['ships_zipcode'] = empty($buyer['zipcode']) ? '' : $buyer['zipcode'];
+                $shipper['ships_cities_id'] = empty($buyer['cities_id']) ? 0 : $buyer['cities_id'];
+                $shipper['ships_districts_id'] = empty($buyer['districts_id']) ? 0 : $buyer['districts_id'];
+                $shipper['ships_wards_id'] = empty($buyer['wards_id']) ? 0 : $buyer['wards_id'];
             }
 
             $shipping_id = 0;
             $transport_type = 0;
-            if ( !empty($trans['has_ship']) ) {
+            $fee = 0;
+            if ( !empty($has_ship) ) {
                 $country_id = 0;
                 if( !empty($shipper['ships_country_id']) ){
                     $country_id = $shipper['ships_country_id'];
@@ -252,6 +278,7 @@ class CheckoutController extends FrontEndController
             if( empty($error) ){
                 $buyer['shipping_id'] = $shipping_id;
                 $buyer['transport_type'] = $transport_type;
+                $buyer['ships_fee'] = $fee;
                 $buyer['ship_to_different_address'] = $ship_to_different_address;
                 $_SESSION['PAYMENT_BUYER'] = $buyer;
                 $_SESSION['PAYMENT_SHIPPER'] = $shipper;
@@ -286,6 +313,9 @@ class CheckoutController extends FrontEndController
 
     public function processAction()
     {
+        return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+            'action' => 'address'
+        ));
         if ( $this->getVersionCart() != $this->version ) {
             return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
                 'action' => 'auth'
@@ -312,6 +342,9 @@ class CheckoutController extends FrontEndController
 
     public function buyerAction()
     {
+        return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+            'action' => 'address'
+        ));
         $translator = $this->getServiceLocator()->get('translator');
         $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
         $cart = $cartHelper->getCart();
@@ -422,6 +455,9 @@ class CheckoutController extends FrontEndController
 
     public function shipperAction()
     {
+        return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+            'action' => 'address'
+        ));
         $translator = $this->getServiceLocator()->get('translator');
         $couponsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Coupons');
         $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
@@ -595,6 +631,9 @@ class CheckoutController extends FrontEndController
 
     public function shippingAction()
     {
+        return $this->redirect()->toRoute( $this->getUrlRouterLang().$this->getRouteCart() , array(
+            'action' => 'address'
+        ));
         $translator = $this->getServiceLocator()->get('translator');
         $couponsHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Coupons');
         $cartHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('Cart');
@@ -941,7 +980,6 @@ class CheckoutController extends FrontEndController
             }
 
             $member = $hPUser->getMember();
-            
             if( empty($error) ){
                 $invoice = array_merge( $buyer, $shipper);
                 $extensions = array();
@@ -1209,9 +1247,11 @@ class CheckoutController extends FrontEndController
                         {
                             $total_all = $fee + $total_tax;
                             $currency_code = $_SESSION['website']['website_currency'];
+                            $to_currency = $_SESSION['website']['website_currency'];
                             $rate_exchange = 1;
-                            if( strtolower($currency_code) != 'usd' ){
+                            if( !in_array(strtoupper($currency_code), $this->currencyPaypalAccept) ){
                                 $rate_exchange = $currencyHelper->exchangerates('USD', $currency_code, 1);
+                                $to_currency = 'USD';
                             }
 
                             $products = array();
@@ -1229,7 +1269,7 @@ class CheckoutController extends FrontEndController
                             $amount = $total_tax/$rate_exchange;
                             $row = array(
                                         'from_currency' => $currency_code,
-                                        'to_currency' => 'USD',
+                                        'to_currency' => $to_currency,
                                         'rate_exchange' => $rate_exchange,
                                         'total_converter' => $amount
                                     );
@@ -1253,7 +1293,7 @@ class CheckoutController extends FrontEndController
                             $paypal->setUpload( 1 );
                             $paypal->setInvoice( $invoice->invoice_id );
                             $paypal->setBusiness( $payment->sale_account );
-                            $paypal->setCurrencyCode( 'USD' );
+                            $paypal->setCurrencyCode( $to_currency );
                             $paypal->setReturn( $cb_return );
                             $paypal->setCancelReturn( $cb_cancel );
                             $paypal->setNotifyUrl( $cb_notifi );
@@ -1261,6 +1301,8 @@ class CheckoutController extends FrontEndController
                             $paypal->setLc( 2 );
                             $paypal->setCbt( $translator->translate('txt_paypal_tiep_tuc_thanh_toan') );
                             $paypal->setProducts( $products );
+                            $paypal->setShipping(max(0, $fee));
+                            $paypal->setTax(max(0, $total_tax-$total));
                             //$paypal->setItemName( 'test mua hang paypal' );
                             //$paypal->setAmount( 30000 );
                             $paypal->setRateExchange( $rate_exchange );

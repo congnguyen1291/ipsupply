@@ -55,7 +55,7 @@
             ->appendFile($this->basePath() . '/admincp/js/plugins/colorpicker/bootstrap-colorpicker.min.js')
             ->appendFile($this->basePath() . '/admincp/js/plugins/datatables/jquery.dataTables.js')
             ->appendFile($this->basePath() . '/admincp/js/plugins/datatables/dataTables.bootstrap.js')
-            ->appendFile($this->basePath() . '/admincp/js/plugins/ckeditor/ckeditor.js?v=12')
+            ->appendFile($this->basePath() . '/admincp/js/plugins/ckeditor/ckeditor.js')
             ->appendFile($this->basePath() . '/admincp/js/accounting.js')
             ->appendFile($this->basePath() . '/admincp/js/AdminLTE/app.js')
             ->appendFile($this->basePath() . '/admincp/js/plugins/tags-input/src/jquery.tagsinput.js')
@@ -71,6 +71,7 @@
             ->appendFile($this->basePath() . '/admincp/js/plugins/morris/morris.min.js')
             ->appendFile('//cdn.coz.vn/jquery-tmpl/jquery.tmpl.min.js')
             ->appendFile('//cdn.coz.vn/gmaps/gmaps.min.js')
+            ->appendFile('//cdn.coz.vn/nicEdit/nicEdit.js')
             ->appendFile('//cdn.coz.vn/html5sortable/jquery.sortable.min.js'); ?>
     </head>
     <body class="skin-blue" <?php if(isset($_SERVER['REQUEST_URI']) && ($_SERVER['REQUEST_URI']=='/cms/branches/add' || strpos($_SERVER['REQUEST_URI'], '/cms/branches/edit')!==FALSE)){

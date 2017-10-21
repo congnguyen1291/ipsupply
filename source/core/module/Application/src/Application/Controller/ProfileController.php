@@ -531,7 +531,8 @@ class ProfileController extends FrontEndController
         $member = $hPUser->getMember();
         $shipping = $this->getModelTable('UserTable')->getShippingAddress($member['users_id']);
         if( empty($shipping) ){
-            return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
+            $member['email'] = $member['user_name'];
+            $shipping = (object)$member;
         }
         $request = $this->getRequest ();
         if ($request->isPost ()) {
@@ -583,7 +584,8 @@ class ProfileController extends FrontEndController
         $member = $hPUser->getMember();
         $billing = $this->getModelTable('UserTable')->getBillingAddress($member['users_id']);
         if( empty($billing) ){
-            return $this->redirect ()->toRoute ( $this->getUrlRouterLang().'profile' );
+            $member['email'] = $member['user_name'];
+            $billing = (object)$member;
         }
         $request = $this->getRequest ();
         if ($request->isPost ()) {
